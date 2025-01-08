@@ -1079,8 +1079,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2104613891}
+  - component: {fileID: 2104613892}
   m_Layer: 0
-  m_Name: EventController
+  m_Name: FeedbackEventController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1103,6 +1104,20 @@ Transform:
   - {fileID: 764521779}
   m_Father: {fileID: 1030355378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2104613892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104613890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a462d89fd5c9a74bbec23a9a8b852f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _feedbackCreateEventChannel: {fileID: 11400000, guid: 7a25197fe48bd1748a4fc37f25267224, type: 2}
+  _feedbackFinishEventChannel: {fileID: 11400000, guid: 7a00c0f8f25dafe4aa0483ec8fb3877a, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

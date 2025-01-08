@@ -17,9 +17,6 @@ namespace Agents.Players.FSM
         public PlayerState CurrentState { get; private set; }
         private Player _player;
         public FeedbackEventController eventController;
-
-
-        public Channel feedbackChannel;
         public PlayerStateMachine(Player player)
         {
             _player = player;
