@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FeedbackSystem;
 using UnityEngine;
+
 namespace Agents.Players.FSM
 {
     public class Channel
@@ -17,10 +18,12 @@ namespace Agents.Players.FSM
         public PlayerState CurrentState { get; private set; }
         private Player _player;
         public FeedbackEventController eventController;
+        
+
         public PlayerStateMachine(Player player)
         {
             _player = player;
-            eventController = _player.GetComponentInChildren<FeedbackEventController>();
+            //eventController = _player.GetComponentInChildren<FeedbackEventController>();
         }
 
 
