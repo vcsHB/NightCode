@@ -6,8 +6,8 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(menuName = "SO/TechTree")]
-public class TechTreeSO : ScriptableObject
+[CreateAssetMenu(menuName = "SO/SkillTree")]
+public class SkillTreeSO : ScriptableObject
 {
     public List<NodeSO> nodes = new List<NodeSO>();
 

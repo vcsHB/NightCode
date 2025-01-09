@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 public class SkillTree : MonoBehaviour
 {
-    public TechTreeSO treeSO;
+    public SkillTreeSO treeSO;
     public Dictionary<NodeSO, Node> nodeDic;
     //public WarningPanel warningPanel;
     //public TechTreeTooltipPanel tooltipPanel;
@@ -64,14 +64,14 @@ public class SkillTree : MonoBehaviour
             Node nodeInstance = Instantiate(nodePf, transform);
             nodeInstance.SetNode(node);
 
-            if (node is PartNodeSO part)
-            {
-                //nodeInstance.name = part.openPart.ToString();
-            }
-            else if (node is WeaponNodeSO weapon)
-            {
-                //nodeInstance.name = weapon.weapon.ToString();
-            }
+            //if (node is PartNodeSO part)
+            //{
+            //    nodeInstance.name = part.openPart.ToString();
+            //}
+            //else if (node is WeaponNodeSO weapon)
+            //{
+            //    nodeInstance.name = weapon.weapon.ToString();
+            //}
         });
     }
 
@@ -139,21 +139,21 @@ public class SkillTree : MonoBehaviour
         List<Node> weapons = new List<Node>();
         treeSO.nodes.ForEach(n =>
         {
-            if (n is PartNodeSO)
-            {
-                if (TryGetNode(n, out Node node))
-                {
-                    parts.Add(node);
-                }
-            }
+            //if (n is PartNodeSO)
+            //{
+            //    if (TryGetNode(n, out Node node))
+            //    {
+            //        parts.Add(node);
+            //    }
+            //}
 
-            if (n is WeaponNodeSO)
-            {
-                if (TryGetNode(n, out Node node))
-                {
-                    weapons.Add(node);
-                }
-            }
+            //if (n is WeaponNodeSO)
+            //{
+            //    if (TryGetNode(n, out Node node))
+            //    {
+            //        weapons.Add(node);
+            //    }
+            //}
         });
 
 

@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6153255460842589158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 035ab258a7c1a89498516706bf6b3ede
+  position: {x: 0, y: 0}
+  id: 1
+  nextNodes: []
+  prevNode: {fileID: 0}
+  icon: {fileID: 0}
+  requireCoin: 0
+  name: StatIncNodeSO-1
+  explain: 
+  statType: {fileID: 0}
+--- !u!114 &-2715564689594029978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a579d6d09d4d54e9f01a96ad8ac520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 2556a2cf58ff0d345984a8af8ebfccb0
+  position: {x: -282.6667, y: -36}
+  id: 0
+  nextNodes: []
+  prevNode: {fileID: 0}
+  icon: {fileID: 0}
+  requireCoin: 0
+  name: StartNode
+  explain: 
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a540f074e8eedc143a24836c44f62d00, type: 3}
+  m_Name: Maid1SkillTree
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -2715564689594029978}
+  - {fileID: -6153255460842589158}

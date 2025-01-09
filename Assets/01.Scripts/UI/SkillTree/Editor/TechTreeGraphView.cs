@@ -11,7 +11,7 @@ public class TechTreeGraphView : GraphView
     public Action<NodeView> OnNodeSelected;
     public new class UxmlFactory : UxmlFactory<TechTreeGraphView, GraphView.UxmlTraits> { }
 
-    private TechTreeSO _tree;
+    private SkillTreeSO _tree;
 
     public TechTreeGraphView()
     {
@@ -28,7 +28,7 @@ public class TechTreeGraphView : GraphView
 
     private NodeView FindNodeView(NodeSO node) => GetNodeByGuid(node.guid) as NodeView;
 
-    public void ParpurateView(TechTreeSO tree)
+    public void ParpurateView(SkillTreeSO tree)
     {
         _tree = tree;
         CreateNodeAndEdge();

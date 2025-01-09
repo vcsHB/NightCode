@@ -22,7 +22,7 @@ public class TechTreeGenerator : EditorWindow
     [OnOpenAsset]
     public static bool OnOpenAsset(int instanceID, int line)
     {
-        if (Selection.activeObject is TechTreeSO)
+        if (Selection.activeObject is SkillTreeSO)
         {
             ShowExample();
             return true;
@@ -49,7 +49,7 @@ public class TechTreeGenerator : EditorWindow
 
     private void OnSelectionChange()
     {
-        TechTreeSO dialog = Selection.activeObject as TechTreeSO;
+        SkillTreeSO dialog = Selection.activeObject as SkillTreeSO;
         if (dialog)
             graphView.ParpurateView(dialog);
     }
