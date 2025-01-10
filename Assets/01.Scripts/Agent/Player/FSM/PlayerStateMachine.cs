@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Core.EventSystem;
-using FeedbackSystem;
-using UnityEngine;
 
 namespace Agents.Players.FSM
 {
@@ -23,12 +20,10 @@ namespace Agents.Players.FSM
         public PlayerStateMachine(Player player)
         {
             _player = player;
-            //eventController = _player.GetComponentInChildren<FeedbackEventController>();
         }
 
 
-
-        public void Initialize(string firstState)
+        public virtual void Initialize(string firstState)
         {
             AddState("Idle");
             AddState("Move");
