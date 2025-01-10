@@ -6,14 +6,26 @@ using UnityEngine;
 namespace Agents.Players
 {
 
-    public class FeedbackEventData : GameEvent
+    public class FeedbackCreateEventData : GameEvent
     {
         public string feedbackName;
+        public FeedbackCreateEventData(string feedbackName)
+        {
+            this.feedbackName = feedbackName;
+        }
+    }
+
+    public class FeedbackFinishEventData : GameEvent
+    {
+        public string feedbackName;
+         public FeedbackFinishEventData(string feedbackName)
+        {
+            this.feedbackName = feedbackName;
+        }
     }
     public class FeedbackEventController : MonoBehaviour, IAgentComponent
     {
-        private GameEventChannelSO _feedbackCreateEventChannel;
-        private GameEventChannelSO _feedbackFinishEventChannel;
+        private GameEventChannelSO _feedbackEventChannel;
         private Dictionary<string, FeedbackPlayer> _feedbackPlayerDictionary;
         private Player _player;
 
@@ -32,18 +44,17 @@ namespace Agents.Players
         }
         private void OnDestroy()
         {
-            _feedbackCreateEventChannel.RemoveListener<FeedbackEventData>(HandleInvokeFeedbacks);
-            _feedbackFinishEventChannel.RemoveListener<FeedbackEventData>(HandleFinishFeedbacks);
+            _feedbackEventChannel.RemoveListener<FeedbackCreateEventData>(HandleInvokeFeedbacks);
+            _feedbackEventChannel.RemoveListener<FeedbackFinishEventData>(HandleFinishFeedbacks);
         }
 
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
-            _feedbackCreateEventChannel = _player.CreateFeedbackChannel;
-            _feedbackFinishEventChannel = _player.FinishFeedbackChannel;
+            _feedbackEventChannel = _player.FeedbackChannel;
 
-            _feedbackCreateEventChannel.AddListener<FeedbackEventData>(HandleInvokeFeedbacks);
-            _feedbackFinishEventChannel.AddListener<FeedbackEventData>(HandleFinishFeedbacks);
+            _feedbackEventChannel.AddListener<FeedbackCreateEventData>(HandleInvokeFeedbacks);
+            _feedbackEventChannel.AddListener<FeedbackFinishEventData>(HandleFinishFeedbacks);
         }
 
         public void AfterInit()
@@ -55,11 +66,11 @@ namespace Agents.Players
         }
 
 
-        private void HandleInvokeFeedbacks(FeedbackEventData data)
+        private void HandleInvokeFeedbacks(FeedbackCreateEventData data)
         {
             Invoke(data.feedbackName);
         }
-        private void HandleFinishFeedbacks(FeedbackEventData data)
+        private void HandleFinishFeedbacks(FeedbackFinishEventData data)
         {
             Finish(data.feedbackName);
         }

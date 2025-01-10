@@ -9,8 +9,7 @@ namespace Agents.Players
         [field: SerializeField] public PlayerInput PlayerInput { get; private set; }
         private PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
-        [field: SerializeField] public GameEventChannelSO CreateFeedbackChannel { get; private set; }
-        [field: SerializeField] public GameEventChannelSO FinishFeedbackChannel { get; private set; }
+        [field: SerializeField] public GameEventChannelSO FeedbackChannel { get; private set; }
 
 
         protected override void Awake()

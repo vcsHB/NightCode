@@ -43,6 +43,7 @@ namespace Agents.Players.FSM
             if (!_canUseTurbo) return;
             _mover.UseTurbo();
             _canUseTurbo = false;
+            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));
         }
 
     }
