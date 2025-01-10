@@ -374,6 +374,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 494830439}
+  - component: {fileID: 494830440}
   m_Layer: 6
   m_Name: HitFeedback
   m_TagString: Untagged
@@ -396,6 +397,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2104613891}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &494830440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494830438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 818033d49ec6ced4ab4eb138e6721dc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &602823083
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +556,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 764521779}
+  - component: {fileID: 764521780}
   m_Layer: 6
   m_Name: ShootFeedback
   m_TagString: Untagged
@@ -565,6 +579,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2104613891}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &764521780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764521778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 818033d49ec6ced4ab4eb138e6721dc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &848091066
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,6 +825,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PlayerInput>k__BackingField: {fileID: 11400000, guid: 1726f16ec39cbcc4abbabc89b994893e, type: 2}
+  <CreateFeedbackChannel>k__BackingField: {fileID: 11400000, guid: 7a25197fe48bd1748a4fc37f25267224, type: 2}
+  <FinishFeedbackChannel>k__BackingField: {fileID: 11400000, guid: 7a00c0f8f25dafe4aa0483ec8fb3877a, type: 2}
 --- !u!1 &1179476391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,7 +1028,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 3faeb0cd0ef768349916617607bd3b54, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10205,8 +10233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a462d89fd5c9a74bbec23a9a8b852f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _feedbackCreateEventChannel: {fileID: 11400000, guid: 7a25197fe48bd1748a4fc37f25267224, type: 2}
-  _feedbackFinishEventChannel: {fileID: 11400000, guid: 7a00c0f8f25dafe4aa0483ec8fb3877a, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

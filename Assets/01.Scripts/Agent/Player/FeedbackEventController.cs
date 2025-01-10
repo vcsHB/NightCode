@@ -10,11 +10,12 @@ namespace Agents.Players
     {
         public string feedbackName;
     }
-    public class FeedbackEventController : MonoBehaviour
+    public class FeedbackEventController : MonoBehaviour, IAgentComponent
     {
-        [SerializeField] private GameEventChannelSO _feedbackCreateEventChannel;
-        [SerializeField] private GameEventChannelSO _feedbackFinishEventChannel;
+        private GameEventChannelSO _feedbackCreateEventChannel;
+        private GameEventChannelSO _feedbackFinishEventChannel;
         private Dictionary<string, FeedbackPlayer> _feedbackPlayerDictionary;
+        private Player _player;
 
         private void Awake()
         {
@@ -27,16 +28,32 @@ namespace Agents.Players
                 _feedbackPlayerDictionary.Add(feedback.gameObject.name, feedback);
             }
 
-            _feedbackCreateEventChannel.AddListener<FeedbackEventData>(HandleInvokeFeedbacks);
-            _feedbackFinishEventChannel.AddListener<FeedbackEventData>(HandleFinishFeedbacks);
+            
         }
-
-
         private void OnDestroy()
         {
             _feedbackCreateEventChannel.RemoveListener<FeedbackEventData>(HandleInvokeFeedbacks);
             _feedbackFinishEventChannel.RemoveListener<FeedbackEventData>(HandleFinishFeedbacks);
         }
+
+        public void Initialize(Agent agent)
+        {
+            _player = agent as Player;
+            _feedbackCreateEventChannel = _player.CreateFeedbackChannel;
+            _feedbackFinishEventChannel = _player.FinishFeedbackChannel;
+
+            _feedbackCreateEventChannel.AddListener<FeedbackEventData>(HandleInvokeFeedbacks);
+            _feedbackFinishEventChannel.AddListener<FeedbackEventData>(HandleFinishFeedbacks);
+        }
+
+        public void AfterInit()
+        {
+        }
+
+        public void Dispose()
+        {
+        }
+
 
         private void HandleInvokeFeedbacks(FeedbackEventData data)
         {
@@ -62,6 +79,7 @@ namespace Agents.Players
                 feedbackPlayer.FinishFeedback();
             }
         }
+
 
     }
 

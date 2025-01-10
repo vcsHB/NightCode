@@ -1,4 +1,5 @@
 using Agents.Players.FSM;
+using Core.EventSystem;
 using InputManage;
 using UnityEngine;
 namespace Agents.Players
@@ -8,6 +9,8 @@ namespace Agents.Players
         [field: SerializeField] public PlayerInput PlayerInput { get; private set; }
         private PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
+        [field: SerializeField] public GameEventChannelSO CreateFeedbackChannel { get; private set; }
+        [field: SerializeField] public GameEventChannelSO FinishFeedbackChannel { get; private set; }
 
 
         protected override void Awake()
@@ -17,8 +20,9 @@ namespace Agents.Players
             _stateMachine.Initialize("Idle");
         }
 
-        private void Update() {
-            
+        private void Update()
+        {
+
             _stateMachine.UpdateState();
         }
 
