@@ -4,5 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/StatIncreaseNode")]
 public class StatIncNodeSO : NodeSO
 {
-    public StatOverride[] statType;
+    public StatIncrease[] stat;
 }
+public struct StatIncrease
+{
+    public StatSO statType;
+    public float increaseValue;
+}
+
