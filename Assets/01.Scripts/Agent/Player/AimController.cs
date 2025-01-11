@@ -87,7 +87,9 @@ namespace Agents.Players
             _player.StateMachine.ChangeState("Hang");
             _wire.gameObject.SetActive(true);
             float distance = (_targetPoint - (Vector2)transform.position).magnitude;
+            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
             _wire.SetWireEnable(true, _targetPoint, distance);
+            _isShoot = true;
             _anchorTrm.gameObject.SetActive(true);
         }
 
@@ -97,6 +99,7 @@ namespace Agents.Players
             _wire.gameObject.SetActive(false);
             _anchorTrm.position = transform.position;
             _wire.SetWireEnable(false);
+            _isShoot = false;
             _anchorTrm.gameObject.SetActive(false);
             _playerMovement.SetVelocity(velocity);
             _player.StateMachine.ChangeState("Swing");

@@ -21,12 +21,7 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             base.UpdateState();
-            // if (_mover.IsGroundDetected())
-            // {
-            //     _stateMachine.ChangeState("Idle");
-            //     HandleShoot(false);
-            //     return;
-            // }
+           
         }
 
         public override void Exit()

@@ -21,7 +21,9 @@ namespace Agents.Players.FSM
 
         protected void HandleShoot(bool value)
         {
-            _aimController.HandleShootAnchor(value);
+            // if(value)
+            //     _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
+            // _aimController.HandleShootAnchor(value);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Agents.Players
     public class FeedbackFinishEventData : GameEvent
     {
         public string feedbackName;
-         public FeedbackFinishEventData(string feedbackName)
+        public FeedbackFinishEventData(string feedbackName)
         {
             this.feedbackName = feedbackName;
         }
@@ -40,7 +40,7 @@ namespace Agents.Players
                 _feedbackPlayerDictionary.Add(feedback.gameObject.name, feedback);
             }
 
-            
+
         }
         private void OnDestroy()
         {
@@ -77,18 +77,25 @@ namespace Agents.Players
 
         public void Invoke(string feedbackName)
         {
-            if (_feedbackPlayerDictionary.TryGetValue(feedbackName, out FeedbackPlayer feedbackPlayer))
-            {
-                feedbackPlayer.PlayFeedback();
-            }
+            FeedbackPlayer feedback = GetFeedback(feedbackName);
+            if (feedback == null) return;
+            feedback.PlayFeedback();
         }
 
         public void Finish(string feedbackName)
         {
-            if (_feedbackPlayerDictionary.TryGetValue(feedbackName, out FeedbackPlayer feedbackPlayer))
+            FeedbackPlayer feedback = GetFeedback(feedbackName);
+            if (feedback == null) return;
+            feedback.FinishFeedback();
+        }
+
+        private FeedbackPlayer GetFeedback(string feedbackName)
+        {
+            if (_feedbackPlayerDictionary.TryGetValue($"{feedbackName}Feedback", out FeedbackPlayer feedbackPlayer))
             {
-                feedbackPlayer.FinishFeedback();
+                return feedbackPlayer;
             }
+            return null;
         }
 
 

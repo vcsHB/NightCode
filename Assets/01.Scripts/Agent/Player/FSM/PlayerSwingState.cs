@@ -9,8 +9,10 @@ namespace Agents.Players.FSM
         //private Stat _playerDashPower;
         //private Stat _playerJumpPower;
         private float _currentRollingTime;
+        private AimController _aimController;
         public PlayerSwingState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
         {
+            _aimController = player.GetCompo<AimController>();
         }
 
         public override void Enter()
@@ -30,6 +32,11 @@ namespace Agents.Players.FSM
             if (_currentRollingTime > _duration)
             {
                 _stateMachine.ChangeState("Fall");
+            }
+             if (_mover.IsGroundDetected() && !_aimController.IsShoot)
+            {
+                _stateMachine.ChangeState("Idle");
+                return;
             }
             //base.UpdateState();
         }

@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 namespace FeedbackSystem
 {
@@ -6,6 +7,7 @@ namespace FeedbackSystem
     public class BlinkFeedback : Feedback
     {
         [SerializeField] private SpriteRenderer _targetRenderer;
+        [SerializeField, Range(0f, 1f)] private float _blinkLevel = 0.4f;
         [SerializeField] private float _blinkTime = 0.2f;
         private readonly int _blinkValueHash = Shader.PropertyToID("_BlinkValue");
         private float beforeValue;
@@ -26,7 +28,7 @@ namespace FeedbackSystem
         private IEnumerator BlinkCoroutine()
         {
             beforeValue = _targetMaterial.GetFloat(_blinkValueHash);
-            _targetMaterial.SetFloat(_blinkValueHash, 0.4f);
+            _targetMaterial.SetFloat(_blinkValueHash, _blinkLevel);
             yield return new WaitForSeconds(_blinkTime);
             _targetMaterial.SetFloat(_blinkValueHash, beforeValue);
 
