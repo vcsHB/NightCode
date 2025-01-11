@@ -18,11 +18,11 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     {
         this.node = node;
 
-        if (node is PartNodeSO part)
+        if (node is StatIncNodeSO stat)
             title = $"";
-        else if (node is WeaponNodeSO weapon)
+        else if (node is OpenSkillNodeSO weapon)
             title = $"";
-        else
+        else if(node is StartNodeSO)
             title = "StartNode";
 
         //title = NodeType.name;
