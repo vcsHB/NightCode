@@ -8,11 +8,11 @@ namespace Agents
         public UnityEvent OnHealthChangedEvent;
         public UnityEvent OnDieEvent;
 
-        public int MaxHealth => _maxHealth;
-        private int _maxHealth;
-        private int _currentHealth = 0;
+        public float MaxHealth => _maxHealth;
+        private float _maxHealth;
+        private float _currentHealth = 0;
 
-        public void Initialize(int health)
+        public void Initialize(float health)
         {
             _maxHealth = health;
             SetMaxHealth();
@@ -23,13 +23,13 @@ namespace Agents
             _currentHealth = MaxHealth;
         }
 
-        public void ApplyDamage(int damage)
+        public void ApplyDamage(float damage)
         {
             _currentHealth -= damage;
             CheckDie();
         }
 
-        public void Restore(int amount)
+        public void Restore(float amount)
         {
             _currentHealth += amount;
 
