@@ -1,8 +1,7 @@
-using UnityEditor;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
-    public class PlayerIdleState : PlayerState
+    public class PlayerIdleState : PlayerGroundState
     {
         public PlayerIdleState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
         {

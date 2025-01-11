@@ -12,6 +12,12 @@ namespace CameraControllers
         private bool _isShaking;
 
 
+        public void Initialize(CinemachineCamera camera)
+        {
+            _virtualCamera = camera;
+            _shaker = _virtualCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
+
+        }
         public void HandleSmallShake()
         {
             Shake(10f, 0.07f);
@@ -24,7 +30,7 @@ namespace CameraControllers
 
         public void Shake(float power, float duration)
         {
-            if(_isShaking) return;
+            if (_isShaking) return;
             _isShaking = true;
             StartCoroutine(ShakeCoroutine(power, duration));
         }
@@ -43,12 +49,6 @@ namespace CameraControllers
             _shaker.FrequencyGain = power;
         }
 
-        public void Initialize(CinemachineCamera camera)
-        {
-            _virtualCamera = camera;
-            _shaker = _virtualCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
-
-        }
     }
 
 }
