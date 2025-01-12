@@ -1,9 +1,10 @@
+using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
     public class PlayerIdleState : PlayerGroundState
     {
-        public PlayerIdleState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerIdleState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
 

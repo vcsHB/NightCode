@@ -1,10 +1,11 @@
+using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
     public class PlayerRopeState : PlayerState
     {
         protected AimController _aimController;
-        public PlayerRopeState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerRopeState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
             _aimController = player.GetCompo<AimController>();
         }

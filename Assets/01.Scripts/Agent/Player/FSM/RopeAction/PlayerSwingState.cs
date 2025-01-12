@@ -1,3 +1,4 @@
+using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
@@ -10,7 +11,7 @@ namespace Agents.Players.FSM
         //private Stat _playerJumpPower;
         private float _currentRollingTime;
         private AimController _aimController;
-        public PlayerSwingState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerSwingState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
             _aimController = player.GetCompo<AimController>();
         }

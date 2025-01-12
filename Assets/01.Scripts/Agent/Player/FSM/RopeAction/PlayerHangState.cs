@@ -1,3 +1,4 @@
+using Agents.Animate;
 using UnityEngine;
 
 namespace Agents.Players.FSM
@@ -5,7 +6,7 @@ namespace Agents.Players.FSM
     public class PlayerHangState : PlayerRopeState
     {
         private bool _canUseTurbo = true;
-        public PlayerHangState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerHangState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
 

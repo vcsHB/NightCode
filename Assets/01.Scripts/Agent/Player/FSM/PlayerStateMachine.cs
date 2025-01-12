@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Agents.Animate;
 
 namespace Agents.Players.FSM
 {
@@ -12,25 +13,27 @@ namespace Agents.Players.FSM
     }
     public class PlayerStateMachine
     {
-        private Dictionary<string, PlayerState> _stateDictionary = new();
+        protected Dictionary<string, PlayerState> _stateDictionary = new();
         public PlayerState CurrentState { get; private set; }
-        private Player _player;
+        protected Player _player;
         public FeedbackEventController eventController;
-        
+        public PlayerRenderer playerRenderer;
+
         public PlayerStateMachine(Player player)
         {
             _player = player;
+            playerRenderer = _player.GetCompo<PlayerRenderer>();
         }
 
 
         public virtual void Initialize(string firstState)
         {
-            AddState("Idle");
-            AddState("Move");
-            AddState("Jump");
-            AddState("Fall");
-            AddState("Hang");
-            AddState("Swing");
+            AddState("Idle", "PlayerIdle", playerRenderer.IdleParam);
+            AddState("Move", "PlayerMove", playerRenderer.MoveParam);
+            AddState("Jump", "PlayerJump", playerRenderer.JumpParam);
+            AddState("Fall", "PlayerFall", playerRenderer.FallParam);
+            AddState("Hang", "PlayerHang", playerRenderer.HangParam);
+            AddState("Swing", "PlayerSwing", playerRenderer.SwingParam);
 
             if (_stateDictionary.TryGetValue(firstState, out PlayerState state))
             {
@@ -39,11 +42,11 @@ namespace Agents.Players.FSM
             }
         }
 
-        public void AddState(string name)
+        public void AddState(string id, string typeName, AnimParamSO animParam)
         {
-            Type t = Type.GetType($"Agents.Players.FSM.Player{name}State");
-            PlayerState state = Activator.CreateInstance(t, _player, this, 0) as PlayerState;
-            _stateDictionary.Add(name, state);
+            Type t = Type.GetType($"Agents.Players.FSM.{typeName}State");
+            PlayerState state = Activator.CreateInstance(t, _player, this, animParam) as PlayerState;
+            _stateDictionary.Add(id, state);
         }
 
         public void UpdateState()
