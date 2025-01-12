@@ -15,6 +15,12 @@ namespace Agents.Players
         protected override void Awake()
         {
             base.Awake();
+            InitState();
+        }
+
+        protected virtual void InitState()
+        {
+            
             _stateMachine = new PlayerStateMachine(this);
             _stateMachine.Initialize("Idle");
         }
