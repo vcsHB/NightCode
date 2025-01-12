@@ -11,7 +11,7 @@ namespace Agents.Players.FSM
 
 
         protected AnimParamSO _stateAnimParam;
-        protected AgentRenderer _renderer;
+        protected PlayerRenderer _renderer;
         protected PlayerAnimationTrigger _animationTrigger;
 
         protected bool _isTriggered;
@@ -21,7 +21,7 @@ namespace Agents.Players.FSM
             _player = player;
             _stateMachine = stateMachine;
             _stateAnimParam = animParam;
-            _renderer = player.GetCompo<AgentRenderer>();
+            _renderer = player.GetCompo<PlayerRenderer>();
             _mover = player.GetCompo<PlayerMovement>();
             _animationTrigger = player.GetCompo<PlayerAnimationTrigger>();
         }

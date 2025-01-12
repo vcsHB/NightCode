@@ -3,9 +3,9 @@ using UnityEngine;
 namespace Agents.Players.FSM
 {
 
-    public class KatanaPlayerAttack1State : KatanaPlayerState
+    public class KatanaPlayerAttackState : PlayerAttackState
     {
-        public KatanaPlayerAttack1State(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
+        public KatanaPlayerAttackState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
     }

@@ -15,18 +15,14 @@ namespace Agents.Players
         public void Initialize(Agent agent)
         {
         }
-        public void AfterInit()
-        {
-        }
+        public void AfterInit() { }
+        public void Dispose() { }
 
         public void AnimationEndTrigger()
         {
             OnAnimationEnd?.Invoke();
         }
 
-        public void Dispose()
-        {
-        }
 
         public void HandleAttack1()
         {

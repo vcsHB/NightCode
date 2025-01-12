@@ -5,6 +5,7 @@ namespace Agents.Animate
     public class AnimateRenderer : MonoBehaviour
     {
         protected Animator _animator;
+        public Animator Animator => _animator;
 
         protected virtual void Awake()
         {
