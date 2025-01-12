@@ -50,10 +50,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         _edge.transform.SetParent(_techTree.edgeParent);
         _edgeFill.transform.SetParent(_techTree.edgeFillParent);
 
-        _edge.material = Instantiate(_lineMaterial);
-        _edgeFill.material = Instantiate(_lineMaterial);
-        _edge.SetFillAmount(1);
-        _edgeFill.SetFillAmount(0);
+        _edge.SetMaterial(_lineMaterial);
+        _edgeFill.SetMaterial(_lineMaterial);
     }
 
     #region EnableNode
@@ -216,18 +214,18 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         _offsets = new Vector2[4]
         {
             //down
-            new Vector2(size.x * 0.5f, -10),
+            new Vector2(size.x * 0.5f, 0),
             //up
-            new Vector2(0, size.y * 0.5f + 10),
+            new Vector2(0, size.y * 0.5f),
             //left
-            new Vector2(-10, size.y * 0.5f),
+            new Vector2(0, size.y * 0.5f),
             //right
-            new Vector2(size.x * 0.5f + 10, 0)
+            new Vector2(size.x * 0.5f, 0)
         };
 
 
         Vector3 startPosition = _offsets[0];
-        Vector3 relativePosition = transform.InverseTransformPoint(prevNode.transform.position + (Vector3)_offsets[1]);
+        Vector3 relativePosition = transform.InverseTransformPoint(prevNode.transform.position) + (Vector3)_offsets[1];
         Vector3 delta = relativePosition - startPosition;
 
         if (prevNode.RectTrm.anchoredPosition.y < RectTrm.anchoredPosition.y - size.y / 2)
@@ -277,6 +275,9 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
                     new Vector2(startPosition.x, middlePosition.y),
                     startPosition
                 };
+
+        _edge.SetFillAmount(1);
+        _edgeFill.SetFillAmount(0);
     }
 
     public void SetNode(NodeSO node)
