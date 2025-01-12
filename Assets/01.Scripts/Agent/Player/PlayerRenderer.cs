@@ -12,5 +12,9 @@ namespace Agents.Players
         [field:SerializeField] public AnimParamSO JumpParam;
         [field:SerializeField] public AnimParamSO SwingParam;
         [field:SerializeField] public AnimParamSO HangParam;
+
+
+        [field: SerializeField] public AnimParamSO AttackParam; // comboCounter
+        [field: SerializeField] public AnimParamSO SkillParam;
     }
 }
