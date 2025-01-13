@@ -1,3 +1,4 @@
+using System;
 using Agents.Players.FSM;
 using Core.EventSystem;
 using InputManage;
@@ -7,7 +8,7 @@ namespace Agents.Players
     public class Player : Agent
     {
         [field: SerializeField] public PlayerInput PlayerInput { get; private set; }
-        private PlayerStateMachine _stateMachine;
+        protected PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
         [field: SerializeField] public GameEventChannelSO FeedbackChannel { get; private set; }
 
@@ -31,5 +32,6 @@ namespace Agents.Players
             _stateMachine.UpdateState();
         }
 
+        
     }
 }

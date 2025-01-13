@@ -19,7 +19,10 @@ namespace Agents.Players.FSM
 
         public PlayerAttackState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
-            _animator = _renderer.Animator;
+            Debug.Log(player);
+            Debug.Log(player.GetCompo<PlayerRenderer>());
+            Debug.Log(player.GetCompo<PlayerRenderer>().GetComponent<Animator>());
+            _animator = player.GetCompo<PlayerRenderer>().GetComponent<Animator>();
         }
 
         public override void Enter()
