@@ -23,13 +23,14 @@ namespace Agents.Players
         private float _movementX;
         private float _moveSpeedMultiplier = 1f;
         private float _originalgravity;
-        
+        private PlayerRenderer _playerRenderer;
         [field: SerializeField] public bool CanManualMove { get; set; } = true;
 
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
             _rigidCompo = agent.GetComponent<Rigidbody2D>();
+            _playerRenderer = agent.GetCompo<PlayerRenderer>();
 
             _originalgravity = _rigidCompo.gravityScale;
         }
@@ -52,7 +53,7 @@ namespace Agents.Players
         public void SetMovement(float xMovement)
         {
             _movementX = xMovement;
-            //_renderer.FlipController(xMovement);
+            _playerRenderer.FlipController(xMovement);
         }
 
         public void StopImmediately(bool isYAxisToo = false)

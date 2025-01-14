@@ -12,12 +12,12 @@ namespace Agents.Players
         [SerializeField] private LayerMask _wallLayer;
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private Wire _wire;
-        [SerializeField] private int _turboAmount;
 
 
         [Header("Setting Values")]
         [SerializeField] private float _castRadius = 0.4f;
         [SerializeField] private float _shootRadius = 12f;
+        public bool canShoot = true;
         private Player _player;
         private bool _isShoot = false;
         public bool IsShoot => _isShoot;
@@ -31,7 +31,7 @@ namespace Agents.Players
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
-            _player.PlayerInput.ShootEvent += HandleShootAnchor;
+            _player.PlayerInput.LeftClickEvent += HandleShootAnchor;
             _playerMovement = _player.GetCompo<PlayerMovement>();
             _lineRenderer = GetComponent<LineRenderer>();
         }
@@ -42,7 +42,7 @@ namespace Agents.Players
 
         public void Dispose()
         {
-            _player.PlayerInput.ShootEvent -= HandleShootAnchor;
+            _player.PlayerInput.LeftClickEvent -= HandleShootAnchor;
         }
 
 
@@ -72,7 +72,7 @@ namespace Agents.Players
 
         public void HandleShootAnchor(bool value)
         {
-            if (value)
+            if (value && canShoot)
                 Shoot();
             else
                 RemoveWire();
@@ -103,7 +103,6 @@ namespace Agents.Players
             _anchorTrm.gameObject.SetActive(false);
             _playerMovement.SetVelocity(velocity);
             _player.StateMachine.ChangeState("Swing");
-            _turboAmount = 1;
 
         }
 

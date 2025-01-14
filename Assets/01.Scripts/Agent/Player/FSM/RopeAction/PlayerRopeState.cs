@@ -9,15 +9,17 @@ namespace Agents.Players.FSM
         {
             _aimController = player.GetCompo<AimController>();
         }
+
         public override void Enter()
         {
             base.Enter();
-            _player.PlayerInput.ShootEvent += HandleShoot;
+            _player.PlayerInput.LeftClickEvent += HandleShoot;
         }
+
         public override void Exit()
         { 
             base.Exit();
-            _player.PlayerInput.ShootEvent -= HandleShoot;
+            _player.PlayerInput.LeftClickEvent -= HandleShoot;
         }
 
         protected void HandleShoot(bool value)
@@ -26,5 +28,6 @@ namespace Agents.Players.FSM
             //     _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
             // _aimController.HandleShootAnchor(value);
         }
+        
     }
 }
