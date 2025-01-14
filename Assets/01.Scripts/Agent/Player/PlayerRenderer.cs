@@ -1,4 +1,3 @@
-using System.Data.Common;
 using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players
@@ -16,5 +15,11 @@ namespace Agents.Players
 
         [field: SerializeField] public AnimParamSO AttackParam; 
         [field: SerializeField] public AnimParamSO SkillParam;
+
+
+        protected override void Awake()
+        {
+            base.Awake();
+        }
     }
 }

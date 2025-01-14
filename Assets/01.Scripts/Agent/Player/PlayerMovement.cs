@@ -26,8 +26,6 @@ namespace Agents.Players
         
         [field: SerializeField] public bool CanManualMove { get; set; } = true;
 
-
-
         public void Initialize(Agent agent)
         {
             _player = agent as Player;

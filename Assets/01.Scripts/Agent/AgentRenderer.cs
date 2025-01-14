@@ -13,6 +13,7 @@ namespace Agents
         public void Initialize(Agent agent)
         {
             _agent = agent;
+            _animator = GetComponent<Animator>();
         }
 
         public void AfterInit() { }

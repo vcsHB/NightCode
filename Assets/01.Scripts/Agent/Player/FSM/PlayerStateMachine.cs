@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Agents.Animate;
+using UnityEngine;
 
 namespace Agents.Players.FSM
 {
@@ -28,6 +29,7 @@ namespace Agents.Players.FSM
 
         public virtual void Initialize(string firstState)
         {
+            if(playerRenderer == null) Debug.Log("playerREnderer가 널임");
             AddState("Idle", "PlayerIdle", playerRenderer.IdleParam);
             AddState("Move", "PlayerMove", playerRenderer.MoveParam);
             AddState("Jump", "PlayerJump", playerRenderer.JumpParam);
