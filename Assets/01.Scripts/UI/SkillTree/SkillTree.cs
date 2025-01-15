@@ -3,8 +3,11 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.Events;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class SkillTree : MonoBehaviour
 {
@@ -55,93 +58,66 @@ public class SkillTree : MonoBehaviour
                 node.Init(node.NodeType.id == 0);
         }
 
+        for (int i = 0; i < treeSO.nodes.Count; i++)
+        {
+            NodeSO nodeSO = treeSO.nodes[i];
+
+            if (nodeDic.TryGetValue(nodeSO, out Node node))
+                node.SetEdge();
+        }
+
         Load();
     }
+
+#if UNITY_EDITOR
 
     [ContextMenu("CreateNodes")]
     private void CreateNodes()
     {
-        Stack<(Vector2 position, NodeSO nodeSO)> nodeStack = new Stack<(Vector2 position, NodeSO nodeSO)>();
-        nodeStack.Push((_nodeOriginPos, treeSO.nodes[0]));
+        var children = transform.GetComponentsInChildren<Node>().ToList();
 
-        while (nodeStack.TryPop(out var node))
+        foreach(var child in children)
         {
-            Node nodeInstance = Instantiate(nodePf, transform);
-            nodeInstance.RectTrm.anchoredPosition = node.position;
+            DestroyImmediate(child.gameObject);
+        }
+
+        Queue<(Vector2 position, NodeSO nodeSO)> nodeQueue = new Queue<(Vector2 position, NodeSO nodeSO)>();
+        nodeQueue.Enqueue((_nodeOriginPos, treeSO.nodes[0]));
+
+        while (nodeQueue.TryDequeue(out var node))
+        {
+            Vector2 nodeSize = nodePf.RectTrm.sizeDelta;
             
-            int nodeCnt = node.nodeSO.nextNodes.Count;
+            Node nodeInstance = PrefabUtility.InstantiatePrefab(nodePf) as Node;
+            nodeInstance.transform.SetParent(transform);
+
+            nodeInstance.RectTrm.anchoredPosition = node.position;
             nodeInstance.SetNode(node.nodeSO);
 
+            int nodeCnt = node.nodeSO.nextNodes.Count;
 
             for (int i = 0; i < nodeCnt; i++)
             {
-                Vector2 nodeSize = nodePf.RectTrm.sizeDelta;
                 Vector2 nextPos = node.position;
-
-                Debug.Log(nodeSize);
 
                 if ((int)_nodeDirection < 2)
                 {
-                    nextPos.y += _nodeDirection == DirectionEnum.Up ? 2 : -2 * nodeSize.y;
-                    nextPos.x += (nodeCnt - 1) * nodeSize.x + (i * nodeSize.x * 2);
+                    nextPos.y += (_nodeDirection == DirectionEnum.Up ? 2 : -2) * nodeSize.y;
+                    nextPos.x = (node.position.x - (nodeCnt - 1) * nodeSize.x) + (2 * i * nodeSize.x);
                 }
                 else
                 {
-                    nextPos.x += _nodeDirection == DirectionEnum.Up ? 1 : -1 * nodeSize.y * 2;
-                    nextPos.y += (nodeCnt - 1) * nodeSize.y + (i * nodeSize.y * 2);
+                    nextPos.x += (_nodeDirection == DirectionEnum.Up ? 2 : -2) * nodeSize.y;
+                    nextPos.y = (node.position.y - (nodeCnt - 1) * nodeSize.y) + (2 * i * nodeSize.y);
                 }
 
-
                 var posAndNode = (nextPos, node.nodeSO.nextNodes[i]);
-                nodeStack.Push(posAndNode);
+                nodeQueue.Enqueue(posAndNode);
             }
         }
-
-        //treeSO.nodes.ForEach(node =>
-        //{
-        //    Node nodeInstance = Instantiate(nodePf, transform);
-        //    nodeInstance.SetNode(node);
-
-        //    if (node is StatIncNodeSO statInc)
-        //        nodeInstance.name = statInc.name;
-        //    else if (node is OpenSkillNodeSO weapon)
-        //        nodeInstance.name = weapon.skillToOpen;
-        //});
     }
 
-    [ContextMenu("RefreshNodes")]
-    private void RefreshNode()
-    {
-        //for (int i = 0; i < transform.childCount; i++)
-        //{
-        //    if (transform.GetChild(i).TryGetComponent(out Node node))
-        //    {
-        //        Node nodeInstance = Instantiate(nodePf, transform);
-        //        nodeInstance.SetEdgePosition(node.GetEdgePosition());
-        //        nodeInstance.SetPosition(node.GetPosition());
-        //        nodeInstance.transform.SetSiblingIndex(i);
-
-        //        nodeInstance.SetNode(node.NodeType);
-
-        //        if (node.NodeType is PartNodeSO part)
-        //        {
-        //            nodeInstance.name = part.openPart.ToString();
-        //        }
-        //        else if (node.NodeType is WeaponNodeSO weapon)
-        //        {
-        //            nodeInstance.name = weapon.weapon.ToString();
-        //        }
-        //        else if (node.NodeType is StartNodeSO)
-        //        {
-        //            nodeInstance.name = "StartNode";
-        //            nodeInstance.DestroyEdge();
-        //        }
-
-        //        DestroyImmediate(node.gameObject);
-        //        //Destroy(node.gameObject);
-        //    }
-        //}
-    }
+#endif
 
     public bool TryGetNode(NodeSO nodeSO, out Node node)
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -28,8 +29,9 @@ namespace GGM.UI
 
         protected override void OnEnable()
         {
-            if (material != null)
-                material = Instantiate(material);
+            //if (material != null)
+            //    material = Instantiate(material);
+
         }
 
         protected override void OnPopulateMesh(VertexHelper vh)
@@ -132,11 +134,19 @@ namespace GGM.UI
             // OnPopulateMesh는 UI 요소에 변경될 때만(크기, 피봇, 앵커 등) 실행되므로,
             // 매 프레임 실행하기 위해 SetVerticesDirty 함수를 실행한다.
             SetVerticesDirty();
+
+            if (Keyboard.current.qKey.wasPressedThisFrame)
+            {
+                SetFillAmount(a);
+            }
         }
 
-        protected override void OnValidate() // 인스펙터 창에서 프로퍼티를 변경할 때 실행되는 함수
+        public void SetMaterial(Material lineMaterial)
         {
-            base.OnValidate();
+            material = Instantiate(lineMaterial);
+            material.SetColor("_TintColor", lineColor);
         }
+
+        public float a = 0.5f;
     }
 }
