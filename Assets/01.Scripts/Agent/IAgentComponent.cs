@@ -1,6 +1,6 @@
 namespace Agents
 {
-    interface IAgentComponent
+    public interface IAgentComponent
     {
         public void Initialize(Agent agent);
         public void AfterInit();

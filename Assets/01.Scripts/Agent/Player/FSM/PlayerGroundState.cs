@@ -1,4 +1,5 @@
 using System;
+using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
@@ -6,7 +7,7 @@ namespace Agents.Players.FSM
     public class PlayerGroundState : PlayerState
     {
 
-        public PlayerGroundState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerGroundState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
 
         }
@@ -14,7 +15,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-
+            _renderer.SetLockRotation(true);
             _player.PlayerInput.JumpEvent += HandleJump;
         }
 

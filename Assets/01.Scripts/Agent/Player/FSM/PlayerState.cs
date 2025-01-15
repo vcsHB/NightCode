@@ -1,3 +1,4 @@
+using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
@@ -9,26 +10,42 @@ namespace Agents.Players.FSM
         protected PlayerMovement _mover;
 
 
-        public PlayerState(Player player, PlayerStateMachine stateMachine, int animationHash)
+        protected AnimParamSO _stateAnimParam;
+        protected PlayerRenderer _renderer;
+        protected PlayerAnimationTrigger _animationTrigger;
+
+        protected bool _isTriggered;
+
+        public PlayerState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam)
         {
             _player = player;
-            _stateMachine= stateMachine;
+            _stateMachine = stateMachine;
+            _stateAnimParam = animParam;
+            _renderer = player.GetCompo<PlayerRenderer>();
             _mover = player.GetCompo<PlayerMovement>();
+            _animationTrigger = player.GetCompo<PlayerAnimationTrigger>();
         }
 
 
         public virtual void Enter()
         {
-
+            _renderer.SetParam(_stateAnimParam, true);
+            _isTriggered = false;
+            _animationTrigger.OnAnimationEnd += AnimationEndTrigger;
         }
-        public virtual void UpdateState()
-        {
-            
-        }
+        public virtual void UpdateState() { }
 
         public virtual void Exit()
         {
+            _renderer.SetParam(_stateAnimParam, false);
+            _animationTrigger.OnAnimationEnd -= AnimationEndTrigger;
+        }
 
+
+
+        public virtual void AnimationEndTrigger()
+        {
+            _isTriggered = true;
         }
     }
 }

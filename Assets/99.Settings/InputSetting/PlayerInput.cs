@@ -7,13 +7,13 @@ namespace InputManage
     [CreateAssetMenu(menuName = "SO/Input/PlayerInput")]
     public class PlayerInput : ScriptableObject, Controls.IPlayerActions
     {
-        public event Action<bool> ShootEvent;
+        public event Action<bool> LeftClickEvent;
         public event Action JumpEvent;
         public event Action TurboEvent;
-
+        public event Action OnCharacterChangeEvent;
         private Controls _controls;
-
         public Vector2 InputDirection { get; private set; }
+
         public Vector2 MousePosition { get; private set; }
 
         private void OnEnable()
@@ -36,17 +36,18 @@ namespace InputManage
             InputDirection = context.ReadValue<Vector2>();
         }
 
-        public void OnShoot(InputAction.CallbackContext context)
+        public void OnLeftMouse(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
-                ShootEvent?.Invoke(true);
+                LeftClickEvent?.Invoke(true);
             }
             else if (context.canceled)
             {
-                ShootEvent?.Invoke(false);
+                LeftClickEvent?.Invoke(false);
             }
         }
+
 
         public void OnTurbo(InputAction.CallbackContext context)
         {
@@ -68,6 +69,14 @@ namespace InputManage
         public void OnMouse(InputAction.CallbackContext context)
         {
             MousePosition = context.ReadValue<Vector2>();
+        }
+
+        public void OnChangeTag(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+            {
+                OnCharacterChangeEvent?.Invoke();
+            }
         }
     }
 

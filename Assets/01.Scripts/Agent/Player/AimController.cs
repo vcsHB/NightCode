@@ -1,3 +1,4 @@
+using System.Collections;
 using ObjectManage.Rope;
 using UnityEngine;
 
@@ -12,12 +13,17 @@ namespace Agents.Players
         [SerializeField] private LayerMask _wallLayer;
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private Wire _wire;
-        [SerializeField] private int _turboAmount;
 
 
         [Header("Setting Values")]
         [SerializeField] private float _castRadius = 0.4f;
         [SerializeField] private float _shootRadius = 12f;
+        [SerializeField] private float _shootCooltime = 0.2f;
+        [SerializeField] private float _wireClampedDistance = 12f;
+        [SerializeField] private float _clampDuration = 0.2f;
+        private float _currentShootTime = 0;
+        private Coroutine _clampCoroutine;
+        public bool canShoot = true;
         private Player _player;
         private bool _isShoot = false;
         public bool IsShoot => _isShoot;
@@ -26,12 +32,13 @@ namespace Agents.Players
 
         private Vector2 _targetPoint;
         private bool _isTargeted;
+        public Vector2 HangingDirection { get; private set; }
 
 
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
-            _player.PlayerInput.ShootEvent += HandleShootAnchor;
+            _player.PlayerInput.LeftClickEvent += HandleShootAnchor;
             _playerMovement = _player.GetCompo<PlayerMovement>();
             _lineRenderer = GetComponent<LineRenderer>();
         }
@@ -42,12 +49,15 @@ namespace Agents.Players
 
         public void Dispose()
         {
-            _player.PlayerInput.ShootEvent -= HandleShootAnchor;
+            _player.PlayerInput.LeftClickEvent -= HandleShootAnchor;
         }
 
 
         private void Update()
         {
+            _currentShootTime += Time.time;
+            if (_isShoot)
+                HangingDirection = _anchorTrm.position - transform.position;
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(_player.PlayerInput.MousePosition);
             _aimTrm.position = mousePos;
             Vector2 dir = (mousePos - (Vector2)transform.position);
@@ -63,44 +73,75 @@ namespace Agents.Players
             _isTargeted = true;
             _virtualAimTrm.gameObject.SetActive(true);
             _targetPoint = boxHit.point;
+
+            RefreshLine();
+
+        }
+
+        private void RefreshLine()
+        {
             _lineRenderer.enabled = true;
             _lineRenderer.SetPosition(0, transform.position);
             _lineRenderer.SetPosition(1, _targetPoint);
             _virtualAimTrm.position = _targetPoint;
-
         }
 
         public void HandleShootAnchor(bool value)
         {
-            if (value)
+            if (value && canShoot)
                 Shoot();
             else
                 RemoveWire();
         }
 
-
-
         private void Shoot()
         {
+            if (_currentShootTime < _shootCooltime) return;
+
             if (!_isTargeted) return;
+            _currentShootTime = 0f;
             //_playerController.turboCount = 1;
             _player.StateMachine.ChangeState("Hang");
             _wire.gameObject.SetActive(true);
-            float distance = (_targetPoint - (Vector2)transform.position).magnitude;
-            _wire.SetWireEnable(true, _targetPoint, distance);
+
+            Vector2 playerPos = _player.transform.position;
+            float distance = (_targetPoint - playerPos).magnitude;
+            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
+            if (distance > _wireClampedDistance)
+            {
+                _clampCoroutine = StartCoroutine(DistanceClampCoroutine(Vector2.Lerp(playerPos, _targetPoint, (distance - _wireClampedDistance) / distance)));
+            }
+            _isShoot = true;
             _anchorTrm.gameObject.SetActive(true);
+        }
+
+        private IEnumerator DistanceClampCoroutine(Vector2 clampPosition)
+        {
+            Vector2 velocity = _playerMovement.Velocity;
+            Vector2 before = _player.transform.position;
+            float currentTime = 0f;
+            while (currentTime < _clampDuration)
+            {
+                currentTime += Time.deltaTime;
+                _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / _clampDuration);
+                yield return null;
+            }
+            _wire.SetWireEnable(true, _targetPoint, _wireClampedDistance);
+            _playerMovement.AddForceToEntity(velocity);
         }
 
         private void RemoveWire()
         {
+            if (_clampCoroutine != null)
+                StopCoroutine(_clampCoroutine);
             Vector2 velocity = _playerMovement.Velocity;
             _wire.gameObject.SetActive(false);
             _anchorTrm.position = transform.position;
             _wire.SetWireEnable(false);
+            _isShoot = false;
             _anchorTrm.gameObject.SetActive(false);
             _playerMovement.SetVelocity(velocity);
             _player.StateMachine.ChangeState("Swing");
-            _turboAmount = 1;
 
         }
 
