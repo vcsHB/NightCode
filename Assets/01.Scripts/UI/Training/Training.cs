@@ -7,6 +7,8 @@ public class Training : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public TrainingSO training;
     public bool completeTraining = false;
 
+    [SerializeField] private UIPopupText _popupText;
+
     public RectTransform RectTrm => transform as RectTransform;
 
     public void DoTraining(CharacterType character)
