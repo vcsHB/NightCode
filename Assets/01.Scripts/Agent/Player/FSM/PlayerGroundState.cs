@@ -15,7 +15,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-
+            _renderer.SetLockRotation(true);
             _player.PlayerInput.JumpEvent += HandleJump;
         }
 

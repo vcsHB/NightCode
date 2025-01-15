@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 20826919}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.297, y: 0.277, z: 0}
+  m_LocalPosition: {x: 0, y: 0.277, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5749,7 +5749,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3, y: 3}
+  m_Size: {x: 2, y: 3}
   m_EdgeRadius: 0
 --- !u!4 &1030355378
 Transform:
@@ -5843,7 +5843,7 @@ MonoBehaviour:
   m_Intensity: 0.52
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000c98649292fced969e35a845a858f23ef87869486996853a6
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -5966,9 +5966,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -282882171
+  m_SortingLayer: 4
+  m_SortingOrder: 10
   m_Sprite: {fileID: 3952629957254399176, guid: f3411d0b33ca4004bbd5855e703f3c1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6036,14 +6036,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <FacingDirection>k__BackingField: 1
-  IdleParam: {fileID: 11400000, guid: e080eae03b2874042a15865839fd781e, type: 2}
-  MoveParam: {fileID: 11400000, guid: a06cb8c48113e3246a2f1ca2ef7e0a3f, type: 2}
-  FallParam: {fileID: 11400000, guid: 9b488b365757a7642a08377b524bd181, type: 2}
-  JumpParam: {fileID: 11400000, guid: 19c15aca9a75e58429f49ca41ed0c813, type: 2}
-  SwingParam: {fileID: 11400000, guid: ace38bb62d5cf384cb516a47f08259f1, type: 2}
-  HangParam: {fileID: 11400000, guid: 25e38b4d30fee0a4fb1c39406313acd6, type: 2}
-  AttackParam: {fileID: 11400000, guid: 9bd0e45692af5014fa11ef5e59b2ef56, type: 2}
-  SkillParam: {fileID: 11400000, guid: ace38bb62d5cf384cb516a47f08259f1, type: 2}
+  <IdleParam>k__BackingField: {fileID: 11400000, guid: e080eae03b2874042a15865839fd781e, type: 2}
+  <MoveParam>k__BackingField: {fileID: 11400000, guid: a06cb8c48113e3246a2f1ca2ef7e0a3f, type: 2}
+  <FallParam>k__BackingField: {fileID: 11400000, guid: 9b488b365757a7642a08377b524bd181, type: 2}
+  <JumpParam>k__BackingField: {fileID: 11400000, guid: 19c15aca9a75e58429f49ca41ed0c813, type: 2}
+  <SwingParam>k__BackingField: {fileID: 11400000, guid: ace38bb62d5cf384cb516a47f08259f1, type: 2}
+  <HangParam>k__BackingField: {fileID: 11400000, guid: 25e38b4d30fee0a4fb1c39406313acd6, type: 2}
+  <AttackParam>k__BackingField: {fileID: 11400000, guid: 9bd0e45692af5014fa11ef5e59b2ef56, type: 2}
+  <SkillParam>k__BackingField: {fileID: 11400000, guid: 9b488b365757a7642a08377b524bd181, type: 2}
 --- !u!1 &1284347718
 GameObject:
   m_ObjectHideFlags: 0
@@ -6131,9 +6131,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _wire: {fileID: 1593103732}
-  _turboAmount: 1
   _castRadius: 0.4
-  _shootRadius: 20
+  _shootRadius: 40
+  _shootCooltime: 0.2
+  _wireClampedDistance: 20
+  _clampDuration: 0.06
+  canShoot: 1
 --- !u!120 &1458350272
 LineRenderer:
   serializedVersion: 2
@@ -6176,8 +6179,8 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -282882171
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
