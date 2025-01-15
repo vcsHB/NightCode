@@ -10,6 +10,7 @@ namespace InputManage
         public event Action<bool> LeftClickEvent;
         public event Action JumpEvent;
         public event Action TurboEvent;
+        public event Action OnCharacterChangeEvent;
         private Controls _controls;
         public Vector2 InputDirection { get; private set; }
 
@@ -70,6 +71,13 @@ namespace InputManage
             MousePosition = context.ReadValue<Vector2>();
         }
 
+        public void OnChangeTag(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+            {
+                OnCharacterChangeEvent?.Invoke();
+            }
+        }
     }
 
 }

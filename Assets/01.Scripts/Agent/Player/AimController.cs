@@ -123,7 +123,6 @@ namespace Agents.Players
             while (currentTime < _clampDuration)
             {
                 currentTime += Time.deltaTime;
-                print(currentTime);
                 _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / _clampDuration);
                 yield return null;
             }

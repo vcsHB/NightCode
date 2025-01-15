@@ -71,6 +71,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ChangeTag"",
+                    ""type"": ""Button"",
+                    ""id"": ""5a091f3c-eb85-48a8-a3ac-56a970e8ac59"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -150,6 +159,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Mouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c729bac9-505b-4e17-89ff-0f555621af83"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeTag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -208,6 +228,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Turbo = m_Player.FindAction("Turbo", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Mouse = m_Player.FindAction("Mouse", throwIfNotFound: true);
+        m_Player_ChangeTag = m_Player.FindAction("ChangeTag", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_OnEsc = m_UI.FindAction("OnEsc", throwIfNotFound: true);
@@ -283,6 +304,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Turbo;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Mouse;
+    private readonly InputAction m_Player_ChangeTag;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -292,6 +314,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Turbo => m_Wrapper.m_Player_Turbo;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Mouse => m_Wrapper.m_Player_Mouse;
+        public InputAction @ChangeTag => m_Wrapper.m_Player_ChangeTag;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -316,6 +339,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Mouse.started += instance.OnMouse;
             @Mouse.performed += instance.OnMouse;
             @Mouse.canceled += instance.OnMouse;
+            @ChangeTag.started += instance.OnChangeTag;
+            @ChangeTag.performed += instance.OnChangeTag;
+            @ChangeTag.canceled += instance.OnChangeTag;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -335,6 +361,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Mouse.started -= instance.OnMouse;
             @Mouse.performed -= instance.OnMouse;
             @Mouse.canceled -= instance.OnMouse;
+            @ChangeTag.started -= instance.OnChangeTag;
+            @ChangeTag.performed -= instance.OnChangeTag;
+            @ChangeTag.canceled -= instance.OnChangeTag;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -414,6 +443,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnTurbo(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnMouse(InputAction.CallbackContext context);
+        void OnChangeTag(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
