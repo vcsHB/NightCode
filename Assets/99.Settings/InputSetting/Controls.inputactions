@@ -15,9 +15,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "LeftMouse",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "91e9fcdf-108b-492d-978a-3a1a09f9230f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "cb9e4431-755e-4e27-b07e-05c781ed0c25",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -101,7 +110,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyMouse",
-                    "action": "LeftMouse",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -146,6 +155,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ChangeTag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f1b35ca1-a7d0-429f-84ff-eb34c52ec94f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

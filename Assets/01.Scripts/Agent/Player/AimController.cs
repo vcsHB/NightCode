@@ -38,7 +38,7 @@ namespace Agents.Players
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
-            _player.PlayerInput.LeftClickEvent += HandleShootAnchor;
+            _player.PlayerInput.OnShootEvent += HandleShootAnchor;
             _playerMovement = _player.GetCompo<PlayerMovement>();
             _lineRenderer = GetComponent<LineRenderer>();
         }
@@ -49,7 +49,7 @@ namespace Agents.Players
 
         public void Dispose()
         {
-            _player.PlayerInput.LeftClickEvent -= HandleShootAnchor;
+            _player.PlayerInput.OnShootEvent -= HandleShootAnchor;
         }
 
 

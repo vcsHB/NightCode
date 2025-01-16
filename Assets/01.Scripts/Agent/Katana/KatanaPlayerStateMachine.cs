@@ -12,7 +12,7 @@ namespace Agents.Players.FSM
 
         public override void Initialize(string firstState)
         {
-            AddState("Attack1", "KatanaPlayerAttack", _katanaRenderer.AttackParam);
+            AddState("Attack", "KatanaPlayerAttack", _katanaRenderer.AttackParam);
 
 
             base.Initialize(firstState);

@@ -37,7 +37,6 @@ namespace Agents.Players.FSM
 
         public override void Exit()
         {
-
             ++_comboCounter;
             _lastAttackTime = Time.time;
             _animator.speed = 1;
@@ -48,6 +47,16 @@ namespace Agents.Players.FSM
             }
             base.Exit();
 
+        }
+
+
+        public override void UpdateState()
+        {
+            base.UpdateState();
+            if (_isTriggered)
+            {
+                _stateMachine.ChangeState("Idle");
+            }
         }
     }
 }
