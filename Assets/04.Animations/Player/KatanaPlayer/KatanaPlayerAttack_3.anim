@@ -22,11 +22,11 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: 2786355682362270393, guid: 015c16aee85318648812eb9e32f90063, type: 3}
-    - time: 0.033333335
+    - time: 0.06666667
       value: {fileID: 5177007760491183238, guid: 015c16aee85318648812eb9e32f90063, type: 3}
-    - time: 0.083333336
+    - time: 0.15
       value: {fileID: 2206735455558622174, guid: 015c16aee85318648812eb9e32f90063, type: 3}
-    - time: 0.13333334
+    - time: 0.25
       value: {fileID: 2206735455558622174, guid: 015c16aee85318648812eb9e32f90063, type: 3}
     attribute: m_Sprite
     path: 
@@ -59,7 +59,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.15
+    m_StopTime: 0.26666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -81,6 +81,13 @@ AnimationClip:
   m_Events:
   - time: 0.016666668
     functionName: HandleAttack3
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.2
+    functionName: AnimationEndTrigger
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

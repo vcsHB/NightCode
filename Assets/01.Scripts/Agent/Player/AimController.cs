@@ -114,7 +114,6 @@ namespace Agents.Players
             _isShoot = true;
             _anchorTrm.gameObject.SetActive(true);
         }
-
         private IEnumerator DistanceClampCoroutine(Vector2 clampPosition)
         {
             Vector2 velocity = _playerMovement.Velocity;

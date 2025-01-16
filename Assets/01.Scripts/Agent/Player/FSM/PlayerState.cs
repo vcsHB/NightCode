@@ -45,6 +45,7 @@ namespace Agents.Players.FSM
 
         public virtual void AnimationEndTrigger()
         {
+            Debug.Log("Animation End Trigger");
             _isTriggered = true;
         }
     }

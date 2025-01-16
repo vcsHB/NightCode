@@ -5,7 +5,7 @@ namespace Agents.Players.FSM
 
 
 
-    public class PlayerMoveState : PlayerGroundState
+    public class PlayerMoveState : PlayerAttackableState
     {
         public PlayerMoveState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
