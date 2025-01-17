@@ -14,6 +14,7 @@ namespace Agents.Players.FSM
             base.Enter();
             Vector2 jumpPower = new Vector2(0, 13f);
             //_mover.StopImmediately(true);
+            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Jump"));
             _mover.AddForceToEntity(jumpPower);
             _mover.OnMovement += HandleVelocityChnage;
         }
