@@ -43,7 +43,13 @@ namespace CameraControllers
             _isShaking = false;
         }
 
-        public void SetShake(float power)
+        public void StopShake()
+        {
+            _isShaking = false;
+
+        }
+
+        private void SetShake(float power)
         {
             _shaker.AmplitudeGain = power;
             _shaker.FrequencyGain = power;
