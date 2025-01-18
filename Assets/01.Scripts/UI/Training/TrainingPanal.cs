@@ -1,12 +1,16 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrainingPanal : MonoBehaviour
+public class TrainingPanal : MonoBehaviour, IUIPanel
 {
     public Dictionary<CharacterType, int> characterHealth;
 
     [SerializeField] private CharacterSelectPanel _selectPanel;
     private Training[] trainings;
+    private float _easingTime = 0.2f;
+
+    public RectTransform RectTrm => transform as RectTransform;
 
     private void Awake()
     {
@@ -39,5 +43,15 @@ public class TrainingPanal : MonoBehaviour
 
         characterHealth[character] -= value;
         return true;
+    }
+
+    public void Open(Vector2 position)
+    {
+        RectTrm.DOAnchorPosY(0f, _easingTime);
+    }
+
+    public void Close()
+    {
+        RectTrm.DOAnchorPosY(-1920f, _easingTime);
     }
 }

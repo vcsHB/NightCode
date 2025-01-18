@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class CharacterSelectPanel : MonoBehaviour
+public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 {
     public delegate void CharacterSelectAction(CharacterType characterType);   
 
@@ -20,16 +21,29 @@ public class CharacterSelectPanel : MonoBehaviour
         }
     }
 
+    public void SetSelectAction(CharacterSelectAction onCharacterSelect)
+    {
+        OnSelectCharacter = onCharacterSelect;
+    }
+
     public void EnableSelectPanel(CharacterSelectAction onCharacterSelect , Vector2 position)
     {
-        gameObject.SetActive(true);
-        RectTrm.anchoredPosition = position;
-        OnSelectCharacter = onCharacterSelect;
     }
 
     public void OnClickBtn(CharacterType characterType)
     {
-        OnSelectCharacter?.Invoke(characterType);
+        OnSelectCharacter?.Invoke(characterType); 
+        Close();
+    }
+
+    public void Open(Vector2 position)
+    {
+        gameObject.SetActive(true);
+        RectTrm.anchoredPosition = position;
+    }
+
+    public void Close()
+    {
         gameObject.SetActive(false);
     }
 }

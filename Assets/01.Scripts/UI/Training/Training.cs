@@ -8,6 +8,7 @@ public class Training : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public bool completeTraining = false;
 
     [SerializeField] private UIPopupText _popupText;
+    [SerializeField] private GameObject _trainedIndicator;
     private CharacterSelectPanel _selectPanel;
     private Transform _canvasTrm;
 
@@ -16,6 +17,7 @@ public class Training : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void Awake()
     {
         _canvasTrm = transform.GetComponentInParent<Canvas>().transform;
+        UnSetCompleteTraining();
     }
 
     public void DoTraining(CharacterType character)
@@ -39,12 +41,26 @@ public class Training : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         popupText.SetText($"{statType.ToString()} +{incValue}", textColor, 50, 0.5f, 1, RectTrm.localPosition);
 
         AgentStatManager.Instance.AddStatPoint(character, statType, incValue);
+        SetCompleteTraining();
     }
+
+    public void SetCompleteTraining()
+    {
+        _trainedIndicator.SetActive(true);
+    }
+
+    public void UnSetCompleteTraining()
+    {
+        _trainedIndicator.SetActive(false);
+    }
+
+    #region InputEventRegion
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _selectPanel.EnableSelectPanel(DoTraining, RectTrm.anchoredPosition);
-        //DoTraining(CharacterType.Katana);
+        if (completeTraining || training == null) return;
+        _selectPanel.SetSelectAction(DoTraining);
+        _selectPanel.Open(RectTrm.anchoredPosition);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -61,4 +77,6 @@ public class Training : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _selectPanel = selectPanel;
     }
+
+    #endregion
 }
