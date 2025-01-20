@@ -7,19 +7,23 @@ public class SkillTreePanel : MonoBehaviour, IUIPanel
     public SkillTree[] skillTrees;
     private float _easingTime = 0.2f;
 
+    [SerializeField] private CharacterStatPointIndicator _characterStatPointIndicator;
+
     private RectTransform RectTrm => transform as RectTransform;
 
     public void OpenSkillTree(CharacterType characterType)
     {
+        _characterStatPointIndicator.SetCharacter(characterType);
+
         for (int i = 0; i < skillTrees.Length; i++)
         {
             if (i == (int)characterType)
             {
-                skillTrees[(int)characterType].Open(Vector2.zero);
+                skillTrees[i].Open(Vector2.zero);
             }
             else
             {
-                skillTrees[(int)characterType].Close();
+                skillTrees[i].Close();
             }
         }
     }

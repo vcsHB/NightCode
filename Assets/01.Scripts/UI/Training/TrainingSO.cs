@@ -5,6 +5,7 @@ using UnityEngine;
 public class TrainingSO : ScriptableObject
 {
     public string trainingName;
+    public string trainingExplain;
     public StatType statType;
 
     [Header("Chance is between 0 ~ 100")]

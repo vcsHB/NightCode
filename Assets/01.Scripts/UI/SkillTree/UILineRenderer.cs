@@ -134,19 +134,12 @@ namespace GGM.UI
             // OnPopulateMesh는 UI 요소에 변경될 때만(크기, 피봇, 앵커 등) 실행되므로,
             // 매 프레임 실행하기 위해 SetVerticesDirty 함수를 실행한다.
             SetVerticesDirty();
-
-            if (Keyboard.current.qKey.wasPressedThisFrame)
-            {
-                SetFillAmount(a);
-            }
         }
 
         public void SetMaterial(Material lineMaterial)
         {
-            material = Instantiate(lineMaterial);
+            material = new Material(lineMaterial);
             material.SetColor("_TintColor", lineColor);
         }
-
-        public float a = 0.5f;
     }
 }

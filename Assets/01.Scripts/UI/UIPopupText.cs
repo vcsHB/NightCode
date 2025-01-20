@@ -19,6 +19,7 @@ public class UIPopupText : MonoBehaviour
     private void Awake()
     {
         _tmp = GetComponent<TextMeshProUGUI>();
+        transform.SetAsLastSibling();
     }
 
     private void Update()

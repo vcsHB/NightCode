@@ -60,6 +60,7 @@ public class Training : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (completeTraining || training == null) return;
         _selectPanel.SetSelectAction(DoTraining);
+        _selectPanel.SetTrainingSO(training);
         _selectPanel.Open(RectTrm.anchoredPosition);
     }
 
