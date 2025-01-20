@@ -1,21 +1,45 @@
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI.InGame.SystemUI
 {
 
-    public class PausePanel : MonoBehaviour
+    public class PausePanel : UIPanel
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
+        //[SerializeField] private 
+        private RectTransform _rectTrm;
+        [SerializeField] private Image _topLine;
+        [SerializeField] private Image _bottomLine;
+        private int _lineUnscaledTimeHash = Shader.PropertyToID("_CurrentUnscaledTime");
 
+        protected override void Awake()
+        {
+            base.Awake();
+            _rectTrm = transform as RectTransform;
+        }
+        public override void Open()
+        {
+            base.Open();
+            _isActive = true;
+            _rectTrm.DOScaleY(1f, _activeDuration).SetUpdate(_useUnscaledTime);
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void Close()
         {
-
+            base.Close();
         }
+
+
+        private void Update()
+        {
+            if (_isActive)
+            {
+                _topLine.material.SetFloat(_lineUnscaledTimeHash, Time.unscaledTime);
+                _bottomLine.material.SetFloat(_lineUnscaledTimeHash, Time.unscaledTime);
+            }
+        }
+
     }
 
 }
