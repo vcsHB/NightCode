@@ -36,6 +36,8 @@ public class AgentStatManager : MonoSingleton<AgentStatManager>
 
         characterStatPoint[character] = stat;
     }
+
+    public CharacterStat GetStatPoint(CharacterType character) => characterStatPoint[character];
 }
 
 public enum CharacterType
