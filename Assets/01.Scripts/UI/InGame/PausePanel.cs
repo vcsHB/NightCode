@@ -9,7 +9,7 @@ namespace UI.InGame.SystemUI
     public class PausePanel : UIPanel
     {
         [SerializeField] private UIInputReader _uiInput;
-        private RectTransform _rectTrm;
+        [SerializeField] private RectTransform _panelRectTrm;
         [SerializeField] private Image _topLine;
         [SerializeField] private Image _bottomLine;
         private int _lineUnscaledTimeHash = Shader.PropertyToID("_CurrentUnscaledTime");
@@ -17,8 +17,6 @@ namespace UI.InGame.SystemUI
         protected override void Awake()
         {
             base.Awake();
-            _rectTrm = transform as RectTransform;
-
             _uiInput.OnEscEvent += HandleTogglePausePanel;
 
         }
@@ -32,14 +30,14 @@ namespace UI.InGame.SystemUI
         {
             base.Open();
             _isActive = true;
-            _rectTrm.DOScaleY(1f, _activeDuration).SetUpdate(_useUnscaledTime);
+            _panelRectTrm.DOScaleY(1f, _activeDuration).SetUpdate(_useUnscaledTime);
             SetTweenLinesFillAmount(1f);
         }
 
         public override void Close()
         {
             base.Close();
-            _rectTrm.DOScaleY(0f, _activeDuration).SetUpdate(_useUnscaledTime);
+            _panelRectTrm.DOScaleY(0f, _activeDuration).SetUpdate(_useUnscaledTime);
             SetTweenLinesFillAmount(0f);
         }
 
