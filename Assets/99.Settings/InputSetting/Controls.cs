@@ -201,7 +201,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""OnEsc"",
                     ""type"": ""Button"",
                     ""id"": ""eb87c389-83d8-4429-ac37-ffa9608f009b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -211,7 +211,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ee9f7987-2a41-48c3-8bf9-4d3afb8218b9"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
