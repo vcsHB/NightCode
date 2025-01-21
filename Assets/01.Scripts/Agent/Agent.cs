@@ -41,13 +41,13 @@ namespace Agents
             }else
             {
                 // 상속구조의 예외 발생 가능 
-                Debug.Log("Not Exist In components dictionary");
+                //Debug.Log("Not Exist In components dictionary");
                 T newComponent = GetComponentInChildren<T>();
                 if(newComponent is IAgentComponent)
                 {
 
                     _components.Add(typeof(T), newComponent as IAgentComponent);
-                    Debug.Log("Insert In dictionary");
+                    //Debug.Log("Insert In dictionary");
                     return newComponent;
                 }
             }

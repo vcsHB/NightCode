@@ -12,7 +12,6 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             base.UpdateState();
-            Debug.Log("Fall Update");
             if (_mover.IsGroundDetected())
             {
                 _stateMachine.ChangeState("Idle");

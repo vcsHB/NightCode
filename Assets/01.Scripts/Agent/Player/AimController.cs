@@ -55,7 +55,7 @@ namespace Agents.Players
 
         private void Update()
         {
-            _currentShootTime += Time.time;
+            _currentShootTime += Time.deltaTime;
             if (_isShoot)
                 HangingDirection = _anchorTrm.position - transform.position;
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(_player.PlayerInput.MousePosition);
@@ -112,7 +112,7 @@ namespace Agents.Players
                 _clampCoroutine = StartCoroutine(DistanceClampCoroutine(Vector2.Lerp(playerPos, _targetPoint, (distance - _wireClampedDistance) / distance)));
             }
             _isShoot = true;
-            _anchorTrm.gameObject.SetActive(true);
+            //_anchorTrm.gameObject.SetActive(true);
         }
         private IEnumerator DistanceClampCoroutine(Vector2 clampPosition)
         {
@@ -138,7 +138,7 @@ namespace Agents.Players
             _anchorTrm.position = transform.position;
             _wire.SetWireEnable(false);
             _isShoot = false;
-            _anchorTrm.gameObject.SetActive(false);
+            //_anchorTrm.gameObject.SetActive(false);
             _playerMovement.SetVelocity(velocity);
             _player.StateMachine.ChangeState("Swing");
 
