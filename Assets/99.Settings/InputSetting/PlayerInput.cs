@@ -16,6 +16,7 @@ namespace InputManage
         public Vector2 InputDirection { get; private set; }
 
         public Vector2 MousePosition { get; private set; }
+        public Vector2 MouseWorldPosition {get; private set; }
 
         private void OnEnable()
         {
@@ -78,6 +79,7 @@ namespace InputManage
         public void OnMouse(InputAction.CallbackContext context)
         {
             MousePosition = context.ReadValue<Vector2>();
+            MouseWorldPosition = Camera.main.ScreenToWorldPoint(MousePosition);
         }
 
         public void OnChangeTag(InputAction.CallbackContext context)

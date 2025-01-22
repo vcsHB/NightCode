@@ -7,12 +7,9 @@ namespace Agents.Players
 
     public class AimController : MonoBehaviour, IAgentComponent
     {
-        [SerializeField] private Transform _aimTrm;
-        [SerializeField] private Transform _virtualAimTrm;
-        [SerializeField] private Transform _anchorTrm;
+        [SerializeField] private AimGroupController _aimGroupController;
         [SerializeField] private LayerMask _wallLayer;
         [SerializeField] private LayerMask _targetLayer;
-        [SerializeField] private Wire _wire;
 
 
         [Header("Setting Values")]
@@ -57,21 +54,21 @@ namespace Agents.Players
         {
             _currentShootTime += Time.deltaTime;
             if (_isShoot)
-                HangingDirection = _anchorTrm.position - transform.position;
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(_player.PlayerInput.MousePosition);
-            _aimTrm.position = mousePos;
+                HangingDirection = _aimGroupController.AnchorPos - (Vector2)transform.position;
+            Vector2 mousePos = _player.PlayerInput.MouseWorldPosition;
+            _aimGroupController.SetAimMarkPosition(mousePos);
             Vector2 dir = (mousePos - (Vector2)transform.position);
             //RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, _shootRadius, _wallLayer | _targetLayer);
             RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, dir, _shootRadius, _wallLayer | _targetLayer);
             if (boxHit.collider == null)
             {
                 _isTargeted = false;
-                _virtualAimTrm.gameObject.SetActive(false);
+                _aimGroupController.SetVirtualAim(false);
                 _lineRenderer.enabled = false;
                 return;
             }
             _isTargeted = true;
-            _virtualAimTrm.gameObject.SetActive(true);
+            _aimGroupController.SetVirtualAim(true);
             _targetPoint = boxHit.point;
 
             RefreshLine();
@@ -83,7 +80,8 @@ namespace Agents.Players
             _lineRenderer.enabled = true;
             _lineRenderer.SetPosition(0, transform.position);
             _lineRenderer.SetPosition(1, _targetPoint);
-            _virtualAimTrm.position = _targetPoint;
+
+            _aimGroupController.SetVirtualAimPosition(_targetPoint);
         }
 
         public void HandleShootAnchor(bool value)
@@ -102,8 +100,7 @@ namespace Agents.Players
             _currentShootTime = 0f;
             //_playerController.turboCount = 1;
             _player.StateMachine.ChangeState("Hang");
-            _wire.gameObject.SetActive(true);
-
+            _aimGroupController.SetActiveWire(true);
             Vector2 playerPos = _player.transform.position;
             float distance = (_targetPoint - playerPos).magnitude;
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
@@ -125,7 +122,7 @@ namespace Agents.Players
                 _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / _clampDuration);
                 yield return null;
             }
-            _wire.SetWireEnable(true, _targetPoint, _wireClampedDistance);
+            _aimGroupController.Wire.SetWireEnable(true, _targetPoint, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
         }
 
@@ -134,11 +131,11 @@ namespace Agents.Players
             if (_clampCoroutine != null)
                 StopCoroutine(_clampCoroutine);
             Vector2 velocity = _playerMovement.Velocity;
-            _wire.gameObject.SetActive(false);
-            _anchorTrm.position = transform.position;
-            _wire.SetWireEnable(false);
+            _aimGroupController.SetActiveWire(false);
+            _aimGroupController.SetAnchorPosition(transform.position);
+            _aimGroupController.Wire.SetWireEnable(false);
             _isShoot = false;
-            //_anchorTrm.gameObject.SetActive(false);
+
             _playerMovement.SetVelocity(velocity);
             _player.StateMachine.ChangeState("Swing");
 
