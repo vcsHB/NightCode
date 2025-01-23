@@ -1,10 +1,11 @@
-    using UnityEngine;
+using Agents.Animate;
+using UnityEngine;
 namespace Agents.Players.FSM
 {
 
     public class PlayerFallState : PlayerAirState
     {
-        public PlayerFallState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerFallState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
 

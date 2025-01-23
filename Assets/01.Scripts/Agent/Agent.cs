@@ -15,7 +15,6 @@ namespace Agents
             AddComponentToDictionary();
             ComponentInitialize();
             AfterInit();
-
         }
 
         private void AddComponentToDictionary()
@@ -39,6 +38,18 @@ namespace Agents
             if (_components.TryGetValue(typeof(T), out IAgentComponent compo))
             {
                 return compo as T;
+            }else
+            {
+                // 상속구조의 예외 발생 가능 
+                Debug.Log("Not Exist In components dictionary");
+                T newComponent = GetComponentInChildren<T>();
+                if(newComponent is IAgentComponent)
+                {
+
+                    _components.Add(typeof(T), newComponent as IAgentComponent);
+                    Debug.Log("Insert In dictionary");
+                    return newComponent;
+                }
             }
 
             if (!isDerived) return default;

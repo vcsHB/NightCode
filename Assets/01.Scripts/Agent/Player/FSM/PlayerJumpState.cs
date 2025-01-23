@@ -1,10 +1,11 @@
+using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
 
     public class PlayerJumpState : PlayerGroundState
     {
-        public PlayerJumpState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerJumpState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
 
