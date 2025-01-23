@@ -9,6 +9,8 @@ namespace InputManage
     {
         public event Action OnAttackEvent;
         public event Action<bool> OnShootEvent;
+        public event Action OnShootRopeEvent;
+        public event Action OnRemoveRopeEvent;
         public event Action JumpEvent;
         public event Action TurboEvent;
         public event Action OnCharacterChangeEvent;
@@ -51,10 +53,12 @@ namespace InputManage
             if (context.performed)
             {
                 OnShootEvent?.Invoke(true);
+                OnShootRopeEvent?.Invoke();
             }
             else if (context.canceled)
             {
                 OnShootEvent?.Invoke(false);
+                OnRemoveRopeEvent?.Invoke();
             }
         }
 

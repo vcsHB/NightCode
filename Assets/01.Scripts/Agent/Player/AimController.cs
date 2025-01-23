@@ -35,20 +35,12 @@ namespace Agents.Players
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
-            _player.PlayerInput.OnShootEvent += HandleShootAnchor;
             _playerMovement = _player.GetCompo<PlayerMovement>();
             _lineRenderer = GetComponent<LineRenderer>();
         }
 
-        public void AfterInit()
-        {
-        }
-
-        public void Dispose()
-        {
-            _player.PlayerInput.OnShootEvent -= HandleShootAnchor;
-        }
-
+        public void AfterInit() { }
+        public void Dispose() { }
 
         private void Update()
         {
@@ -84,22 +76,21 @@ namespace Agents.Players
             _aimGroupController.SetVirtualAimPosition(_targetPoint);
         }
 
-        public void HandleShootAnchor(bool value)
-        {
-            if (value && canShoot)
-                Shoot();
-            else
-                RemoveWire();
-        }
+        // public void HandleShootAnchor(bool value)
+        // {
+        //     if (value && canShoot)
+        //         Shoot();
+        //     else
+        //         RemoveWire();
+        // }
 
-        private void Shoot()
+        public bool Shoot()
         {
-            if (_currentShootTime < _shootCooltime) return;
+            if (_currentShootTime < _shootCooltime) return false;
 
-            if (!_isTargeted) return;
+            if (!_isTargeted) return false;
             _currentShootTime = 0f;
             //_playerController.turboCount = 1;
-            _player.StateMachine.ChangeState("Hang");
             _aimGroupController.SetActiveWire(true);
             Vector2 playerPos = _player.transform.position;
             float distance = (_targetPoint - playerPos).magnitude;
@@ -109,7 +100,7 @@ namespace Agents.Players
                 _clampCoroutine = StartCoroutine(DistanceClampCoroutine(Vector2.Lerp(playerPos, _targetPoint, (distance - _wireClampedDistance) / distance)));
             }
             _isShoot = true;
-            //_anchorTrm.gameObject.SetActive(true);
+            return true;
         }
         private IEnumerator DistanceClampCoroutine(Vector2 clampPosition)
         {
@@ -126,7 +117,7 @@ namespace Agents.Players
             _playerMovement.AddForceToEntity(velocity);
         }
 
-        private void RemoveWire()
+        public void RemoveWire()
         {
             if (_clampCoroutine != null)
                 StopCoroutine(_clampCoroutine);
@@ -137,7 +128,7 @@ namespace Agents.Players
             _isShoot = false;
 
             _playerMovement.SetVelocity(velocity);
-            _player.StateMachine.ChangeState("Swing");
+
 
         }
 

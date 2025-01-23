@@ -37,6 +37,7 @@ namespace Agents.Players.FSM
             
             _player.PlayerInput.TurboEvent -= HandleUseTurbo;
             _canUseTurbo = true;
+            _mover.CanManualMove = true;
             _renderer.SetLockRotation(true);
 
         }

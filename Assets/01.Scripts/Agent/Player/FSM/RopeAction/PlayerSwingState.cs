@@ -10,17 +10,17 @@ namespace Agents.Players.FSM
         //private Stat _playerDashPower;
         //private Stat _playerJumpPower;
         private float _currentRollingTime;
-        private AimController _aimController;
         public PlayerSwingState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
-            _aimController = player.GetCompo<AimController>();
+            
+            _canUseRope = true;
         }
+        
 
         public override void Enter()
         {
             base.Enter();
             _mover.CanManualMove = false;
-            //_mover.AddForceToOuterWall(_playerDashPower.GetValue(), _playerJumpPower.GetValue());
             Vector2 velocity = _mover.Velocity;
             _mover.StopImmediately(true);
             _mover.AddForceToEntity(velocity * 0.6f);
@@ -39,12 +39,10 @@ namespace Agents.Players.FSM
                 _stateMachine.ChangeState("Idle");
                 return;
             }
-            //base.UpdateState();
         }
 
         public override void Exit()
         {
-            //_mover.StopImmediately();
             _mover.CanManualMove = true;
             base.Exit();
         }

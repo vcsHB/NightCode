@@ -13,7 +13,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            _mover.SetMovementMultiplier(0.85f);
+            _mover.SetMovementMultiplier(0.6f);
         }
 
         public override void Exit()

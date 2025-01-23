@@ -4,29 +4,30 @@ namespace Agents.Players.FSM
 {
     public class PlayerRopeState : PlayerState
     {
-        protected AimController _aimController;
         public PlayerRopeState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
-            _aimController = player.GetCompo<AimController>();
         }
 
         public override void Enter()
         {
             base.Enter();
-            _player.PlayerInput.OnShootEvent += HandleShoot;
+            _player.PlayerInput.OnRemoveRopeEvent += HandleRemoveRope;
         }
 
         public override void Exit()
         { 
             base.Exit();
-            _player.PlayerInput.OnShootEvent -= HandleShoot;
+            _player.PlayerInput.OnRemoveRopeEvent -= HandleRemoveRope;
         }
 
-        protected void HandleShoot(bool value)
+        protected void HandleRemoveRope()
         {
             // if(value)
             //     _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
             // _aimController.HandleShootAnchor(value);
+
+            _aimController.RemoveWire();
+            _player.StateMachine.ChangeState("Swing");
         }
 
     }

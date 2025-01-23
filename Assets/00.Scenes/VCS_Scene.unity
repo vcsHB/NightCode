@@ -392,11 +392,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackDatas:
-  - movePower: 1
+  - movePower: 0.5
     moveduration: 0.1
-  - movePower: 1.2
+  - movePower: 0.5
     moveduration: 0.1
-  - movePower: 1.5
+  - movePower: 0.5
     moveduration: 0.1
 --- !u!1 &227836284
 GameObject:
@@ -21822,7 +21822,7 @@ Rigidbody2D:
   m_Mass: 1.5
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -32632,16 +32632,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5be10c405370acd4385538a9e083dc51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _aimTrm: {fileID: 1284347719}
-  _virtualAimTrm: {fileID: 1689752694}
-  _anchorTrm: {fileID: 340426512}
+  _aimGroupController: {fileID: 1973191874}
   _wallLayer:
     serializedVersion: 2
     m_Bits: 512
   _targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  _wire: {fileID: 1593103732}
   _castRadius: 0.4
   _shootRadius: 40
   _shootCooltime: 0.08
@@ -32976,7 +32973,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 5b869c53c5eca664f8a72c4cc36afebe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -47244,6 +47241,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1973191873}
+  - component: {fileID: 1973191874}
   m_Layer: 0
   m_Name: WireGroup
   m_TagString: Untagged
@@ -47270,6 +47268,22 @@ Transform:
   - {fileID: 1284347719}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1973191874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973191872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9140069183d209e4ab6c11447f3b871c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _virtualAimTrm: {fileID: 1689752694}
+  _aimMarkTrm: {fileID: 1284347719}
+  _anchorTrm: {fileID: 340426512}
+  <Wire>k__BackingField: {fileID: 1593103732}
 --- !u!1 &1982171007
 GameObject:
   m_ObjectHideFlags: 0
@@ -48005,11 +48019,11 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 906240374}
   - {fileID: 2068198342}
   - {fileID: 556662445}
   - {fileID: 380903873}
   - {fileID: 1205048438}
+  - {fileID: 906240374}
   - {fileID: 476296981}
   - {fileID: 2099382035}
   - {fileID: 1089534413}

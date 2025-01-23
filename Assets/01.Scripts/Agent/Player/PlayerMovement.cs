@@ -34,7 +34,7 @@ namespace Agents.Players
 
             _originalgravity = _rigidCompo.gravityScale;
         }
- 
+
         public void AfterInit() { }
         public void Dispose() { }
 
@@ -43,7 +43,7 @@ namespace Agents.Players
             float xVelocity = _movementX * _moveSpeed * _moveSpeedMultiplier;
             if (CanManualMove)
             {
-                if(Mathf.Abs(_movementX) > 0f) 
+                if (Mathf.Abs(_movementX) > 0f)
                     _rigidCompo.linearVelocity = new Vector2(xVelocity, _rigidCompo.linearVelocity.y);
             }
             OnMovement?.Invoke(new Vector2(xVelocity, 0));
@@ -89,14 +89,6 @@ namespace Agents.Players
 
         }
 
-        // public void AddForceResetVelocity()
-        // {
-        //     Vector2 direction = Velocity;
-        //     Debug.Log("딱 풀릴때 속력 : "+Velocity);
-        //     StopImmediately(true);
-        //     _rigidCompo.velocity = direction * _moveSpeedMultiplier;
-        //     //AddForceToEntity(direction * _moveSpeedMultiplier);
-        // }
 
         public void SetMultipleVelocioty(float value)
         {
@@ -130,7 +122,8 @@ namespace Agents.Players
             }
         }
 
-        private void OnDrawGizmos() {
+        private void OnDrawGizmos()
+        {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + (Vector3)Velocity);
         }

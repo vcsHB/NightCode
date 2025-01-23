@@ -7,6 +7,7 @@ namespace Agents.Players.FSM
     {
         public PlayerFallState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
+            _canUseRope = true;
         }
 
         public override void UpdateState()

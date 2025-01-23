@@ -6,6 +6,7 @@ namespace Agents.Players.FSM
     {
         public PlayerIdleState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
+            _canUseRope = true;
         }
 
         public override void Enter()
