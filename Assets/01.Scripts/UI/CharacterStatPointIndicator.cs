@@ -1,3 +1,4 @@
+using GGM.Core.StatSystem;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +17,6 @@ public class CharacterStatPointIndicator : MonoBehaviour
         CharacterStat stat = AgentStatManager.Instance.GetStatPoint(characterType);
         _intelligence.SetText($"Intelligence / {stat.intelligence}");
         _strength.SetText($"Strength / {stat.strength}");
-        _agility.SetText($"Agility / {stat.agility}");
+        _agility.SetText($"Agility / {stat.dexterity}");
     }
 }

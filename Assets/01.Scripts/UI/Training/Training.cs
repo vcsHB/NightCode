@@ -40,7 +40,7 @@ public class Training : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         UIPopupText popupText = Instantiate(_popupText, _canvasTrm);
         popupText.SetText($"{statType.ToString()} +{incValue}", textColor, 50, 0.5f, 1, RectTrm.localPosition);
 
-        AgentStatManager.Instance.AddStatPoint(character, statType, incValue);
+        AgentStatManager.Instance.AddStatPoint(character, statType, "TRAINING", incValue);
         SetCompleteTraining();
     }
 
@@ -59,9 +59,6 @@ public class Training : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (completeTraining || training == null) return;
-        _selectPanel.SetSelectAction(DoTraining);
-        _selectPanel.SetTrainingSO(training);
-        _selectPanel.Open(RectTrm.anchoredPosition);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

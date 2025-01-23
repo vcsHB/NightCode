@@ -21,7 +21,6 @@ public class SkillTree : MonoBehaviour, IUIPanel
     public Transform edgeFillParent;
     private string _path;
 
-    [SerializeField] private RectTransform _treeRect;
     [SerializeField] private Vector2 _nodeOriginPos;
     [SerializeField] private DirectionEnum _nodeDirection;
 

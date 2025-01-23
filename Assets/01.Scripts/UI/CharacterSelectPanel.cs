@@ -1,69 +1,152 @@
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 {
-    public delegate void CharacterSelectAction(CharacterType characterType);   
+    public event Action onCompleteAnimation;
 
-    public event CharacterSelectAction OnSelectCharacter;
-    public CharacterSelectButton[] characterSelectBtn;
+    [SerializeField] private CharacterPanel[] _characterPanels;
+    [SerializeField] private TextMeshProUGUI _pageText;
+    [SerializeField] private RectTransform _btnParent;
 
-    private TrainingSO _trainingSO;
-    [SerializeField] private TextMeshProUGUI _trainingName;
-    [SerializeField] private TextMeshProUGUI _trainingExplain;
-    [SerializeField] private TextMeshProUGUI _statExplain;
+    private Vector2[] _positions = new Vector2[3];
+    private CharacterType _currentCharacter;
+    private Tween _tween;
+    private int _currentIdx = 1;
 
-    private RectTransform RectTrm => transform as RectTransform;
-    private RectTransform ImageRect => transform.GetChild(0) as RectTransform;
+    private Sequence _seq;
+
+    public int CurrentIndex => _currentIdx;
 
     private void Awake()
     {
         for (int i = 0; i < 3; i++)
         {
-            CharacterType character = (CharacterType)i;
-            characterSelectBtn[i].character = character;
-            characterSelectBtn[i].OnClickEvent += OnClickBtn;
+            _characterPanels[i].Init(i + 1);
+            _positions[i] = _characterPanels[i].RectTrm.anchoredPosition;
         }
+
+        _characterPanels[0].UpdateStat();
     }
 
-    public void SetSelectAction(CharacterSelectAction onCharacterSelect)
+    public void MoveToNextCharacter()
     {
-        OnSelectCharacter = onCharacterSelect;
+        if (_seq != null && _seq.active)
+            return;
+
+        _characterPanels[1].UpdateStat();
+        Vector2 offset = new Vector2(-150, 0);
+
+        _seq = DOTween.Sequence();
+        _seq.Append(_characterPanels[0].RectTrm.DOAnchorPos(_positions[0] + offset, 0.2f))
+            .AppendInterval(0.05f)
+            .AppendCallback(() =>
+            {
+                _characterPanels[0].RectTrm.SetAsFirstSibling();
+                _currentIdx = _currentIdx == 3 ? 1 : _currentIdx + 1;
+                _pageText.SetText($"( {_currentIdx} / 3 )");
+            })
+            .AppendInterval(0.05f)
+            .Append(_characterPanels[0].RectTrm.DOAnchorPos(_positions[2], 0.3f))
+            .Join(_characterPanels[1].RectTrm.DOAnchorPos(_positions[0], 0.1f))
+            .Join(_characterPanels[2].RectTrm.DOAnchorPos(_positions[1], 0.1f))
+            .OnComplete(() =>
+            {
+                CharacterPanel panelTemp = _characterPanels[0];
+                _characterPanels[0] = _characterPanels[1];
+                _characterPanels[1] = _characterPanels[2];
+                _characterPanels[2] = panelTemp;
+                onCompleteAnimation?.Invoke();
+            });
     }
 
-    public void EnableSelectPanel(CharacterSelectAction onCharacterSelect , Vector2 position)
+    public void MoveToPrevCharacter()
     {
+        if (_seq != null && _seq.active)
+            return;
+
+        _characterPanels[2].UpdateStat();
+        Vector2 offset = new Vector2(-150, 0);
+
+        _seq = DOTween.Sequence();
+        _seq.Append(_characterPanels[2].RectTrm.DOAnchorPos(_positions[0] + offset, 0.2f))
+            .AppendInterval(0.05f)
+            .AppendCallback(() =>
+            {
+                _characterPanels[2].RectTrm.SetAsLastSibling();
+                _currentIdx = _currentIdx == 1 ? 3 : _currentIdx - 1;
+                _pageText.SetText($"( {_currentIdx} / 3 )");
+            })
+            .AppendInterval(0.05f)
+            .Append(_characterPanels[2].RectTrm.DOAnchorPos(_positions[0], 0.3f))
+            .Join(_characterPanels[0].RectTrm.DOAnchorPos(_positions[1], 0.1f))
+            .Join(_characterPanels[1].RectTrm.DOAnchorPos(_positions[2], 0.1f))
+            .OnComplete(() =>
+            {
+                CharacterPanel panelTemp = _characterPanels[2];
+                _characterPanels[2] = _characterPanels[1];
+                _characterPanels[1] = _characterPanels[0];
+                _characterPanels[0] = panelTemp;
+                onCompleteAnimation?.Invoke();
+            });
     }
 
-    public void OnClickBtn(CharacterType characterType)
+    public void SelectCharacter()
     {
-        OnSelectCharacter?.Invoke(characterType); 
-        Close();
+        if (_seq != null && _seq.active)
+        {
+            _seq.Complete();
+        }
+
+        _characterPanels[1].UpdateStat();
+
+        float left = -650;
+        float right = 1215;
+        _seq = DOTween.Sequence();
+        _seq.AppendInterval(0.2f)
+            .Append(_characterPanels[0].RectTrm.DOAnchorPosX(left, 0.3f))
+            .Join(_characterPanels[0].RectTrm.DORotate(Vector3.zero, 0.3f))
+            .Join(_btnParent.DOAnchorPosY(-600, 0.2f))
+            .Insert(0.1f, _characterPanels[1].RectTrm.DOAnchorPosX(right, 0.3f))
+            .Insert(0.2f, _characterPanels[2].RectTrm.DOAnchorPosX(right, 0.3f))
+            .OnComplete(() =>
+            {
+                onCompleteAnimation?.Invoke();
+            });
+    }
+
+    public void ReturnToSelectPanel()
+    {
+        if (_seq != null && _seq.active)
+            return;
+
+        _characterPanels[0].UpdateStat();
+        _characterPanels[0].isSelected = false;
+        UIManager.Instance.GetUIPanel(UIType.SkillTreePanel).Close();
+
+        _seq = DOTween.Sequence();
+        _seq.AppendInterval(0.5f)
+            .Append(_characterPanels[1].RectTrm.DOAnchorPos(_positions[1], 0.3f))
+            .Join(_characterPanels[0].RectTrm.DORotate(new Vector3(0, 0, 5), 0.3f))
+            .Join(_btnParent.DOAnchorPosY(-400, 0.2f))
+            .Insert(0.1f, _characterPanels[2].RectTrm.DOAnchorPos(_positions[2], 0.3f))
+            .Insert(0.3f, _characterPanels[0].RectTrm.DOAnchorPos(_positions[0], 0.3f))
+            .OnComplete(() =>
+            {
+                onCompleteAnimation?.Invoke();
+            });
+    }
+
+
+    public void Close()
+    {
+
     }
 
     public void Open(Vector2 position)
     {
-        Vector2 size = ImageRect.sizeDelta;
-        Vector2 screenSize = new Vector2(Screen.width, Screen.height);
 
-        position.x = Mathf.Clamp(position.x, -screenSize.x / 2, screenSize.x / 2 - size.x);
-        position.y = Mathf.Clamp(position.y, -screenSize.y / 2 + size.y, screenSize.y / 2);
-
-        RectTrm.anchoredPosition = position;
-        gameObject.SetActive(true);
-    }
-
-    public void Close()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void SetTrainingSO(TrainingSO training)
-    {
-        _trainingName.SetText(training.trainingName);
-        _trainingExplain.SetText(training.trainingExplain);
-        _statExplain.SetText($"¼º°ø È®·ü\t{training.successChance}%\t{training.statType} +{training.successValue}\n´ë¼º°ø È®·ü\t{training.greatSuccesChance / 100f}%\t{training.statType} +{training.greatSuccessValue}"); 
     }
 }

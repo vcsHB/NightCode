@@ -13,10 +13,10 @@ public class UIManager : MonoSingleton<UIManager>
         uiPanels = new Dictionary<UIType, IUIPanel>();
 
         IUIPanel techTreePanel = FindFirstObjectByType<SkillTreePanel>().GetComponent<IUIPanel>();
-        IUIPanel trainingPanel = FindFirstObjectByType<TrainingPanal>().GetComponent<IUIPanel>();
+        //IUIPanel trainingPanel = FindFirstObjectByType<TrainingPanal>().GetComponent<IUIPanel>();
 
         uiPanels.Add(UIType.SkillTreePanel, techTreePanel);
-        uiPanels.Add(UIType.TrainingPanel, trainingPanel);
+        //uiPanels.Add(UIType.TrainingPanel, trainingPanel);
     }
 
     public IUIPanel GetUIPanel(UIType uiType) => uiPanels[uiType];
@@ -31,12 +31,12 @@ public class UIManager : MonoSingleton<UIManager>
         {
             if (!_trainingPanelOpen)
             {
-                uiPanels[UIType.TrainingPanel].Open(Vector2.zero);
+               // uiPanels[UIType.TrainingPanel].Open(Vector2.zero);
                 _trainingPanelOpen = true;
             }
             else
             {
-                uiPanels[UIType.TrainingPanel].Close();
+                //uiPanels[UIType.TrainingPanel].Close();
                 _trainingPanelOpen = false;
             }
         }
@@ -60,5 +60,5 @@ public class UIManager : MonoSingleton<UIManager>
 public enum UIType
 {
     SkillTreePanel,
-    TrainingPanel
+    //TrainingPanel
 }
