@@ -1,13 +1,15 @@
+using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
 
 
 
-    public class PlayerMoveState : PlayerGroundState
+    public class PlayerMoveState : PlayerAttackableState
     {
-        public PlayerMoveState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerMoveState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
+            _canUseRope = true;
         }
 
         public override void UpdateState()
@@ -15,7 +17,6 @@ namespace Agents.Players.FSM
             base.UpdateState();
             float xInput = _player.PlayerInput.InputDirection.x;
             _mover.SetMovement(xInput);
-            Debug.Log("Move Update");
             if(Mathf.Approximately(xInput, 0))
             {
                 _stateMachine.ChangeState("Idle");

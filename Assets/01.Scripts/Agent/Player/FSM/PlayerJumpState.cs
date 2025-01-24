@@ -1,18 +1,21 @@
+using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
 
     public class PlayerJumpState : PlayerGroundState
     {
-        public PlayerJumpState(Player player, PlayerStateMachine stateMachine, int animationHash) : base(player, stateMachine, animationHash)
+        public PlayerJumpState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
+            _canUseRope = true;
         }
 
         public override void Enter()
         {
             base.Enter();
-            Vector2 jumpPower = new Vector2(0, 13f);
+            Vector2 jumpPower = new Vector2(0, 17f);
             //_mover.StopImmediately(true);
+            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Jump"));
             _mover.AddForceToEntity(jumpPower);
             _mover.OnMovement += HandleVelocityChnage;
         }

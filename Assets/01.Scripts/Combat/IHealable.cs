@@ -2,6 +2,6 @@ namespace Combat
 {
     interface IHealable
     {
-        public void Restore(int amount);
+        public void Restore(float amount);
     }
 }
