@@ -17,7 +17,6 @@ namespace Agents.Players.FSM
             _mover.CanManualMove = false;
             _player.PlayerInput.TurboEvent += HandleUseTurbo;
             _renderer.SetLockRotation(false);
-            //_mover.StopImmediately(true);
         }
 
         public override void UpdateState()
@@ -27,6 +26,7 @@ namespace Agents.Players.FSM
             {
                 _stateMachine.ChangeState("Idle");
             }
+            _renderer.FlipController(_mover.Velocity.x);
             _renderer.SetRotate(_aimController.HangingDirection);
         }
 
@@ -36,6 +36,7 @@ namespace Agents.Players.FSM
             
             _player.PlayerInput.TurboEvent -= HandleUseTurbo;
             _canUseTurbo = true;
+            _mover.CanManualMove = true;
             _renderer.SetLockRotation(true);
 
         }

@@ -54,6 +54,7 @@ namespace Agents.Players.FSM
         public void UpdateState()
         {
             CurrentState.UpdateState();
+            Debug.Log(CurrentState.ToString());
         }
 
         public void ChangeState(string name)

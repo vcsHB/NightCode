@@ -1,3 +1,4 @@
+using System;
 using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
@@ -13,8 +14,11 @@ namespace Agents.Players.FSM
         protected AnimParamSO _stateAnimParam;
         protected PlayerRenderer _renderer;
         protected PlayerAnimationTrigger _animationTrigger;
+        protected AimController _aimController;
+
 
         protected bool _isTriggered;
+        protected bool _canUseRope = false;
 
         public PlayerState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam)
         {
@@ -23,6 +27,8 @@ namespace Agents.Players.FSM
             _stateAnimParam = animParam;
             _renderer = player.GetCompo<PlayerRenderer>();
             _mover = player.GetCompo<PlayerMovement>();
+            _aimController = player.GetCompo<AimController>();
+
             _animationTrigger = player.GetCompo<PlayerAnimationTrigger>();
         }
 
@@ -32,20 +38,46 @@ namespace Agents.Players.FSM
             _renderer.SetParam(_stateAnimParam, true);
             _isTriggered = false;
             _animationTrigger.OnAnimationEnd += AnimationEndTrigger;
+            if (_canUseRope)
+                _player.PlayerInput.OnShootRopeEvent += HandleShootEvent;
+            _player.PlayerInput.OnRemoveRopeEvent += HandleRemoveRope;
         }
+
+
         public virtual void UpdateState() { }
 
         public virtual void Exit()
         {
             _renderer.SetParam(_stateAnimParam, false);
             _animationTrigger.OnAnimationEnd -= AnimationEndTrigger;
+            if (_canUseRope)
+                _player.PlayerInput.OnShootRopeEvent -= HandleShootEvent;
+            _player.PlayerInput.OnRemoveRopeEvent -= HandleRemoveRope;
+
         }
 
-
+        private void HandleShootEvent()
+        {
+            if (_aimController.Shoot())
+                _player.StateMachine.ChangeState("Hang");
+        }
 
         public virtual void AnimationEndTrigger()
         {
             _isTriggered = true;
         }
+
+
+        protected void HandleRemoveRope()
+        {
+            // if(value)
+            //     _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
+            // _aimController.HandleShootAnchor(value);
+
+            _aimController.RemoveWire();
+            _player.StateMachine.ChangeState("Swing");
+        }
+
+
     }
 }

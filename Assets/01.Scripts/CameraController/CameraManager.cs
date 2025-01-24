@@ -13,10 +13,17 @@ namespace CameraControllers
         private Dictionary<Type, ICameraControlable> _controllers = new Dictionary<Type, ICameraControlable>();
 
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
+
             GetComponentsInChildren<ICameraControlable>(true)
                .ToList().ForEach(controller => _controllers.Add(controller.GetType(), controller));
+
+            foreach(ICameraControlable controller in _controllers.Values)
+            {
+                controller.Initialize(_camera);
+            }
         }
 
 

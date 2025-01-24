@@ -27,7 +27,7 @@ namespace Agents.Players
         {
             _isLockRotation = value;
             if (value)
-                transform.rotation = Quaternion.identity;
+                transform.localRotation = Quaternion.identity;
         }
 
         public void SetRotate(Vector2 upDirection)
