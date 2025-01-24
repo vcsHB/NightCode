@@ -17,7 +17,6 @@ namespace Agents.Players.FSM
         public override void Exit()
         { 
             base.Exit();
-            _player.PlayerInput.OnRemoveRopeEvent -= HandleRemoveRope;
         }
 
 

@@ -19,7 +19,7 @@ namespace Agents.Players.FSM
         public override void Exit()
         {
             base.Exit();
-            _player.PlayerInput.OnAttackEvent += HandleAttack;
+            _player.PlayerInput.OnAttackEvent -= HandleAttack;
 
         }
 
