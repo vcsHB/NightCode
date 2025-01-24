@@ -69,27 +69,7 @@ namespace Agents.Players
 
         public void UseTurbo(Vector2 hangingDirection)
         {
-            //float x = Mathf.Clamp(_rigidCompo.velocity.x, -1, 1) * _turboPower;
-            StopImmediately(true);
-            //==
-            // float x = 0;
-            // Vector2 direction = Vector2.zero;
-            // if (_player.PlayerInput.InputDirection.magnitude < 0.1f)
-            // {
-            //     x = _movementX * _turboPower;
-            //     direction.y = _rigidCompo.linearVelocity.y * 0.5f;
-            //     direction.x = x;
-            // }
-            // else
-            // {
-            //     x = _player.PlayerInput.InputDirection.x * _turboPower;
-            //     direction.x = x;
-            // }
-            // SetMultipleVelocioty(_turboPower);
-            //==
-            //_rigidCompo.AddForce(direction, ForceMode2D.Impulse);
-
-
+            //StopImmediately(true);
 
             Vector2 baseDirection = -hangingDirection.normalized;
             Vector2 inputDirection = _player.PlayerInput.InputDirection;

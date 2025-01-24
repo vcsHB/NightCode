@@ -41,6 +41,7 @@ namespace Agents.Players.FSM
             if (_canUseRope)
                 _player.PlayerInput.OnShootRopeEvent += HandleShootEvent;
             _player.PlayerInput.OnRemoveRopeEvent += HandleRemoveRope;
+            
         }
 
 
