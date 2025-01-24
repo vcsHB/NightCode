@@ -12,7 +12,6 @@ namespace Agents.Players.FSM
         private float _currentRollingTime;
         public PlayerSwingState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
-            
             _canUseRope = true;
         }
         

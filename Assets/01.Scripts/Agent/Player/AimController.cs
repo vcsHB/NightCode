@@ -98,6 +98,10 @@ namespace Agents.Players
             if (distance > _wireClampedDistance)
             {
                 _clampCoroutine = StartCoroutine(DistanceClampCoroutine(Vector2.Lerp(playerPos, _targetPoint, (distance - _wireClampedDistance) / distance)));
+            }else
+            {
+                _aimGroupController.Wire.SetWireEnable(true, _targetPoint, distance); 
+                //_playerMovement.AddForceToEntity(velocity);   
             }
             _isShoot = true;
             return true;

@@ -11,7 +11,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            _player.PlayerInput.OnRemoveRopeEvent += HandleRemoveRope;
+            
         }
 
         public override void Exit()
@@ -20,15 +20,6 @@ namespace Agents.Players.FSM
             _player.PlayerInput.OnRemoveRopeEvent -= HandleRemoveRope;
         }
 
-        protected void HandleRemoveRope()
-        {
-            // if(value)
-            //     _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
-            // _aimController.HandleShootAnchor(value);
-
-            _aimController.RemoveWire();
-            _player.StateMachine.ChangeState("Swing");
-        }
 
     }
 }

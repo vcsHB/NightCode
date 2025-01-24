@@ -40,6 +40,7 @@ namespace Agents.Players.FSM
             _animationTrigger.OnAnimationEnd += AnimationEndTrigger;
             if (_canUseRope)
                 _player.PlayerInput.OnShootRopeEvent += HandleShootEvent;
+            _player.PlayerInput.OnRemoveRopeEvent += HandleRemoveRope;
         }
 
 
@@ -51,6 +52,8 @@ namespace Agents.Players.FSM
             _animationTrigger.OnAnimationEnd -= AnimationEndTrigger;
             if (_canUseRope)
                 _player.PlayerInput.OnShootRopeEvent -= HandleShootEvent;
+            _player.PlayerInput.OnRemoveRopeEvent -= HandleRemoveRope;
+
         }
 
         private void HandleShootEvent()
@@ -62,6 +65,17 @@ namespace Agents.Players.FSM
         public virtual void AnimationEndTrigger()
         {
             _isTriggered = true;
+        }
+
+
+        protected void HandleRemoveRope()
+        {
+            // if(value)
+            //     _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
+            // _aimController.HandleShootAnchor(value);
+
+            _aimController.RemoveWire();
+            _player.StateMachine.ChangeState("Swing");
         }
 
 
