@@ -97,10 +97,12 @@ namespace Agents.Players
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
             if (distance > _wireClampedDistance)
             {
+                _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 _clampCoroutine = StartCoroutine(DistanceClampCoroutine(Vector2.Lerp(playerPos, _targetPoint, (distance - _wireClampedDistance) / distance)));
-            }else
+            }
+            else
             {
-                _aimGroupController.Wire.SetWireEnable(true, _targetPoint, distance); 
+                _aimGroupController.Wire.SetWireEnable(true, _targetPoint, distance);
                 //_playerMovement.AddForceToEntity(velocity);   
             }
             _isShoot = true;

@@ -44,7 +44,7 @@ namespace Agents.Players.FSM
         private void HandleUseTurbo()
         {
             if (!_canUseTurbo) return;
-            _mover.UseTurbo();
+            _mover.UseTurbo(_aimController.HangingDirection);
             _canUseTurbo = false;
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));
         }
