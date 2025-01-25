@@ -27,7 +27,9 @@ namespace ObjectManage.Rope
 
         private void Awake()
         {
-            Vector2 segmentPos = startTransform.position;
+            Vector2 segmentPos = Vector2.zero;
+            if(startTransform != null)
+                segmentPos = startTransform.position;
             for (int i = 0; i < segmentCount; i++)
             {
                 segments.Add(new Segment(segmentPos));

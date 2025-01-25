@@ -38,6 +38,10 @@ namespace Agents.Players
             _playerMovement = _player.GetCompo<PlayerMovement>();
             _lineRenderer = GetComponent<LineRenderer>();
         }
+        public void SetAimGroup(AimGroupController aimGroup)
+        {
+            _aimGroupController = aimGroup;
+        }
 
         public void AfterInit() { }
         public void Dispose() { }

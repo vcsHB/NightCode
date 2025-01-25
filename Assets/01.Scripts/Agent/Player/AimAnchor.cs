@@ -36,5 +36,10 @@ namespace Agents.Players
             _anchorVFX.Play();
 
         }
+
+        public void SetOwnerPlayerRigidbody(Rigidbody2D owner)
+        {
+            _jointCompo.connectedBody = owner;
+        }
     }
 }

@@ -74,7 +74,6 @@ namespace Agents.Players.FSM
             // if(value)
             //     _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
             // _aimController.HandleShootAnchor(value);
-
             _aimController.RemoveWire();
             _player.StateMachine.ChangeState("Swing");
         }

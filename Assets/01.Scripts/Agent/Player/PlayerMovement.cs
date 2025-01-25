@@ -13,6 +13,7 @@ namespace Agents.Players
         [SerializeField] private float _checkDistance;
         [SerializeField] private LayerMask _whatIsGround;
         private Rigidbody2D _rigidCompo;
+        public Rigidbody2D RigidCompo => _rigidCompo;
 
         [Header("Move Setting")]
         [SerializeField] private float _moveSpeed = 5f;
