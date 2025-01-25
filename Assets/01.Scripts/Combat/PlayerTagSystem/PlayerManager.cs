@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Agents;
 using Agents.Players;
 using CameraControllers;
 using InputManage;
@@ -16,8 +17,11 @@ namespace Combat.PlayerTagSystem
         [SerializeField] private PlayerSO[] _playerDatas;
         [SerializeField] private List<Player> _playerList;
         [SerializeField] private AimGroupController _aimGroup;
-        [SerializeField] private int _currentPlayerIndex = -1;
+        [SerializeField] private int _currentPlayerIndex = 0;
         public Player CurrentPlayer => _playerList[_currentPlayerIndex];
+        [Header("Change Setting")]
+        [SerializeField] private float _changeCooltime = 1f;
+        private float _currentCooltime = 0f;
 
         private void Awake()
         {
@@ -26,7 +30,13 @@ namespace Combat.PlayerTagSystem
         }
         private void Start()
         {
-            Change();
+            SetPlayer(CurrentPlayer);
+        }
+
+        private void Update()
+        {
+            _currentCooltime += Time.deltaTime;
+            
         }
 
         private void OnDestroy()
@@ -47,22 +57,43 @@ namespace Combat.PlayerTagSystem
             _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
         }
 
-
+        /// <summary>
+        /// Change Character Func
+        /// </summary>
         public void Change()
         {
-            Vector2 changePosition = Vector2.zero;
-            if (_currentPlayerIndex > -1)
-            {
-                changePosition = CurrentPlayer.transform.position;
-                CurrentPlayer.ExitCharacter();
-                CurrentPlayer.SetActive(false);
-            }
-            _currentPlayerIndex = (_currentPlayerIndex + 1) % _playerList.Count;
+            if (_currentPlayerIndex < 0) return;
+            if (_currentCooltime < _changeCooltime) return;
+            _currentCooltime = 0f;
+
+            if (CurrentPlayer.CanCharacterChange)
+                StartCoroutine(ChangeCoroutine());
+        }
+
+        private IEnumerator ChangeCoroutine()
+        {
+            Transform prevPlayerTrm = CurrentPlayer.transform;
+            Vector2 changePosition = prevPlayerTrm.position;
+            //Quaternion prevRotation = prevPlayerTrm.rotation;
+            CurrentPlayer.ExitCharacter();
+            CurrentPlayer.SetActive(false);
+            float direction = CurrentPlayer.GetCompo<AgentRenderer>().FacingDirection;
+
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % _playerList.Count; // index change -> character Change
+
+            yield return new WaitForSeconds(0.2f);
             CurrentPlayer.transform.position = changePosition;
-            CurrentPlayer.EnterCharacter();
-            CurrentPlayer.SetActive(true);
-            CameraManager.Instance.SetFollow(CurrentPlayer.transform);
-            _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
+            //CurrentPlayer.transform.rotation = prevRotation;
+            CurrentPlayer.GetCompo<AgentRenderer>().FlipController(direction);
+            SetPlayer(CurrentPlayer);
+        }
+
+        private void SetPlayer(Player newCharacter)
+        {
+            newCharacter.EnterCharacter();
+            newCharacter.SetActive(true);
+            CameraManager.Instance.SetFollow(newCharacter.transform);
+            _aimGroup.SetAnchorOwner(newCharacter.RigidCompo, newCharacter.RopeHolder);
         }
 
 

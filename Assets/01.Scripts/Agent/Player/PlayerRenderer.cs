@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using Agents.Animate;
 using UnityEngine;
+using UnityEngine.iOS;
 namespace Agents.Players
 {
 
@@ -19,6 +22,8 @@ namespace Agents.Players
         [field: SerializeField] public AnimParamSO SkillParam { get; private set; }
 
         protected bool _isLockRotation = true;
+        private readonly int _dissolveHash = Shader.PropertyToID("_Dissolve");
+        private float _dissolveDuration = 0.2f;
 
 
         protected override void Awake()
@@ -44,6 +49,25 @@ namespace Agents.Players
             float angle = Mathf.Atan2(upDirection.y, upDirection.x) * Mathf.Rad2Deg + offset;
             transform.rotation = Quaternion.Euler(0, 0, angle);
 
+        }
+
+        public void SetDissolve(bool value, Action onComplete = null)
+        {
+            StartCoroutine(DissolveCoroutine(value, onComplete));
+        }
+
+        private IEnumerator DissolveCoroutine(bool value, Action onComplete = null)
+        {
+            float currentTime = 0f;
+            while (currentTime < _dissolveDuration)
+            {
+                currentTime += Time.deltaTime;
+                float ratio = currentTime / _dissolveDuration;
+                _spriteRenderer.material.SetFloat(_dissolveHash, value ? ratio : 1 - ratio);
+                yield return null;
+            }
+            if (onComplete != null)
+                onComplete();
         }
 
     }

@@ -8,5 +8,15 @@ namespace Agents.Players.FSM
         public PlayerTagExitState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
+
+        public override void Enter()
+        {
+            base.Enter();
+            _renderer.SetDissolve(false, () => 
+            {
+                _player.gameObject.SetActive(false);
+            });
+
+        }
     }
 }
