@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Agents.Players;
 using CameraControllers;
@@ -15,18 +16,17 @@ namespace Combat.PlayerTagSystem
         [SerializeField] private PlayerSO[] _playerDatas;
         [SerializeField] private List<Player> _playerList;
         [SerializeField] private AimGroupController _aimGroup;
-        [SerializeField] private int _currentPlayerIndex;
+        [SerializeField] private int _currentPlayerIndex = -1;
         public Player CurrentPlayer => _playerList[_currentPlayerIndex];
 
         private void Awake()
         {
             Initialize();
-            CurrentPlayer.EnterCharacter();
             _playerInput.OnCharacterChangeEvent += Change;
         }
         private void Start()
         {
-
+            Change();
         }
 
         private void OnDestroy()
@@ -50,9 +50,17 @@ namespace Combat.PlayerTagSystem
 
         public void Change()
         {
-            CurrentPlayer.ExitCharacter();
+            Vector2 changePosition = Vector2.zero;
+            if (_currentPlayerIndex > -1)
+            {
+                changePosition = CurrentPlayer.transform.position;
+                CurrentPlayer.ExitCharacter();
+                CurrentPlayer.SetActive(false);
+            }
             _currentPlayerIndex = (_currentPlayerIndex + 1) % _playerList.Count;
+            CurrentPlayer.transform.position = changePosition;
             CurrentPlayer.EnterCharacter();
+            CurrentPlayer.SetActive(true);
             CameraManager.Instance.SetFollow(CurrentPlayer.transform);
             _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
         }

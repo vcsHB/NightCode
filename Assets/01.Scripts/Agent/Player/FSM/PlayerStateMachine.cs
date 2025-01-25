@@ -29,7 +29,7 @@ namespace Agents.Players.FSM
 
         public virtual void Initialize(string firstState)
         {
-            if(playerRenderer == null) Debug.Log("playerRenderer가 널임");
+            if (playerRenderer == null) Debug.Log("playerRenderer가 널임");
             AddState("Idle", "PlayerIdle", playerRenderer.IdleParam);
             AddState("Move", "PlayerMove", playerRenderer.MoveParam);
             AddState("Jump", "PlayerJump", playerRenderer.JumpParam);
@@ -42,8 +42,13 @@ namespace Agents.Players.FSM
             if (_stateDictionary.TryGetValue(firstState, out PlayerState state))
             {
                 CurrentState = state;
-                CurrentState.Enter();
             }
+        }
+
+        public void StartState()
+        {
+            CurrentState.Enter();
+
         }
 
         public void AddState(string id, string typeName, AnimParamSO animParam)

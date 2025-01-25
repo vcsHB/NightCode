@@ -7,6 +7,13 @@ namespace Agents.Players.FSM
     {
         public PlayerTagEnterState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
+            _canUseRope = false;
+        }
+
+        public override void AnimationEndTrigger()
+        {
+            base.AnimationEndTrigger();
+            _stateMachine.ChangeState("Idle");
         }
     }
 }
