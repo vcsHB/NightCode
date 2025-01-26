@@ -26,7 +26,7 @@ namespace Agents.Players.FSM
             {
                 _stateMachine.ChangeState("Idle");
             }
-            _renderer.FlipController(_mover.Velocity.x);
+            _renderer.FlipController(_mover.Velocity.normalized.x);
             _renderer.SetRotate(_aimController.HangingDirection);
         }
 

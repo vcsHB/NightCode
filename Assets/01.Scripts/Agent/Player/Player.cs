@@ -20,8 +20,8 @@ namespace Agents.Players
 
         protected override void Awake()
         {
-            base.Awake();
             FeedbackChannel = Instantiate(FeedbackChannel);
+            base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
             HealthCompo = GetComponent<Health>();
             HealthCompo.OnDieEvent.AddListener(HandlePlayerDieEvent);

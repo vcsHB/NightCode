@@ -41,13 +41,14 @@ namespace Agents.Players
         {
             if (_isLockRotation) return;
             float offset = -90f;
-            if (Mathf.Approximately(_agent.transform.eulerAngles.y, -180f))
+            float yRotation = 0f;
+            if (Mathf.Approximately(_agent.transform.eulerAngles.y, 180f))
             {
                 upDirection.x *= -1;
-                offset = 90f;
+                yRotation = 180f;
             }
             float angle = Mathf.Atan2(upDirection.y, upDirection.x) * Mathf.Rad2Deg + offset;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            transform.rotation = Quaternion.Euler(0, yRotation, angle);
 
         }
 
