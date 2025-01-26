@@ -201,7 +201,7 @@ public partial class UtilityWindow
         
         string code = string.Format(CodeFormat.PoolingTypeFormat, codeBuilder.ToString());
         
-        string path = $"{Application.dataPath}/01.Scrips/Utils/PoolManager/Core/ObjectPool/PoolingType.cs";
+        string path = $"{Application.dataPath}/01.Scripts/Utils/PoolManager/Core/ObjectPool/PoolingType.cs";
         
         
         File.WriteAllText(path, code);

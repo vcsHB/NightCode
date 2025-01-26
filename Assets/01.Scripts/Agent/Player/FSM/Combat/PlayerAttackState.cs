@@ -1,3 +1,4 @@
+using System.Collections;
 using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
@@ -7,7 +8,7 @@ namespace Agents.Players.FSM
     {
         protected int _comboCounter = 0;
         protected float _lastAttackTime;
-        protected float _comboWindow = 0.4f;
+        protected float _comboWindow = 0.2f;
 
         protected readonly int _comboCounterHash = Animator.StringToHash("ComboCounter");
 
@@ -16,11 +17,12 @@ namespace Agents.Players.FSM
 
 
         protected Animator _animator;
+        protected PlayerAttackController _attackController;
 
         public PlayerAttackState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
-            Debug.Log(player);
-            _animator = player.GetComponentInChildren<Animator>();
+            _animator = _renderer.Animator;
+            _attackController = player.GetCompo<PlayerAttackController>();
         }
 
         public override void Enter()
@@ -32,12 +34,29 @@ namespace Agents.Players.FSM
             {
                 _comboCounter = 0;
             }
+            _animator.SetInteger(_comboCounterHash, _comboCounter);
+            MoveToAttackFacing();
+            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("AttackCommon"));
+        }
 
+        protected virtual void MoveToAttackFacing()
+        {
+            AttackData data = _attackController.GetAttackData(_comboCounter);
+            if (data == null) return;
+            _mover.SetMovement(_renderer.FacingDirection * data.movePower);
+            _delayCoroutine = _player.StartCoroutine(MoveDelayCoroutine(data.moveduration));
+
+        }
+
+
+        private IEnumerator MoveDelayCoroutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            _mover.StopImmediately();
         }
 
         public override void Exit()
         {
-
             ++_comboCounter;
             _lastAttackTime = Time.time;
             _animator.speed = 1;
@@ -47,6 +66,20 @@ namespace Agents.Players.FSM
                 _player.StopCoroutine(_delayCoroutine);
             }
             base.Exit();
+
+        }
+
+
+        public override void UpdateState()
+        {
+            base.UpdateState();
+
+        }
+
+        public override void AnimationEndTrigger()
+        {
+            base.AnimationEndTrigger();
+            _stateMachine.ChangeState("Idle");
 
         }
     }

@@ -7,7 +7,9 @@ namespace Agents.Players
     public class AimAnchor : MonoBehaviour
     {
         [SerializeField] private Sprite[] _aimMarkSprites;
+        [SerializeField] private ParticleSystem _anchorVFX;
         private SpriteRenderer _aimRenderer;
+        [SerializeField] private GameObject _anchorPhysicObject;
         private DistanceJoint2D _jointCompo;
         private Transform _visualTrm;
 
@@ -15,12 +17,13 @@ namespace Agents.Players
         {
             _visualTrm = transform.Find("Visual");
             _aimRenderer = _visualTrm.GetComponent<SpriteRenderer>();
-            _jointCompo = GetComponent<DistanceJoint2D>();
+            _jointCompo = _anchorPhysicObject.GetComponent<DistanceJoint2D>();
         }
 
         public void SetJointEnable(bool value)
         {
             _jointCompo.enabled = value;
+            _anchorPhysicObject.SetActive(value);
         }
 
         public void SetLength(float distance)
@@ -30,6 +33,7 @@ namespace Agents.Players
         public void SetPos(Vector2 position)
         {
             transform.position = position;
+            _anchorVFX.Play();
 
         }
     }

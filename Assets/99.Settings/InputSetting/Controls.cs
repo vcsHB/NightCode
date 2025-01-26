@@ -37,9 +37,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""LeftMouse"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""91e9fcdf-108b-492d-978a-3a1a09f9230f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""cb9e4431-755e-4e27-b07e-05c781ed0c25"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -123,7 +132,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
-                    ""action"": ""LeftMouse"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -170,6 +179,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""ChangeTag"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1b35ca1-a7d0-429f-84ff-eb34c52ec94f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -181,7 +201,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""OnEsc"",
                     ""type"": ""Button"",
                     ""id"": ""eb87c389-83d8-4429-ac37-ffa9608f009b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -191,7 +211,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ee9f7987-2a41-48c3-8bf9-4d3afb8218b9"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
@@ -224,7 +244,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_LeftMouse = m_Player.FindAction("LeftMouse", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Turbo = m_Player.FindAction("Turbo", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Mouse = m_Player.FindAction("Mouse", throwIfNotFound: true);
@@ -300,7 +321,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_LeftMouse;
+    private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Turbo;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Mouse;
@@ -310,7 +332,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         private @Controls m_Wrapper;
         public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @LeftMouse => m_Wrapper.m_Player_LeftMouse;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Turbo => m_Wrapper.m_Player_Turbo;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Mouse => m_Wrapper.m_Player_Mouse;
@@ -327,9 +350,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @LeftMouse.started += instance.OnLeftMouse;
-            @LeftMouse.performed += instance.OnLeftMouse;
-            @LeftMouse.canceled += instance.OnLeftMouse;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
             @Turbo.started += instance.OnTurbo;
             @Turbo.performed += instance.OnTurbo;
             @Turbo.canceled += instance.OnTurbo;
@@ -349,9 +375,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @LeftMouse.started -= instance.OnLeftMouse;
-            @LeftMouse.performed -= instance.OnLeftMouse;
-            @LeftMouse.canceled -= instance.OnLeftMouse;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
             @Turbo.started -= instance.OnTurbo;
             @Turbo.performed -= instance.OnTurbo;
             @Turbo.canceled -= instance.OnTurbo;
@@ -439,7 +468,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnLeftMouse(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
         void OnTurbo(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnMouse(InputAction.CallbackContext context);

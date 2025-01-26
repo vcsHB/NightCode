@@ -1,3 +1,4 @@
+using System;
 using Combat;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,9 +8,12 @@ namespace Agents
     {
         public UnityEvent OnHealthChangedEvent;
         public UnityEvent OnDieEvent;
+        public event Action<float, float> OnHealthChangedValueEvent;
 
         public float MaxHealth => _maxHealth;
+        [SerializeField]
         private float _maxHealth;
+        [SerializeField]
         private float _currentHealth = 0;
 
         public void Initialize(float health)
@@ -21,17 +25,20 @@ namespace Agents
         private void SetMaxHealth()
         {
             _currentHealth = MaxHealth;
+            HandleHealthChanged();
         }
 
         public void ApplyDamage(float damage)
         {
             _currentHealth -= damage;
             CheckDie();
+            HandleHealthChanged();
         }
 
         public void Restore(float amount)
         {
             _currentHealth += amount;
+            HandleHealthChanged();
 
         }
         private void CheckDie()
@@ -40,6 +47,12 @@ namespace Agents
             {
                 OnDieEvent?.Invoke();
             }
+        }
+
+        private void HandleHealthChanged()
+        {
+            OnHealthChangedValueEvent?.Invoke(_currentHealth, MaxHealth);
+            OnHealthChangedEvent?.Invoke();
         }
 
     }
