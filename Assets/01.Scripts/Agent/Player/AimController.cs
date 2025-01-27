@@ -55,7 +55,6 @@ namespace Agents.Players
             Vector2 mousePos = _player.PlayerInput.MouseWorldPosition;
             _aimGroupController.SetAimMarkPosition(mousePos);
             Vector2 dir = (mousePos - (Vector2)transform.position);
-            //RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, _shootRadius, _wallLayer | _targetLayer);
             RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, dir, _shootRadius, _wallLayer | _targetLayer);
             if (boxHit.collider == null)
             {
@@ -100,16 +99,12 @@ namespace Agents.Players
             Vector2 playerPos = _player.transform.position;
             float distance = (_targetPoint - playerPos).magnitude;
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
+            _aimGroupController.Wire.SetWireEnable(true, _targetPoint, distance);
             if (distance > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 _clampCoroutine = StartCoroutine(DistanceClampCoroutine(Vector2.Lerp(playerPos, _targetPoint, (distance - _wireClampedDistance) / distance)));
-            }
-            else
-            {
-                _aimGroupController.Wire.SetWireEnable(true, _targetPoint, distance);
-                //_playerMovement.AddForceToEntity(velocity);   
-            }
+            } // 마우스 위치 시차로 인해 로프 역방향으로 발사되는거 막아야됨 
             _isShoot = true;
             return true;
         }

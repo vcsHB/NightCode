@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using Agents.Animate;
 using UnityEngine;
-using UnityEngine.iOS;
+
 namespace Agents.Players
 {
 
@@ -43,7 +43,7 @@ namespace Agents.Players
             float offset = -90f;
             float yRotation = 0f;
             float angleFlip = 1f;
-            if (Mathf.Approximately(_agent.transform.eulerAngles.y, 180f))
+            if (Mathf.Approximately(Mathf.Abs(_agent.transform.eulerAngles.y), 180f))
             {
                 angleFlip = -1f;
                 yRotation = 180f;

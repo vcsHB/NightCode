@@ -16,7 +16,7 @@ namespace Agents.Players
         public Rigidbody2D RigidCompo { get; protected set; }
         [field: SerializeField] public Transform RopeHolder { get; private set; }
         public bool CanCharacterChange { get; set; } = true;
-        public bool IsActive { get; private set; }
+        [field:SerializeField] public bool IsActive { get; private set; }
 
         protected override void Awake()
         {
@@ -29,11 +29,6 @@ namespace Agents.Players
             InitState();
         }
 
-        private void HandlePlayerDieEvent()
-        {
-            IsDead = true;
-            _stateMachine.ChangeState("Dead");
-        }
 
         private void Start()
         {
@@ -63,6 +58,11 @@ namespace Agents.Players
         public void ExitCharacter()
         {
             _stateMachine.ChangeState("Exit");
+        }
+        private void HandlePlayerDieEvent()
+        {
+            IsDead = true;
+            _stateMachine.ChangeState("Dead");
         }
 
     }
