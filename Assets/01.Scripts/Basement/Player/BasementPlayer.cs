@@ -12,6 +12,7 @@ namespace Basement.Player
         [field: SerializeField] public PlayerInput playerInput { get; private set; }
         [SerializeField] private GameObject _pressFBtn;
         [SerializeField] private Transform _visualTrm;
+        private SpriteRenderer _renderer;
         private Animator _visualAnimator;
         public event Action OnInteract;
 
@@ -24,6 +25,7 @@ namespace Basement.Player
         protected override void Awake()
         {
             _rigid = GetComponent<Rigidbody2D>();
+            _renderer = _visualTrm.GetComponent<SpriteRenderer>();
             _visualAnimator = _visualTrm.GetComponent<Animator>();
         }
 
@@ -51,8 +53,12 @@ namespace Basement.Player
             {
                 OnInteract?.Invoke();
                 _readyInteract = false;
-                RemoveInteractAction();
             }
+        }
+
+        public void SetSortingLayer(int layer)
+        {
+            _renderer.sortingOrder = layer;
         }
 
         public void SetInteractAction(Action onInteract)
@@ -62,9 +68,10 @@ namespace Basement.Player
             _pressFBtn.SetActive(true);
         }
 
-        public void RemoveInteractAction()
+        public void RemoveInteractAction(Action onInteract)
         {
-            OnInteract = null;
+            _readyInteract = false;
+            OnInteract -= onInteract;
             _pressFBtn.SetActive(false);
         }
     }

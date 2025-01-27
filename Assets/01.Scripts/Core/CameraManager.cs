@@ -1,5 +1,8 @@
+using CameraControllers;
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +13,9 @@ public class CameraManager : MonoSingleton<CameraManager>
 
     private CinemachineCamera _currentCamera;
     private CinemachineConfiner2D _confinder;
+
+    private Tween _cameraChangeTween;
+    private Tween _zoomTween;
 
     protected override void Awake()
     {
@@ -27,16 +33,24 @@ public class CameraManager : MonoSingleton<CameraManager>
 
     public void Zoom(float value, float duration = 0.2f)
     {
-        DOTween.To(() => _currentCamera.Lens.OrthographicSize, 
+        if (_zoomTween != null && _zoomTween.active)
+            _zoomTween.Kill();
+
+        _zoomTween = DOTween.To(() => _currentCamera.Lens.OrthographicSize,
             x => _currentCamera.Lens.OrthographicSize = x,
             value, duration);
     }
 
-    public void ChangeFollow(Transform target)
+    public void ChangeFollow(Transform target, float duration, Ease easing = Ease.Linear)
     {
-        if( target == null ) return;
+        if (target == null) return;
 
-        _currentCamera.Follow = target;
+        if(_cameraChangeTween != null && _cameraChangeTween.active)
+            _cameraChangeTween.Kill();
+
+        _cameraChangeTween = _currentCamera.Follow.DOMove(target.position, duration)
+            .SetEase(easing)
+            .OnComplete(() => _currentCamera.Follow = target);
     }
 
     //µð¹ö±ë¿ë

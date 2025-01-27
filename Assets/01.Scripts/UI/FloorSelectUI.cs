@@ -3,12 +3,6 @@ using UnityEngine;
 public class FloorSelectUI : MonoBehaviour, IUIPanel
 {
     public RectTransform RectTrm => transform as RectTransform;
-    public ElevatorDoor door;
-
-    public void OpenDoor()
-    {
-        door.OpenDoor();
-    }
 
     public void Close()
     {
