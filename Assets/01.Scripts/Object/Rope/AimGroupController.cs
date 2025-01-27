@@ -1,3 +1,4 @@
+using Agents.Players;
 using UnityEngine;
 
 namespace ObjectManage.Rope
@@ -7,8 +8,9 @@ namespace ObjectManage.Rope
         [SerializeField] private Transform _virtualAimTrm;
         [SerializeField] private Transform _aimMarkTrm;
         [SerializeField] private Transform _anchorTrm;
+        [SerializeField] private AimAnchor _aimAnchor;
         [field: SerializeField] public Wire Wire { get; private set; }
-
+        [field: SerializeField] public RopePhysics RopePhysics {get; private set;}
         // Properties
         public Vector2 AnchorPos => _anchorTrm.position;
         public Vector2 VirtualAimPos => _virtualAimTrm.position;
@@ -37,6 +39,13 @@ namespace ObjectManage.Rope
         public void SetActiveWire(bool value)
         {
             Wire.gameObject.SetActive(value);
+        }
+
+        public void SetAnchorOwner(Rigidbody2D ownerRigid, Transform ropeHolder)
+        {
+            _aimAnchor.SetOwnerPlayerRigidbody(ownerRigid);
+            RopePhysics.startTransform = ropeHolder;
+
         }
     }
 }

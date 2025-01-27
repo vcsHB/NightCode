@@ -13,12 +13,20 @@ namespace Agents.Players
         [field: SerializeField] public GameEventChannelSO FeedbackChannel { get; private set; }
         public bool IsDead { get; protected set; }
         public Health HealthCompo { get; protected set; }
+        public Rigidbody2D RigidCompo { get; protected set; }
+        [field: SerializeField] public Transform RopeHolder { get; private set; }
+        public bool CanCharacterChange { get; set; } = true;
+        public bool IsActive { get; private set; }
 
         protected override void Awake()
         {
+            FeedbackChannel = Instantiate(FeedbackChannel);
             base.Awake();
+            RigidCompo = GetComponent<Rigidbody2D>();
             HealthCompo = GetComponent<Health>();
             HealthCompo.OnDieEvent.AddListener(HandlePlayerDieEvent);
+            
+            InitState();
         }
 
         private void HandlePlayerDieEvent()
@@ -29,8 +37,7 @@ namespace Agents.Players
 
         private void Start()
         {
-            InitState();
-
+            StateMachine.StartState();
         }
         protected virtual void InitState()
         {
@@ -40,16 +47,19 @@ namespace Agents.Players
 
         private void Update()
         {
-            _stateMachine.UpdateState();
+            if(IsActive)
+                _stateMachine.UpdateState();
+        }
+        public void SetActive(bool value)
+        {
+            IsActive = value;
         }
 
         public void EnterCharacter()
         {
             _stateMachine.ChangeState("Enter");
-
+            
         }
-
-
         public void ExitCharacter()
         {
             _stateMachine.ChangeState("Exit");
