@@ -5,10 +5,12 @@ namespace Agents.Animate
     public class AnimateRenderer : MonoBehaviour
     {
         protected Animator _animator;
+        protected SpriteRenderer _spriteRenderer;
         public Animator Animator => _animator;
 
         protected virtual void Awake()
         {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
         }
 

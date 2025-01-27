@@ -16,7 +16,9 @@ namespace Agents.Players.FSM
         {
             base.Enter();
             _renderer.SetLockRotation(true);
+            _aimController.RemoveWire();
             _player.PlayerInput.JumpEvent += HandleJump;
+            
         }
 
 

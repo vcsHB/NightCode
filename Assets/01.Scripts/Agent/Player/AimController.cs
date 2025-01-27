@@ -1,5 +1,6 @@
 using System.Collections;
 using ObjectManage.Rope;
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Agents.Players
@@ -37,6 +38,10 @@ namespace Agents.Players
             _player = agent as Player;
             _playerMovement = _player.GetCompo<PlayerMovement>();
             _lineRenderer = GetComponent<LineRenderer>();
+        }
+        public void SetAimGroup(AimGroupController aimGroup)
+        {
+            _aimGroupController = aimGroup;
         }
 
         public void AfterInit() { }
@@ -97,10 +102,12 @@ namespace Agents.Players
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
             if (distance > _wireClampedDistance)
             {
+                _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 _clampCoroutine = StartCoroutine(DistanceClampCoroutine(Vector2.Lerp(playerPos, _targetPoint, (distance - _wireClampedDistance) / distance)));
-            }else
+            }
+            else
             {
-                _aimGroupController.Wire.SetWireEnable(true, _targetPoint, distance); 
+                _aimGroupController.Wire.SetWireEnable(true, _targetPoint, distance);
                 //_playerMovement.AddForceToEntity(velocity);   
             }
             _isShoot = true;

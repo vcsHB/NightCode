@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Agents.Animate;
 using UnityEngine;
 namespace Agents
@@ -13,6 +12,7 @@ namespace Agents
         public void Initialize(Agent agent)
         {
             _agent = agent;
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
         }
 

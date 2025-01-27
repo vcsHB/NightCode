@@ -43,6 +43,11 @@ namespace CameraControllers
             return default(T);
         }
 
+        public void SetFollow(Transform target)
+        {
+            _camera.Follow = target;
+        }
+
 
 
 

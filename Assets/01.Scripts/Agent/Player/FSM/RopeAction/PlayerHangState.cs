@@ -26,7 +26,7 @@ namespace Agents.Players.FSM
             {
                 _stateMachine.ChangeState("Idle");
             }
-            _renderer.FlipController(_mover.Velocity.x);
+            _renderer.FlipController(_mover.Velocity.normalized.x);
             _renderer.SetRotate(_aimController.HangingDirection);
         }
 
@@ -44,7 +44,7 @@ namespace Agents.Players.FSM
         private void HandleUseTurbo()
         {
             if (!_canUseTurbo) return;
-            _mover.UseTurbo();
+            _mover.UseTurbo(_aimController.HangingDirection);
             _canUseTurbo = false;
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));
         }
