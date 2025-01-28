@@ -1,4 +1,3 @@
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,7 +23,7 @@ namespace SpeedRun
         {
             _isChecked = false;
         }
-        
+
         private void CheckGoal()
         {
             if (_isChecked) return;

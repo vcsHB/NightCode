@@ -1,6 +1,5 @@
 using System.Collections;
 using ObjectManage.Rope;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Agents.Players

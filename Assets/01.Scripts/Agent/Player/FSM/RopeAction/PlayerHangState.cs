@@ -6,6 +6,7 @@ namespace Agents.Players.FSM
     public class PlayerHangState : PlayerRopeState
     {
         private bool _canUseTurbo = true;
+        private bool _isGroundCheck = true;
         public PlayerHangState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
@@ -22,10 +23,10 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             base.UpdateState();
-            if (_mover.IsGroundDetected())
-            {
-                _stateMachine.ChangeState("Idle");
-            }
+            // if (_mover.IsGroundDetected())
+            // {
+            //     _stateMachine.ChangeState("Idle");
+            // }
             _renderer.FlipController(_mover.Velocity.normalized.x);
             _renderer.SetRotate(_aimController.HangingDirection);
         }

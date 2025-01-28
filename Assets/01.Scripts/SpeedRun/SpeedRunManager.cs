@@ -8,8 +8,10 @@ namespace SpeedRun
         [SerializeField] TimerUI _timerUI;
 
         [SerializeField] private float _currentTime;
+        [SerializeField] private Transform _playerTrm;
+        [SerializeField] private Transform _resetPoint;
         private bool _isComplete;
-        private bool _isStarted;
+        [SerializeField] private bool _isStarted;
 
 
         private void Update()
@@ -32,7 +34,8 @@ namespace SpeedRun
         public void ResetTimer()
         {
             _isComplete = false;
-
+            _currentTime = 0f;
+            _playerTrm.position = _resetPoint.position;
         }
     }
 
