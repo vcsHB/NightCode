@@ -7,6 +7,7 @@ namespace Combat.PlayerTagSystem
     {
         public int id;
         public string characterName;
+        public Sprite characterIconSprite;
         public Player playerPrefab;
 
 

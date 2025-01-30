@@ -79,14 +79,6 @@ namespace Agents.Players
             _aimGroupController.SetVirtualAimPosition(_targetPoint);
         }
 
-        // public void HandleShootAnchor(bool value)
-        // {
-        //     if (value && canShoot)
-        //         Shoot();
-        //     else
-        //         RemoveWire();
-        // }
-
         public bool Shoot()
         {
             if (_currentShootTime < _shootCooltime) return false;

@@ -70,30 +70,23 @@ namespace Agents.Players
 
         public void UseTurbo(Vector2 hangingDirection)
         {
-            //StopImmediately(true);
-
             Vector2 baseDirection = -hangingDirection.normalized;
             Vector2 inputDirection = _player.PlayerInput.InputDirection;
             if (inputDirection.magnitude < 0.1f)
                 inputDirection = Velocity.normalized;
 
-            // 1. 입력 벡터를 보라색 벡터에 투영
+            // 1. 입력 벡터를 HangingDirection 벡터에 투영
             Vector2 projection = Vector3.Project(inputDirection, baseDirection);
             projection.Normalize();
 
-            // 2. 입력 벡터를 보라색 벡터에 수직인 방향으로 분리
+            // 2. 입력 벡터를 HangingDirection 벡터에 수직인 방향으로 분리
             Vector2 perpendicular = inputDirection - projection;
 
             // 3. 결과 벡터 계산 (필요한 연산 방식에 따라 다르게 적용 가능)
-            Vector2 result = baseDirection + projection + perpendicular.normalized;
-            //result.x *= 0.8f;
+            Vector2 result = baseDirection + projection.normalized + perpendicular.normalized;
 
-            //Vector2 newDir = -hangingDirection - direction;
             SetVelocity(result.normalized * _turboPower);
-
-
         }
-
 
         public void SetMultipleVelocioty(float value)
         {
