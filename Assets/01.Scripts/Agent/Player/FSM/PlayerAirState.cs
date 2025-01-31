@@ -1,3 +1,4 @@
+using System;
 using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
@@ -13,7 +14,17 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
+            _player.PlayerInput.JumpEvent += HandleJump;
             _mover.SetMovementMultiplier(0.6f);
+        }
+
+        private void HandleJump()
+        {
+            if (_mover.CanJump)
+            {
+                _stateMachine.ChangeState("Jump");
+
+            }
         }
 
         public override void Exit()

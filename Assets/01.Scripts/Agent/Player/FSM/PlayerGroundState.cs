@@ -18,6 +18,7 @@ namespace Agents.Players.FSM
             _renderer.SetLockRotation(true);
             _aimController.RemoveWire();
             _player.PlayerInput.JumpEvent += HandleJump;
+            _mover.jumpCount = 2; // 나중에 스테이터스 처리
             
         }
 
@@ -41,8 +42,8 @@ namespace Agents.Players.FSM
 
         private void HandleJump()
         {
-
-            _stateMachine.ChangeState("Jump");
+            if(_mover.CanJump)
+                _stateMachine.ChangeState("Jump");
         }
     }
 }

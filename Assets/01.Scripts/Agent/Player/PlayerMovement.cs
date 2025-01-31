@@ -23,6 +23,8 @@ namespace Agents.Players
         private Player _player;
         private float _movementX;
         private float _moveSpeedMultiplier = 1f;
+        public int jumpCount = 1;
+        public bool CanJump => jumpCount > 0;
         private float _originalgravity;
         private PlayerRenderer _playerRenderer;
         [field: SerializeField] public bool CanManualMove { get; set; } = true;
