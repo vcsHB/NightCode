@@ -69,6 +69,11 @@ namespace Agents.Players
             _movementX = 0;
         }
 
+        public void StopYVelocity()
+        {
+            _rigidCompo.linearVelocityY = 0f;
+        }
+
 
         public void UseTurbo(Vector2 hangingDirection)
         {
