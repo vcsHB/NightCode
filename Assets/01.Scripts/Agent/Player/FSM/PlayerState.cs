@@ -19,6 +19,7 @@ namespace Agents.Players.FSM
 
         protected bool _isTriggered;
         protected bool _canUseRope = false;
+        protected bool _canRemoveRope = true;
 
         public PlayerState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam)
         {

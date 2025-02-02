@@ -1,10 +1,7 @@
-using System;
 using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
-
-
     public class PlayerAirState : PlayerState
     {
         public PlayerAirState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
@@ -23,7 +20,6 @@ namespace Agents.Players.FSM
             if (_mover.CanJump)
             {
                 _stateMachine.ChangeState("Jump");
-
             }
         }
 

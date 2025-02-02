@@ -1,4 +1,6 @@
+using System;
 using Agents.Animate;
+using TMPro;
 using UnityEngine;
 
 namespace Agents.Players.FSM
@@ -14,11 +16,13 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            
+
             _mover.CanManualMove = false;
             _player.PlayerInput.TurboEvent += HandleUseTurbo;
+            _player.PlayerInput.PullEvent += HandlePull;
             _renderer.SetLockRotation(false);
         }
+
 
         public override void UpdateState()
         {
@@ -34,7 +38,7 @@ namespace Agents.Players.FSM
         public override void Exit()
         {
             base.Exit();
-            
+
             _player.PlayerInput.TurboEvent -= HandleUseTurbo;
             _canUseTurbo = true;
             _mover.CanManualMove = true;
@@ -50,5 +54,10 @@ namespace Agents.Players.FSM
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));
         }
 
+        private void HandlePull()
+        {
+            _canRemoveRope = true;
+            _aimController.HandlePull();
+        }
     }
 }

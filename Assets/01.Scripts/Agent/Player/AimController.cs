@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using ObjectManage.Rope;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Agents.Players
@@ -99,7 +101,7 @@ namespace Agents.Players
             _isShoot = true;
             return true;
         }
-        private IEnumerator DistanceClampCoroutine(Vector2 clampPosition)
+        private IEnumerator DistanceClampCoroutine(Vector2 clampPosition, Action OnComplete = null)
         {
             Vector2 velocity = _playerMovement.Velocity;
             Vector2 before = _player.transform.position;
@@ -112,6 +114,7 @@ namespace Agents.Players
             }
             _aimGroupController.Wire.SetWireEnable(true, _targetPoint, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
+            OnComplete?.Invoke();
         }
 
         public void RemoveWire()
@@ -126,7 +129,12 @@ namespace Agents.Players
 
             _playerMovement.SetVelocity(velocity);
 
+        }
 
+        public void HandlePull(Action OnComplete)
+        {
+            StartCoroutine(DistanceClampCoroutine());
+            
         }
 
 
