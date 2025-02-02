@@ -30,11 +30,7 @@ namespace ObjectManage.Rope
         {
             SetWireEnable(enable);
             _anchor.SetPos(targetPos);
-            // if(length > _wireLengthThreshold)
-            // {
-            //     length -= _pullLength;
-            // }
-            // length = 4f;
+           
             _anchor.SetLength(length);
         }
 

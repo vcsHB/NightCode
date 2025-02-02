@@ -14,7 +14,7 @@ namespace Agents.Players
         [SerializeField] private float _shootCooltime = 0.2f;
         [SerializeField] private float _wireClampedDistance = 12f;
         [SerializeField] private float _clampDuration = 0.2f;
-
+        [SerializeField] private float _pullClampDuration = 0.01f;
         // Properties
         public bool canShoot = true;
         public bool IsShoot => _isShoot;
@@ -63,7 +63,7 @@ namespace Agents.Players
         {
             _currentShootTime += Time.deltaTime;
             if (_isShoot)
-                HangingDirection = _currentAimData.aimDirection;
+                HangingDirection = _aimGroupController.AnchorPos - OriginPosition;
         }
 
 
@@ -78,31 +78,35 @@ namespace Agents.Players
             Vector2 playerPos = _player.transform.position;
             float distance = (TargetPoint - playerPos).magnitude;
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
-            _aimGroupController.Wire.SetWireEnable(true, TargetPoint, distance);
             if (distance > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 _clampCoroutine = StartCoroutine(
                     DistanceClampCoroutine(
-                        GetLerpTargetPosition(_wireClampedDistance)));
-            } // 마우스 위치 시차로 인해 로프 역방향으로 발사되는거 막아야됨 
+                        GetLerpTargetPosition(_wireClampedDistance), _clampDuration));
+            }
+            else
+                _aimGroupController.Wire.SetWireEnable(true, TargetPoint, distance);
+
             _isShoot = true;
             return true;
         }
-        private IEnumerator DistanceClampCoroutine(Vector2 clampPosition, Action OnComplete = null)
+        private IEnumerator DistanceClampCoroutine(Vector2 clampPosition, float duration, Action OnComplete = null)
         {
             Vector2 velocity = _playerMovement.Velocity;
             Vector2 before = _player.transform.position;
+            Vector2 targetPointPosition = TargetPoint;
             float currentTime = 0f;
-            while (currentTime < _clampDuration)
+            while (currentTime < duration)
             {
                 currentTime += Time.deltaTime;
-                _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / _clampDuration);
+                _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / duration);
                 yield return null;
             }
-            _aimGroupController.Wire.SetWireEnable(true, TargetPoint, _wireClampedDistance);
+            _aimGroupController.Wire.SetWireEnable(true, targetPointPosition, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
             OnComplete?.Invoke();
+            _clampCoroutine = null;
         }
 
         public void RemoveWire()
@@ -123,7 +127,10 @@ namespace Agents.Players
         {
             if (IsClamping) return;
             _playerMovement.StopImmediately(true);
-            _clampCoroutine = StartCoroutine(DistanceClampCoroutine(GetLerpTargetPositionByRatio(0.9f)));
+            _clampCoroutine = StartCoroutine(DistanceClampCoroutine(
+                GetLerpTargetPositionByRatio(0.9f),
+                _currentAimData.distance * _pullClampDuration
+                ));
 
         }
 
@@ -131,18 +138,14 @@ namespace Agents.Players
 
         private Vector2 GetLerpTargetPosition(float clampDistance)
         {
-            Vector2 playerPos = _player.transform.position;
-            float distance = (TargetPoint - playerPos).magnitude;
-
-            return Vector2.Lerp(playerPos, TargetPoint, (distance - clampDistance) / distance);
+            float distance = _currentAimData.distance;
+            return Vector2.Lerp(_currentAimData.originPlayerPosition, TargetPoint, (distance - clampDistance) / distance);
         }
 
         private Vector2 GetLerpTargetPositionByRatio(float ratio)
         {
-            Vector2 playerPos = _player.transform.position;
-            float distance = (TargetPoint - playerPos).magnitude;
 
-            return Vector2.Lerp(playerPos, TargetPoint, ratio);
+            return Vector2.Lerp(_currentAimData.originPlayerPosition, TargetPoint, ratio);
         }
 
         #endregion

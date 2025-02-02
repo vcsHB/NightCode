@@ -1,5 +1,4 @@
 using System;
-using ObjectManage.Rope;
 using UnityEngine;
 namespace Agents.Players
 {
@@ -49,7 +48,7 @@ namespace Agents.Players
         {
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             _playerPos = _player.transform.position;
             _mousePos = _player.PlayerInput.MouseWorldPosition;
@@ -59,8 +58,8 @@ namespace Agents.Players
             if (_isTargeted)
             {
                 _targetPos = boxHit.point;
-                InvokeAimDataEvent();
             }
+            InvokeAimDataEvent();
         }
 
         private void InvokeAimDataEvent()
