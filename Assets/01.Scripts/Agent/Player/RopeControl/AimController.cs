@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using ObjectManage.Rope;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Agents.Players
@@ -10,93 +9,82 @@ namespace Agents.Players
     public class AimController : MonoBehaviour, IAgentComponent
     {
         [SerializeField] private AimGroupController _aimGroupController;
-        [SerializeField] private LayerMask _wallLayer;
-        [SerializeField] private LayerMask _targetLayer;
-
 
         [Header("Setting Values")]
-        [SerializeField] private float _castRadius = 0.4f;
-        [SerializeField] private float _shootRadius = 12f;
         [SerializeField] private float _shootCooltime = 0.2f;
         [SerializeField] private float _wireClampedDistance = 12f;
         [SerializeField] private float _clampDuration = 0.2f;
-        private float _currentShootTime = 0;
-        private Coroutine _clampCoroutine;
-        public bool canShoot = true;
-        private Player _player;
-        private bool _isShoot = false;
-        public bool IsShoot => _isShoot;
-        private PlayerMovement _playerMovement;
-        private LineRenderer _lineRenderer;
 
-        private Vector2 _targetPoint;
-        private bool _isTargeted;
+        // Properties
+        public bool canShoot = true;
+        public bool IsShoot => _isShoot;
         public Vector2 HangingDirection { get; private set; }
+        private bool _isShoot = false;
+        public bool IsClamping => _clampCoroutine != null;
+        private Coroutine _clampCoroutine;
+
+
+        private Player _player;
+        private PlayerMovement _playerMovement;
+
+        private AimData _currentAimData;
+        public bool IsTargeted => _currentAimData.isTargeted;
+        public Vector2 TargetPoint => _currentAimData.targetPosition;
+        public Vector2 OriginPosition => _currentAimData.originPlayerPosition;
+        private float _currentShootTime = 0;
 
 
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
             _playerMovement = _player.GetCompo<PlayerMovement>();
-            _lineRenderer = GetComponent<LineRenderer>();
         }
         public void SetAimGroup(AimGroupController aimGroup)
         {
             _aimGroupController = aimGroup;
         }
 
-        public void AfterInit() { }
+        public void AfterInit()
+        {
+            _player.GetCompo<AimDetector>().OnAimEvent += HandleRefreshAimData;
+        }
+
+        private void HandleRefreshAimData(AimData data)
+        {
+            _aimGroupController.SetAimMarkPosition(data.mousePosition);
+            _aimGroupController.SetVirtualAim(data.isTargeted);
+
+            _currentAimData = data;
+        }
+
         public void Dispose() { }
 
         private void Update()
         {
             _currentShootTime += Time.deltaTime;
             if (_isShoot)
-                HangingDirection = _aimGroupController.AnchorPos - (Vector2)transform.position;
-            Vector2 mousePos = _player.PlayerInput.MouseWorldPosition;
-            _aimGroupController.SetAimMarkPosition(mousePos);
-            Vector2 dir = (mousePos - (Vector2)transform.position);
-            RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, dir, _shootRadius, _wallLayer | _targetLayer);
-            if (boxHit.collider == null)
-            {
-                _isTargeted = false;
-                _aimGroupController.SetVirtualAim(false);
-                _lineRenderer.enabled = false;
-                return;
-            }
-            _isTargeted = true;
-            _aimGroupController.SetVirtualAim(true);
-            _targetPoint = boxHit.point;
-
-            RefreshLine();
-
+                HangingDirection = _currentAimData.aimDirection;
         }
 
-        private void RefreshLine()
-        {
-            _lineRenderer.enabled = true;
-            _lineRenderer.SetPosition(0, transform.position);
-            _lineRenderer.SetPosition(1, _targetPoint);
-
-            _aimGroupController.SetVirtualAimPosition(_targetPoint);
-        }
 
         public bool Shoot()
         {
             if (_currentShootTime < _shootCooltime) return false;
+            if (!IsTargeted) return false;
 
-            if (!_isTargeted) return false;
             _currentShootTime = 0f;
             //_playerController.turboCount = 1;
             _aimGroupController.SetActiveWire(true);
             Vector2 playerPos = _player.transform.position;
-            float distance = (_targetPoint - playerPos).magnitude;
+            float distance = (TargetPoint - playerPos).magnitude;
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
-            _aimGroupController.Wire.SetWireEnable(true, _targetPoint, distance);
+            _aimGroupController.Wire.SetWireEnable(true, TargetPoint, distance);
             if (distance > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
-                _clampCoroutine = StartCoroutine(DistanceClampCoroutine(Vector2.Lerp(playerPos, _targetPoint, (distance - _wireClampedDistance) / distance)));
+                _clampCoroutine = StartCoroutine(
+                    DistanceClampCoroutine(
+                        GetLerpTargetPosition(_wireClampedDistance)));
             } // 마우스 위치 시차로 인해 로프 역방향으로 발사되는거 막아야됨 
             _isShoot = true;
             return true;
@@ -112,14 +100,14 @@ namespace Agents.Players
                 _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / _clampDuration);
                 yield return null;
             }
-            _aimGroupController.Wire.SetWireEnable(true, _targetPoint, _wireClampedDistance);
+            _aimGroupController.Wire.SetWireEnable(true, TargetPoint, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
             OnComplete?.Invoke();
         }
 
         public void RemoveWire()
         {
-            if (_clampCoroutine != null)
+            if (IsClamping)
                 StopCoroutine(_clampCoroutine);
             Vector2 velocity = _playerMovement.Velocity;
             _aimGroupController.SetActiveWire(false);
@@ -131,12 +119,33 @@ namespace Agents.Players
 
         }
 
-        public void HandlePull(Action OnComplete)
+        public void HandlePull()
         {
-            StartCoroutine(DistanceClampCoroutine());
-            
+            if (IsClamping) return;
+            _playerMovement.StopImmediately(true);
+            _clampCoroutine = StartCoroutine(DistanceClampCoroutine(GetLerpTargetPositionByRatio(0.9f)));
+
         }
 
+        #region Calculate Position Functions
+
+        private Vector2 GetLerpTargetPosition(float clampDistance)
+        {
+            Vector2 playerPos = _player.transform.position;
+            float distance = (TargetPoint - playerPos).magnitude;
+
+            return Vector2.Lerp(playerPos, TargetPoint, (distance - clampDistance) / distance);
+        }
+
+        private Vector2 GetLerpTargetPositionByRatio(float ratio)
+        {
+            Vector2 playerPos = _player.transform.position;
+            float distance = (TargetPoint - playerPos).magnitude;
+
+            return Vector2.Lerp(playerPos, TargetPoint, ratio);
+        }
+
+        #endregion
 
     }
 

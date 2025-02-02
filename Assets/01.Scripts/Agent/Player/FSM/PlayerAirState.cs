@@ -25,6 +25,7 @@ namespace Agents.Players.FSM
 
         public override void Exit()
         {
+            _player.PlayerInput.JumpEvent -= HandleJump;
             _mover.SetMovementMultiplier(1f);
             base.Exit();
         }

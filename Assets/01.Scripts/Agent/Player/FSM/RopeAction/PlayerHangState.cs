@@ -1,13 +1,11 @@
-using System;
 using Agents.Animate;
-using TMPro;
-using UnityEngine;
 
 namespace Agents.Players.FSM
 {
     public class PlayerHangState : PlayerRopeState
     {
         private bool _canUseTurbo = true;
+
         private bool _isGroundCheck = true;
         public PlayerHangState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
@@ -16,7 +14,6 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-
             _mover.CanManualMove = false;
             _player.PlayerInput.TurboEvent += HandleUseTurbo;
             _player.PlayerInput.PullEvent += HandlePull;
@@ -40,6 +37,8 @@ namespace Agents.Players.FSM
             base.Exit();
 
             _player.PlayerInput.TurboEvent -= HandleUseTurbo;
+            _player.PlayerInput.PullEvent -= HandlePull;
+
             _canUseTurbo = true;
             _mover.CanManualMove = true;
             _renderer.SetLockRotation(true);
@@ -48,6 +47,7 @@ namespace Agents.Players.FSM
 
         private void HandleUseTurbo()
         {
+            if (!_player.IsActive) return;
             if (!_canUseTurbo) return;
             _mover.UseTurbo(_aimController.HangingDirection);
             _canUseTurbo = false;
@@ -56,7 +56,7 @@ namespace Agents.Players.FSM
 
         private void HandlePull()
         {
-            _canRemoveRope = true;
+            if (!_player.IsActive) return;
             _aimController.HandlePull();
         }
     }

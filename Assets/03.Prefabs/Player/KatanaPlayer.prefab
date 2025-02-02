@@ -246,6 +246,7 @@ MonoBehaviour:
   <PlayerInput>k__BackingField: {fileID: 11400000, guid: 1726f16ec39cbcc4abbabc89b994893e, type: 2}
   <FeedbackChannel>k__BackingField: {fileID: 11400000, guid: 7a25197fe48bd1748a4fc37f25267224, type: 2}
   <RopeHolder>k__BackingField: {fileID: 3210156924589146773}
+  <IsActive>k__BackingField: 0
 --- !u!114 &2744962543700373401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +267,7 @@ MonoBehaviour:
     m_Bits: 512
   _moveSpeed: 20
   _turboPower: 60
+  jumpCount: 1
   <CanManualMove>k__BackingField: 1
 --- !u!114 &8857233724296627185
 MonoBehaviour:
@@ -15522,7 +15524,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1999371668300468464}
+  - component: {fileID: 4924021607387970480}
   - component: {fileID: 8220037452872439566}
+  - component: {fileID: 8069195848216048508}
   - component: {fileID: 6921142111767059189}
   m_Layer: 6
   m_Name: AimController
@@ -15546,6 +15550,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4264095113676399738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4924021607387970480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5758516742047353947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da8e6a0a0bf876438be69207c77e5d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _castRadius: 0.4
+  _shootRadius: 40
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &8220037452872439566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15559,18 +15583,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _aimGroupController: {fileID: 0}
-  _wallLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  _castRadius: 0.4
-  _shootRadius: 40
   _shootCooltime: 0.2
   _wireClampedDistance: 20
   _clampDuration: 0.06
   canShoot: 1
+--- !u!114 &8069195848216048508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5758516742047353947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4ead5b8f2b41f47a2a84fd82b6c677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lineRenderer: {fileID: 6921142111767059189}
 --- !u!120 &6921142111767059189
 LineRenderer:
   serializedVersion: 2
