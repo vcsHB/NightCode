@@ -1,4 +1,5 @@
 using System;
+using Combat;
 using UnityEngine;
 namespace Agents.Players
 {
@@ -14,10 +15,18 @@ namespace Agents.Players
 
     }
 
+    public struct GrabData
+    {
+        public bool isTargeted;
+        public IGrabable grabTarget;
+
+    }
+
 
     public class AimDetector : MonoBehaviour, IAgentComponent
     {
         public event Action<AimData> OnAimEvent;
+        public event Action<GrabData> OnGrabEvent;
 
         [SerializeField] private float _castRadius = 0.4f;
         [SerializeField] private float _shootRadius = 12f;
@@ -33,6 +42,9 @@ namespace Agents.Players
         private Vector2 _playerPos;
         private Vector2 _targetPos;
         private Vector2 _direction;
+
+        // Grab Data
+        private IGrabable _grabTarget;
 
 
         public void Initialize(Agent agent)
@@ -55,11 +67,16 @@ namespace Agents.Players
             _direction = _mousePos - (Vector2)transform.position;
             RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, _shootRadius, _wallLayer | _targetLayer);
             _isTargeted = boxHit.collider != null;
+            _grabTarget = null;
             if (_isTargeted)
             {
                 _targetPos = boxHit.point;
+                if (boxHit.collider.TryGetComponent(out IGrabable grabTarget))
+                    _grabTarget = grabTarget;
             }
             InvokeAimDataEvent();
+            InvokeGrabDataEvent();
+
         }
 
         private void InvokeAimDataEvent()
@@ -74,5 +91,15 @@ namespace Agents.Players
                 distance = _direction.magnitude
             });
         }
+
+        private void InvokeGrabDataEvent()
+        {
+            OnGrabEvent?.Invoke(new GrabData
+            {
+                isTargeted = _grabTarget != null,
+                grabTarget = _grabTarget
+            });
+        }
+
     }
 }

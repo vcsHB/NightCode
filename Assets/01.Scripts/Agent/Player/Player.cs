@@ -1,4 +1,3 @@
-using System;
 using Agents.Players.FSM;
 using Core.EventSystem;
 using InputManage;
@@ -11,12 +10,12 @@ namespace Agents.Players
         protected PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
         [field: SerializeField] public GameEventChannelSO FeedbackChannel { get; private set; }
-        public bool IsDead { get; protected set; }
+
         public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
         [field: SerializeField] public Transform RopeHolder { get; private set; }
         public bool CanCharacterChange { get; set; } = true;
-        [field:SerializeField] public bool IsActive { get; private set; }
+        [field: SerializeField] public bool IsActive { get; private set; }
 
         protected override void Awake()
         {
@@ -24,8 +23,8 @@ namespace Agents.Players
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
             HealthCompo = GetComponent<Health>();
-            HealthCompo.OnDieEvent.AddListener(HandlePlayerDieEvent);
-            
+            HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
+
             InitState();
         }
 
@@ -42,7 +41,7 @@ namespace Agents.Players
 
         private void Update()
         {
-            if(IsActive)
+            if (IsActive)
                 _stateMachine.UpdateState();
         }
         public void SetActive(bool value)
@@ -53,17 +52,17 @@ namespace Agents.Players
         public void EnterCharacter()
         {
             _stateMachine.ChangeState("Enter");
-            
+
         }
         public void ExitCharacter()
         {
             _stateMachine.ChangeState("Exit");
         }
-        private void HandlePlayerDieEvent()
+
+        protected override void HandleAgentDie()
         {
             IsDead = true;
             _stateMachine.ChangeState("Dead");
         }
-
     }
 }
