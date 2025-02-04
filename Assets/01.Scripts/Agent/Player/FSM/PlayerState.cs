@@ -41,7 +41,7 @@ namespace Agents.Players.FSM
             if (_canUseRope)
                 _player.PlayerInput.OnShootRopeEvent += HandleShootEvent;
             _player.PlayerInput.OnRemoveRopeEvent += HandleRemoveRope;
-            
+
         }
 
 
@@ -63,16 +63,19 @@ namespace Agents.Players.FSM
             _isTriggered = true;
         }
 
-        protected void HandleShootEvent()
+        protected virtual void HandleShootEvent()
         {
-            if(!_player.IsActive) return;
-            if (_aimController.Shoot())
+            if (!_player.IsActive) return;
+            ShootData data = _aimController.Shoot();
+
+            if (data.isHanged)
                 _player.StateMachine.ChangeState("Hang");
+
         }
 
-        protected void HandleRemoveRope()
+        protected virtual void HandleRemoveRope()
         {
-            if(!_player.IsActive) return;
+            if (!_player.IsActive) return;
             _aimController.RemoveWire();
             _player.StateMachine.ChangeState("Swing");
         }

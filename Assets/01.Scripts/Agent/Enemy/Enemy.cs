@@ -21,7 +21,7 @@ namespace Agents.Enemies
         }
         protected override void HandleAgentDie()
         {
-
+            IsDead = true;
         }
     }
 }

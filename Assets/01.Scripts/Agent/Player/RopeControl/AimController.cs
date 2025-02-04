@@ -5,7 +5,11 @@ using UnityEngine;
 
 namespace Agents.Players
 {
-
+    public struct ShootData
+    {
+        public bool isHanged;
+        public bool isGrabbed;
+    }
     public class AimController : MonoBehaviour, IAgentComponent
     {
         [SerializeField] private AimGroupController _aimGroupController;
@@ -28,6 +32,7 @@ namespace Agents.Players
         private PlayerMovement _playerMovement;
 
         private AimData _currentAimData;
+        private GrabData _currentGrabData;
         public bool IsTargeted => _currentAimData.isTargeted;
         public Vector2 TargetPoint => _currentAimData.targetPosition;
         public Vector2 OriginPosition => _currentAimData.originPlayerPosition;
@@ -46,8 +51,12 @@ namespace Agents.Players
 
         public void AfterInit()
         {
-            _player.GetCompo<AimDetector>().OnAimEvent += HandleRefreshAimData;
+            AimDetector aimDetector = _player.GetCompo<AimDetector>();
+            aimDetector.OnAimEvent += HandleRefreshAimData;
+            aimDetector.OnGrabEvent += HandelRefreshGrabData;
         }
+
+
 
         private void HandleRefreshAimData(AimData data)
         {
@@ -55,6 +64,10 @@ namespace Agents.Players
             _aimGroupController.SetVirtualAim(data.isTargeted);
 
             _currentAimData = data;
+        }
+        private void HandelRefreshGrabData(GrabData data)
+        {
+            _currentGrabData = data;
         }
 
         public void Dispose() { }
@@ -67,18 +80,38 @@ namespace Agents.Players
         }
 
 
-        public bool Shoot()
+        public ShootData Shoot()
         {
-            if (_currentShootTime < _shootCooltime) return false;
-            if (!IsTargeted) return false;
+            if (_currentShootTime < _shootCooltime) return new ShootData { isGrabbed = false };
+            if (!IsTargeted) return new ShootData { isGrabbed = false };
 
             _currentShootTime = 0f;
             //_playerController.turboCount = 1;
-            _aimGroupController.SetActiveWire(true);
-            Vector2 playerPos = _player.transform.position;
-            float distance = (TargetPoint - playerPos).magnitude;
+
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
-            if (distance > _wireClampedDistance)
+
+            if (_currentGrabData.isTargeted)
+            { // Grab
+
+                return new ShootData
+                {
+                    isHanged = true,
+                    isGrabbed = true
+                };
+            }
+            else
+            {
+                HandleHang();
+            }
+
+            _isShoot = true;
+            return new ShootData { isHanged = true };
+        }
+
+        private void HandleHang()
+        {
+            _aimGroupController.SetActiveWire(true);
+            if (_currentAimData.distance > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 _clampCoroutine = StartCoroutine(
@@ -86,11 +119,10 @@ namespace Agents.Players
                         GetLerpTargetPosition(_wireClampedDistance), _clampDuration));
             }
             else
-                _aimGroupController.Wire.SetWireEnable(true, TargetPoint, distance);
+                _aimGroupController.Wire.SetWireEnable(true, TargetPoint, _currentAimData.distance);
 
-            _isShoot = true;
-            return true;
         }
+
         private IEnumerator DistanceClampCoroutine(Vector2 clampPosition, float duration, Action OnComplete = null)
         {
             Vector2 velocity = _playerMovement.Velocity;

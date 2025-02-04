@@ -72,7 +72,10 @@ namespace Agents.Players
             {
                 _targetPos = boxHit.point;
                 if (boxHit.collider.TryGetComponent(out IGrabable grabTarget))
+                {
+                    _targetPos = boxHit.transform.position;
                     _grabTarget = grabTarget;
+                }
             }
             InvokeAimDataEvent();
             InvokeGrabDataEvent();

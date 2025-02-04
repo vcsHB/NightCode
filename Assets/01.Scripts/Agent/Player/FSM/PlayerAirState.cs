@@ -37,5 +37,18 @@ namespace Agents.Players.FSM
             if (Mathf.Abs(xInput) > 0)
                 _mover.SetMovement(xInput);
         }
+
+        protected override void HandleShootEvent()
+        {
+            if (!_player.IsActive) return;
+            ShootData data = _aimController.Shoot();
+
+            if (data.isGrabbed){
+                Debug.Log("Grabbing");
+                _player.StateMachine.ChangeState("Grab");
+            }
+            else if (data.isHanged)
+                _player.StateMachine.ChangeState("Hang");
+        }
     }
 }
