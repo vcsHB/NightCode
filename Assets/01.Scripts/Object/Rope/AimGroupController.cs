@@ -37,6 +37,8 @@ namespace ObjectManage.Rope
         }
         public void SetAnchorParent(Transform parent = null)
         {
+            if(parent == null)
+                parent = transform;
             _anchorTrm.SetParent(parent);
         }
         public void SetActiveWire(bool value)

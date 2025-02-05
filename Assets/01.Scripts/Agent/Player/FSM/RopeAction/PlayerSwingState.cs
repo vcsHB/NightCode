@@ -13,6 +13,8 @@ namespace Agents.Players.FSM
         public PlayerSwingState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
             _canUseRope = true;
+            
+            _canGrab = true;
         }
         
 

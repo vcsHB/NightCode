@@ -6,7 +6,9 @@ namespace Agents.Players.FSM
     {
         public PlayerAirState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
+            _canGrab = true;
         }
+        
 
         public override void Enter()
         {
@@ -38,17 +40,6 @@ namespace Agents.Players.FSM
                 _mover.SetMovement(xInput);
         }
 
-        protected override void HandleShootEvent()
-        {
-            if (!_player.IsActive) return;
-            ShootData data = _aimController.Shoot();
-
-            if (data.isGrabbed){
-                Debug.Log("Grabbing");
-                _player.StateMachine.ChangeState("Grab");
-            }
-            else if (data.isHanged)
-                _player.StateMachine.ChangeState("Hang");
-        }
+        
     }
 }

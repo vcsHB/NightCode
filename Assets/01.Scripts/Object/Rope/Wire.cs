@@ -34,8 +34,5 @@ namespace ObjectManage.Rope
             _anchor.SetLength(length);
         }
 
-
-
-
     }
 }

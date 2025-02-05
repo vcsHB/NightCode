@@ -19,6 +19,7 @@ namespace Agents.Players.FSM
 
         protected bool _isTriggered;
         protected bool _canUseRope = false;
+        protected bool _canGrab = false;
 
         public PlayerState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam)
         {
@@ -68,7 +69,12 @@ namespace Agents.Players.FSM
             if (!_player.IsActive) return;
             ShootData data = _aimController.Shoot();
 
-            if (data.isHanged)
+            if (data.isGrabbed && _canGrab)
+            {
+                //Debug.Log("Grabbing");
+                _player.StateMachine.ChangeState("Grab");
+            }
+            else if (data.isHanged)
                 _player.StateMachine.ChangeState("Hang");
 
         }

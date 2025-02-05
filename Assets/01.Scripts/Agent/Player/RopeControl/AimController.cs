@@ -112,6 +112,8 @@ namespace Agents.Players
         private void HandleGrab()
         {
             _aimGroupController.SetAnchorParent(_currentGrabData.grabTarget.GetTransform);
+            _aimGroupController.SetAnchorPosition(TargetPoint);
+            _aimGroupController.SetActiveWire(true);
             _aimGroupController.Wire.SetWireEnable(true);
         }
 
