@@ -9,16 +9,22 @@ public class Toggle : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private RectTransform _switchTrm;
     [SerializeField] private Vector2 _positions;
-
     private Tween _tween;
 
     public bool IsOn = false;
+
+    private void OnEnable()
+    {
+        _switchTrm.anchoredPosition = new Vector2(0, IsOn ? _positions.x : _positions.y);
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (_tween != null && _tween.active)
             _tween.Kill();
 
-        _tween = _switchTrm.DOAnchorPosY(, 0.2f);
+        IsOn = !IsOn;
+        _tween = _switchTrm.DOAnchorPosY(IsOn ? _positions.x : _positions.y, 0.2f)
+            .OnComplete(() => onValueChange?.Invoke(IsOn));
     }
 }
