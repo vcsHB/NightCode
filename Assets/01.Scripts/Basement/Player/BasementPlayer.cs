@@ -72,6 +72,8 @@ namespace Basement.Player
         {
             _readyInteract = false;
             OnInteract -= onInteract;
+
+            //if (OnInteract?.GetInvocationList().Length <= 0)
             _pressFBtn.SetActive(false);
         }
     }

@@ -4,14 +4,13 @@ using Basement.Player;
 using System.Collections;
 using System;
 
-public class ElevatorDoor : BasementObject
+public class ElevatorDoor : MonoBehaviour
 {
     public Action onCompleteOpenDoor;
     public Action onCompleteCloseDoor;
 
     private Animator _animator;
     private Elevator _elevator;
-    private BasementPlayer _basementPlayer;
     private Collider2D _collider;
     private int _floor;
 
@@ -41,6 +40,12 @@ public class ElevatorDoor : BasementObject
     {
         _isDoorOpen = true;
         _collider.enabled = true;
+        onCompleteOpenDoor?.Invoke();
+    }
+
+    public void CompleteCloseDoor()
+    {
+        onCompleteCloseDoor?.Invoke();
     }
 
     public void CloseDoor()
@@ -50,25 +55,15 @@ public class ElevatorDoor : BasementObject
         _isDoorOpen = false;
     }
 
-    public override void OnInteractObject()
-    {
-        _basementPlayer.SetInteractAction(OnInteract);
-    }
 
     public void Init(BasementPlayer player, Elevator elevator, int floor)
     {
-        _basementPlayer = player;
         _elevator = elevator;
         _floor = floor;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        OnInteractObject();
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        _basementPlayer.RemoveInteractAction(OnInteract);
+        OnInteract();
     }
 }

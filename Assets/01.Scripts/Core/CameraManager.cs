@@ -31,17 +31,17 @@ public class CameraManager : MonoSingleton<CameraManager>
         _confinder = _currentCamera.GetComponent<CinemachineConfiner2D>();
     }
 
-    public void Zoom(float value, float duration = 0.2f)
+    public void Zoom(float value, float duration = 0.2f, Ease ease = Ease.Linear)
     {
         if (_zoomTween != null && _zoomTween.active)
             _zoomTween.Kill();
 
         _zoomTween = DOTween.To(() => _currentCamera.Lens.OrthographicSize,
             x => _currentCamera.Lens.OrthographicSize = x,
-            value, duration);
+            value, duration).SetEase(ease);
     }
 
-    public void ChangeFollow(Transform target, float duration, Ease easing = Ease.Linear)
+    public void ChangeFollow(Transform target, float duration, Action onComplete, Ease easing = Ease.Linear)
     {
         if (target == null) return;
 
@@ -50,8 +50,15 @@ public class CameraManager : MonoSingleton<CameraManager>
 
         _cameraChangeTween = _currentCamera.Follow.DOMove(target.position, duration)
             .SetEase(easing)
-            .OnComplete(() => _currentCamera.Follow = target);
+            .OnComplete(() =>
+            {
+                _currentCamera.Follow = target;
+                onComplete?.Invoke();
+            });
     }
+
+    public Transform GetCameraFollow() 
+        => _currentCamera.Follow;
 
     //µð¹ö±ë¿ë
     private void Update()

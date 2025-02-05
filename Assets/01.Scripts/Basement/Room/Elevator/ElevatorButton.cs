@@ -2,7 +2,7 @@ using Basement;
 using Basement.Player;
 using UnityEngine;
 
-public class ElevatorButton : BasementObject
+public class ElevatorButton : MonoBehaviour
 {
     private BasementPlayer _basementPlayer;
     private ElevatorDoor _door;
@@ -17,11 +17,6 @@ public class ElevatorButton : BasementObject
         uiPanel.Open(uiPosition);
     }
 
-    public override void OnInteractObject()
-    {
-        _basementPlayer.SetInteractAction(OnInteract);
-    }
-
     public void Init(BasementPlayer player, ElevatorDoor door, int floor)
     {
         _basementPlayer = player;
@@ -31,7 +26,7 @@ public class ElevatorButton : BasementObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        OnInteractObject();
+        _basementPlayer.SetInteractAction(OnInteract);
     }
 
     private void OnTriggerExit2D(Collider2D collision)

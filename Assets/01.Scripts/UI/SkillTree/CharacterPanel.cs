@@ -1,3 +1,4 @@
+using Basement.Training;
 using System;
 using TMPro;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.EventSystems;
 public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public bool isSelected = false;
-    [SerializeField] private CharacterType _characterType;
+    [SerializeField] private CharacterEnum _characterType;
     [SerializeField] private TextMeshProUGUI _strText;
     [SerializeField] private TextMeshProUGUI _intText;
     [SerializeField] private TextMeshProUGUI _dexText;
@@ -23,11 +24,11 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     public void UpdateStat()
     {
-        CharacterStat stat = AgentStatManager.Instance.GetStat(_characterType);
+        //CharacterStat stat = AgentStatManager.Instance.GetStat(_characterType);
 
-        _strText.SetText($"str: {stat.strength.Value}");
-        _intText.SetText($"int: {stat.intelligence.Value}");
-        _dexText.SetText($"dex: {stat.dexterity.Value}");
+        //_strText.SetText($"str: {stat.strength.Value}");
+        //_intText.SetText($"int: {stat.intelligence.Value}");
+        //_dexText.SetText($"dex: {stat.dexterity.Value}");
     }
 
     public void OnPointerExit(PointerEventData eventData)

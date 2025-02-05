@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
+using Basement.Training;
 
 public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 {
@@ -12,7 +13,7 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
     [SerializeField] private RectTransform _btnParent;
 
     private Vector2[] _positions = new Vector2[3];
-    private CharacterType _currentCharacter;
+    private CharacterEnum _currentCharacter;
     private Tween _tween;
     private int _currentIdx = 1;
 

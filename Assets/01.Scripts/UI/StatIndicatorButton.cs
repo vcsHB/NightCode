@@ -1,3 +1,4 @@
+using Basement.Training;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -5,7 +6,7 @@ using UnityEngine.EventSystems;
 public class StatIndicatorButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private CharacterStatPointIndicator _statPointIndicator;
-    [SerializeField] private CharacterType _characterType;
+    [SerializeField] private CharacterEnum _characterType;
 
     private Tween _tween;
     private float _easingTime = 0.1f;

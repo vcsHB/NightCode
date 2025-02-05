@@ -1,5 +1,5 @@
+using Basement.Training;
 using DG.Tweening;
-using System;
 using UnityEngine;
 
 public class SkillTreePanel : MonoBehaviour, IUIPanel
@@ -11,7 +11,7 @@ public class SkillTreePanel : MonoBehaviour, IUIPanel
 
     private RectTransform RectTrm => transform as RectTransform;
 
-    public void OpenSkillTree(CharacterType characterType)
+    public void OpenSkillTree(CharacterEnum characterType)
     {
         _characterStatPointIndicator.SetCharacter(characterType);
 
