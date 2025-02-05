@@ -2,6 +2,10 @@ using UnityEngine;
 using UnityEngine.Events;
 namespace Combat
 {
+    public class CasterData
+    {
+        // Data Capsule Grouping Class
+    }
 
     public abstract class Caster : MonoBehaviour
     {
@@ -27,6 +31,14 @@ namespace Combat
         public virtual void Cast()
         {
             OnCastEvent?.Invoke();
+        }
+
+        public void SendCasterData(CasterData data)
+        {
+            foreach(ICastable caster in _casters)
+            {
+                caster.HandleSetData(data);
+            }
         }
     }
 }

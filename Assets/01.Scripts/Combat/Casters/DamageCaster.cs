@@ -14,5 +14,9 @@ namespace Combat
                 hit.ApplyDamage(_damage);
             }
         }
+
+        public void HandleSetData(CasterData data)
+        {
+        }
     }
 }

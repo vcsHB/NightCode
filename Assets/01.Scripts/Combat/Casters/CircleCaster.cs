@@ -6,6 +6,8 @@ namespace Combat
     public class CircleCaster : Caster
     {
         [SerializeField] private float _detectRadius = 1f;
+
+        [ContextMenu("DebugCast")]
         public override void Cast()
         {
             base.Cast();

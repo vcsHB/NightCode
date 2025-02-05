@@ -5,6 +5,8 @@ namespace Combat
     public class BoxCaster : Caster
     {
         [SerializeField] private Vector2 _boxSize;
+
+        [ContextMenu("DebugCast")]
         public override void Cast()
         {
             base.Cast();

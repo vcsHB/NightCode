@@ -1,9 +1,6 @@
 using UnityEngine;
 namespace Agents.Players
 {
-
-   
-
     public class AimAnchor : MonoBehaviour
     {
         [SerializeField] private Sprite[] _aimMarkSprites;
@@ -33,6 +30,7 @@ namespace Agents.Players
         public void SetPos(Vector2 position)
         {
             transform.position = position;
+            _anchorPhysicObject.transform.localPosition = Vector2.zero;
             _anchorVFX.Play();
 
         }
