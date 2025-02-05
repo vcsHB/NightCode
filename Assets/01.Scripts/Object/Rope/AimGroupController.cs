@@ -10,7 +10,7 @@ namespace ObjectManage.Rope
         [SerializeField] private Transform _anchorTrm;
         [SerializeField] private AimAnchor _aimAnchor;
         [field: SerializeField] public Wire Wire { get; private set; }
-        [field: SerializeField] public RopePhysics RopePhysics {get; private set;}
+        [field: SerializeField] public RopePhysics RopePhysics { get; private set; }
         // Properties
         public Vector2 AnchorPos => _anchorTrm.position;
         public Vector2 VirtualAimPos => _virtualAimTrm.position;
@@ -35,7 +35,10 @@ namespace ObjectManage.Rope
         {
             _anchorTrm.position = position;
         }
-
+        public void SetAnchorParent(Transform parent = null)
+        {
+            _anchorTrm.SetParent(parent);
+        }
         public void SetActiveWire(bool value)
         {
             Wire.gameObject.SetActive(value);

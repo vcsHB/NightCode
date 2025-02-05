@@ -33,6 +33,7 @@ namespace Agents.Players
         {
             _player = agent as Player;
             _rigidCompo = agent.GetComponent<Rigidbody2D>();
+            _originalgravity = _rigidCompo.gravityScale;
             _playerRenderer = agent.GetCompo<PlayerRenderer>();
 
             _originalgravity = _rigidCompo.gravityScale;
@@ -112,6 +113,7 @@ namespace Agents.Players
         }
         public void SetMovementMultiplier(float value) => _moveSpeedMultiplier = value;
         public void SetGravityMultiplier(float value) => _rigidCompo.gravityScale = value;
+        public void ResetGravityMultiplier() => _rigidCompo.gravityScale = _originalgravity;
         public virtual bool IsGroundDetected()
             => Physics2D.BoxCast(_groundCheckTrm.position, _checkerSize, 0, Vector2.down, _checkDistance, _whatIsGround);
 

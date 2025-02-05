@@ -6,6 +6,10 @@ namespace Agents.Players
     {
         private SpriteRenderer _spriteRenderer;
 
+        private void Awake() {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
         public void SetTargetMark(bool value)
         {
             _spriteRenderer.enabled = value;

@@ -92,12 +92,13 @@ namespace Agents.Players
 
             if (_currentGrabData.isTargeted)
             { // Grab
-
+                HandleGrab();
                 return new ShootData
                 {
                     isHanged = true,
                     isGrabbed = true
                 };
+
             }
             else
             {
@@ -106,6 +107,12 @@ namespace Agents.Players
 
             _isShoot = true;
             return new ShootData { isHanged = true };
+        }
+
+        private void HandleGrab()
+        {
+            _aimGroupController.SetAnchorParent(_currentGrabData.grabTarget.GetTransform);
+            _aimGroupController.Wire.SetWireEnable(true);
         }
 
         private void HandleHang()
@@ -145,6 +152,7 @@ namespace Agents.Players
         {
             if (IsClamping)
                 StopCoroutine(_clampCoroutine);
+            _aimGroupController.SetAnchorParent();
             Vector2 velocity = _playerMovement.Velocity;
             _aimGroupController.SetActiveWire(false);
             _aimGroupController.SetAnchorPosition(transform.position);
