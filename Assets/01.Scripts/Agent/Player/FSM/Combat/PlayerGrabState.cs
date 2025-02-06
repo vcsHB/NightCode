@@ -28,7 +28,8 @@ namespace Agents.Players.FSM
 
         private void HandlePullTarget()
         {
-            _stateMachine.ChangeState("Pull");
+            if(!_grabThrower.IsPulled)
+                _stateMachine.ChangeState("Pull");
         }
 
         protected override void HandleRemoveRope()

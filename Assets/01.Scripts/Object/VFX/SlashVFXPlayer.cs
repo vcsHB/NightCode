@@ -12,6 +12,11 @@ namespace ObjectManage
         [SerializeField] private float _maxImpactScale = 0.2f;
 
 
+        public void SetDirection(Vector2 direction)
+        {
+            _impactTrm.right = direction;
+        }
+        
         public void Play()
         {
             _impactTrm.localScale = new Vector3(_impactTrm.localScale.x, _maxImpactScale, 1f);

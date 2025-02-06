@@ -1,3 +1,4 @@
+using System;
 using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
@@ -7,14 +8,18 @@ namespace Agents.Players.FSM
     {
         public PlayerPullState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
+            _canGrab = false;
         }
 
         public override void Enter()
         {
             base.Enter();
-            _grabThrower.PullTarget();
+            _grabThrower.PullTarget(HandleChangeGrab);
         }
 
-
+        private void HandleChangeGrab()
+        {
+            _stateMachine.ChangeState("Grab");
+        }
     }
 }
