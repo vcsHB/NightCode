@@ -1,5 +1,6 @@
 using CameraControllers;
 using UnityEngine;
+
 namespace FeedbackSystem
 {
     public class CameraShakeFeedback : Feedback
@@ -10,7 +11,7 @@ namespace FeedbackSystem
 
         private void Start()
         {
-            _cameraShaker = CameraManager.Instance.GetCompo<CameraShakeController>();
+            _cameraShaker = CameraControllers.CameraManager.Instance.GetCompo<CameraShakeController>();
         }
 
         public override void CreateFeedback()
