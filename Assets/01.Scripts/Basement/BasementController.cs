@@ -1,4 +1,3 @@
-using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,16 +8,17 @@ namespace Basement
     public class BasementController : MonoBehaviour
     {
         public BasementSO basementInfo;
+        public BasementBuildUI buildUI;
 
         private string _path = Path.Combine(Application.dataPath, "Basement.json");
 
+        private void OnEnable()
+        {
+            Load();
+        }
+
         public bool CheckCanExpend()
             => basementInfo.expendedFloor >= basementInfo.maxFloor;
-
-        public void ExpendFloor()
-        {
-
-        }
 
         public void Save()
         {
@@ -43,6 +43,20 @@ namespace Basement
 
             basementInfo.expendedFloor = save.expendedFloor;
             basementInfo.floorInfos = save.floorInfos;
+
+            for(int i = 0; i < basementInfo.expendedFloor; i++)
+            {
+                for(int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
+                {
+                    RoomInfo roomInfo = basementInfo.floorInfos[i].rooms[j];
+
+                    Transform positionTrm = buildUI.roomPositions[i].roomPositions[j];
+                    BasementRoom room = Instantiate(basementInfo.GetBasementRoom(roomInfo.roomType));
+                    room.transform.SetPositionAndRotation(positionTrm.position, Quaternion.identity);
+
+                    //가구 소환
+                }
+            }
         }
     }
 
@@ -56,12 +70,12 @@ namespace Basement
     [Serializable]
     public class FloorInfo
     {
-        int floor;
+        public int floor;
         public List<RoomInfo> rooms = new List<RoomInfo>(4);
     }
 
     [Serializable]
-    public struct RoomInfo
+    public class RoomInfo
     {
         public int level;
         public BasementRoomType roomType;

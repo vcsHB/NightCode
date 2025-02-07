@@ -1,29 +1,65 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.Android;
 
 namespace Basement
 {
-    public class BuildUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class BuildUI : MonoBehaviour
     {
-        public int floor;
-        public int roomNumber;
+        private int _floor;
+        private int _roomNumber;
+        private bool _isMouseDown = false;
+        private BuildingSelectPanel _buildingSelectPanel;
         [SerializeField] private BasementSO _basementSO;
 
-        private RectTransform _rectTrm => transform as RectTransform;
 
-        public void OnPointerClick(PointerEventData eventData)
+        #region MouseEvents
+
+        private void OnMouseEnter()
         {
-            //_basementSO.
+            transform.localScale = Vector3.one * 1.05f;
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        private void OnMouseExit()
         {
-            _rectTrm.localScale = Vector3.one * 1.05f;
+            transform.localScale = Vector3.one;
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        private void OnMouseDown()
         {
-            _rectTrm.localScale = Vector3.one;
+            _isMouseDown = true;
+        }
+
+        private void OnMouseUp()
+        {
+            if( _isMouseDown)
+                OnClick();
+            
+            _isMouseDown = false;
+        }
+
+        #endregion
+
+        private void OnClick()
+        {
+            _buildingSelectPanel.Open();
+        }
+
+        public void OnSelectBuilding(BasementRoomType roomType)
+        {
+            _basementSO.floorInfos[_floor].rooms[_roomNumber].roomType = roomType;
+
+            BasementRoom room = Instantiate(_basementSO.GetBasementRoom(roomType));
+            room.transform.position = transform.position;
+
+            Destroy(gameObject);
+        }
+
+        public void Init(int floor, int roomNumber, BuildingSelectPanel buildingSelectPanel)
+        {
+            _floor = floor;
+            _roomNumber = roomNumber;
+            _buildingSelectPanel = buildingSelectPanel;
         }
     }
 }

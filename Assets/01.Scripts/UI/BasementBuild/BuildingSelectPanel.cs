@@ -7,12 +7,11 @@ namespace Basement
 {
     public class BuildingSelectPanel : MonoBehaviour
     {
+        public Action<BasementRoomType> onSelectRoom;
+
         [SerializeField] private GameObject _selectButtonPf;
         [SerializeField] private Transform _buttonParent;
-        private BasementRoomType _selectedType;
         private RectTransform _rectTrm => transform as RectTransform;
-
-        public BasementRoomType SelectedType => _selectedType;
 
         private void Awake()
         {
@@ -24,7 +23,7 @@ namespace Basement
                 selectButton.GetComponentInChildren<TextMeshProUGUI>().SetText(type.ToString());
                 selectButton.onClick.AddListener(() =>
                 {
-                    _selectedType = type;
+                    onSelectRoom?.Invoke(type);
                     gameObject.SetActive(false);
                 });
             }
@@ -33,7 +32,9 @@ namespace Basement
                 = new Vector2(_rectTrm.sizeDelta.x, 30 + 100 * _buttonParent.childCount);
         }
 
-        public void ResetSelect() 
-            => _selectedType = BasementRoomType.Empty;
+        public void Open()
+        {
+            gameObject.SetActive(true);
+        }
     }
 }

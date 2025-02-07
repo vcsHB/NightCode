@@ -84,7 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8222139094120309809}
-  - component: {fileID: 4687570998308561003}
+  - component: {fileID: 8552773519498333811}
   m_Layer: 5
   m_Name: Training
   m_TagString: Untagged
@@ -113,7 +113,7 @@ RectTransform:
   m_AnchoredPosition: {x: -707, y: 330}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4687570998308561003
+--- !u!114 &8552773519498333811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,13 +122,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5872066593948314421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a568b22fd7f95a4dae52d840206e27f, type: 3}
+  m_Script: {fileID: 11500000, guid: 15a654ec61e64bb4abaca23e99fa4bb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  training: {fileID: 11400000, guid: 98865d83067ad9a4d938f5e9c1886d38, type: 2}
-  completeTraining: 0
-  _popupText: {fileID: 5296179237758064996, guid: b0cd5c845631bfe4996cb19a50eb0155, type: 3}
-  _trainedIndicator: {fileID: 6890148768987706560}
+  _training: {fileID: 0}
+  _cameraFocusTarget: {fileID: 0}
+  _interactObject: {fileID: 0}
 --- !u!1 &6890148768987706560
 GameObject:
   m_ObjectHideFlags: 0
