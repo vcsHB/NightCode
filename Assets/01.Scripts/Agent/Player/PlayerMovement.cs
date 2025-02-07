@@ -22,6 +22,7 @@ namespace Agents.Players
         public Vector2 Velocity { get; private set; }
         private Player _player;
         private float _movementX;
+        private float _movementY;
         private float _moveSpeedMultiplier = 1f;
         public int jumpCount = 1;
         public bool CanJump => jumpCount > 0;
@@ -47,7 +48,9 @@ namespace Agents.Players
             float xVelocity = _movementX * _moveSpeed * _moveSpeedMultiplier;
             if (CanManualMove)
             {
-                if (Mathf.Abs(_movementX) > 0f)
+                if (Mathf.Abs(_movementY) > 0f)
+                    _rigidCompo.linearVelocity = new Vector2(0f, _movementY);
+                else if (Mathf.Abs(_movementX) > 0f)
                     _rigidCompo.linearVelocity = new Vector2(xVelocity, _rigidCompo.linearVelocity.y);
             }
             OnMovement?.Invoke(new Vector2(xVelocity, 0));
@@ -58,6 +61,11 @@ namespace Agents.Players
         {
             _movementX = xMovement;
             _playerRenderer.FlipController(xMovement);
+        }
+
+        public void SetYMovement(float yMovement)
+        {
+            _movementY = yMovement;
         }
 
         public void StopImmediately(bool isYAxisToo = false)
@@ -79,7 +87,7 @@ namespace Agents.Players
         public void UseTurbo(Vector2 hangingDirection)
         {
             Vector2 baseDirection = -hangingDirection.normalized;
-            Vector2 inputDirection = _player.PlayerInput.InputDirection;
+            Vector2 inputDirection = new Vector2(_player.PlayerInput.InputDirection.x, 0f);
             if (inputDirection.magnitude < 0.1f)
                 inputDirection = Velocity.normalized;
 

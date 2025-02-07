@@ -20,6 +20,7 @@ namespace Agents.Players.FSM
         protected bool _isTriggered;
         protected bool _canUseRope = false;
         protected bool _canGrab = false;
+        protected bool _canRemoveRope = true;
 
         public PlayerState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam)
         {
@@ -81,6 +82,7 @@ namespace Agents.Players.FSM
 
         protected virtual void HandleRemoveRope()
         {
+            if(!_canRemoveRope) return;
             if (!_player.IsActive) return;
             _aimController.RemoveWire();
             _player.StateMachine.ChangeState("Swing");
