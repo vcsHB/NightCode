@@ -51,6 +51,7 @@ namespace Agents.Players
 
         public void ThrowTarget()
         {
+            if(!IsPulled) return;
             _isComboComplete = true;
             if (_isComboComplete)
             {
@@ -118,6 +119,4 @@ namespace Agents.Players
             _currentGrabData = data;
         }
     }
-
-
 }

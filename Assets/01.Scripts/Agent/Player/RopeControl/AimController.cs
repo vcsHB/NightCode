@@ -37,6 +37,7 @@ namespace Agents.Players
         public Vector2 TargetPoint => _currentAimData.targetPosition;
         public Vector2 OriginPosition => _currentAimData.originPlayerPosition;
         private float _currentShootTime = 0;
+        private Vector2 _anchorPosition;
 
 
         public void Initialize(Agent agent)
@@ -120,6 +121,7 @@ namespace Agents.Players
         private void HandleHang()
         {
             _aimGroupController.SetActiveWire(true);
+            _anchorPosition = TargetPoint;
             if (_currentAimData.distance > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
@@ -128,7 +130,7 @@ namespace Agents.Players
                         GetLerpTargetPosition(_wireClampedDistance), _clampDuration));
             }
             else
-                _aimGroupController.Wire.SetWireEnable(true, TargetPoint, _currentAimData.distance);
+                _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _currentAimData.distance);
 
         }
 
@@ -136,7 +138,6 @@ namespace Agents.Players
         {
             Vector2 velocity = _playerMovement.Velocity;
             Vector2 before = _player.transform.position;
-            Vector2 targetPointPosition = TargetPoint;
             float currentTime = 0f;
             while (currentTime < duration)
             {
@@ -144,7 +145,7 @@ namespace Agents.Players
                 _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / duration);
                 yield return null;
             }
-            _aimGroupController.Wire.SetWireEnable(true, targetPointPosition, _wireClampedDistance);
+            _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
             OnComplete?.Invoke();
             _clampCoroutine = null;
@@ -187,7 +188,7 @@ namespace Agents.Players
         private Vector2 GetLerpTargetPositionByRatio(float ratio)
         {
 
-            return Vector2.Lerp(_currentAimData.originPlayerPosition, TargetPoint, ratio);
+            return Vector2.Lerp(_currentAimData.originPlayerPosition, _aimGroupController.AnchorPos, ratio);
         }
 
         #endregion
