@@ -10,6 +10,7 @@ namespace ObjectManage
         private float _defaultGravity;
 
         private void Awake() {
+            _rigid = GetComponent<Rigidbody2D>();
             _defaultGravity = _rigid.gravityScale;
         }
 

@@ -40,6 +40,7 @@ namespace Agents.Players
 
         public void Grab()
         {
+            if(_currentGrabData.grabTarget == null) return;
             _grabTarget = _currentGrabData.grabTarget;
             _grabTargetTrm = _grabTarget.GetTransform;
             _grabTarget.Grab();
