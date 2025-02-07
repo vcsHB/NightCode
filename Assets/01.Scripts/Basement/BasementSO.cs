@@ -15,9 +15,9 @@ namespace Basement
     public enum BasementRoomType
     {
         Empty,              // ¾øÀ½
-        TrainingRoom,       // ÈÆ·Ã¼Ò
-        Lodging,            // ¼÷¼Ò
         Cafe,               // Ä«Æä
         Office,             //»ç¹«½Ç?
+        TrainingRoom,       // ÈÆ·Ã¼Ò
+        Lodging,            // ¼÷¼Ò
     }
 }

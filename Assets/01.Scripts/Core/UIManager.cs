@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Basement;
 
 public class UIManager : MonoSingleton<UIManager>
 {

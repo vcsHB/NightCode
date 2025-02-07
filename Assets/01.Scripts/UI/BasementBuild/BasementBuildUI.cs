@@ -1,16 +1,33 @@
 using UnityEngine;
 
-public class BasementBuildUI : MonoBehaviour, IUIPanel
+namespace Basement
 {
-    [SerializeField] private GameObject _buildUIObj;
-
-    public void Open(Vector2 position)
+    public class BasementBuildUI : MonoBehaviour, IUIPanel
     {
-        _buildUIObj.SetActive(true);
-    }
+        [SerializeField] private GameObject _buildUIObj;
+        [SerializeField] private Toggle toggle;
 
-    public void Close()
-    {
-        _buildUIObj.SetActive(false);
+        private void Awake()
+        {
+            toggle.onValueChange.AddListener(ToggleValueChange);
+        }
+
+        private void ToggleValueChange(bool isOpen)
+        {
+            if (isOpen)
+                Open(Vector2.zero);
+            else
+                Close();
+        }
+
+        public void Open(Vector2 position)
+        {
+            _buildUIObj.SetActive(true);
+        }
+
+        public void Close()
+        {
+            _buildUIObj.SetActive(false);
+        }
     }
 }
