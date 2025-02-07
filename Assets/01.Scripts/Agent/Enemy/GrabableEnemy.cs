@@ -6,11 +6,22 @@ namespace Agents.Enemies
     public class GrabableEnemy : Enemy, IGrabable
     {
         public Transform GetTransform => transform;
+        protected float _defaultGravity;
 
-        public void Grab()
+        protected override void Awake()
         {
-            // GrabStun 상태로 전환
+            base.Awake();
+            _defaultGravity = RigidCompo.gravityScale;
+        }
 
+        public virtual void Grab()
+        {
+            RigidCompo.gravityScale = 0.1f;
+        }
+
+        public virtual void Release()
+        {
+            RigidCompo.gravityScale = _defaultGravity;
         }
     }
 }

@@ -24,15 +24,8 @@ namespace Agents.Players
 
         private AgentRenderer _agentRenderer;
         private Transform _grabTargetTrm;
+        private IGrabable _grabTarget;
 
-
-        public void AfterInit()
-        {
-        }
-
-        public void Dispose()
-        {
-        }
 
         public void Initialize(Agent agent)
         {
@@ -41,6 +34,15 @@ namespace Agents.Players
             AimDetector aimDetector = _player.GetCompo<AimDetector>();
             aimDetector.OnAimEvent += HandleRefreshAim;
             aimDetector.OnGrabEvent += HandleRefreshGrab;
+        }
+        public void AfterInit() { }
+        public void Dispose() { }
+
+        public void Grab()
+        {
+            _grabTarget = _currentGrabData.grabTarget;
+            _grabTargetTrm = _grabTarget.GetTransform;
+            _grabTarget.Grab();
         }
 
         public void SetCompleteCombo()
@@ -51,7 +53,7 @@ namespace Agents.Players
 
         public void ThrowTarget()
         {
-            if(!IsPulled) return;
+            if (!IsPulled) return;
             _isComboComplete = true;
             if (_isComboComplete)
             {
@@ -71,6 +73,7 @@ namespace Agents.Players
                 _throwCaster.SendCasterData(new KnockbackCasterData(direction, 10f));
 
             }
+            _grabTarget.Release();
             _throwCaster.ForceCast(_grabTargetTrm.GetComponent<Collider2D>());
             _isComboComplete = false;
             IsPulled = false;
@@ -89,7 +92,7 @@ namespace Agents.Players
         }
         private IEnumerator PullCoroutine(Action OnComplete)
         {
-            _grabTargetTrm = _currentGrabData.grabTarget.GetTransform;
+
             float currentTime = 0f;
 
             Vector2 previousPosition = _grabTargetTrm.position;
@@ -118,5 +121,6 @@ namespace Agents.Players
         {
             _currentGrabData = data;
         }
+
     }
 }

@@ -16,6 +16,7 @@ namespace Agents.Players.FSM
         {
             base.Enter();
             _mover.StopImmediately(true);
+            _grabThrower.Grab();
             _player.PlayerInput.PullEvent += HandlePullTarget;
             _isComboComplete = false;
         }
