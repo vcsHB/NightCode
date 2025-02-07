@@ -14,11 +14,20 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             _mover.SetGravityMultiplier(0f);
+            _mover.IsWallDetected();
+            _renderer.FlipController(_mover.WallDirection);
             base.Enter();
             _player.PlayerInput.JumpEvent += HandleWallJump;
         }
 
-
+        public override void UpdateState()
+        {
+            base.UpdateState();
+            if(_mover.IsWallDetected())
+            {
+                _stateMachine.ChangeState("Fall");
+            }
+        }
 
 
         public override void Exit()

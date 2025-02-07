@@ -8,17 +8,21 @@ namespace Agents.Players
         public event Action<Vector2> OnMovement;
         [Header("Ground Detect")]
         [SerializeField] private Transform _groundCheckTrm;
-
         [SerializeField] private Vector2 _checkerSize;
         [SerializeField] private float _checkDistance;
         [SerializeField] private LayerMask _whatIsGround;
-        private Rigidbody2D _rigidCompo;
-        public Rigidbody2D RigidCompo => _rigidCompo;
+
+        [Header("Wall Detect")]
+        [SerializeField] private Transform _wallCheckerTrm;
+        [SerializeField] private float _wallDetectDistance;
+        public float WallDirection { get; private set; }
 
         [Header("Move Setting")]
         [SerializeField] private float _moveSpeed = 5f;
         [SerializeField] private float _turboPower = 30f;
 
+        private Rigidbody2D _rigidCompo;
+        public Rigidbody2D RigidCompo => _rigidCompo;
         public Vector2 Velocity { get; private set; }
         private Player _player;
         private float _movementX;
@@ -124,6 +128,22 @@ namespace Agents.Players
         public void ResetGravityMultiplier() => _rigidCompo.gravityScale = _originalgravity;
         public virtual bool IsGroundDetected()
             => Physics2D.BoxCast(_groundCheckTrm.position, _checkerSize, 0, Vector2.down, _checkDistance, _whatIsGround);
+        public virtual bool IsWallDetected()
+        {
+            if(IsDirectionWall(Vector2.left))
+                return true;
+            if(IsDirectionWall(Vector2.right))
+                return true;
+            WallDirection = 0f;
+            return false;
+        }
+        private bool IsDirectionWall(Vector2 direction)
+        {
+            bool isWall = Physics2D.Raycast(_wallCheckerTrm.position, direction, _wallDetectDistance, _whatIsGround);
+            if (isWall)
+                WallDirection = direction.x;
+            return isWall;
+        }
 
 #if UNITY_EDITOR
 
@@ -135,12 +155,18 @@ namespace Agents.Players
                 Vector3 offset = new Vector3(0, _checkDistance * 0.5f);
                 Gizmos.DrawWireCube(_groundCheckTrm.position - offset, new Vector3(_checkerSize.x, _checkDistance, 1f));
             }
+            
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + (Vector3)Velocity);
+            if(_wallCheckerTrm != null)
+            {
+                Gizmos.DrawLine(_wallCheckerTrm.position, _wallCheckerTrm.position + (Vector3)(Vector2.left * _wallDetectDistance));
+                Gizmos.DrawLine(_wallCheckerTrm.position, _wallCheckerTrm.position + (Vector3)(Vector2.right * _wallDetectDistance));
+            }
         }
 #endif
     }

@@ -7,8 +7,6 @@ namespace Agents.Players.FSM
     {
         public PlayerSlideDownState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
-            
-            _canUseRope = true;
         }
 
 

@@ -153,6 +153,7 @@ Transform:
   - {fileID: 33945913861984853}
   - {fileID: 3210156924589146773}
   - {fileID: 5069634181508408857}
+  - {fileID: 5126648570187029290}
   - {fileID: 1999371668300468464}
   - {fileID: 3174235353205496250}
   - {fileID: 4072476359948441073}
@@ -265,6 +266,8 @@ MonoBehaviour:
   _whatIsGround:
     serializedVersion: 2
     m_Bits: 512
+  _wallCheckerTrm: {fileID: 5126648570187029290}
+  _wallDetectDistance: 0.7
   _moveSpeed: 20
   _turboPower: 60
   jumpCount: 1
@@ -10452,6 +10455,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particle: {fileID: 7305035003234627077}
+--- !u!1 &3953580281425235369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5126648570187029290}
+  m_Layer: 6
+  m_Name: WallChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5126648570187029290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3953580281425235369}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4264095113676399738}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3959283025324429630
 GameObject:
   m_ObjectHideFlags: 0
