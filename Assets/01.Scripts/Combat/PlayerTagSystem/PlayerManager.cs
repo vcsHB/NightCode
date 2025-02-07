@@ -53,7 +53,7 @@ namespace Combat.PlayerTagSystem
                 playerCharacter.GetComponentInChildren<AimController>().SetAimGroup(_aimGroup);
                 _playerList.Add(playerCharacter);
             }
-            CameraManager.Instance.SetFollow(CurrentPlayer.transform);
+            CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
             _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
         }
 
@@ -92,7 +92,7 @@ namespace Combat.PlayerTagSystem
         {
             newCharacter.EnterCharacter();
             newCharacter.SetActive(true);
-            CameraManager.Instance.SetFollow(newCharacter.transform);
+            CameraControllers.CameraManager.Instance.SetFollow(newCharacter.transform);
             _aimGroup.SetAnchorOwner(newCharacter.RigidCompo, newCharacter.RopeHolder);
         }
 

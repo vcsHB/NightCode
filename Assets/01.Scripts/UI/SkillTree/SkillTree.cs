@@ -9,7 +9,7 @@ using UnityEngine.Events;
 using UnityEditor;
 #endif
 
-public class SkillTree : MonoBehaviour
+public class SkillTree : MonoBehaviour, IUIPanel
 {
     public SkillTreeSO treeSO;
     public Dictionary<NodeSO, Node> nodeDic;
@@ -21,7 +21,6 @@ public class SkillTree : MonoBehaviour
     public Transform edgeFillParent;
     private string _path;
 
-    [SerializeField] private RectTransform _treeRect;
     [SerializeField] private Vector2 _nodeOriginPos;
     [SerializeField] private DirectionEnum _nodeDirection;
 
@@ -175,6 +174,16 @@ public class SkillTree : MonoBehaviour
         {
 
         });
+    }
+
+    public void Open(Vector2 position)
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
     }
 }
 

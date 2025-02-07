@@ -16,12 +16,12 @@ namespace GGM.Core.StatSystem
         public string displayName;
         [SerializeField] private Sprite _icon;
         [SerializeField] private float _baseValue, _minValue, _maxValue;
+        public float modifyValue = 0;
 
         private Dictionary<object, float> _modifyValueByKey = new Dictionary<object, float>();
 
-        [field: SerializeField] public bool IsPercent { get; private set; }
+        //[field: SerializeField] public bool IsPercent { get; private set; }
 
-        public float _modifyValue = 0;
         public Sprite Icon => _icon;
 
         public float MaxValue
@@ -36,7 +36,7 @@ namespace GGM.Core.StatSystem
             set => _minValue = value;
         }
 
-        public float Value => Mathf.Clamp(_baseValue + _modifyValue, _minValue, _maxValue);
+        public float Value => Mathf.Clamp(_baseValue + modifyValue, _minValue, _maxValue);
         public bool IsMax => Mathf.Approximately(Value, _maxValue);
         public bool IsMin => Mathf.Approximately(Value, _minValue);
 
@@ -53,10 +53,17 @@ namespace GGM.Core.StatSystem
 
         public void AddModifier(object key, float value)
         {
-            if (_modifyValueByKey.ContainsKey(key)) return;
-
             float prevValue = Value;
-            _modifyValue += value;
+            modifyValue += value;
+
+            if (_modifyValueByKey.ContainsKey(key))
+            {
+                _modifyValueByKey[key] += value;
+                TryInvokeValueChangeEvent(Value, prevValue);
+                return;
+            }
+
+
             _modifyValueByKey.Add(key, value);
             TryInvokeValueChangeEvent(Value, prevValue);
         }
@@ -66,7 +73,7 @@ namespace GGM.Core.StatSystem
             if (_modifyValueByKey.TryGetValue(key, out float value))
             {
                 float prevValue = Value;
-                _modifyValue -= value;
+                modifyValue -= value;
                 _modifyValueByKey.Remove(key);
                 TryInvokeValueChangeEvent(Value, prevValue);
             }
@@ -76,7 +83,7 @@ namespace GGM.Core.StatSystem
         {
             float prevValue = Value;
             _modifyValueByKey.Clear();
-            _modifyValue = 0;
+            modifyValue = 0;
             TryInvokeValueChangeEvent(Value, prevValue);
         }
 
