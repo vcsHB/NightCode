@@ -13,16 +13,22 @@ namespace Agents.Players.FSM
         public PlayerSwingState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
             _canUseRope = true;
+            
+            _canGrab = true;
         }
         
 
         public override void Enter()
         {
             base.Enter();
+            
+            _mover.SetMovementMultiplier(1f);
             _mover.CanManualMove = false;
             Vector2 velocity = _mover.Velocity;
             _mover.StopImmediately(true);
-            _mover.AddForceToEntity(velocity * 0.6f);
+            velocity.x *= 0.8f;
+            velocity.y *= 0.6f;
+            _mover.AddForceToEntity(velocity);
             _currentRollingTime = 0f;
         }
 

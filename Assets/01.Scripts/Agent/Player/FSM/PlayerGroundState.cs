@@ -1,6 +1,4 @@
-using System;
 using Agents.Animate;
-using UnityEngine;
 namespace Agents.Players.FSM
 {
 
@@ -18,6 +16,7 @@ namespace Agents.Players.FSM
             _renderer.SetLockRotation(true);
             _aimController.RemoveWire();
             _player.PlayerInput.JumpEvent += HandleJump;
+            _player.PlayerInput.TurboEvent += HandleDash;
             
         }
 
@@ -25,8 +24,15 @@ namespace Agents.Players.FSM
         public override void Exit()
         {
             _player.PlayerInput.JumpEvent -= HandleJump;
+            _player.PlayerInput.TurboEvent -= HandleDash;
+
             base.Exit();
 
+        }
+
+        private void HandleDash()
+        {
+            // 대쉬 구현
         }
 
         public override void UpdateState()
@@ -41,8 +47,8 @@ namespace Agents.Players.FSM
 
         private void HandleJump()
         {
-
-            _stateMachine.ChangeState("Jump");
+            if(_mover.CanJump)
+                _stateMachine.ChangeState("Jump");
         }
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Agents
 {
-    public class Agent : MonoBehaviour
+    public abstract class Agent : MonoBehaviour
     {
-
+        public bool IsDead { get; protected set; }
         private Dictionary<Type, IAgentComponent> _components = new Dictionary<Type, IAgentComponent>();
 
         protected virtual void Awake()
@@ -38,12 +38,13 @@ namespace Agents
             if (_components.TryGetValue(typeof(T), out IAgentComponent compo))
             {
                 return compo as T;
-            }else
+            }
+            else
             {
                 // 상속구조의 예외 발생 가능 
                 //Debug.Log("Not Exist In components dictionary");
                 T newComponent = GetComponentInChildren<T>();
-                if(newComponent is IAgentComponent)
+                if (newComponent is IAgentComponent)
                 {
 
                     _components.Add(typeof(T), newComponent as IAgentComponent);
@@ -60,6 +61,8 @@ namespace Agents
 
             return default(T);
         }
+
+        protected abstract void HandleAgentDie();
 
     }
 

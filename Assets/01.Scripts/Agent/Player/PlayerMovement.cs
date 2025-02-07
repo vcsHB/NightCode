@@ -23,6 +23,8 @@ namespace Agents.Players
         private Player _player;
         private float _movementX;
         private float _moveSpeedMultiplier = 1f;
+        public int jumpCount = 1;
+        public bool CanJump => jumpCount > 0;
         private float _originalgravity;
         private PlayerRenderer _playerRenderer;
         [field: SerializeField] public bool CanManualMove { get; set; } = true;
@@ -31,6 +33,7 @@ namespace Agents.Players
         {
             _player = agent as Player;
             _rigidCompo = agent.GetComponent<Rigidbody2D>();
+            _originalgravity = _rigidCompo.gravityScale;
             _playerRenderer = agent.GetCompo<PlayerRenderer>();
 
             _originalgravity = _rigidCompo.gravityScale;
@@ -67,33 +70,31 @@ namespace Agents.Players
             _movementX = 0;
         }
 
+        public void StopYVelocity()
+        {
+            _rigidCompo.linearVelocityY = 0f;
+        }
+
 
         public void UseTurbo(Vector2 hangingDirection)
         {
-            //StopImmediately(true);
-
             Vector2 baseDirection = -hangingDirection.normalized;
             Vector2 inputDirection = _player.PlayerInput.InputDirection;
             if (inputDirection.magnitude < 0.1f)
                 inputDirection = Velocity.normalized;
 
-            // 1. 입력 벡터를 보라색 벡터에 투영
+            // 1. 입력 벡터를 HangingDirection 벡터에 투영
             Vector2 projection = Vector3.Project(inputDirection, baseDirection);
             projection.Normalize();
 
-            // 2. 입력 벡터를 보라색 벡터에 수직인 방향으로 분리
+            // 2. 입력 벡터를 HangingDirection 벡터에 수직인 방향으로 분리
             Vector2 perpendicular = inputDirection - projection;
 
             // 3. 결과 벡터 계산 (필요한 연산 방식에 따라 다르게 적용 가능)
-            Vector2 result = baseDirection + projection + perpendicular.normalized;
-            //result.x *= 0.8f;
+            Vector2 result = baseDirection + projection.normalized + perpendicular.normalized;
 
-            //Vector2 newDir = -hangingDirection - direction;
             SetVelocity(result.normalized * _turboPower);
-
-
         }
-
 
         public void SetMultipleVelocioty(float value)
         {
@@ -112,6 +113,7 @@ namespace Agents.Players
         }
         public void SetMovementMultiplier(float value) => _moveSpeedMultiplier = value;
         public void SetGravityMultiplier(float value) => _rigidCompo.gravityScale = value;
+        public void ResetGravityMultiplier() => _rigidCompo.gravityScale = _originalgravity;
         public virtual bool IsGroundDetected()
             => Physics2D.BoxCast(_groundCheckTrm.position, _checkerSize, 0, Vector2.down, _checkDistance, _whatIsGround);
 
