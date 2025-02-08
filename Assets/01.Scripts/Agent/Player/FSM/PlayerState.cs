@@ -88,6 +88,12 @@ namespace Agents.Players.FSM
             _player.StateMachine.ChangeState("Swing");
         }
 
+        private void HandleAttack()
+        {
+            if (!_player.IsActive) return;
+            _stateMachine.ChangeState("Attack");
+        }
+
 
     }
 }

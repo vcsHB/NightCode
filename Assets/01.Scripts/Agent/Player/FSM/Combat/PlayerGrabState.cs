@@ -31,6 +31,7 @@ namespace Agents.Players.FSM
         {
             if(!_grabThrower.IsPulled)
                 _stateMachine.ChangeState("Pull");
+                SetCompleteCombo(); // 나중에 빼기
         }
 
         protected override void HandleRemoveRope()

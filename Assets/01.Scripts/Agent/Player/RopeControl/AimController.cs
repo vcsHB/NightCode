@@ -34,6 +34,7 @@ namespace Agents.Players
         private AimData _currentAimData;
         private GrabData _currentGrabData;
         public bool IsTargeted => _currentAimData.isTargeted;
+        public Vector2 AimDirection => _currentAimData.aimDirection;
         public Vector2 TargetPoint => _currentAimData.targetPosition;
         public Vector2 OriginPosition => _currentAimData.originPlayerPosition;
         private float _currentShootTime = 0;

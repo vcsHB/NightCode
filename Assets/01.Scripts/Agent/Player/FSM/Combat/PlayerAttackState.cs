@@ -41,8 +41,12 @@ namespace Agents.Players.FSM
 
         protected virtual void MoveToAttackFacing()
         {
+            Vector2 attackDirection = _aimController.AimDirection.normalized;
+            _renderer.FlipController(attackDirection.x);
             AttackData data = _attackController.GetAttackData(_comboCounter);
             if (data == null) return;
+            _mover.StopImmediately(true);
+            //_mover.SetVelocity(attackDirection * data.movePower * 12f);
             _mover.SetMovement(_renderer.FacingDirection * data.movePower);
             _delayCoroutine = _player.StartCoroutine(MoveDelayCoroutine(data.moveduration));
 
@@ -72,7 +76,7 @@ namespace Agents.Players.FSM
 
         public override void UpdateState()
         {
-            base.UpdateState();
+            //base.UpdateState();
 
         }
 
