@@ -11,6 +11,8 @@ namespace Combat.CombatObjects.ProjectileManage
         internal void OnCasted();
 
         internal void OnShot();
+        
+        internal void OnCollision();
 
         internal void OnProjectileDamaged();
 
