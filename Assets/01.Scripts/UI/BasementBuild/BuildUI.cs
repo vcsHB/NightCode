@@ -43,6 +43,7 @@ namespace Basement
         private void OnClick()
         {
             _buildingSelectPanel.Open();
+            _buildingSelectPanel.onSelectRoom += OnSelectBuilding;
         }
 
         public void OnSelectBuilding(BasementRoomType roomType)
@@ -52,6 +53,7 @@ namespace Basement
             BasementRoom room = Instantiate(_basementSO.GetBasementRoom(roomType));
             room.transform.position = transform.position;
 
+            _buildingSelectPanel.onSelectRoom -= OnSelectBuilding;
             Destroy(gameObject);
         }
 

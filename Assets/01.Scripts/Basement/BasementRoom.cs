@@ -4,6 +4,7 @@ namespace Basement
 {
     public abstract class BasementRoom : MonoBehaviour
     {
-        public abstract void OnInteractObject();
+        public abstract void SetFactor(string factor);
+            
     }
 }

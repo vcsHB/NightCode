@@ -66,6 +66,7 @@ namespace Basement.Player
             _readyInteract = true;
             OnInteract += onInteract;
             _pressFBtn.SetActive(true);
+            Debug.Log("นึ");
         }
 
         public void RemoveInteractAction(Action onInteract)

@@ -12,40 +12,31 @@ public class ElevatorDoor : MonoBehaviour
     private Animator _animator;
     private Elevator _elevator;
     private Collider2D _collider;
-    private int _floor;
+    private bool _isDoorOpen = false;       //유사 FSM 문의 상태
 
     private int _doorOpenHash = Animator.StringToHash("Open");
     private int _doorCloseHash = Animator.StringToHash("Close");
-    private bool _isDoorOpen = false;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _collider = GetComponent<Collider2D>();
-        _collider.enabled = false;
-    }
-
-    private void OnInteract()
-    {
-        if (_isDoorOpen == false) return;
-        _elevator.ChangeFloor();
+        _collider.enabled = false; 
+        _isDoorOpen = false;
     }
 
     public void OpenDoor()
     {
+        //Door Open Animation
         _animator.SetTrigger(_doorOpenHash);
     }
 
     public void CompleteOpenDoor()
     {
+        //On Complete Door Open Animation
         _isDoorOpen = true;
         _collider.enabled = true;
         onCompleteOpenDoor?.Invoke();
-    }
-
-    public void CompleteCloseDoor()
-    {
-        onCompleteCloseDoor?.Invoke();
     }
 
     public void CloseDoor()
@@ -55,15 +46,24 @@ public class ElevatorDoor : MonoBehaviour
         _isDoorOpen = false;
     }
 
-
-    public void Init(BasementPlayer player, Elevator elevator, int floor)
+    public void CompleteCloseDoor()
     {
-        _elevator = elevator;
-        _floor = floor;
+        onCompleteCloseDoor?.Invoke();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
+    {   
+        //Enter elevator when door opened change floor
+        if (_isDoorOpen == false) return;   //If door is not opened return
+
+        Debug.Log(_collider.enabled);
+        _elevator.ChangeFloor(this);
+
+        //TODO : block player input until elevator door open
+    }
+
+    public void Init(Elevator elevator)
     {
-        OnInteract();
+        _elevator = elevator;
     }
 }

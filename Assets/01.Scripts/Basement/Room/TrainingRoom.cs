@@ -1,12 +1,14 @@
+using Basement.CameraController;
+using Basement.Player;
 using Basement.Training;
 using DG.Tweening;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Basement
 {
     public class TrainingRoom : BasementRoom
     {
+        [SerializeField] private TrainingSetSO _trainingSetSO;
         [SerializeField] private TrainingSO _training;
         [SerializeField] private Transform _cameraFocusTarget;
         [SerializeField] private Furniture _interactObject;
@@ -16,6 +18,7 @@ namespace Basement
         private void OnEnable()
         {
             _interactObject.InteractAction += Training;
+            _interactObject.Init(FindAnyObjectByType<BasementPlayer>());
         }
 
         private void OnDisable()
@@ -34,14 +37,20 @@ namespace Basement
             TrainingManager.Instance.AddFatigue(_selectedCharacter, fatigue);
         }
 
-        public void SelectCharactere(CharacterEnum character) 
+        public void SelectCharactere(CharacterEnum character)
             => _selectedCharacter = character;
 
-        public override void OnInteractObject()
+        public void OnInteractObject()
         {
-            _originFollow = CameraManager.Instance.GetCameraFollow();
-            CameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, null);
-            CameraManager.Instance.Zoom(1.5f, 0.4f);
+            _originFollow = BasementCameraManager.Instance.GetCameraFollow();
+            BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, null);
+            BasementCameraManager.Instance.Zoom(1.5f, 0.4f);
+        }
+
+        public override void SetFactor(string factor)
+        {
+            //Factor: TrainingLevel
+            _training = _trainingSetSO.GetTrainingSO(factor);
         }
 
         public void OnTriggerEnter2D(Collider2D collision)
@@ -51,8 +60,8 @@ namespace Basement
 
         public void OnTriggerExit2D(Collider2D collision)
         {
-            CameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
-            CameraManager.Instance.Zoom(4f, 0.4f);
+            BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
+            BasementCameraManager.Instance.Zoom(4f, 0.4f);
         }
     }
 }

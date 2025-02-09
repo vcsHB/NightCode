@@ -1,4 +1,5 @@
 
+using Basement.Player;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,9 @@ namespace Basement
     public class BasementBuildUI : MonoBehaviour, IUIPanel
     {
         [SerializeField] private BasementSO _basementInfo;
-        [SerializeField] private GameObject _buildUIPrefab;
+        [SerializeField] private BuildingSelectPanel _buildingSelectPanel;
+        [SerializeField] private BuildUI _buildUIPrefab;
+        [SerializeField] private BasementPlayer _player;
         [SerializeField] private Toggle toggle;
 
         public List<RoomBuildPositionStruct> roomPositions;
@@ -22,12 +25,10 @@ namespace Basement
         {
             if (isOpen)
             {
-
                 Open(Vector2.zero);
             }
             else
             {
-
                 Close();
             }
         }
@@ -53,7 +54,8 @@ namespace Basement
                         continue;
                     }
 
-                    Instantiate(_buildUIPrefab, roomPositions[i].roomPositions[j]);
+                    BuildUI buildUI = Instantiate(_buildUIPrefab, roomPositions[i].roomPositions[j]);
+                    buildUI.Init(i, j, _buildingSelectPanel);
                 }
             }
         }

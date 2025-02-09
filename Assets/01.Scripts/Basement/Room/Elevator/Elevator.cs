@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Basement.Player;
 using DG.Tweening;
 using System.Collections;
+using Basement.CameraController;
 
 namespace Basement
 {
@@ -13,6 +14,8 @@ namespace Basement
         [SerializeField] private Transform _elevatorCameraTarget;
         [SerializeField] private BasementPlayer _player;
         [SerializeField] private float _elevatorSpeed = 0.5f;
+        private ElevatorDoor _prevDoor;
+        private ElevatorDoor _targetDoor;
         private int _currentFloor = 3;
         private int _targetFloor = 0;
         private Sequence _seq;
@@ -23,30 +26,37 @@ namespace Basement
         {
             _floorStruct.ForEach(elevator =>
             {
-                elevator.door.Init(_player, this, elevator.floor);
+                elevator.door.Init(this);
                 elevator.button.Init(_player, elevator.door, elevator.floor);
             });
         }
 
         private void OnDoorClosed()
         {
-
-            var prevFloor = _floorStruct.Find(floor => floor.floor == _currentFloor);
             var targetFloor = _floorStruct.Find(floor => floor.floor == _targetFloor);
+            _targetDoor = targetFloor.door;
+
+            //When Door Close Comletely Move Player Instantly
             _player.transform.position = targetFloor.door.transform.position;
-            prevFloor.door.onCompleteCloseDoor -= OnDoorClosed;
+            _prevDoor.onCompleteCloseDoor -= OnDoorClosed;
 
             Transform targetFollow = targetFloor.floorTarget;
             int floorDiff = Mathf.Abs(_currentFloor - _targetFloor);
 
-            CameraManager.Instance.ChangeFollow(targetFollow, floorDiff / _elevatorSpeed,
+            //Move Camera
+            BasementCameraManager.Instance.ChangeFollow(targetFollow, floorDiff / _elevatorSpeed,
                 () =>
                 {
-                    StartCoroutine(DelayAction(() =>
-                    {
-                        targetFloor.door.OpenDoor();
-                        targetFloor.door.onCompleteOpenDoor += OnDoorOpened;
-                    }, 2f));
+                    //When move complete open door of target floor
+                    //When door open completly change floor and
+                    Debug.Log(targetFloor.floor); 
+                    _targetDoor.OpenDoor();
+                    _targetDoor.onCompleteOpenDoor += OnDoorOpened;
+
+                    //StartCoroutine(DelayAction(() =>
+                    //{
+                        
+                    //}, 2f));
                 });
         }
 
@@ -55,22 +65,21 @@ namespace Basement
             _player.SetSortingLayer(5);
             _currentFloor = _targetFloor;
 
-            var floor = _floorStruct.Find(floor => floor.floor == _currentFloor);
-            floor.door.onCompleteOpenDoor -= OnDoorOpened;
-            StartCoroutine(DelayAction(() => floor.door.CloseDoor(), 1f));
+            _targetDoor.onCompleteOpenDoor -= OnDoorOpened;
         }
 
-        public void ChangeFloor()
+        public void ChangeFloor(ElevatorDoor prevDoor)
         {
-            //엘리베이터에서 타고, 층을 이동하고 엘리베이터에서 내리기 까지 해줌
+            //이동하기 전의 엘리베이터 문을 닫아주고, 끝났을 때 액션 구독
+            _prevDoor = prevDoor;
+            _prevDoor.CloseDoor();
+            _prevDoor.onCompleteCloseDoor += OnDoorClosed;
 
+            //레이어를 바꿔서 엘리베이터에 탄거 같은 연출
             _player.SetSortingLayer(0);
-            var prevFloor = _floorStruct.Find(floor => floor.floor == _currentFloor);
-            var targetFloor = _floorStruct.Find(floor => floor.floor == _targetFloor);
-
-            prevFloor.door.CloseDoor();
-            prevFloor.door.onCompleteCloseDoor += OnDoorClosed;
         }
+
+
 
         public void SetTargetFloor(int targetFloor)
         {

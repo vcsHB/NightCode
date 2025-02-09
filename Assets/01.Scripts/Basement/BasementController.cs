@@ -32,7 +32,7 @@ namespace Basement
 
         public void Load()
         {
-            if(File.Exists(_path) == false)
+            if (File.Exists(_path) == false)
             {
                 Save();
                 return;
@@ -44,12 +44,15 @@ namespace Basement
             basementInfo.expendedFloor = save.expendedFloor;
             basementInfo.floorInfos = save.floorInfos;
 
-            for(int i = 0; i < basementInfo.expendedFloor; i++)
+            for (int i = 0; i < basementInfo.expendedFloor; i++)
             {
-                for(int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
+                for (int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
                 {
                     RoomInfo roomInfo = basementInfo.floorInfos[i].rooms[j];
 
+                    if ((int)roomInfo.roomType < 3) continue;
+
+                    Debug.Log(roomInfo.roomType);
                     Transform positionTrm = buildUI.roomPositions[i].roomPositions[j];
                     BasementRoom room = Instantiate(basementInfo.GetBasementRoom(roomInfo.roomType));
                     room.transform.SetPositionAndRotation(positionTrm.position, Quaternion.identity);
@@ -80,5 +83,6 @@ namespace Basement
         public int level;
         public BasementRoomType roomType;
         public List<FurnitureSO> furnitures;
+        [HideInInspector] public string factor;
     }
 }

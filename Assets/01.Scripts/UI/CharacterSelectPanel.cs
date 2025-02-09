@@ -143,11 +143,11 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 
     public void Close()
     {
-
+        gameObject.SetActive(false);
     }
 
     public void Open(Vector2 position)
     {
-
+        gameObject.SetActive(true);
     }
 }
