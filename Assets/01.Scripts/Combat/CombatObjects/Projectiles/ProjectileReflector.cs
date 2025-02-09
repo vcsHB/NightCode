@@ -20,11 +20,12 @@ namespace Combat.CombatObjects.ProjectileManage
                 base.OnCollision();
                 return;
             }
+            _currentReflectCount++;
             Vector2 previousVelocity = _owner.Velocity;
             RaycastHit2D hit = Physics2D.Raycast(transform.position, previousVelocity.normalized, _wallDetectDistance, _wallLayer);
-            if (!hit) return;
+            if (hit.collider == null) return;
             float speed = previousVelocity.magnitude * _ReflectSpeedMultipler;
-            Vector2 reflectVelocity = Vector2.Reflect(previousVelocity, hit.normal).normalized * speed;
+            Vector2 reflectVelocity = Vector2.Reflect(previousVelocity.normalized, hit.normal).normalized * speed;
             _owner.SetVelocity(reflectVelocity);
         }
 

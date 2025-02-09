@@ -134,13 +134,13 @@ GameObject:
   - component: {fileID: 21047332}
   - component: {fileID: 21047335}
   - component: {fileID: 21047334}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SwordingProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &21047331
 Transform:
   m_ObjectHideFlags: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 512
-  _wallDetectDistance: 1
+  _wallDetectDistance: 2
   _ReflectSpeedMultipler: 1
 --- !u!114 &21047333
 MonoBehaviour:
@@ -191,7 +191,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _projectileData:
-    direction: {x: 2, y: 0}
+    direction: {x: 2, y: -1}
     speed: 3
     lifeTime: 5
     canPenetrate: 0
@@ -264,7 +264,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -149163,7 +149163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1855707961}
   - component: {fileID: 1855707962}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
