@@ -13,6 +13,7 @@ namespace Combat.CombatObjects.ProjectileManage
         protected Transform _visualTrm;
         protected Rigidbody2D _rigidCompo;
         private bool _isActive;
+        private float _currentLifeTime = 0f;
         [SerializeField] private ProjectileData _projectileData;
         public PoolingType type { get; set; }
 
@@ -77,7 +78,13 @@ namespace Combat.CombatObjects.ProjectileManage
         private void Update()
         {
             if (!_isActive) return;
+            _currentLifeTime += Time.deltaTime;
             _caster.Cast();
+            if(_currentLifeTime >= _projectileData.lifeTime)
+            {
+                _currentLifeTime = 0f;
+                HandleDestroy();
+            }
 
         }
 
@@ -85,6 +92,7 @@ namespace Combat.CombatObjects.ProjectileManage
         {
             if (_isActive)
             {
+                if (_projectileData.canPenetrate) return;
                 HandleDestroy();
             }
         }
@@ -107,6 +115,7 @@ namespace Combat.CombatObjects.ProjectileManage
             _isActive = true;
             _projectileData = data;
             _visualTrm.right = data.direction;
+            _caster.SendCasterData(new DamageCasterData() {damage = data.damage});
             _rigidCompo.linearVelocity = data.direction.normalized * data.speed;
             OnShotEvent?.Invoke();
             OnShotSerializedEvent?.Invoke();
@@ -114,6 +123,7 @@ namespace Combat.CombatObjects.ProjectileManage
 
         public void ResetItem()
         {
+            _currentLifeTime = 0f;
             OnGeneratedEvent?.Invoke();
         }
 
