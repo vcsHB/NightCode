@@ -2,26 +2,24 @@ using UnityEngine;
 namespace Combat.CombatObjects.ProjectileManage
 {
 
-    public class ProjectileReflector : MonoBehaviour, IProjectileComponent
+    public class ProjectileReflector : ProjectileWallDestroyer
     {
         [SerializeField] private int _reflectAmount = 1;
         [SerializeField] private LayerMask _wallLayer;
         [SerializeField] private float _wallDetectDistance = 1f;
-        private Projectile _owner;
         [SerializeField, Range(0f, 1f)] private float _ReflectSpeedMultipler = 1f;
 
-        void IProjectileComponent.Initialize(Projectile projectile)
-        {
-            _owner = projectile;
-        }
 
-        void IProjectileComponent.OnCasted()
-        {
+        private int _currentReflectCount = 0;
 
-        }
 
-        void IProjectileComponent.OnCollision()
+        public override void OnCollision()
         {
+            if(_currentReflectCount >= _reflectAmount)
+            {
+                base.OnCollision();
+                return;
+            }
             Vector2 previousVelocity = _owner.Velocity;
             RaycastHit2D hit = Physics2D.Raycast(transform.position, previousVelocity.normalized, _wallDetectDistance, _wallLayer);
             if (!hit) return;
@@ -30,27 +28,15 @@ namespace Combat.CombatObjects.ProjectileManage
             _owner.SetVelocity(reflectVelocity);
         }
 
-        void IProjectileComponent.OnGenerated()
+        public override void OnGenerated()
         {
-
+            base.OnGenerated();
+            _currentReflectCount = 0;
         }
 
-        void IProjectileComponent.OnProjectileDamaged()
-        {
 
-        }
 
-        void IProjectileComponent.OnProjectileDestroy()
-        {
 
-        }
-
-        void IProjectileComponent.OnShot()
-        {
-
-        }
-
-        
 #if UNITY_EDITOR
 
         private void OnDrawGizmos()

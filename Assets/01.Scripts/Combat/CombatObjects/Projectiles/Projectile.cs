@@ -88,7 +88,11 @@ namespace Combat.CombatObjects.ProjectileManage
                 HandleDestroy();
             }
         }
-
+        [ContextMenu("DebugShoot")]
+        private void DebugShoot()
+        {
+            Shoot(_projectileData);
+        }
         #region External Functions
 
         internal void SetVelocity(Vector2 velocity) => _rigidCompo.linearVelocity = velocity;
@@ -117,12 +121,12 @@ namespace Combat.CombatObjects.ProjectileManage
         internal void SetGravityMultiplier(float gravity) => _rigidCompo.gravityScale = gravity;
         internal void ResetGravityMultiplier() => _rigidCompo.gravityScale = _defaultGravityScale;
 
-        private void HandleDestroy()
+        internal void HandleDestroy()
         {
             _isActive = false;
             OnDestroyEvent?.Invoke();
-            PoolManager.Instance.Push(this);
-
+            //PoolManager.Instance.Push(this);
+            Destroy(gameObject);
         }
 
         public void ApplyDamage(float damage)

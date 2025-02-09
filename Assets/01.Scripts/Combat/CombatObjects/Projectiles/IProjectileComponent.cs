@@ -6,16 +6,16 @@ namespace Combat.CombatObjects.ProjectileManage
     public interface IProjectileComponent
     {
         public void Initialize(Projectile projectile);
-        internal void OnGenerated();
+        public void OnGenerated();
 
-        internal void OnCasted();
+        public void OnCasted();
 
-        internal void OnShot();
+        public void OnShot();
         
-        internal void OnCollision();
+        public void OnCollision();
 
-        internal void OnProjectileDamaged();
+        public void OnProjectileDamaged();
 
-        internal void OnProjectileDestroy();
+        public void OnProjectileDestroy();
     }
 }

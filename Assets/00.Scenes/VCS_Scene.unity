@@ -191,12 +191,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _projectileData:
-    direction: {x: 0, y: 0}
-    speed: 0
-    lifeTime: 0
+    direction: {x: 2, y: 0}
+    speed: 3
+    lifeTime: 5
     canPenetrate: 0
-    canDestroy: 0
-    damage: 0
+    canDestroy: 1
+    damage: 1
 --- !u!114 &21047334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +285,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -149163,7 +149163,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1855707961}
   - component: {fileID: 1855707962}
-  - component: {fileID: 1855707963}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -149241,33 +149240,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &1855707963
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1855707960}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1940023421
 GameObject:
   m_ObjectHideFlags: 0
