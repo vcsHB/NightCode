@@ -1,5 +1,7 @@
 
+using Basement.CameraController;
 using Basement.Player;
+using CameraControllers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,15 +12,22 @@ namespace Basement
     {
         [SerializeField] private BasementSO _basementInfo;
         [SerializeField] private BuildingSelectPanel _buildingSelectPanel;
-        [SerializeField] private BuildUI _buildUIPrefab;
         [SerializeField] private BasementPlayer _player;
         [SerializeField] private Toggle toggle;
 
-        public List<RoomBuildPositionStruct> roomPositions;
+        public List<RoomBuildPositionStruct> basementBuildUI;
 
         private void Awake()
         {
             toggle.onValueChange.AddListener(ToggleValueChange);
+
+            for (int i = 0; i < basementBuildUI.Count; i++)
+            {
+                for (int j = 0; j < basementBuildUI[i].roomBuildUI.Count; j++)
+                {
+                    basementBuildUI[i].roomBuildUI[j].Init(i, j, _buildingSelectPanel);
+                }
+            }
         }
 
         private void ToggleValueChange(bool isOpen)
@@ -41,43 +50,39 @@ namespace Basement
                 for (int j = 0; j < floor.rooms.Count; j++)
                 {
                     if (floor.rooms[j].roomType != BasementRoomType.Empty)
-                    {
-                        if (roomPositions[i].roomPositions[j].childCount > 0)
-                            Destroy(roomPositions[i].roomPositions[j].GetChild(0).gameObject);
-
                         continue;
-                    }
 
-                    if (roomPositions[i].roomPositions[j].childCount > 0)
-                    {
-                        roomPositions[i].roomPositions[j].GetChild(0).gameObject.SetActive(true);
-                        continue;
-                    }
-
-                    BuildUI buildUI = Instantiate(_buildUIPrefab, roomPositions[i].roomPositions[j]);
+                    BuildUI buildUI = basementBuildUI[i].roomBuildUI[j];
+                    buildUI.gameObject.SetActive(true);
                     buildUI.Init(i, j, _buildingSelectPanel);
                 }
             }
+
+            BasementCameraManager.Instance.ChangeCameraMode(CameraMode.Build);
         }
 
         public void Close()
         {
-            for (int i = 0; i < roomPositions.Count; i++)
+            for (int i = 0; i < basementBuildUI.Count; i++)
             {
-                for (int j = 0; j < roomPositions[i].roomPositions.Count; j++)
+                for (int j = 0; j < basementBuildUI[i].roomBuildUI.Count; j++)
                 {
-                    if (roomPositions[i].roomPositions[j].childCount > 0)
-                    {
-                        roomPositions[i].roomPositions[j].GetChild(0).gameObject.SetActive(false);
-                    }
+                    basementBuildUI[i].roomBuildUI[j].gameObject.SetActive(false);
                 }
             }
+
+            BasementCameraManager.Instance.ChangeCameraMode(CameraMode.Basement);
+        }
+
+        public void ExpendFloor()
+        {
+            _basementInfo.expendedFloor++;
         }
     }
 
     [Serializable]
     public struct RoomBuildPositionStruct
     {
-        public List<Transform> roomPositions;
+        public List<BuildUI> roomBuildUI;
     }
 }

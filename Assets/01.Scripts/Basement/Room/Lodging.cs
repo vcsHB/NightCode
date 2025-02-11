@@ -1,16 +1,16 @@
+using Basement;
 using UnityEngine;
 
-public class Lodging : MonoBehaviour
+namespace Basement
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class Lodging : BasementRoom
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+
+        // 가구의 위치
+        public override void SetFactor(string factor)
+        {
         
+        }
     }
 }

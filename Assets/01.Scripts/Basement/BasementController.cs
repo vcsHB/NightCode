@@ -53,9 +53,9 @@ namespace Basement
                     if ((int)roomInfo.roomType < 3) continue;
 
                     Debug.Log(roomInfo.roomType);
-                    Transform positionTrm = buildUI.roomPositions[i].roomPositions[j];
-                    BasementRoom room = Instantiate(basementInfo.GetBasementRoom(roomInfo.roomType));
-                    room.transform.SetPositionAndRotation(positionTrm.position, Quaternion.identity);
+                    //Transform positionTrm = buildUI.basementBuildUI[i].roomBuildUI[j];
+                    //BasementRoom room = Instantiate(basementInfo.GetBasementRoom(roomInfo.roomType));
+                    //room.transform.SetPositionAndRotation(positionTrm.position, Quaternion.identity);
 
                     //가구 소환
                 }

@@ -24,11 +24,15 @@ namespace Basement.CameraController
         {
             base.Awake();
             _currentCamera = mainCamera;
+
+            _currentCameraMode = CameraMode.Build;
+            ChangeCameraMode(CameraMode.Basement);
         }
 
         public void ChangeCameraMode(CameraMode mode)
         {
             if (_currentCameraMode == mode) return;
+            _currentCameraMode = mode;
 
             if (mode == CameraMode.Basement)
             {
