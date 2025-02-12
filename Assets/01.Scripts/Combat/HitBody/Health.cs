@@ -1,8 +1,7 @@
 using System;
-using Combat;
 using UnityEngine;
 using UnityEngine.Events;
-namespace Agents
+namespace Combat
 {
     public class Health : MonoBehaviour, IDamageable, IHealable
     {
@@ -11,17 +10,15 @@ namespace Agents
         public event Action<float, float> OnHealthChangedValueEvent;
 
         public float MaxHealth => _maxHealth;
-        [SerializeField]
-        private float _maxHealth;
-        [SerializeField]
-        private float _currentHealth = 0;
+        [SerializeField] private float _maxHealth;
+        [SerializeField] private float _currentHealth = 0;
 
         public void Initialize(float health)
         {
             _maxHealth = health;
             SetMaxHealth();
         }
-        
+
         private void SetMaxHealth()
         {
             _currentHealth = MaxHealth;
@@ -43,7 +40,7 @@ namespace Agents
         }
         private void CheckDie()
         {
-            if(_currentHealth <= 0)
+            if (_currentHealth <= 0)
             {
                 OnDieEvent?.Invoke();
             }

@@ -1,8 +1,7 @@
 using System.Collections;
-using Combat;
 using UnityEngine;
 using UnityEngine.Events;
-namespace Agents
+namespace Combat
 {
 
     public class KnockbackBody : MonoBehaviour, IKnockbackable
