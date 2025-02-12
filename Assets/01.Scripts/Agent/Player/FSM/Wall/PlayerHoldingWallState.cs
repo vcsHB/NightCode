@@ -14,6 +14,8 @@ namespace Agents.Players.FSM
         {
             base.Enter();
             _mover.StopImmediately(true);
+            
+
         }
 
         public override void UpdateState()

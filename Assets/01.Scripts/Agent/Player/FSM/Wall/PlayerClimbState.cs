@@ -11,13 +11,13 @@ namespace Agents.Players.FSM
 
         public override void UpdateState()
         {
-            base.UpdateState();
             float yInput = _player.PlayerInput.InputDirection.y;
-            _mover.SetYMovement(yInput * 7f);
-            if(yInput <= 0f)
+            _mover.SetYMovement(yInput * 13f);
+            if (yInput <= 0f)
             {
                 _stateMachine.ChangeState("HoldingWall");
             }
+            base.UpdateState();
         }
     }
 }
