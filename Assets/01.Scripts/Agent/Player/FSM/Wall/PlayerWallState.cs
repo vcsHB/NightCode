@@ -23,7 +23,7 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             base.UpdateState();
-            if(_mover.IsWallDetected())
+            if(!_mover.IsWallDetected())
             {
                 _stateMachine.ChangeState("Fall");
             }
@@ -34,13 +34,13 @@ namespace Agents.Players.FSM
         {
             base.Exit();
             _player.PlayerInput.JumpEvent -= HandleWallJump;
+            _mover.ResetGravityMultiplier();
         }
 
         private void HandleWallJump()
         {
             Vector2 jumpDirection = Vector2.one; // 벽 반대 방향 연산
             _mover.AddForceToEntity(jumpDirection);
-            _mover.ResetGravityMultiplier();
             _stateMachine.ChangeState("Swing");
         }
 

@@ -14,6 +14,9 @@ namespace Agents.Players
         [field: SerializeField] public AnimParamSO JumpParam { get; private set; }
         [field: SerializeField] public AnimParamSO SwingParam { get; private set; }
         [field: SerializeField] public AnimParamSO HangParam { get; private set; }
+        [field: SerializeField] public AnimParamSO HoldWallParam { get; private set; }
+        [field: SerializeField] public AnimParamSO SlideDownParam { get; private set; }
+        [field: SerializeField] public AnimParamSO ClimbParam { get; private set; }
         [field: SerializeField] public AnimParamSO EnterParam { get; private set; }
         [field: SerializeField] public AnimParamSO ExitParam { get; private set; }
 

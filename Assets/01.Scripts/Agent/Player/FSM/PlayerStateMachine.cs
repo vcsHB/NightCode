@@ -41,6 +41,10 @@ namespace Agents.Players.FSM
             AddState("Enter", "PlayerTagEnter", playerRenderer.EnterParam);
             AddState("Exit", "PlayerTagExit", playerRenderer.ExitParam);
 
+            AddState("SlideDown", "PlayerSlideDown", playerRenderer.SlideDownParam);
+            AddState("HoldingWall", "PlayerHoldingWall", playerRenderer.HoldWallParam);
+            AddState("Climb", "PlayerClimb", playerRenderer.ClimbParam);
+
             if (_stateDictionary.TryGetValue(firstState, out PlayerState state))
             {
                 CurrentState = state;

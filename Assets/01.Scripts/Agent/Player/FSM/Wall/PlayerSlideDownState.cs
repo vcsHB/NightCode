@@ -14,7 +14,7 @@ namespace Agents.Players.FSM
         {
             base.UpdateState();
             float yInput = _player.PlayerInput.InputDirection.y;
-            _mover.SetYMovement(yInput);
+            _mover.SetYMovement(yInput * 7f);
             if(yInput >= 0f)
             {
                 _stateMachine.ChangeState("HoldingWall");

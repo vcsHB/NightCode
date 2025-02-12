@@ -94,6 +94,14 @@ namespace Agents.Players.FSM
             _stateMachine.ChangeState("Attack");
         }
 
+        protected void CheckWallAndHold()
+        {
+            if(_mover.IsWallDetected())
+            {
+                _stateMachine.ChangeState("HoldingWall");
+            }
+        }
+
 
     }
 }

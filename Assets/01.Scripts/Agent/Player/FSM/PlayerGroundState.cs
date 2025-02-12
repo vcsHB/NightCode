@@ -38,6 +38,7 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             base.UpdateState();
+            CheckWallAndHold();
             if (_mover.IsGroundDetected() == false && _mover.CanManualMove)
             {
                 _stateMachine.ChangeState("Fall");
