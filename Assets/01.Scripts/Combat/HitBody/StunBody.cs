@@ -31,18 +31,25 @@ namespace Combat
             }
         }
 
-        public void Stun(float stun)
+        /// <summary>
+        ///     Stun Target
+        /// </summary>
+        /// <param name="stun"></param>
+        /// <returns>Is Stun Completely</returns>
+        public bool Stun(float stun)
         {
             _currentStunLevel += stun;
             _currentStunReduceCoolTime = 0f;
             InvokeStunEvent();
             if (_currentStunLevel >= _maxStunLevel)
             {
-                StunCompletly();
+                StunCompletely();
+                return true;
             }
+            return false;
         }
 
-        private void StunCompletly()
+        private void StunCompletely()
         {
             OnStunCompleteEvent?.Invoke();
         }

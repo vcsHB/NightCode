@@ -4,7 +4,7 @@ namespace Combat
 
     public interface IStunable
     {
-        public void Stun(float stun);
+        public bool Stun(float stun);
         
     }
 }
