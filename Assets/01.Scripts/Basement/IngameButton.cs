@@ -1,39 +1,51 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
-public class IngameButton : MonoBehaviour
+namespace UI
 {
-    public UnityEvent OnClickEvent;
-
-    private bool _isMouseDown = false;
-
-    private void LateUpdate()
+    public class IngameButton : MonoBehaviour, IWindowPanel
     {
-        if(Mouse.current.leftButton.wasReleasedThisFrame)
+        public UnityEvent OnClickEvent;
+
+        private bool _isMouseDown = false;
+
+
+        #region MouseEvents
+
+        private void OnMouseEnter()
+        {
+            transform.localScale = Vector3.one * 1.05f;
+        }
+
+        private void OnMouseExit()
+        {
+            transform.localScale = Vector3.one;
+        }
+
+        private void OnMouseDown()
+        {
+            _isMouseDown = true;
+        }
+
+        private void OnMouseUp()
+        {
+            if (_isMouseDown)
+                OnClickEvent?.Invoke();
+
             _isMouseDown = false;
+        }
+
+        public void Open()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Close()
+        {
+            gameObject.SetActive(false);
+        }
+
+        #endregion
     }
 
-    private void OnMouseEnter()
-    {
-        transform.localScale = Vector3.one * 1.05f;
-    }
-
-    private void OnMouseExit()
-    {
-        transform.localScale = Vector3.one;
-    }
-
-
-    public void OnMouseDown()
-    {
-        _isMouseDown = true;
-    }
-
-    public void OnMouseUp()
-    {
-        if (_isMouseDown == false) return;
-
-        OnClickEvent?.Invoke();
-    }
 }

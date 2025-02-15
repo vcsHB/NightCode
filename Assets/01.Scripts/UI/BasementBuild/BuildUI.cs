@@ -10,7 +10,6 @@ namespace Basement
         private int _roomNumber;
         private bool _isMouseDown = false;
         private BuildingSelectPanel _buildingSelectPanel;
-        [SerializeField] private BasementSO _basementSO;
 
 
         #region MouseEvents
@@ -48,13 +47,10 @@ namespace Basement
 
         public void OnSelectBuilding(BasementRoomType roomType)
         {
-            _basementSO.floorInfos[_floor].rooms[_roomNumber].roomType = roomType;
-
-            BasementRoom room = Instantiate(_basementSO.GetBasementRoom(roomType));
-            room.transform.position = transform.position;
+            BasementManager.Instance.CreateRoom(roomType, _floor, _roomNumber);
 
             _buildingSelectPanel.onSelectRoom -= OnSelectBuilding;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
         public void Init(int floor, int roomNumber, BuildingSelectPanel buildingSelectPanel)

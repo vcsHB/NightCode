@@ -1,3 +1,4 @@
+using Basement.Player;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace Basement
     public abstract class BasementRoom : MonoBehaviour
     {
         public FurnitureSetSO furnitureSet;
+        public BasementRoomType roomType;
 
         [HideInInspector]
         public List<FurnitureInfo> furnitureInfo;

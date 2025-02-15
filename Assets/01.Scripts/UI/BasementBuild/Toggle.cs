@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 public class Toggle : MonoBehaviour, IPointerClickHandler
 {
-
     [SerializeField] private RectTransform _switchTrm;
     [SerializeField] private Vector2 _positions;
     private Tween _tween;

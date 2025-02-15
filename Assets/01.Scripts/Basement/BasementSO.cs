@@ -10,9 +10,6 @@ namespace Basement
         public int expendedFloor = 1;
 
         public List<FloorInfo> floorInfos = new List<FloorInfo>();
-        public List<BasementRoom> roomsPrefabs;
-
-        public BasementRoom GetBasementRoom(BasementRoomType roomType) => roomsPrefabs[(int)roomType];
     }
 
     public enum BasementRoomType

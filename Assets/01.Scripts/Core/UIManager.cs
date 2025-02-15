@@ -15,17 +15,14 @@ public class UIManager : MonoSingleton<UIManager>
 
         IUIPanel techTreePanel = FindFirstObjectByType<SkillTreePanel>().GetComponent<IUIPanel>();
         IUIPanel floorSelectPanel = FindFirstObjectByType<FloorSelectUI>().GetComponent<IUIPanel>();
-        IUIPanel buildUIPanel = FindFirstObjectByType<BasementBuildUI>().GetComponent<IUIPanel>();
         IUIPanel characterSelectPanel = FindFirstObjectByType<CharacterSelectPanel>().GetComponent<IUIPanel>();
 
         techTreePanel.Close();
         floorSelectPanel.Close(); 
-        buildUIPanel.Close();
         characterSelectPanel.Close();
 
         uiPanels.Add(UIType.SkillTreePanel, techTreePanel);
         uiPanels.Add(UIType.FloorSelectPanel, floorSelectPanel);
-        uiPanels.Add(UIType.BuildUIPanel, buildUIPanel);
         uiPanels.Add(UIType.CharacterSelectPanel, characterSelectPanel);
     }
 

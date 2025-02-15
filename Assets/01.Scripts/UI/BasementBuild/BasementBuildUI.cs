@@ -1,88 +1,105 @@
-
 using Basement.CameraController;
-using Basement.Player;
-using CameraControllers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Basement
 {
-    public class BasementBuildUI : MonoBehaviour, IUIPanel
+    public class BasementBuildUI : MonoBehaviour
     {
-        [SerializeField] private BasementSO _basementInfo;
-        [SerializeField] private BuildingSelectPanel _buildingSelectPanel;
-        [SerializeField] private BasementPlayer _player;
-        [SerializeField] private Toggle toggle;
+        public List<BuildUISet> buildUIs;
+        public List<GameObject> floorExpendUI;
+        public BuildingSelectPanel buildingSelectPanel;
+        private BasementSO basementInfo;
 
-        public List<RoomBuildPositionStruct> basementBuildUI;
-
-        private void Awake()
+        private void Start()
         {
-            toggle.onValueChange.AddListener(ToggleValueChange);
+            basementInfo = BasementManager.Instance.basementInfo;
 
-            for (int i = 0; i < basementBuildUI.Count; i++)
+            for (int i = 0; i < basementInfo.maxFloor; i++)
             {
-                for (int j = 0; j < basementBuildUI[i].roomBuildUI.Count; j++)
+                for (int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
                 {
-                    basementBuildUI[i].roomBuildUI[j].Init(i, j, _buildingSelectPanel);
+                    BuildUI buildUI = buildUIs[i].buildUI[j];
+                    buildUI.Init(i, j, buildingSelectPanel);
                 }
             }
-        }
-
-        private void ToggleValueChange(bool isOpen)
-        {
-            if (isOpen)
-            {
-                Open(Vector2.zero);
-            }
-            else
-            {
-                Close();
-            }
-        }
-
-        public void Open(Vector2 position)
-        {
-            for (int i = 0; i < _basementInfo.expendedFloor; i++)
-            {
-                FloorInfo floor = _basementInfo.floorInfos[i];
-                for (int j = 0; j < floor.rooms.Count; j++)
-                {
-                    if (floor.rooms[j].roomType != BasementRoomType.Empty)
-                        continue;
-
-                    BuildUI buildUI = basementBuildUI[i].roomBuildUI[j];
-                    buildUI.gameObject.SetActive(true);
-                    buildUI.Init(i, j, _buildingSelectPanel);
-                }
-            }
-
-            BasementCameraManager.Instance.ChangeCameraMode(CameraMode.Build);
-        }
-
-        public void Close()
-        {
-            for (int i = 0; i < basementBuildUI.Count; i++)
-            {
-                for (int j = 0; j < basementBuildUI[i].roomBuildUI.Count; j++)
-                {
-                    basementBuildUI[i].roomBuildUI[j].gameObject.SetActive(false);
-                }
-            }
-
-            BasementCameraManager.Instance.ChangeCameraMode(CameraMode.Basement);
         }
 
         public void ExpendFloor()
         {
-            _basementInfo.expendedFloor++;
+            if (basementInfo.expendedFloor >= basementInfo.maxFloor) return;
+
+            int currentFloor = basementInfo.expendedFloor++;
+
+            floorExpendUI[currentFloor].SetActive(false);
+            floorExpendUI[currentFloor + 1].SetActive(true);
+            EnableBuildUI();
+
+            BasementCameraManager.Instance.ChangeFollowToFloor(currentFloor + 1, 0.3f,
+                () =>
+                {
+                    SetDelay(0.5f,
+                        () => BasementCameraManager.Instance.ChangeFollowToFloor(currentFloor, 0.3f, null));
+                });
+        }
+
+        public void TurnOnBuildMode(bool isBuildMode)
+        {
+            if (isBuildMode) EnableBuildUI();
+            else DisableBuildUI();
+
+            floorExpendUI[basementInfo.expendedFloor].SetActive(isBuildMode);
+            BasementCameraManager.Instance.ChangeCameraMode(isBuildMode ? CameraMode.Build : CameraMode.Basement);
+        }
+
+        public void BuildBuilding(BasementRoomType roomType, int floor, int roomNumber)
+        {
+            BuildUI buildUI = buildUIs[floor].buildUI[roomNumber];
+            BasementManager.Instance.CreateRoom(roomType, floor, roomNumber);
+        }
+
+        public void EnableBuildUI()
+        {
+            basementInfo = BasementManager.Instance.basementInfo;
+
+            for (int i = 0; i <= basementInfo.expendedFloor; i++)
+            {
+                for (int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
+                {
+                    if (basementInfo.floorInfos[i].rooms[j].roomType != BasementRoomType.Empty) continue;
+                    buildUIs[i].buildUI[j].gameObject.SetActive(true);
+                }
+            }
+        }
+
+        public void DisableBuildUI()
+        {
+            basementInfo = BasementManager.Instance.basementInfo;
+
+            for (int i = 0; i < basementInfo.maxFloor; i++)
+            {
+                for (int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
+                {
+                    buildUIs[i].buildUI[j].gameObject.SetActive(false);
+                }
+            }
+        }
+
+        private void SetDelay(float delay, Action action)
+            => StartCoroutine(SetDelayRoutine(delay, action));
+
+        private IEnumerator SetDelayRoutine(float delay, Action action)
+        {
+            yield return new WaitForSeconds(delay);
+            action?.Invoke();
         }
     }
 
     [Serializable]
-    public struct RoomBuildPositionStruct
+    public struct BuildUISet
     {
-        public List<BuildUI> roomBuildUI;
+        public List<BuildUI> buildUI;
     }
 }

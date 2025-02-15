@@ -28,7 +28,11 @@ namespace Basement
                 });
             }
 
-            _rectTrm.sizeDelta 
+            Button cancelButton = Instantiate(_selectButtonPf, _buttonParent).GetComponent<Button>();
+            cancelButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Cancel");
+            cancelButton.onClick.AddListener(() => gameObject.SetActive(false));
+
+            _rectTrm.sizeDelta
                 = new Vector2(_rectTrm.sizeDelta.x, 30 + 100 * _buttonParent.childCount);
         }
 
