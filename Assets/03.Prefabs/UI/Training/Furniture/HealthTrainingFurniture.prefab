@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4648255094625872882}
   - component: {fileID: 2319262986513834987}
-  m_Layer: 8
+  m_Layer: 17
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.9, y: 0.9, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1214097589780071093}
@@ -73,11 +73,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1518623459
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 7501387830980884940, guid: 58ecb6449d5b61845b339860d6d6ab66, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.050314426, g: 0.050314426, b: 0.050314426, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 1214097589780071093}
   - component: {fileID: 2471378228201201137}
   - component: {fileID: 1082073778603945305}
-  m_Layer: 8
+  m_Layer: 17
   m_Name: HealthTrainingFurniture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.9, y: 0.9}
+  m_Size: {x: 0.7, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &1082073778603945305
 MonoBehaviour:
@@ -179,3 +179,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 586b91f363b89814a99ea1b63d8d73a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  furnitureSO: {fileID: 11400000, guid: 5179bad58ea170c40a374f72a9018263, type: 2}
+  room: {fileID: 0}

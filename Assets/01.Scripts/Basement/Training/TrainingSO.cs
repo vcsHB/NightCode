@@ -6,6 +6,7 @@ namespace Basement.Training
     [CreateAssetMenu(menuName = "SO/Basement/Training")]
     public class TrainingSO : ScriptableObject
     {
+        public int trainingId;
         public string trainingName;
 
         public string trainingVisibleName;

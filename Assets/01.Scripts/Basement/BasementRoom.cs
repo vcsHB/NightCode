@@ -1,6 +1,8 @@
 using Basement.CameraController;
 using Basement.Player;
 using System.Collections.Generic;
+using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Basement
@@ -11,36 +13,105 @@ namespace Basement
         public BasementRoomType roomType;
 
         [HideInInspector]
-        public List<FurnitureInfo> furnitureInfo;
+        public List<Furniture> furnitureList;
 
         [SerializeField] private Transform _cameraFocusTarget;
         private Transform _originFollow;
-        private bool isMouseDown = false;
 
-        public abstract void SetFactor(string factor);
-
-        public virtual void SetFurniture()
+        private void Awake()
         {
-            furnitureInfo.ForEach(furniture =>
+            furnitureList = new List<Furniture>();
+        }
+
+        #region Factor
+
+        /// <summary>
+        /// Do only about furniture
+        /// If you use other factor you have to convert string what you use and furnitures with space bar
+        /// </summary>
+        /// <param name="factor"></param>
+        public virtual void SetFactor(string factor)
+        {
+            if (factor == "-") return;
+
+            furnitureList = new List<Furniture>();
+
+            string[] str = factor.Split(',');
+
+            for(int i = 0; i < str.Length; i += 3)
             {
-                FurnitureSO furnitureSO = furnitureSet.GetFurniture(furniture.furnitureId);
-                Furniture furnitureInstance = Instantiate(furnitureSO.furniturePrefab, furniture.furniturePosition, Quaternion.identity);
-                //furnitureInstance.Init();
-            });
+                int id = int.Parse(str[i]);
+                Vector2 position = new Vector2(float.Parse(str[i + 1]), float.Parse(str[i + 2]));
+
+                FurnitureSO furnitureSO = furnitureSet.GetFurniture(id);
+
+                Furniture furniture = Instantiate(furnitureSO.furniturePrefab, transform);
+                furniture.transform.SetLocalPositionAndRotation(position, Quaternion.identity);
+
+                furnitureList.Add(furniture);
+            }
         }
 
-        protected virtual void OnMouseDown()
+        /// <summary>
+        /// Do only about furniture
+        /// If you use other factor you have to convert string what you use and furnitures with space bar
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetFactor()
         {
-            if (BasementCameraManager.Instance.CameraMode == CameraMode.Basement) return;
-            isMouseDown = true;
+            if (furnitureList.Count == 0) return "-";
+
+            StringBuilder sb = new StringBuilder();
+
+            for(int i = 0; i < furnitureList.Count; i++)
+            {
+                Furniture furniture = furnitureList[i];
+
+                if(i != 0) sb.Append(",");
+                sb.Append(furniture.furnitureSO.furnitureID);
+                sb.Append(",");
+                sb.Append(furniture.transform.localPosition.x);
+                sb.Append(",");
+                sb.Append(furniture.transform.localPosition.y);
+            }
+
+            return sb.ToString();
         }
+
+        #endregion
+
+
+        #region FurnitureRegion
+
+        public virtual void AddFurniture(Furniture furniture)
+        {
+            furniture.Init(this);
+            furnitureList.Add(furniture);
+        }
+
+        public virtual Furniture AddFurniture(FurnitureSO furniture, Vector2 position)
+        {
+            Furniture furnitureInstance = Instantiate(furniture.furniturePrefab, transform);
+            furnitureInstance.transform.SetLocalPositionAndRotation(position, Quaternion.identity);
+            furnitureInstance.Init(this);
+
+            furnitureList.Add(furnitureInstance);
+            return furnitureInstance;
+        }
+
+        #endregion
+
+
+        #region InputRegion
 
         protected virtual void OnMouseUp()
         {
             if (BasementCameraManager.Instance.CameraMode == CameraMode.Basement) return;
-            isMouseDown = false;
+
             FocusCamera();
         }
+
+        #endregion
 
         public void FocusCamera()
         {
@@ -59,6 +130,7 @@ namespace Basement
             BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
             BasementCameraManager.Instance.Zoom(4f, 0.4f);
         }
+
     }
 
     [SerializeField]

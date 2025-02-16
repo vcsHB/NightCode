@@ -1,25 +1,56 @@
 using System;
 using UnityEngine;
 using Basement.Player;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+using NUnit.Framework.Constraints;
+using Basement.CameraController;
 
 namespace Basement
 {
     public class Furniture : MonoBehaviour
     {
         public Action InteractAction;
-        private BasementPlayer _player;
+        public FurnitureSO furnitureSO;
+        [SerializeField] private bool _stickToGround;
 
-        public void OnTriggerEnter2D(Collider2D collision)
+        private BasementRoom _room;
+        private BoxCollider2D _roomCollider;
+        private Vector2 _roomSize;
+        private Vector2 _furnitureSize;
+        private Vector2 _offset;
+
+        public void Init(BasementRoom basementRoom)
         {
-            _player.SetInteractAction(InteractAction);
+            _room = basementRoom;
+            _roomCollider = _room.GetComponent<BoxCollider2D>();
+            _roomSize = _roomCollider.size;
+            _furnitureSize = GetComponent<BoxCollider2D>().size;
         }
 
-        public void OnTriggerExit2D(Collider2D collision)
+        private void OnMouseDown()
         {
-            _player.RemoveInteractAction(InteractAction);
+            if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
+
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            _offset = (Vector2)transform.position - mousePosition;
         }
 
-        public void Init(BasementPlayer player) => _player = player;
+        private void OnMouseDrag()
+        {
+            if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
+
+            Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+
+            Vector2 maxDist = (_roomSize / 2 - _furnitureSize / 2);
+            Vector2 minPosition = (Vector2)_room.transform.position - maxDist;
+            Vector2 maxPosition = (Vector2)_room.transform.position + maxDist;
+            Vector2 position = mosuePosition + _offset;
+
+            transform.position = new Vector2(
+                Mathf.Clamp(position.x, minPosition.x, maxPosition.x),
+                _stickToGround ? minPosition.y : Mathf.Clamp(position.y, minPosition.y, maxPosition.y));
+        }
     }
 }
 

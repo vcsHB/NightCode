@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 namespace Basement
@@ -25,6 +26,12 @@ namespace Basement
             Load();
         }
 
+        private void Update()
+        {
+            if (Keyboard.current.lKey.wasPressedThisFrame)
+                Save();
+        }
+
         public bool CheckCanExpend()
             => basementInfo.expendedFloor >= basementInfo.maxFloor;
 
@@ -33,19 +40,37 @@ namespace Basement
         public Transform GetRoomPosition(int floor, int roomNumber)
             => roomPositions[floor].roomPositions[roomNumber];
 
-        public void CreateRoom(BasementRoomType roomType, int floor, int roomNumber)
+        public BasementRoom CreateRoom(BasementRoomType roomType, int floor, int roomNumber)
         {
             Transform roomTrm = GetRoomPosition(floor, roomNumber);
             BasementRoom room = Instantiate(roomSet.GetRoomPrefab(roomType), roomTrm);
 
             roomInfos[floor].roomInfos[roomNumber] = room;
             basementInfo.floorInfos[floor].rooms[roomNumber].roomType = roomType;
+
+            return room;
         }
 
         #region Save&Load
 
         public void Save()
         {
+            if(roomInfos != null)
+            {
+                for (int i = 0; i < basementInfo.floorInfos.Count; i++)
+                {
+                    FloorInfo info = basementInfo.floorInfos[i];
+                    info.floor = i;
+
+                    for (int j = 0; j < info.rooms.Count; j++)
+                    {
+                        RoomInfo room = info.rooms[j];
+                        if (roomInfos[i]?.roomInfos[j] != null)
+                            room.factor = roomInfos[i].roomInfos[j].GetFactor();
+                    }
+                }
+            }
+
             BasementSave save = new BasementSave();
             save.expendedFloor = basementInfo.expendedFloor;
             save.floorInfos = basementInfo.floorInfos;
@@ -64,13 +89,14 @@ namespace Basement
                 return;
             }
 
+            //roomInfos 방 개수에 맞게 초기화 해주기
             roomInfos = new List<FloorRoomInfo>();
             for (int i = 0; i < basementInfo.maxFloor; i++)
             {
                 FloorRoomInfo roomInfo = new FloorRoomInfo();
                 roomInfo.roomInfos = new List<BasementRoom>();
 
-                for(int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
+                for (int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
                     roomInfo.roomInfos.Add(null);
 
                 roomInfos.Add(roomInfo);
@@ -83,7 +109,7 @@ namespace Basement
             basementInfo.expendedFloor = save.expendedFloor;
             basementInfo.floorInfos = save.floorInfos;
 
-            for (int i = 0; i < basementInfo.expendedFloor; i++)
+            for (int i = 0; i <= basementInfo.expendedFloor; i++)
             {
                 for (int j = 0; j < basementInfo.floorInfos[i].rooms.Count; j++)
                 {
@@ -91,11 +117,13 @@ namespace Basement
 
                     if ((int)roomInfo.roomType < 3) continue;
 
-                    CreateRoom(roomInfo.roomType, i, j);
+                    BasementRoom room = CreateRoom(roomInfo.roomType, i, j);
+                    room.SetFactor(roomInfo.factor);
+                    roomInfos[i].roomInfos[j] = room;
                     //Debug.Log(roomInfo.roomType);
                     //Transform positionTrm = buildUI.basementBuildUI[i].roomBuildUI[j];
-                    //BasementRoom room = Instantiate(basementInfo.GetBasementRoom(roomInfo.roomType));
-                    //room.transform.SetPositionAndRotation(positionTrm.position, Quaternion.identity);
+                    //BasementRoom _room = Instantiate(basementInfo.GetBasementRoom(roomInfo.roomType));
+                    //_room.transform.SetPositionAndRotation(positionTrm.position, Quaternion.identity);
 
                     //가구 소환
                 }
@@ -124,7 +152,6 @@ namespace Basement
     {
         public int level;
         public BasementRoomType roomType;
-        public List<FurnitureSO> furnitures;
         [HideInInspector] public string factor;
     }
 

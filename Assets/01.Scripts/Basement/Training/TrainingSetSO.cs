@@ -11,8 +11,7 @@ namespace Basement.Training
     {
         public List<TrainingSO> trainingSO;
 
-        //Level은 1레벨 부터
-        public TrainingSO GetTrainingSO(string trainingName)
-            => trainingSO.Find(training => training.trainingName == trainingName);
+        public TrainingSO GetTrainingSO(int trainingId)
+            => trainingSO.Find(training => training.trainingId == trainingId);
     }
 }

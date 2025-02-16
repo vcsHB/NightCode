@@ -9,6 +9,7 @@ namespace Basement
         public string furnitureName;
         [TextArea(6, 20)]
         public string furnitureDescription;
+        public Sprite icon;
 
         public Furniture furniturePrefab;
     }
