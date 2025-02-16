@@ -8,7 +8,7 @@ namespace Combat
         public UnityEvent OnHealthChangedEvent;
         public UnityEvent OnDieEvent;
         public event Action<float, float> OnHealthChangedValueEvent;
-
+        public event Action<CombatData> OnHitCombatDataEvent;
         public float MaxHealth => _maxHealth;
         [SerializeField] private float _maxHealth;
         [SerializeField] private float _currentHealth = 0;
@@ -25,9 +25,10 @@ namespace Combat
             HandleHealthChanged();
         }
 
-        public void ApplyDamage(float damage)
+        public void ApplyDamage(CombatData data)
         {
-            _currentHealth -= damage;
+            _currentHealth -= data.damage;
+            OnHitCombatDataEvent?.Invoke(data);
             CheckDie();
             HandleHealthChanged();
         }

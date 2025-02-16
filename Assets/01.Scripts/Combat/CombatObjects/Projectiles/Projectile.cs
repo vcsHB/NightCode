@@ -139,7 +139,7 @@ namespace Combat.CombatObjects.ProjectileManage
             Destroy(gameObject);
         }
 
-        public void ApplyDamage(float damage)
+        public void ApplyDamage(CombatData data)
         {
             if (!_projectileData.canDestroy) return;
             OnDamagedEvent?.Invoke();

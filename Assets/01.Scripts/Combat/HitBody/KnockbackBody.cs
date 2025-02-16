@@ -36,7 +36,11 @@ namespace Combat
         {
             if (_isCrashed)
             {
-                _ownerHealth.ApplyDamage(_crashDamage);
+                _ownerHealth.ApplyDamage(new CombatData()
+                {
+                    damage = _crashDamage,
+                    originPosition = other.contacts[0].point
+                });
                 OnCrashedEvent?.Invoke();
             }
         }

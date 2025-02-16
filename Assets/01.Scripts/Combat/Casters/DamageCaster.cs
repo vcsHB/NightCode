@@ -15,7 +15,12 @@ namespace Combat
         {
             if (target.TryGetComponent(out IDamageable hit))
             {
-                hit.ApplyDamage(_damage);
+                CombatData data = new CombatData()
+                {
+                    damage = _damage,
+                    originPosition = transform.position
+                };
+                hit.ApplyDamage(data);
             }
         }
 
