@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace Agents.Players
 {
 
-    public class PlayerAnimationTrigger : MonoBehaviour, IAgentComponent
+    public abstract class PlayerAnimationTrigger : MonoBehaviour, IAgentComponent
     {
         public UnityEvent OnFirstAttackEvent;
         public UnityEvent OnSecondAttackEvent;
@@ -37,6 +37,9 @@ namespace Agents.Players
         {
             OnSecondAttackEvent?.Invoke();
         }
+
+        public abstract void HandleAirAttack1();
+        public abstract void HandleAirAttack2();
 
 
     }
