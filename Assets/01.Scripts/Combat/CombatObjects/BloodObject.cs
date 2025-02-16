@@ -15,6 +15,8 @@ namespace Combat.CombatObjects
 
         private void HandleHitEvent(CombatData data)
         { // 실외 (배경이 벽인지) 체크 필요
+            if(data.type != AttackType.Sharp) return;
+            
             Vector2 direction = (Vector2)transform.position - data.originPosition;
             for (int i = 0; i < _bloodAmount; i++)
             {

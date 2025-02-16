@@ -10,6 +10,7 @@ namespace Combat
     public class DamageCaster : MonoBehaviour, ICastable
     {
         [SerializeField] protected float _damage;
+        [SerializeField] protected AttackType _attackType;
 
         public virtual void Cast(Collider2D target)
         {
@@ -17,6 +18,7 @@ namespace Combat
             {
                 CombatData data = new CombatData()
                 {
+                    type = _attackType,
                     damage = _damage,
                     originPosition = transform.position
                 };
