@@ -10,9 +10,7 @@ namespace Basement
     {
         [SerializeField] private TrainingSetSO _trainingSetSO;
         [SerializeField] private TrainingSO _training;
-        [SerializeField] private Transform _cameraFocusTarget;
         [SerializeField] private Furniture _interactObject;
-        private Transform _originFollow;
         private CharacterEnum _selectedCharacter;
 
         private void OnEnable()
@@ -40,28 +38,11 @@ namespace Basement
         public void SelectCharactere(CharacterEnum character)
             => _selectedCharacter = character;
 
-        public void OnInteractObject()
-        {
-            _originFollow = BasementCameraManager.Instance.GetCameraFollow();
-            BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(1.5f, 0.4f);
-        }
-
+        
         public override void SetFactor(string factor)
         {
             //Factor: TrainingLevel
             _training = _trainingSetSO.GetTrainingSO(factor);
-        }
-
-        public void OnTriggerEnter2D(Collider2D collision)
-        {
-            OnInteractObject();
-        }
-
-        public void OnTriggerExit2D(Collider2D collision)
-        {
-            BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(4f, 0.4f);
         }
     }
 }

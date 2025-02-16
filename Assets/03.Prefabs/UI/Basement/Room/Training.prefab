@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4343419786124404906}
   - component: {fileID: 6003758037215552048}
-  m_Layer: 8
+  m_Layer: 17
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 2337560462940226874}
   - component: {fileID: 7718025987999395001}
   - component: {fileID: 902347591321905317}
-  m_Layer: 8
+  m_Layer: 17
   m_Name: TrainingObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,6 +244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8222139094120309809}
   - component: {fileID: 8552773519498333811}
+  - component: {fileID: 4354254572708859473}
   m_Layer: 17
   m_Name: Training
   m_TagString: Untagged
@@ -266,6 +267,7 @@ Transform:
   m_Children:
   - {fileID: 4343419786124404906}
   - {fileID: 1175245419140286654}
+  - {fileID: 2100259789075302955}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8552773519498333811
@@ -282,7 +284,84 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   furnitureSet: {fileID: 11400000, guid: 8714ac92ea27f134fa21d531ae51aef3, type: 2}
   roomType: 3
+  _cameraFocusTarget: {fileID: 2100259789075302955}
   _trainingSetSO: {fileID: 11400000, guid: fbfde5b475e3d0d4f9a1e650c0e46b5e, type: 2}
   _training: {fileID: 11400000, guid: f1cd1b84a18a0f5408fe17d6f7b3e8a0, type: 2}
-  _cameraFocusTarget: {fileID: 8222139094120309809}
   _interactObject: {fileID: 7718025987999395001}
+--- !u!61 &4354254572708859473
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5872066593948314421}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 3.4, y: 1.9}
+  m_EdgeRadius: 0
+--- !u!1 &6054664950813085584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100259789075302955}
+  m_Layer: 17
+  m_Name: CameraFocus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100259789075302955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6054664950813085584}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8222139094120309809}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

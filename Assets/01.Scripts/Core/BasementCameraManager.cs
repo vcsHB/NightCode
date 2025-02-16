@@ -21,6 +21,8 @@ namespace Basement.CameraController
         private Tween _cameraChangeTween;
         private Tween _zoomTween;
 
+        public CameraMode CameraMode => _currentCameraMode;
+
         protected override void Awake()
         {
             base.Awake();
