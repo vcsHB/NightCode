@@ -22,13 +22,20 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
         _selectPanel = GetComponentInParent<CharacterSelectPanel>();
     }
 
+    private void Start()
+    {
+        UpdateStat();
+    }
+
     public void UpdateStat()
     {
-        //CharacterStat stat = AgentStatManager.Instance.GetStat(_characterType);
+        int str = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Health);
+        int intel = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Intelligence);
+        int dex = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Dexdexterity);
 
-        //_strText.SetText($"str: {stat.strength.Value}");
-        //_intText.SetText($"int: {stat.intelligence.Value}");
-        //_dexText.SetText($"dex: {stat.dexterity.Value}");
+        _strText.SetText($"str pt: {str}");
+        _intText.SetText($"int pt: {intel}");
+        _dexText.SetText($"dex pt: {dex}");
     }
 
     public void OnPointerExit(PointerEventData eventData)

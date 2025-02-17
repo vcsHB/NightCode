@@ -14,11 +14,14 @@ namespace Basement
         [SerializeField] private TrainingSO training;
         private TrainingSO _training;
         private CharacterEnum _selectedCharacter;
+        private TrainingExplainUI _trainingExplain;
 
         private void OnEnable()
         {
             SetTraining(training);
             notSaveFurniture.Add(_trainingFurniture);
+            _trainingExplain = UIManager.Instance.trainingUI;
+            _trainingFurniture.InteractAction += Training;
         }
 
         private void OnDisable()
@@ -28,13 +31,8 @@ namespace Basement
 
         private void Training()
         {
-            TrainingResult result = _training.GetResult(_selectedCharacter);
-
-            int increaseValue = _training.increaseValue[result];
-            TrainingManager.Instance.AddSkillPoint(_selectedCharacter, _training.statType, increaseValue);
-
-            int fatigue = Random.Range(_training.minFatigue, _training.maxFatigue);
-            TrainingManager.Instance.AddFatigue(_selectedCharacter, fatigue);
+            _trainingExplain.gameObject.SetActive(true);
+            _trainingExplain.SetTraining(training);
         }
 
         public void SetTraining(TrainingSO training)

@@ -18,6 +18,8 @@ namespace Basement
         public List<Furniture> notSaveFurniture;
 
         [SerializeField] private Transform _cameraFocusTarget;
+        [SerializeField] private float _zoomInValue = 1.5f;
+        private float _originZoomValue;
         private Transform _originFollow;
 
         protected virtual void Awake()
@@ -95,8 +97,8 @@ namespace Basement
         public virtual Furniture AddFurniture(FurnitureSO furniture, Vector2 position)
         {
             Furniture furnitureInstance = Instantiate(furniture.furniturePrefab, transform);
-            furnitureInstance.SetPosition(position);
             furnitureInstance.Init(this);
+            furnitureInstance.SetPosition(position);
 
             furnitureList.Add(furnitureInstance);
             return furnitureInstance;
@@ -120,7 +122,9 @@ namespace Basement
         {
             _originFollow = BasementCameraManager.Instance.GetCameraFollow();
 
-            BasementCameraManager.Instance.Zoom(1.5f, 0.4f);
+            BasementCameraManager.Instance.Zoom(_zoomInValue, 0.4f);
+            _originZoomValue = BasementCameraManager.Instance.CameraSize;
+
             BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, () =>
             {
                 FurnitureUI ui = UIManager.Instance.GetUIPanel(UIType.FurnitureUI) as FurnitureUI;
@@ -133,13 +137,14 @@ namespace Basement
         {
             _originFollow = BasementCameraManager.Instance.GetCameraFollow();
             BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(1.5f, 0.4f);
+            BasementCameraManager.Instance.Zoom(_zoomInValue, 0.4f);
+            _originZoomValue = BasementCameraManager.Instance.CameraSize;
         }
 
         public void ReturnFocus()
         {
             BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(4f, 0.4f);
+            BasementCameraManager.Instance.Zoom(_originZoomValue, 0.4f);
         }
 
         public virtual void OnTriggerEnter2D(Collider2D collision)

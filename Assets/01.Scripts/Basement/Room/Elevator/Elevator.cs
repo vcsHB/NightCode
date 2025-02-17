@@ -10,7 +10,6 @@ namespace Basement
     public class Elevator : MonoBehaviour
     {
         [SerializeField] private List<ElevatorFloorStruct> _floorStruct;
-        [SerializeField] private Transform _elevatorCameraTarget;
         [SerializeField] private BasementPlayer _player;
         [SerializeField] private float _elevatorSpeed = 0.5f;
         private ElevatorDoor _prevDoor;

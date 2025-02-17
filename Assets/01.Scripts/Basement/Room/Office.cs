@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Basement
 {
-    public class Cafe : BasementRoom
+    public class Office : BasementRoom
     {
 
     }

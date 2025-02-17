@@ -37,7 +37,7 @@ namespace Basement.Training
         public void AddSkillPoint(CharacterEnum character, SkillPointEnum skillPointType, int value)
             => _skillPoints[character].AddSkillPoint(skillPointType, value);
 
-        public int GetSkillPoint(CharacterEnum character, SkillPointEnum skillPointType, int value)
+        public int GetSkillPoint(CharacterEnum character, SkillPointEnum skillPointType)
             => _skillPoints[character].GetSkillPoint(skillPointType);
 
         #endregion

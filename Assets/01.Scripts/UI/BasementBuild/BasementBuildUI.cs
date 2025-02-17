@@ -29,7 +29,7 @@ namespace Basement
 
         public void ExpendFloor()
         {
-            if (basementInfo.expendedFloor >= basementInfo.maxFloor) return;
+            if (basementInfo.expendedFloor > basementInfo.maxFloor) return;
 
             int currentFloor = basementInfo.expendedFloor++;
 

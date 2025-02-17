@@ -12,6 +12,7 @@ namespace Basement.CameraController
         public CinemachineCamera mainCamera;
         public Camera basementCamera;
         public int currentCameraTargetFloor;
+        public bool isFocus = false;
 
         private CameraMode _currentCameraMode;
         private CinemachineCamera _currentCamera;
@@ -22,6 +23,7 @@ namespace Basement.CameraController
         private Tween _zoomTween;
 
         public CameraMode CameraMode => _currentCameraMode;
+        public float CameraSize => _currentCamera.Lens.OrthographicSize;
 
         protected override void Awake()
         {
@@ -65,7 +67,7 @@ namespace Basement.CameraController
             }
 
             currentCameraTargetFloor = floor;
-            Transform target = BasementManager.Instance.floorCameraTarget[floor];
+            Transform target = BasementManager.Instance.floorCameraTarget[floor].transform;
             ChangeFollow(target, duration, onComplete);
         }
 
@@ -95,6 +97,7 @@ namespace Basement.CameraController
         public Transform GetCameraFollow()
             => _currentCamera.Follow;
 
+        private float dir = 0;
         //µð¹ö±ë¿ë
         private void Update()
         {
@@ -103,6 +106,12 @@ namespace Basement.CameraController
             if (Keyboard.current.oKey.wasPressedThisFrame)
                 Zoom(5);
 
+            if (Keyboard.current.leftArrowKey.wasReleasedThisFrame 
+                || Keyboard.current.rightArrowKey.wasPressedThisFrame)
+            {
+                dir = 0;
+            }
+
             if (_currentCameraMode == CameraMode.Build)
             {
                 if (Keyboard.current.downArrowKey.wasPressedThisFrame)
@@ -110,6 +119,17 @@ namespace Basement.CameraController
 
                 if (Keyboard.current.upArrowKey.wasPressedThisFrame)
                     ChangeFollowToFloor(currentCameraTargetFloor - 1, 0.3f, null);
+
+
+                if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+                    dir = -1;
+
+                if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+                    dir = 1;
+
+                var target
+                    = BasementManager.Instance.floorCameraTarget[currentCameraTargetFloor];
+                target.Move(dir);
             }
 
         }

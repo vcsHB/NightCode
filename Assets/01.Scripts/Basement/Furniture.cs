@@ -55,6 +55,18 @@ namespace Basement
             Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             SetPosition(mosuePosition);
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            BasementPlayer player = FindFirstObjectByType<BasementPlayer>();
+            player.SetInteractAction(InteractAction);
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            BasementPlayer player = FindFirstObjectByType<BasementPlayer>();
+            player.RemoveInteractAction(InteractAction);
+        }
     }
 }
 

@@ -14,7 +14,7 @@ namespace Basement
         public BasementSO basementInfo;
         public BasementRoomSetSO roomSet;
 
-        public List<Transform> floorCameraTarget;
+        public List<BasementPlayerFollowTarget> floorCameraTarget;
         public List<FloorPositionInfo> roomPositions;
         public List<FloorRoomInfo> roomInfos;
 
@@ -35,7 +35,7 @@ namespace Basement
         public bool CheckCanExpend()
             => basementInfo.expendedFloor >= basementInfo.maxFloor;
 
-        public Transform GetCameraTarget(int floor) => floorCameraTarget[floor];
+        public Transform GetCameraTarget(int floor) => floorCameraTarget[floor].transform;
 
         public Transform GetRoomPosition(int floor, int roomNumber)
             => roomPositions[floor].roomPositions[roomNumber];

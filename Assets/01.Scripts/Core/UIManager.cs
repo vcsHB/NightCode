@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Basement;
+using Basement.Training;
 
 public class UIManager : MonoSingleton<UIManager>
 {
     public Dictionary<UIType, IUIPanel> uiPanels;
+    public TrainingExplainUI trainingUI;
 
     protected override void Awake()
     {
