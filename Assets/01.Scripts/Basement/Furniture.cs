@@ -28,6 +28,18 @@ namespace Basement
             _furnitureSize = GetComponent<BoxCollider2D>().size;
         }
 
+        public void SetPosition(Vector2 target)
+        {
+            Vector2 maxDist = (_roomSize / 2 - _furnitureSize / 2);
+            Vector2 minPosition = (Vector2)_room.transform.position - maxDist;
+            Vector2 maxPosition = (Vector2)_room.transform.position + maxDist;
+            Vector2 position = target + _offset;
+
+            transform.position = new Vector2(
+                Mathf.Clamp(position.x, minPosition.x, maxPosition.x),
+                _stickToGround ? minPosition.y : Mathf.Clamp(position.y, minPosition.y, maxPosition.y));
+        }
+
         private void OnMouseDown()
         {
             if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
@@ -41,15 +53,7 @@ namespace Basement
             if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
 
             Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-
-            Vector2 maxDist = (_roomSize / 2 - _furnitureSize / 2);
-            Vector2 minPosition = (Vector2)_room.transform.position - maxDist;
-            Vector2 maxPosition = (Vector2)_room.transform.position + maxDist;
-            Vector2 position = mosuePosition + _offset;
-
-            transform.position = new Vector2(
-                Mathf.Clamp(position.x, minPosition.x, maxPosition.x),
-                _stickToGround ? minPosition.y : Mathf.Clamp(position.y, minPosition.y, maxPosition.y));
+            SetPosition(mosuePosition);
         }
     }
 }

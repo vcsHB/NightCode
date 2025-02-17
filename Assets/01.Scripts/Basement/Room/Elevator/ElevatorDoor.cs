@@ -13,6 +13,7 @@ public class ElevatorDoor : MonoBehaviour
     private Elevator _elevator;
     private Collider2D _collider;
     private bool _isDoorOpen = false;       //유사 FSM 문의 상태
+    private bool _isTargetDoor = false;
 
     private int _doorOpenHash = Animator.StringToHash("Open");
     private int _doorCloseHash = Animator.StringToHash("Close");
@@ -21,9 +22,12 @@ public class ElevatorDoor : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _collider = GetComponent<Collider2D>();
-        _collider.enabled = false; 
+        _collider.enabled = false;
         _isDoorOpen = false;
     }
+
+    public void SetTargetDoor() 
+        => _isTargetDoor = true;
 
     public void OpenDoor()
     {
@@ -52,14 +56,20 @@ public class ElevatorDoor : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {   
+    {
         //Enter elevator when door opened change floor
         if (_isDoorOpen == false) return;   //If door is not opened return
 
-        Debug.Log(_collider.enabled);
-        _elevator.ChangeFloor(this);
+        if (_isTargetDoor == false)
+            _elevator.ChangeFloor(this);
 
         //TODO : block player input until elevator door open
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        _isTargetDoor = false;
+        CloseDoor();
     }
 
     public void Init(Elevator elevator)

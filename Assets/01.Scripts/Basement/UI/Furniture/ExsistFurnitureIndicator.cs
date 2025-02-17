@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Basement
 {
-    public class FurnitureSetUI : MonoBehaviour, IWindowPanel
+    public class ExsistFurnitureIndicator : MonoBehaviour, IWindowPanel
     {
         public FurnitureSetSO furnitureSet;
         [SerializeField] private Transform _frameTrm;
@@ -31,6 +31,15 @@ namespace Basement
             _exsistIcon.Clear();
 
             room.furnitureList.ForEach(furniture =>
+            {
+                FurnitureSO furnitureSO = furniture.furnitureSO;
+
+                FurnitureIcon icon = Instantiate(_iconPrefab, _frameTrm);
+                icon.SetFurniture(furnitureSO);
+                _exsistIcon.Add(icon);
+            });
+
+            room.notSaveFurniture.ForEach(furniture =>
             {
                 FurnitureSO furnitureSO = furniture.furnitureSO;
 

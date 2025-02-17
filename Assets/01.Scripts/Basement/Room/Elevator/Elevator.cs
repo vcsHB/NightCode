@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using Basement.Player;
 using DG.Tweening;
-using System.Collections;
 using Basement.CameraController;
 
 namespace Basement
@@ -16,8 +15,8 @@ namespace Basement
         [SerializeField] private float _elevatorSpeed = 0.5f;
         private ElevatorDoor _prevDoor;
         private ElevatorDoor _targetDoor;
-        private int _currentFloor = 3;
-        private int _targetFloor = 0;
+        private int _currentFloor = 0;
+        private int _targetFloor = 1;
         private Sequence _seq;
 
         public BasementPlayer Player => _player;
@@ -40,23 +39,17 @@ namespace Basement
             _player.transform.position = targetFloor.door.transform.position;
             _prevDoor.onCompleteCloseDoor -= OnDoorClosed;
 
-            Transform targetFollow = targetFloor.floorTarget;
             int floorDiff = Mathf.Abs(_currentFloor - _targetFloor);
 
             //Move Camera
-            BasementCameraManager.Instance.ChangeFollow(targetFollow, floorDiff / _elevatorSpeed,
+            BasementCameraManager.Instance.ChangeFollowToFloor(_targetFloor, floorDiff / _elevatorSpeed,
                 () =>
                 {
                     //When move complete open door of target floor
                     //When door open completly change floor and
-                    Debug.Log(targetFloor.floor); 
                     _targetDoor.OpenDoor();
+                    _targetDoor.SetTargetDoor();
                     _targetDoor.onCompleteOpenDoor += OnDoorOpened;
-
-                    //StartCoroutine(DelayAction(() =>
-                    //{
-                        
-                    //}, 2f));
                 });
         }
 
@@ -79,8 +72,6 @@ namespace Basement
             _player.SetSortingLayer(0);
         }
 
-
-
         public void SetTargetFloor(int targetFloor)
         {
             //목표 층 수를 지정했으면 엘리베이터 문이 열리게
@@ -88,10 +79,11 @@ namespace Basement
             _floorStruct.Find(floor => floor.floor == _currentFloor).door.OpenDoor();
         }
 
-        private IEnumerator DelayAction(Action action, float delay)
+        public void ChangeTargetToCurrentFloor(bool isBuildMode)
         {
-            yield return new WaitForSeconds(delay);
-            action?.Invoke();
+            if (isBuildMode) return;
+            BasementCameraManager.Instance.ChangeFollowToFloor(_currentFloor, 0.3f, null);
+            BasementCameraManager.Instance.Zoom(4f, 0.3f);
         }
     }
 
@@ -101,6 +93,5 @@ namespace Basement
         public int floor;
         public ElevatorDoor door;
         public ElevatorButton button;
-        public Transform floorTarget;
     }
 }

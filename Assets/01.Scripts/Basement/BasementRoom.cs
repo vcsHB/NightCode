@@ -14,13 +14,16 @@ namespace Basement
 
         [HideInInspector]
         public List<Furniture> furnitureList;
+        [HideInInspector]
+        public List<Furniture> notSaveFurniture;
 
         [SerializeField] private Transform _cameraFocusTarget;
         private Transform _originFollow;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             furnitureList = new List<Furniture>();
+            notSaveFurniture = new List<Furniture>();
         }
 
         #region Factor
@@ -38,7 +41,7 @@ namespace Basement
 
             string[] str = factor.Split(',');
 
-            for(int i = 0; i < str.Length; i += 3)
+            for (int i = 0; i < str.Length; i += 3)
             {
                 int id = int.Parse(str[i]);
                 Vector2 position = new Vector2(float.Parse(str[i + 1]), float.Parse(str[i + 2]));
@@ -63,11 +66,11 @@ namespace Basement
 
             StringBuilder sb = new StringBuilder();
 
-            for(int i = 0; i < furnitureList.Count; i++)
+            for (int i = 0; i < furnitureList.Count; i++)
             {
                 Furniture furniture = furnitureList[i];
 
-                if(i != 0) sb.Append(",");
+                if (i != 0) sb.Append(",");
                 sb.Append(furniture.furnitureSO.furnitureID);
                 sb.Append(",");
                 sb.Append(furniture.transform.localPosition.x);
@@ -92,7 +95,7 @@ namespace Basement
         public virtual Furniture AddFurniture(FurnitureSO furniture, Vector2 position)
         {
             Furniture furnitureInstance = Instantiate(furniture.furniturePrefab, transform);
-            furnitureInstance.transform.SetLocalPositionAndRotation(position, Quaternion.identity);
+            furnitureInstance.SetPosition(position);
             furnitureInstance.Init(this);
 
             furnitureList.Add(furnitureInstance);
@@ -108,16 +111,35 @@ namespace Basement
         {
             if (BasementCameraManager.Instance.CameraMode == CameraMode.Basement) return;
 
-            FocusCamera();
+            OpenFurnitureUI();
         }
 
         #endregion
+
+        private void OpenFurnitureUI()
+        {
+            _originFollow = BasementCameraManager.Instance.GetCameraFollow();
+
+            BasementCameraManager.Instance.Zoom(1.5f, 0.4f);
+            BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, () =>
+            {
+                FurnitureUI ui = UIManager.Instance.GetUIPanel(UIType.FurnitureUI) as FurnitureUI;
+                ui.Open(Vector2.zero);
+                ui.Init(this);
+            });
+        }
 
         public void FocusCamera()
         {
             _originFollow = BasementCameraManager.Instance.GetCameraFollow();
             BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, null);
             BasementCameraManager.Instance.Zoom(1.5f, 0.4f);
+        }
+
+        public void ReturnFocus()
+        {
+            BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
+            BasementCameraManager.Instance.Zoom(4f, 0.4f);
         }
 
         public virtual void OnTriggerEnter2D(Collider2D collision)
@@ -127,8 +149,7 @@ namespace Basement
 
         public virtual void OnTriggerExit2D(Collider2D collision)
         {
-            BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(4f, 0.4f);
+            ReturnFocus();
         }
 
     }

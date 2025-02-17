@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,6 +7,8 @@ namespace Basement
 {
     public class FurnitureIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
+        public Action<FurnitureSO> OnClick;
+
         private Image _image;
         private FurnitureSO _furniture;
 
@@ -20,16 +23,11 @@ namespace Basement
             _image.sprite = _furniture.icon;
         }
 
-        private void ClickIcon()
-        {
-
-        }
-
         #region InputRegion
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            ClickIcon();
+            OnClick?.Invoke(_furniture);
         }
 
         public void OnPointerExit(PointerEventData eventData)

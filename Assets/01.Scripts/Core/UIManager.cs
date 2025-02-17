@@ -14,13 +14,16 @@ public class UIManager : MonoSingleton<UIManager>
         uiPanels = new Dictionary<UIType, IUIPanel>();
 
         IUIPanel techTreePanel = FindFirstObjectByType<SkillTreePanel>().GetComponent<IUIPanel>();
+        IUIPanel furniturePanel = FindFirstObjectByType<FurnitureUI>().GetComponent<IUIPanel>();
         IUIPanel floorSelectPanel = FindFirstObjectByType<FloorSelectUI>().GetComponent<IUIPanel>();
         IUIPanel characterSelectPanel = FindFirstObjectByType<CharacterSelectPanel>().GetComponent<IUIPanel>();
 
         techTreePanel.Close();
+        furniturePanel.Close();
         floorSelectPanel.Close(); 
         characterSelectPanel.Close();
 
+        uiPanels.Add(UIType.FurnitureUI, furniturePanel);
         uiPanels.Add(UIType.SkillTreePanel, techTreePanel);
         uiPanels.Add(UIType.FloorSelectPanel, floorSelectPanel);
         uiPanels.Add(UIType.CharacterSelectPanel, characterSelectPanel);
@@ -69,6 +72,7 @@ public enum UIType
     SkillTreePanel,
     FloorSelectPanel,
     BuildUIPanel,
-    CharacterSelectPanel
+    CharacterSelectPanel,
+    FurnitureUI
     //TrainingPanel
 }

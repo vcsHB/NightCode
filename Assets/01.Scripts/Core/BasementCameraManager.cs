@@ -16,7 +16,7 @@ namespace Basement.CameraController
         private CameraMode _currentCameraMode;
         private CinemachineCamera _currentCamera;
         private CinemachineConfiner2D _confinder;
-        private Vector2 _cameraOriginPos;
+        private Vector3 _cameraOriginPos;
 
         private Tween _cameraChangeTween;
         private Tween _zoomTween;

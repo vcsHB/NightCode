@@ -14,7 +14,7 @@ public class Toggle : MonoBehaviour, IPointerClickHandler
     [Space(10)]
     public UnityEvent<bool> onValueChange;
 
-    private void OnEnable()
+    private void Start()
     {
         _switchTrm.anchoredPosition = new Vector2(0, IsOn ? _positions.x : _positions.y);
         onValueChange?.Invoke(IsOn);

@@ -18,6 +18,7 @@ namespace Basement
         private void OnEnable()
         {
             SetTraining(training);
+            notSaveFurniture.Add(_trainingFurniture);
         }
 
         private void OnDisable()
