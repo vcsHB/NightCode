@@ -1,7 +1,7 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace Combat
 {
     public class Health : MonoBehaviour, IDamageable, IHealable

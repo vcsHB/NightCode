@@ -20,7 +20,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            if(_lastAttackTime + _comboResetTime < Time.deltaTime)
+            if(_lastAttackTime + _comboResetTime < Time.time)
             {
                 _comboCounter = 0;
             }
@@ -32,6 +32,10 @@ namespace Agents.Players.FSM
             ++_comboCounter;
             _lastAttackTime = Time.time;
             _animator.speed = 1;
+            if(_comboCounter > 5) // 임의로 설정된 최대 콤보
+            {
+                SetCompleteCombo();
+            }
 
             base.Exit();
 
