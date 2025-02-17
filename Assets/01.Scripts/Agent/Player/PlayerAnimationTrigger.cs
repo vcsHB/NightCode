@@ -11,8 +11,7 @@ namespace Agents.Players
         public UnityEvent OnThirdAttackEvent;
         public event Action OnAnimationEnd;
 
-
-        public void Initialize(Agent agent)
+        public virtual void Initialize(Agent agent)
         {
         }
         public void AfterInit() { }

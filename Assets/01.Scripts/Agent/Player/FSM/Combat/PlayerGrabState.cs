@@ -1,3 +1,4 @@
+using System;
 using Agents.Animate;
 
 namespace Agents.Players.FSM
@@ -8,7 +9,7 @@ namespace Agents.Players.FSM
         protected bool _isComboComplete;
         public PlayerGrabState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
-           
+
             _canUseRope = true;
         }
 
@@ -18,20 +19,23 @@ namespace Agents.Players.FSM
             _mover.StopImmediately(true);
             _grabThrower.Grab();
             _player.PlayerInput.PullEvent += HandlePullTarget;
+            _player.PlayerInput.OnAttackEvent += HandleAttack;
             _isComboComplete = false;
         }
+
 
         public override void Exit()
         {
             base.Exit();
-             _player.PlayerInput.PullEvent -= HandlePullTarget;
+            _player.PlayerInput.PullEvent -= HandlePullTarget;
+            _player.PlayerInput.OnAttackEvent -= HandleAttack;
         }
 
         private void HandlePullTarget()
         {
-            if(!_grabThrower.IsPulled)
+            if (!_grabThrower.IsPulled)
                 _stateMachine.ChangeState("Pull");
-                SetCompleteCombo(); // 나중에 빼기
+            SetCompleteCombo(); // 나중에 빼기
         }
 
         protected override void HandleRemoveRope()
@@ -47,6 +51,10 @@ namespace Agents.Players.FSM
         }
 
 
+        private void HandleAttack()
+        {
+            _stateMachine.ChangeState("AirAttack");
+        }
 
     }
 }

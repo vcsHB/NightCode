@@ -64,6 +64,7 @@ Transform:
   - {fileID: 3519478560717397951}
   - {fileID: 2854451243147776584}
   - {fileID: 1436509845540175009}
+  - {fileID: 6349108460186505549}
   m_Father: {fileID: 4264095113676399738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4745497125477941781
@@ -36229,7 +36230,7 @@ MonoBehaviour:
   <AttackParam>k__BackingField: {fileID: 11400000, guid: 9bd0e45692af5014fa11ef5e59b2ef56, type: 2}
   <GrabParam>k__BackingField: {fileID: 11400000, guid: cffe7fa0fe031d64eb8bd70ce9b3be41, type: 2}
   <PullParam>k__BackingField: {fileID: 11400000, guid: 1e18d3253b595b845b24b899fd6f6e3b, type: 2}
-  <AirAttackParam>k__BackingField: {fileID: 0}
+  <AirAttackParam>k__BackingField: {fileID: 11400000, guid: 7fd406dc6be039946a213e061dd1b1ed, type: 2}
   <SkillParam>k__BackingField: {fileID: 11400000, guid: 9b488b365757a7642a08377b524bd181, type: 2}
 --- !u!114 &2092558108735833551
 MonoBehaviour:
@@ -36324,6 +36325,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _airAttackShooter: {fileID: 4418418723516817600}
   OnAirAttack1Event:
     m_PersistentCalls:
       m_Calls: []
@@ -36488,6 +36490,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147ce2630122aa744ac2456a52431487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8238422081836744777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6349108460186505549}
+  - component: {fileID: 4418418723516817600}
+  m_Layer: 6
+  m_Name: AirAttackShooter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6349108460186505549
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8238422081836744777}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4072476359948441073}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4418418723516817600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8238422081836744777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f609b51f2672579429e8310c577406dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectilePoolType: 3
+  _projectileData:
+    direction: {x: 0, y: 0}
+    speed: 10
+    lifeTime: 20
+    canPenetrate: 1
+    canDestroy: 0
+    damage: 8
 --- !u!1 &8279884612259318052
 GameObject:
   m_ObjectHideFlags: 0

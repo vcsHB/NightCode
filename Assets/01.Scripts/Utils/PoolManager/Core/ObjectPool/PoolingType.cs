@@ -2,6 +2,6 @@ namespace ObjectPooling
 {
     public enum PoolingType
     {
-        SoundPlayer,AfterShadowEffect,BloodEffect,
+        SoundPlayer,AfterShadowEffect,BloodEffect,BladeProjectile,
     }
 }

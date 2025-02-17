@@ -15,7 +15,7 @@ namespace Combat.CombatObjects.ProjectileManage
         private bool _isActive;
         private float _currentLifeTime = 0f;
         [SerializeField] private ProjectileData _projectileData;
-        public PoolingType type { get; set; }
+        [field:SerializeField] public PoolingType type { get; set; }
 
         public GameObject ObjectPrefab => gameObject;
         private IProjectileComponent[] _projectileComponents;
