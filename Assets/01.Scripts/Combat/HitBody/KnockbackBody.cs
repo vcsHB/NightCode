@@ -1,8 +1,7 @@
 using System.Collections;
-using Combat;
 using UnityEngine;
 using UnityEngine.Events;
-namespace Agents
+namespace Combat
 {
 
     public class KnockbackBody : MonoBehaviour, IKnockbackable
@@ -37,7 +36,11 @@ namespace Agents
         {
             if (_isCrashed)
             {
-                _ownerHealth.ApplyDamage(_crashDamage);
+                _ownerHealth.ApplyDamage(new CombatData()
+                {
+                    damage = _crashDamage,
+                    originPosition = other.contacts[0].point
+                });
                 OnCrashedEvent?.Invoke();
             }
         }

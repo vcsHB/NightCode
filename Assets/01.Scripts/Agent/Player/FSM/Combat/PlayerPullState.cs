@@ -9,6 +9,7 @@ namespace Agents.Players.FSM
         public PlayerPullState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
             _canGrab = false;
+            _canRemoveRope = false;
         }
 
         public override void Enter()

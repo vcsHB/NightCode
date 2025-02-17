@@ -1,36 +1,40 @@
 using System;
-using Combat;
 using UnityEngine;
 using UnityEngine.Events;
-namespace Agents
+
+namespace Combat
 {
     public class Health : MonoBehaviour, IDamageable, IHealable
     {
         public UnityEvent OnHealthChangedEvent;
         public UnityEvent OnDieEvent;
         public event Action<float, float> OnHealthChangedValueEvent;
-
+        public event Action<CombatData> OnHitCombatDataEvent;
         public float MaxHealth => _maxHealth;
-        [SerializeField]
-        private float _maxHealth;
-        [SerializeField]
-        private float _currentHealth = 0;
+        [SerializeField] private float _maxHealth;
+        [SerializeField] private float _currentHealth = 0;
+        [SerializeField] private float _hitResistanceCooltime = 0.15f;
+        private float _lastHitTime;
 
         public void Initialize(float health)
         {
             _maxHealth = health;
             SetMaxHealth();
         }
-        
+
         private void SetMaxHealth()
         {
             _currentHealth = MaxHealth;
             HandleHealthChanged();
         }
 
-        public void ApplyDamage(float damage)
+        public void ApplyDamage(CombatData data)
         {
-            _currentHealth -= damage;
+            if(!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return;
+
+            _currentHealth -= data.damage;
+            _lastHitTime = Time.time;
+            OnHitCombatDataEvent?.Invoke(data);
             CheckDie();
             HandleHealthChanged();
         }
@@ -43,7 +47,7 @@ namespace Agents
         }
         private void CheckDie()
         {
-            if(_currentHealth <= 0)
+            if (_currentHealth <= 0)
             {
                 OnDieEvent?.Invoke();
             }

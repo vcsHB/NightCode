@@ -64,6 +64,14 @@ namespace Agents
 
         protected abstract void HandleAgentDie();
 
+        public virtual void HandleForceStun()
+        {
+            // 페링, 또는 추가 상태 이상시 스턴효과 구현
+            // 플레이어 : 미상
+            // 에너미 : Stun State강제 전환
+             
+        }
+
     }
 
 }

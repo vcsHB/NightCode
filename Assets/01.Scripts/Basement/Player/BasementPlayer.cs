@@ -47,8 +47,8 @@ namespace Basement.Player
 
         private void Interact()
         {
-            //³ªÁß¿¡ ´ºÀÎÇ²¿¡¼­ Å° Ãß°¡ÇØ¼­ ¹Ù²ãÁà¾ßÇÔ
-            //Update¿¡¼­ ½ÇÇà½ÃÅ°Áö ¸»°í ±¸µ¶À¸·Î °ü¸®ÇÏ°Ô ¹Ù²ãÁÖ
+            //ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ Å° ï¿½ß°ï¿½ï¿½Ø¼ï¿½ ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //Updateï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ù²ï¿½ï¿½ï¿½
             if (Keyboard.current.fKey.wasPressedThisFrame && _readyInteract)
             {
                 OnInteract?.Invoke();
@@ -75,6 +75,10 @@ namespace Basement.Player
 
             //if (OnInteract?.GetInvocationList().Length <= 0)
             _pressFBtn.SetActive(false);
+        }
+
+        protected override void HandleAgentDie()
+        {
         }
     }
 }

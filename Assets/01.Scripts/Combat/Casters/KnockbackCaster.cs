@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 namespace Combat
 {
@@ -19,9 +18,9 @@ namespace Combat
     }
     public class KnockbackCaster : MonoBehaviour, ICastable
     {
-        [SerializeField] private KnockbackCasterData _knockbackData;
+        [SerializeField] protected KnockbackCasterData _knockbackData;
 
-        public void Cast(Collider2D target)
+        public virtual void Cast(Collider2D target)
         {
             if (_knockbackData == null) return;
 

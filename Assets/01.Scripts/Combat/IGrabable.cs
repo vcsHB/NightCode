@@ -6,6 +6,7 @@ namespace Combat
     {
         public Transform GetTransform { get; }
         public void Grab();
+        public void Release();
 
     }
 }

@@ -26,6 +26,7 @@ namespace Agents.Players.FSM
         
         private void HandleAttack()
         {
+            if (!_player.IsActive) return;
             _stateMachine.ChangeState("Attack");
         }
     }
