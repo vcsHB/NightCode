@@ -55,7 +55,6 @@ namespace Agents.Players
         public void ThrowTarget()
         {
             if (!IsPulled) return;
-            _isComboComplete = true;
             if (_isComboComplete)
             {
                 // 에임 방향으로 던지기
@@ -71,7 +70,7 @@ namespace Agents.Players
                 // 포물선 위로 던지기
                 Vector2 direction = new Vector2(_agentRenderer.FacingDirection * _throwPower, 6f);
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("WeakThrow"));
-                _throwCaster.SendCasterData(new KnockbackCasterData(direction, 10f));
+                _throwCaster.SendCasterData(new KnockbackCasterData(direction, 10f, false));
 
             }
             _grabTarget.Release();

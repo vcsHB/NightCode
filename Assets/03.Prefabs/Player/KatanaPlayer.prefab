@@ -5201,6 +5201,7 @@ GameObject:
   - component: {fileID: 8779915600486755166}
   - component: {fileID: 2381518095220091382}
   - component: {fileID: 5049271240250599543}
+  - component: {fileID: 5777899096897394475}
   m_Layer: 6
   m_Name: StrongThrowFeedback
   m_TagString: Untagged
@@ -5263,6 +5264,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particle: {fileID: 1882661420543283349}
+--- !u!114 &5777899096897394475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886676611863786398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abd71370456765c4abb7bc8f8f00493b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 0.1
+  duration: 0.1
 --- !u!1 &2337211642165635314
 GameObject:
   m_ObjectHideFlags: 0
@@ -10385,6 +10400,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   _targetMaxAmount: 4
+  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
   _boxSize: {x: 4.74, y: 2.22}
 --- !u!114 &4290358885942730309
 MonoBehaviour:
@@ -15537,6 +15553,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   _targetMaxAmount: 4
+  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
   _boxSize: {x: 4.74, y: 2.5}
 --- !u!114 &7213425354188873341
 MonoBehaviour:
@@ -30795,6 +30812,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   _targetMaxAmount: 4
+  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
   _boxSize: {x: 5, y: 2.22}
 --- !u!114 &1863626883302701480
 MonoBehaviour:
@@ -36599,6 +36617,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   _targetMaxAmount: 1
+  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
   _detectRadius: 1
 --- !u!114 &1729554121063949627
 MonoBehaviour:
