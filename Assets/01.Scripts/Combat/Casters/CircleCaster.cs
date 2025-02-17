@@ -17,7 +17,7 @@ namespace Combat
 
         private void OnDrawGizmos() {
             
-            Gizmos.color = Color.red;
+            Gizmos.color = _gizmosColor;
             Gizmos.DrawWireSphere(CenterPosition, _detectRadius);
         }
     }

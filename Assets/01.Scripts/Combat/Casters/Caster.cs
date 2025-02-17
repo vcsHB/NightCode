@@ -22,6 +22,8 @@ namespace Combat
         protected ICastable[] _casters;
         protected Collider2D[] _hits;
         public Vector2 CenterPosition => (Vector2)transform.position + _offset;
+        [Header("Gizmos Setting")]
+        [SerializeField] protected Color _gizmosColor = Color.red;
 
         protected virtual void Awake()
         {
