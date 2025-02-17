@@ -13,6 +13,7 @@ namespace Combat
         public AttackType type;
         public float damage;
         public Vector2 originPosition;
+        public bool invalidityResistance;
 
 
     }

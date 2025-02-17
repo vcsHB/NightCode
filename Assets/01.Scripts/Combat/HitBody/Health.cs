@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 namespace Combat
@@ -12,6 +13,8 @@ namespace Combat
         public float MaxHealth => _maxHealth;
         [SerializeField] private float _maxHealth;
         [SerializeField] private float _currentHealth = 0;
+        [SerializeField] private float _hitResistanceCooltime = 0.15f;
+        private float _lastHitTime;
 
         public void Initialize(float health)
         {
@@ -27,7 +30,10 @@ namespace Combat
 
         public void ApplyDamage(CombatData data)
         {
+            if(!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return;
+
             _currentHealth -= data.damage;
+            _lastHitTime = Time.time;
             OnHitCombatDataEvent?.Invoke(data);
             CheckDie();
             HandleHealthChanged();
