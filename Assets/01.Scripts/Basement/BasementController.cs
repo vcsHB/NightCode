@@ -1,4 +1,4 @@
-using NUnit.Framework.Constraints;
+using Basement.CameraController;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,63 +8,31 @@ namespace Basement
 {
     public class BasementController : MonoBehaviour
     {
-        public BasementSO basementInfo;
+        [SerializeField] private GameObject _buildModeObj;
+        [SerializeField] private GameObject _basementModeObj;
 
-        private string _path = Path.Combine(Application.dataPath, "Basement.json");
+        private BasementMode _currentMode = BasementMode.Basement;
 
-        public bool CheckCanExpend()
-            => basementInfo.expendedFloor >= basementInfo.maxFloor;
-
-        public void ExpendFloor()
+        public void ChangeBasementMode(BasementMode mode)
         {
+            _currentMode = mode;
 
-        }
-
-        public void Save()
-        {
-            BasementSave save = new BasementSave();
-            save.expendedFloor = basementInfo.expendedFloor;
-            save.floorInfos = basementInfo.floorInfos;
-
-            string json = JsonUtility.ToJson(save);
-            File.WriteAllText(_path, json);
-        }
-
-        public void Load()
-        {
-            if(File.Exists(_path) == false)
+            if(mode == BasementMode.Basement)
             {
-                Save();
-                return;
+                _basementModeObj.SetActive(true);
+                _buildModeObj.SetActive(false);
             }
-
-            string json = File.ReadAllText(_path);
-            BasementSave save = JsonUtility.FromJson<BasementSave>(json);
-
-            basementInfo.expendedFloor = save.expendedFloor;
-            basementInfo.floorInfos = save.floorInfos;
+            else
+            {
+                _basementModeObj.SetActive(false);
+                _buildModeObj.SetActive(true);
+            }
         }
     }
 
-    [Serializable]
-    public class BasementSave
+    public enum BasementMode
     {
-        public int expendedFloor;
-        public List<FloorInfo> floorInfos;
-    }
-
-    [Serializable]
-    public class FloorInfo
-    {
-        int floor;
-        public List<RoomInfo> rooms = new List<RoomInfo>(4);
-    }
-
-    [Serializable]
-    public struct RoomInfo
-    {
-        public int level;
-        public BasementRoomType roomType;
-        public List<FurnitureSO> furnitures;
+        Basement,
+        Build
     }
 }

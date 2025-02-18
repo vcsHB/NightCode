@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Basement;
+using Basement.Training;
 
 public class UIManager : MonoSingleton<UIManager>
 {
     public Dictionary<UIType, IUIPanel> uiPanels;
+    public TrainingExplainUI trainingUI;
 
     protected override void Awake()
     {
@@ -14,16 +16,19 @@ public class UIManager : MonoSingleton<UIManager>
         uiPanels = new Dictionary<UIType, IUIPanel>();
 
         IUIPanel techTreePanel = FindFirstObjectByType<SkillTreePanel>().GetComponent<IUIPanel>();
+        IUIPanel furniturePanel = FindFirstObjectByType<FurnitureUI>().GetComponent<IUIPanel>();
         IUIPanel floorSelectPanel = FindFirstObjectByType<FloorSelectUI>().GetComponent<IUIPanel>();
-        IUIPanel buildUIPanel = FindFirstObjectByType<BasementBuildUI>().GetComponent<IUIPanel>();
+        IUIPanel characterSelectPanel = FindFirstObjectByType<CharacterSelectPanel>().GetComponent<IUIPanel>();
 
         techTreePanel.Close();
+        furniturePanel.Close();
         floorSelectPanel.Close(); 
-        buildUIPanel.Close();
+        characterSelectPanel.Close();
 
+        uiPanels.Add(UIType.FurnitureUI, furniturePanel);
         uiPanels.Add(UIType.SkillTreePanel, techTreePanel);
         uiPanels.Add(UIType.FloorSelectPanel, floorSelectPanel);
-        uiPanels.Add(UIType.BuildUIPanel, buildUIPanel);
+        uiPanels.Add(UIType.CharacterSelectPanel, characterSelectPanel);
     }
 
     public IUIPanel GetUIPanel(UIType uiType) => uiPanels[uiType];
@@ -68,6 +73,8 @@ public enum UIType
 {
     SkillTreePanel,
     FloorSelectPanel,
-    BuildUIPanel
+    BuildUIPanel,
+    CharacterSelectPanel,
+    FurnitureUI
     //TrainingPanel
 }
