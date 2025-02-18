@@ -43,7 +43,7 @@ namespace Basement
                 icon.SetFurniture(furniture);
                 icon.OnClick += furniture =>
                 {
-                    _room.AddFurniture(furniture, Vector2.zero);
+                    //_room.AddFurniture(furniture, Vector2.zero);
                     furnitureWhatIHave.Remove(furniture);
                     Destroy(icon.gameObject);
                 };

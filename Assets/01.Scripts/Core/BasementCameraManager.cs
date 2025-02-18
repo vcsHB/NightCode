@@ -10,11 +10,9 @@ namespace Basement.CameraController
     public class BasementCameraManager : MonoSingleton<BasementCameraManager>
     {
         public CinemachineCamera mainCamera;
-        public Camera basementCamera;
         public int currentCameraTargetFloor;
         public bool isFocus = false;
 
-        private CameraMode _currentCameraMode;
         private CinemachineCamera _currentCamera;
         private CinemachineConfiner2D _confinder;
         private Vector3 _cameraOriginPos;
@@ -22,25 +20,12 @@ namespace Basement.CameraController
         private Tween _cameraChangeTween;
         private Tween _zoomTween;
 
-        public CameraMode CameraMode => _currentCameraMode;
         public float CameraSize => _currentCamera.Lens.OrthographicSize;
 
         protected override void Awake()
         {
             base.Awake();
             _currentCamera = mainCamera;
-
-            _currentCameraMode = CameraMode.Build;
-            ChangeCameraMode(CameraMode.Basement);
-        }
-
-
-        public void ChangeCameraMode(CameraMode mode)
-        {
-            if (_currentCameraMode == mode) return;
-            _currentCameraMode = mode;
-
-            basementCamera.gameObject.SetActive(mode == CameraMode.Basement);
         }
 
         public void Zoom(float value, float duration = 0.2f, Ease ease = Ease.Linear)
@@ -49,11 +34,7 @@ namespace Basement.CameraController
                 _zoomTween.Kill();
 
             _zoomTween = DOTween.To(() => _currentCamera.Lens.OrthographicSize,
-                x =>
-                {
-                    _currentCamera.Lens.OrthographicSize = x;
-                    basementCamera.orthographicSize = x;
-                },
+                x =>  _currentCamera.Lens.OrthographicSize = x,
                 value, duration).SetEase(ease);
         }
 
@@ -67,8 +48,8 @@ namespace Basement.CameraController
             }
 
             currentCameraTargetFloor = floor;
-            Transform target = BasementManager.Instance.floorCameraTarget[floor].transform;
-            ChangeFollow(target, duration, onComplete);
+            //Transform target = BasementManager.Instance.floorCameraTarget[floor].transform;
+            //ChangeFollow(target, duration, onComplete);
         }
 
         public void ChangeFollow(Transform target, float duration, Action onComplete, Ease easing = Ease.Linear)
@@ -97,7 +78,6 @@ namespace Basement.CameraController
         public Transform GetCameraFollow()
             => _currentCamera.Follow;
 
-        private float dir = 0;
         //µð¹ö±ë¿ë
         private void Update()
         {
@@ -105,39 +85,7 @@ namespace Basement.CameraController
                 Zoom(1);
             if (Keyboard.current.oKey.wasPressedThisFrame)
                 Zoom(5);
-
-            if (Keyboard.current.leftArrowKey.wasReleasedThisFrame 
-                || Keyboard.current.rightArrowKey.wasPressedThisFrame)
-            {
-                dir = 0;
-            }
-
-            if (_currentCameraMode == CameraMode.Build)
-            {
-                if (Keyboard.current.downArrowKey.wasPressedThisFrame)
-                    ChangeFollowToFloor(currentCameraTargetFloor + 1, 0.3f, null);
-
-                if (Keyboard.current.upArrowKey.wasPressedThisFrame)
-                    ChangeFollowToFloor(currentCameraTargetFloor - 1, 0.3f, null);
-
-
-                if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
-                    dir = -1;
-
-                if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
-                    dir = 1;
-
-                var target
-                    = BasementManager.Instance.floorCameraTarget[currentCameraTargetFloor];
-                target.Move(dir);
-            }
-
         }
     }
 
-    public enum CameraMode
-    {
-        Basement,
-        Build
-    }
 }

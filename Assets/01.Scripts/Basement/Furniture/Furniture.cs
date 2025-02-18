@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Basement.Player;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using NUnit.Framework.Constraints;
@@ -42,30 +41,28 @@ namespace Basement
 
         private void OnMouseDown()
         {
-            if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
+            //if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
 
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-            _offset = (Vector2)transform.position - mousePosition;
+            //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            //_offset = (Vector2)transform.position - mousePosition;
         }
 
         private void OnMouseDrag()
         {
-            if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
+            //if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
 
-            Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-            SetPosition(mosuePosition);
+            //Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            //SetPosition(mosuePosition);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            BasementPlayer player = FindFirstObjectByType<BasementPlayer>();
-            player.SetInteractAction(InteractAction);
+
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            BasementPlayer player = FindFirstObjectByType<BasementPlayer>();
-            player.RemoveInteractAction(InteractAction);
+
         }
     }
 }

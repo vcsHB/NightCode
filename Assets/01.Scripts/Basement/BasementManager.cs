@@ -14,7 +14,6 @@ namespace Basement
         public BasementSO basementInfo;
         public BasementRoomSetSO roomSet;
 
-        public List<BasementPlayerFollowTarget> floorCameraTarget;
         public List<FloorPositionInfo> roomPositions;
         public List<FloorRoomInfo> roomInfos;
 
@@ -34,8 +33,6 @@ namespace Basement
 
         public bool CheckCanExpend()
             => basementInfo.expendedFloor >= basementInfo.maxFloor;
-
-        public Transform GetCameraTarget(int floor) => floorCameraTarget[floor].transform;
 
         public Transform GetRoomPosition(int floor, int roomNumber)
             => roomPositions[floor].roomPositions[roomNumber];
@@ -65,8 +62,8 @@ namespace Basement
                     for (int j = 0; j < info.rooms.Count; j++)
                     {
                         RoomInfo room = info.rooms[j];
-                        if (roomInfos[i]?.roomInfos[j] != null)
-                            room.factor = roomInfos[i].roomInfos[j].GetFactor();
+                        //if (roomInfos[i]?.roomInfos[j] != null)
+                            //room.factor = roomInfos[i].roomInfos[j].GetFactor();
                     }
                 }
             }
@@ -118,7 +115,7 @@ namespace Basement
                     if ((int)roomInfo.roomType < 3) continue;
 
                     BasementRoom room = CreateRoom(roomInfo.roomType, i, j);
-                    room.SetFactor(roomInfo.factor);
+                    //room.SetFactor(roomInfo.factor);
                     roomInfos[i].roomInfos[j] = room;
                     //Debug.Log(roomInfo.roomType);
                     //Transform positionTrm = buildUI.basementBuildUI[i].roomBuildUI[j];
