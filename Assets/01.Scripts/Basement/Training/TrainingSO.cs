@@ -6,10 +6,12 @@ namespace Basement.Training
     [CreateAssetMenu(menuName = "SO/Basement/Training")]
     public class TrainingSO : ScriptableObject
     {
+        public int trainingId;
         public string trainingName;
+
+        public string trainingVisibleName;
         public string trainingExplain;
         public SkillPointEnum statType;
-
 
         [Header("Chance is between 0 ~ 100")]
         [Space(5)]

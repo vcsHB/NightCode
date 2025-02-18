@@ -28,8 +28,6 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
             _characterPanels[i].Init(i + 1);
             _positions[i] = _characterPanels[i].RectTrm.anchoredPosition;
         }
-
-        _characterPanels[0].UpdateStat();
     }
 
     public void MoveToNextCharacter()
@@ -143,11 +141,11 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 
     public void Close()
     {
-
+        gameObject.SetActive(false);
     }
 
     public void Open(Vector2 position)
     {
-
+        gameObject.SetActive(true);
     }
 }
