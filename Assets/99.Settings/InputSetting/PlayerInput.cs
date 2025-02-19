@@ -12,6 +12,7 @@ namespace InputManage
         public event Action OnShootRopeEvent;
         public event Action OnRemoveRopeEvent;
         public event Action JumpEvent;
+        public event Action PullEvent;
         public event Action TurboEvent;
         public event Action OnCharacterChangeEvent;
         private Controls _controls;
@@ -77,6 +78,7 @@ namespace InputManage
             if (context.performed)
             {
                 JumpEvent?.Invoke();
+                PullEvent?.Invoke();
             }
         }
 

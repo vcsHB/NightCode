@@ -35,9 +35,15 @@ namespace Agents.Players.FSM
             AddState("Jump", "PlayerJump", playerRenderer.JumpParam);
             AddState("Fall", "PlayerFall", playerRenderer.FallParam);
             AddState("Hang", "PlayerHang", playerRenderer.HangParam);
+            AddState("Grab", "PlayerGrab", playerRenderer.GrabParam);
+            AddState("Pull", "PlayerPull", playerRenderer.PullParam);
             AddState("Swing", "PlayerSwing", playerRenderer.SwingParam);
             AddState("Enter", "PlayerTagEnter", playerRenderer.EnterParam);
             AddState("Exit", "PlayerTagExit", playerRenderer.ExitParam);
+
+            AddState("SlideDown", "PlayerSlideDown", playerRenderer.SlideDownParam);
+            AddState("HoldingWall", "PlayerHoldingWall", playerRenderer.HoldWallParam);
+            AddState("Climb", "PlayerClimb", playerRenderer.ClimbParam);
 
             if (_stateDictionary.TryGetValue(firstState, out PlayerState state))
             {

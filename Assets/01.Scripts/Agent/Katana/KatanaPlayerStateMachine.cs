@@ -13,6 +13,7 @@ namespace Agents.Players.FSM
         public override void Initialize(string firstState)
         {
             AddState("Attack", "KatanaPlayerAttack", _katanaRenderer.AttackParam);
+            AddState("AirAttack", "PlayerAirAttack", _katanaRenderer.AirAttackParam);
 
 
             base.Initialize(firstState);

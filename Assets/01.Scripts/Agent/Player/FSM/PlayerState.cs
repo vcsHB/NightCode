@@ -19,6 +19,8 @@ namespace Agents.Players.FSM
 
         protected bool _isTriggered;
         protected bool _canUseRope = false;
+        protected bool _canGrab = false;
+        protected bool _canRemoveRope = true;
 
         public PlayerState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam)
         {
@@ -41,7 +43,7 @@ namespace Agents.Players.FSM
             if (_canUseRope)
                 _player.PlayerInput.OnShootRopeEvent += HandleShootEvent;
             _player.PlayerInput.OnRemoveRopeEvent += HandleRemoveRope;
-            
+
         }
 
 
@@ -63,18 +65,41 @@ namespace Agents.Players.FSM
             _isTriggered = true;
         }
 
-        protected void HandleShootEvent()
+        protected virtual void HandleShootEvent()
         {
-            if(!_player.IsActive) return;
-            if (_aimController.Shoot())
+            if (!_player.IsActive) return;
+            ShootData data = _aimController.Shoot();
+
+            if (data.isGrabbed && _canGrab)
+            {
+                //Debug.Log("Grabbing");
+                _player.StateMachine.ChangeState("Grab");
+            }
+            else if (data.isHanged)
                 _player.StateMachine.ChangeState("Hang");
+
         }
 
-        protected void HandleRemoveRope()
+        protected virtual void HandleRemoveRope()
         {
-            if(!_player.IsActive) return;
+            if(!_canRemoveRope) return;
+            if (!_player.IsActive) return;
             _aimController.RemoveWire();
             _player.StateMachine.ChangeState("Swing");
+        }
+
+        private void HandleAttack()
+        {
+            if (!_player.IsActive) return;
+            _stateMachine.ChangeState("Attack");
+        }
+
+        protected void CheckWallAndHold()
+        {
+            if(_mover.IsWallDetected())
+            {
+                _stateMachine.ChangeState("HoldingWall");
+            }
         }
 
 

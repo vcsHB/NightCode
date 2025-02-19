@@ -12,6 +12,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
+            _mover.jumpCount = 2; // 나중에 스테이터스 처리
             _mover.StopImmediately();
         }
 

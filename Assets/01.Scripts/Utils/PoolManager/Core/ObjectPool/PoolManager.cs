@@ -10,10 +10,11 @@ public class PoolManager : MonoSingleton<PoolManager>
     public PoolingTableSO listSO;
     private List<IPoolable> _generatedObjects = new List<IPoolable>();
     
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         foreach (PoolingItemSO item in listSO.datas)
-        {
+        { 
             CreatePool(item);
         }
     }

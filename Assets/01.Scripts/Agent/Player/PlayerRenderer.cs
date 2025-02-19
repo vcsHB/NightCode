@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using Agents.Animate;
 using UnityEngine;
-using UnityEngine.iOS;
+
 namespace Agents.Players
 {
 
@@ -14,11 +14,17 @@ namespace Agents.Players
         [field: SerializeField] public AnimParamSO JumpParam { get; private set; }
         [field: SerializeField] public AnimParamSO SwingParam { get; private set; }
         [field: SerializeField] public AnimParamSO HangParam { get; private set; }
+        [field: SerializeField] public AnimParamSO HoldWallParam { get; private set; }
+        [field: SerializeField] public AnimParamSO SlideDownParam { get; private set; }
+        [field: SerializeField] public AnimParamSO ClimbParam { get; private set; }
         [field: SerializeField] public AnimParamSO EnterParam { get; private set; }
         [field: SerializeField] public AnimParamSO ExitParam { get; private set; }
 
 
         [field: SerializeField] public AnimParamSO AttackParam { get; private set; }
+        [field: SerializeField] public AnimParamSO GrabParam { get; private set; }
+        [field: SerializeField] public AnimParamSO PullParam { get; private set; }
+        [field: SerializeField] public AnimParamSO AirAttackParam { get; private set; }
         [field: SerializeField] public AnimParamSO SkillParam { get; private set; }
 
         protected bool _isLockRotation = true;
@@ -40,16 +46,11 @@ namespace Agents.Players
         public void SetRotate(Vector2 upDirection)
         {
             if (_isLockRotation) return;
-            float offset = -90f;
-            float yRotation = 0f;
-            if (Mathf.Approximately(_agent.transform.eulerAngles.y, 180f))
-            {
-                upDirection.x *= -1;
-                yRotation = 180f;
-            }
-            float angle = Mathf.Atan2(upDirection.y, upDirection.x) * Mathf.Rad2Deg + offset;
-            transform.rotation = Quaternion.Euler(0, yRotation, angle);
 
+            bool isFlipped = Mathf.Approximately(Mathf.Abs(_agent.transform.eulerAngles.y), 180f);
+            float angle = Mathf.Atan2(upDirection.y, upDirection.x) * Mathf.Rad2Deg - 90f;
+
+            transform.rotation = Quaternion.Euler(0, isFlipped ? 180f : 0f, isFlipped ? -angle : angle);
         }
 
         public void SetDissolve(bool value, Action onComplete = null)
