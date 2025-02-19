@@ -8,14 +8,7 @@ namespace Basement
     public class BasementRoomSO : ScriptableObject
     {
         public BasementRoom roomPf;
-        public List<RequireResource> requireResource;
-    }
-
-    [Serializable]
-    public struct RequireResource
-    {
-        public TestResourceType resourceType;
-        public int amount;
+        public int requireMoney;
     }
 
     public enum TestResourceType

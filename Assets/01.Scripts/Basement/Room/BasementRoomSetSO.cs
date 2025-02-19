@@ -7,20 +7,20 @@ namespace Basement
     [CreateAssetMenu(menuName = "SO/Basement/BasementRoomSet")]
     public class BasementRoomSetSO : ScriptableObject
     {
-        public List<BasementRoom> basementRoomSet;
-        public Dictionary<BasementRoomType, BasementRoom> basementRoomDictionary;
+        public List<BasementRoomSO> basementRoomSet;
+        public Dictionary<BasementRoomType, BasementRoomSO> basementRoomDictionary;
 
         private void OnEnable()
         {
-            basementRoomDictionary = new Dictionary<BasementRoomType, BasementRoom>();
+            basementRoomDictionary = new Dictionary<BasementRoomType, BasementRoomSO>();
             basementRoomSet.ForEach(room =>
             {
                 if (room != null)
-                    basementRoomDictionary.Add(room.roomType, room);
+                    basementRoomDictionary.Add(room.roomPf.roomType, room);
             });
         }
 
-        public BasementRoom GetRoomPrefab(BasementRoomType roomType)
+        public BasementRoomSO GetRoomSO(BasementRoomType roomType)
             => basementRoomDictionary[roomType];
     }
 }

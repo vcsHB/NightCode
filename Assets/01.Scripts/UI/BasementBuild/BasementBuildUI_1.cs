@@ -6,8 +6,7 @@ namespace Basement
 {
     public class BasementBuildUI : MonoBehaviour
     {
-        [SerializeField] private BasementRoomSetSO _roomSetSO;
-        [SerializeField] private BasementRoomType _roomType;
+        [SerializeField] private BasementRoomSO _roomSetSO;
         [SerializeField] private int _floor;
         [SerializeField] private int _roomNumber;
         private bool _isMouseDown = false;
@@ -31,9 +30,9 @@ namespace Basement
 
         private void OnMouseUp()
         {
-            if( _isMouseDown)
+            if (_isMouseDown)
                 OnClick();
-            
+
             _isMouseDown = false;
         }
 
@@ -41,8 +40,15 @@ namespace Basement
 
         private void OnClick()
         {
-
-            BasementManager.Instance.CreateRoom(_roomType, _floor, _roomNumber);
+            if (CheckResource() == false) return;
+            BasementManager.Instance.CreateRoom(_roomSetSO, _floor, _roomNumber);
+            UseResource();
         }
+
+        private bool CheckResource()
+           => BasementManager.Instance.GetMoney() >= _roomSetSO.requireMoney;
+
+        private void UseResource()
+            => BasementManager.Instance.UseResource(_roomSetSO.requireMoney);
     }
 }
