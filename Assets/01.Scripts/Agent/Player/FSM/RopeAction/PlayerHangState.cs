@@ -1,4 +1,5 @@
 using Agents.Animate;
+using CameraControllers;
 
 namespace Agents.Players.FSM
 {
@@ -18,6 +19,7 @@ namespace Agents.Players.FSM
             _player.PlayerInput.TurboEvent += HandleUseTurbo;
             _player.PlayerInput.PullEvent += HandlePull;
             _renderer.SetLockRotation(false);
+            CameraManager.Instance.GetCompo<CameraZoomController>().SetZoomLevel(30, 1f, true);
         }
 
 

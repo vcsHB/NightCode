@@ -23,8 +23,13 @@ namespace CameraControllers
             _virtualCamera.Lens.OrthographicSize = zoomLevel;
         }
 
-        public void SetZoomLevel(float zoomLevel, float duration)
+        public void SetZoomLevel(float zoomLevel, float duration, bool isForce = false)
         {
+            if (_zoomCoroutine != null)
+            {
+                if (!isForce) return;
+                StopCoroutine(_zoomCoroutine);
+            }
             _zoomCoroutine = StartCoroutine(ZoomCoroutine(zoomLevel, duration));
         }
 
@@ -32,7 +37,7 @@ namespace CameraControllers
         {
             float previousLevel = ZoomLevel;
             float currentTime = 0f;
-            while (currentTime > duration)
+            while (currentTime < duration)
             {
                 currentTime += Time.deltaTime;
                 float ratio = currentTime / duration;

@@ -1,4 +1,5 @@
 using Agents.Animate;
+using CameraControllers;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
@@ -14,6 +15,7 @@ namespace Agents.Players.FSM
             base.Enter();
             _mover.jumpCount = 2; // 나중에 스테이터스 처리
             _mover.StopImmediately();
+            CameraManager.Instance.GetCompo<CameraZoomController>().SetZoomLevel(19, 1.5f, true);
         }
 
         public override void UpdateState()
