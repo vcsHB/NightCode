@@ -13,21 +13,29 @@ namespace Basement
 
         private BasementMode _currentMode = BasementMode.Basement;
 
+        public void ChangeBuildMode(bool isBuildMode)
+        {
+            if (isBuildMode) ChangeBasementMode(BasementMode.Build);
+            else ChangeBasementMode(BasementMode.Basement);
+        }
+
         public void ChangeBasementMode(BasementMode mode)
         {
             _currentMode = mode;
 
-            if(mode == BasementMode.Basement)
+            if (mode == BasementMode.Basement)
             {
-                _basementModeObj.SetActive(true);
                 _buildModeObj.SetActive(false);
             }
             else
             {
-                _basementModeObj.SetActive(false);
                 _buildModeObj.SetActive(true);
             }
         }
+
+        public BasementMode GetCurrentMode()
+            => _currentMode;
+
     }
 
     public enum BasementMode

@@ -11,6 +11,7 @@ namespace Basement
         public FurnitureSetSO furnitureSet;
         [SerializeField] private Transform _frameTrm;
         [SerializeField] private FurnitureIcon _iconPrefab;
+        [SerializeField] private FurnitureExplainUI _explain;
 
         private List<FurnitureIcon> _exsistIcon;
         private BasementRoom _currentRoom;
@@ -30,23 +31,15 @@ namespace Basement
             _exsistIcon.ForEach(icon => Destroy(icon.gameObject));
             _exsistIcon.Clear();
 
-            //room.furnitureList.ForEach(furniture =>
-            //{
-            //    FurnitureSO furnitureSO = furniture.furnitureSO;
+            room.furnitureList.ForEach(furniture =>
+            {
+                FurnitureSO furnitureSO = furniture.furnitureSO;
 
-            //    FurnitureIcon icon = Instantiate(_iconPrefab, _frameTrm);
-            //    icon.SetFurniture(furnitureSO);
-            //    _exsistIcon.Add(icon);
-            //});
-
-            //room.notSaveFurniture.ForEach(furniture =>
-            //{
-            //    FurnitureSO furnitureSO = furniture.furnitureSO;
-
-            //    FurnitureIcon icon = Instantiate(_iconPrefab, _frameTrm);
-            //    icon.SetFurniture(furnitureSO);
-            //    _exsistIcon.Add(icon);
-            //});
+                FurnitureIcon icon = Instantiate(_iconPrefab, _frameTrm);
+                icon.SetFurniture(furnitureSO);
+                icon.OnClick += _explain.SetFurniture;
+                _exsistIcon.Add(icon);
+            });
         }
 
         public void Open()

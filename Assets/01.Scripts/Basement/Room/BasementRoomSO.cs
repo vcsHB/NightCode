@@ -7,6 +7,8 @@ namespace Basement
     [CreateAssetMenu(menuName = "SO/Basement/Room")]
     public class BasementRoomSO : ScriptableObject
     {
+        public string roomName;
+
         public BasementRoom roomPf;
         public int requireMoney;
     }

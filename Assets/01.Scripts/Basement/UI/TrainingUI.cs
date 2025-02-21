@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Basement.Training
 {
-    public class TrainingExplainUI : MonoBehaviour
+    public class TrainingUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _fatigueText;

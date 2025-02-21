@@ -11,23 +11,12 @@ namespace Basement
         //얘는 그냥 초기 설정인거임
         public BasementSO basementInfo;
         public BasementRoomSetSO roomSet;
+        public BasementController basement;
 
         public List<FloorPositionInfo> roomPositions;
 
         public int money;
         private string _path = Path.Combine(Application.dataPath, "Basement.json");
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            money = 0;
-        }
-
-        private void Update()
-        {
-
-        }
 
         public int GetMoney()
             => money;
@@ -42,6 +31,7 @@ namespace Basement
         {
             Transform roomTrm = GetRoomPosition(floor, roomNumber);
             BasementRoom room = Instantiate(roomSet.GetRoomSO(roomType).roomPf, roomTrm);
+            room.Init(basement);
 
             basementInfo.floorInfos[floor].rooms[roomNumber].roomType = roomType;
 
@@ -51,7 +41,8 @@ namespace Basement
         public BasementRoom CreateRoom(BasementRoomSO roomSO, int floor, int roomNumber)
         {
             Transform roomTrm = GetRoomPosition(floor, roomNumber);
-            BasementRoom room = Instantiate(roomSO.roomPf, roomTrm);
+            BasementRoom room = Instantiate(roomSO.roomPf, roomTrm); 
+            room.Init(basement);
 
             basementInfo.floorInfos[floor].rooms[roomNumber].roomType = room.roomType;
             return room;

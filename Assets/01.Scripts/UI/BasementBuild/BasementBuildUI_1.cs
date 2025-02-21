@@ -6,6 +6,7 @@ namespace Basement
 {
     public class BasementBuildUI : MonoBehaviour
     {
+        [SerializeField] private BuildConfirmPanel buildConfirmPanel;
         [SerializeField] private BasementRoomSO _roomSetSO;
         [SerializeField] private int _floor;
         [SerializeField] private int _roomNumber;
@@ -40,9 +41,16 @@ namespace Basement
 
         private void OnClick()
         {
+            buildConfirmPanel.gameObject.SetActive(true);
+            buildConfirmPanel.SetRoom(_roomSetSO, Build);
+        }
+
+        private void Build()
+        {
             if (CheckResource() == false) return;
             BasementManager.Instance.CreateRoom(_roomSetSO, _floor, _roomNumber);
             UseResource();
+            gameObject.SetActive(false);
         }
 
         private bool CheckResource()

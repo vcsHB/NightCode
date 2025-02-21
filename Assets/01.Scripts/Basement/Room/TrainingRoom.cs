@@ -1,7 +1,4 @@
-using Basement.CameraController;
 using Basement.Training;
-using DG.Tweening;
-using System.Text;
 using UnityEngine;
 
 namespace Basement
@@ -13,12 +10,16 @@ namespace Basement
         [SerializeField] private TrainingSO training;
         private TrainingSO _training;
         private CharacterEnum _selectedCharacter;
-        private TrainingExplainUI _trainingExplain;
+        private TrainingUI _trainingExplain;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            furnitureList.Add(_trainingFurniture);
+        }
 
         private void OnEnable()
         {
-            SetTraining(training);
-            _trainingExplain = UIManager.Instance.trainingUI;
             _trainingFurniture.InteractAction += Training;
         }
 
@@ -29,8 +30,15 @@ namespace Basement
 
         private void Training()
         {
+            _trainingExplain = UIManager.Instance.trainingUI;
             _trainingExplain.gameObject.SetActive(true);
             _trainingExplain.SetTraining(training);
+        }
+
+        public override void FocusRoom()
+        {
+            base.FocusRoom();
+
         }
 
         public void SetTraining(TrainingSO training)
@@ -42,5 +50,11 @@ namespace Basement
 
         public void SelectCharacter(CharacterEnum character)
             => _selectedCharacter = character;
+
+        public override void Init(BasementController basement)
+        {
+            base.Init(basement);
+            SetTraining(training);
+        }
     }
 }
