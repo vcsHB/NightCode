@@ -25,12 +25,10 @@ namespace Agents.Players
 
         public override void Initialize(Agent agent)
         {
+            base.Initialize(agent);
             _player = agent as Player;
-            _rigidCompo = agent.GetComponent<Rigidbody2D>();
-            _originalgravity = _rigidCompo.gravityScale;
             _playerRenderer = agent.GetCompo<PlayerRenderer>();
 
-            _originalgravity = _rigidCompo.gravityScale;
         }
 
 
@@ -59,16 +57,6 @@ namespace Agents.Players
             _movementY = yMovement;
         }
 
-        public void StopImmediately(bool isYAxisToo = false)
-        {
-            if (isYAxisToo)
-                _rigidCompo.linearVelocity = Vector2.zero;
-            else
-                _rigidCompo.linearVelocity = new Vector2(0, _rigidCompo.linearVelocity.y);
-
-            _movementX = 0;
-        }
-
         public void StopYVelocity()
         {
             _rigidCompo.linearVelocityY = 0f;
@@ -95,21 +83,7 @@ namespace Agents.Players
             SetVelocity(result.normalized * _turboPower);
         }
 
-        public void SetMultipleVelocioty(float value)
-        {
-            _rigidCompo.linearVelocity = _rigidCompo.linearVelocity.normalized * value;
-        }
-
-        public void SetVelocity(Vector2 velocity)
-        {
-            Velocity = velocity;
-            _rigidCompo.linearVelocity = velocity;
-        }
-
-        public void AddForceToEntity(Vector2 power)
-        {
-            _rigidCompo.AddForce(power, ForceMode2D.Impulse);
-        }
+        
 
         public virtual bool IsWallDetected()
         {

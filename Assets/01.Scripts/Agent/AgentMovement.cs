@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 namespace Agents
 {
@@ -26,6 +27,9 @@ namespace Agents
         public virtual void Initialize(Agent agent)
         {
             _owner = agent;
+
+            _rigidCompo = agent.GetComponent<Rigidbody2D>();
+            _originalgravity = _rigidCompo.gravityScale;
         }
 
         public virtual void AfterInit()
@@ -34,6 +38,32 @@ namespace Agents
 
         public virtual void Dispose()
         {
+        }
+
+
+        public void StopImmediately(bool isYAxisToo = false)
+        {
+            if (isYAxisToo)
+                _rigidCompo.linearVelocity = Vector2.zero;
+            else
+                _rigidCompo.linearVelocity = new Vector2(0, _rigidCompo.linearVelocity.y);
+
+            _movementX = 0;
+        }
+        public void SetMultipleVelocioty(float value)
+        {
+            _rigidCompo.linearVelocity = _rigidCompo.linearVelocity.normalized * value;
+        }
+
+        public void SetVelocity(Vector2 velocity)
+        {
+            Velocity = velocity;
+            _rigidCompo.linearVelocity = velocity;
+        }
+
+        public void AddForceToEntity(Vector2 power)
+        {
+            _rigidCompo.AddForce(power, ForceMode2D.Impulse);
         }
 
 
@@ -56,6 +86,7 @@ namespace Agents
             }
 
         }
+
 #endif
     }
 }
