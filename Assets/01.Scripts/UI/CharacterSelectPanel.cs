@@ -3,6 +3,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using Basement.Training;
+using Basement;
 
 public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 {
@@ -20,6 +21,7 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
     private Sequence _seq;
 
     public int CurrentIndex => _currentIdx;
+
 
     private void Awake()
     {
