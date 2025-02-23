@@ -8,6 +8,7 @@ namespace Agents.Enemies
     {
         IDLE,
         PATROL,
+        CHASE,
         COMBAT,
         STUN
     }

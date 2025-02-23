@@ -46,11 +46,7 @@ namespace Agents.Players
             Velocity = _rigidCompo.linearVelocity;
         }
 
-        public void SetMovement(float xMovement)
-        {
-            _movementX = xMovement;
-            _playerRenderer.FlipController(xMovement);
-        }
+        
 
         public void SetYMovement(float yMovement)
         {

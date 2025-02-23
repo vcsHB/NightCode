@@ -21,6 +21,7 @@ namespace Agents
 
 
         protected Agent _owner;
+        protected AgentRenderer _renderer;
         protected float _movementX;
         protected float _moveSpeedMultiplier = 1f;
 
@@ -29,6 +30,7 @@ namespace Agents
             _owner = agent;
 
             _rigidCompo = agent.GetComponent<Rigidbody2D>();
+            _renderer = agent.GetCompo<AgentRenderer>();
             _originalgravity = _rigidCompo.gravityScale;
         }
 
@@ -38,6 +40,11 @@ namespace Agents
 
         public virtual void Dispose()
         {
+        }
+        public void SetMovement(float xMovement)
+        {
+            _movementX = xMovement;
+            _renderer.FlipController(xMovement);
         }
 
 
