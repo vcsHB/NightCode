@@ -8,6 +8,7 @@ namespace Combat
     {
         public UnityEvent OnHealthChangedEvent;
         public UnityEvent OnDieEvent;
+        public UnityEvent OnReviveEvent;
         public event Action<float, float> OnHealthChangedValueEvent;
         public event Action<CombatData> OnHitCombatDataEvent;
         public float MaxHealth => _maxHealth;
@@ -45,6 +46,12 @@ namespace Combat
             HandleHealthChanged();
 
         }
+
+        public void Revive()
+        {
+            OnReviveEvent?.Invoke();
+        }
+
         private void CheckDie()
         {
             if (_currentHealth <= 0)

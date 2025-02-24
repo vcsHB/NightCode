@@ -16,19 +16,22 @@ namespace UI.InGame.GameUI.CharacterSelector
         [SerializeField] private TextMeshProUGUI _characterNameText;
         [SerializeField] private Image _healthGauge;
         [SerializeField] private Gradient _healthFillColorLevel;
+        [SerializeField] private RetireSign _retireSign;
 
         public int PlayerId => _playerSO.id;
 
 
-        public void SelectCharacter(PlayerSO playerSO, Player player)
+        public void SetCharacterData(PlayerSO playerSO, Player player)
         {
             _playerSO = playerSO;
             _player = player;
             _playerIconImage.sprite = playerSO.characterIconSprite;
 
             _player.HealthCompo.OnHealthChangedValueEvent += HandleHealthChange;
+            _player.HealthCompo.OnDieEvent.AddListener(HandleRetire);
             
         }
+
 
         private void HandleHealthChange(float current, float max)
         {
@@ -37,6 +40,15 @@ namespace UI.InGame.GameUI.CharacterSelector
             _healthGauge.fillAmount = ratio;
         }
 
+        private void HandleRetire()
+        {
+            _retireSign.SetRetire(true);
+        }
+
+        public void Select(bool value)
+        {
+            
+        }
 
     }
 }
