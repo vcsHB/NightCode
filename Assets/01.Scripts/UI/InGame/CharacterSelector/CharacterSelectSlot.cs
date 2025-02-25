@@ -1,6 +1,7 @@
 using System;
 using Agents.Players;
 using Combat.PlayerTagSystem;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,9 +18,19 @@ namespace UI.InGame.GameUI.CharacterSelector
         [SerializeField] private Image _healthGauge;
         [SerializeField] private Gradient _healthFillColorLevel;
         [SerializeField] private RetireSign _retireSign;
+        [Header("Select Setting")]
+        [SerializeField] private float _unSelectPos;
+        [SerializeField] private float _selectPos;
+        [SerializeField] private float _tweenDuration;
+        private RectTransform _rectTrm;
 
         public int PlayerId => _playerSO.id;
 
+
+        private void Awake()
+        {
+            _rectTrm = transform as RectTransform;
+        }
 
         public void SetCharacterData(PlayerSO playerSO, Player player)
         {
@@ -29,7 +40,7 @@ namespace UI.InGame.GameUI.CharacterSelector
 
             _player.HealthCompo.OnHealthChangedValueEvent += HandleHealthChange;
             _player.HealthCompo.OnDieEvent.AddListener(HandleRetire);
-            
+
         }
 
 
@@ -47,6 +58,7 @@ namespace UI.InGame.GameUI.CharacterSelector
 
         public void Select(bool value)
         {
+            _rectTrm.DOAnchorPosX(value ? _selectPos : _unSelectPos, _tweenDuration);
             
         }
 
