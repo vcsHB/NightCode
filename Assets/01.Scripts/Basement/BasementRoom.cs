@@ -12,6 +12,7 @@ namespace Basement
     {
         public BasementRoomType roomType;
         public List<Furniture> furnitureList;
+        public BasementRoomSO roomSO;
 
         protected bool _isFurnitureSetting = false;
 
