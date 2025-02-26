@@ -1,6 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC : MonoBehaviour
+namespace Basement.NPC
 {
+    public abstract class NPC : MonoBehaviour
+    {
+        [SerializeField]private List<NPCState> _stateList;
+        private NPCState _currentState;
 
+        public NPCState CurrentState => _currentState;
+
+        public void ChangeState(string state)
+        {
+
+        }
+    }
 }

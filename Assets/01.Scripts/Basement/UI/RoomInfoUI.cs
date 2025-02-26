@@ -17,7 +17,7 @@ namespace Basement
         private bool _isOpen = false;
         private bool _isMouseEnter = false;
 
-        private RectTransform _rctTrm;
+        private RectTransform _rctTrm => transform as RectTransform;
 
         public void SetRoomSO(BasementRoomSO roomSO)
             => _roomSO = roomSO;

@@ -62,6 +62,8 @@ namespace Basement
         public virtual void FocusRoom()
         {
             FocusCamera();
+            UIManager.Instance.roomUI.SetRoom(this);
+            UIManager.Instance.roomUI.Open();
         }
 
         public void OnMouseUp()
