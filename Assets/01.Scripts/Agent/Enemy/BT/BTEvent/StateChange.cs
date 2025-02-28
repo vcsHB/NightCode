@@ -13,18 +13,18 @@ namespace Agents.Enemies.BT.Event
     [EventChannelDescription(name: "StateChange", message: "change to [state]", category: "Events", id: "ba535b503dd964d3fa75a8c52eb754b9")]
     public partial class StateChange : EventChannelBase
     {
-        public delegate void StateChangeEventHandler(HighBinderStateEnum state);
+        public delegate void StateChangeEventHandler(HighbinderStateEnum state);
         public event StateChangeEventHandler Event;
 
-        public void SendEventMessage(HighBinderStateEnum state)
+        public void SendEventMessage(HighbinderStateEnum state)
         {
             Event?.Invoke(state);
         }
 
         public override void SendEventMessage(BlackboardVariable[] messageData)
         {
-            BlackboardVariable<HighBinderStateEnum> stateBlackboardVariable = messageData[0] as BlackboardVariable<HighBinderStateEnum>;
-            var state = stateBlackboardVariable != null ? stateBlackboardVariable.Value : default(HighBinderStateEnum);
+            BlackboardVariable<HighbinderStateEnum> stateBlackboardVariable = messageData[0] as BlackboardVariable<HighbinderStateEnum>;
+            var state = stateBlackboardVariable != null ? stateBlackboardVariable.Value : default(HighbinderStateEnum);
 
             Event?.Invoke(state);
         }
@@ -33,7 +33,7 @@ namespace Agents.Enemies.BT.Event
         {
             StateChangeEventHandler del = (state) =>
             {
-                BlackboardVariable<HighBinderStateEnum> var0 = vars[0] as BlackboardVariable<HighBinderStateEnum>;
+                BlackboardVariable<HighbinderStateEnum> var0 = vars[0] as BlackboardVariable<HighbinderStateEnum>;
                 if (var0 != null)
                     var0.Value = state;
 

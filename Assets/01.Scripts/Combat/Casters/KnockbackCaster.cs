@@ -32,8 +32,8 @@ namespace Combat
 
         public void HandleSetData(CasterData data)
         {
-            _knockbackData = data as KnockbackCasterData;
-            if (_knockbackData == null) return;
+            if(data is KnockbackCasterData knockbackData)
+                _knockbackData = knockbackData;
 
         }
     }

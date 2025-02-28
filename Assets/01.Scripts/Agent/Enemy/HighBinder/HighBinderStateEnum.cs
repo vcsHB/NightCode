@@ -4,7 +4,7 @@ namespace Agents.Enemies
 {
     
     [BlackboardEnum]
-    public enum HighBinderStateEnum
+    public enum HighbinderStateEnum
     {
         IDLE,
         PATROL,
