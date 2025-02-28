@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Agents;
 using Agents.Players;
-using CameraControllers;
 using InputManage;
 using ObjectManage.Rope;
+using UI.InGame.GameUI.CharacterSelector;
 using UnityEngine;
 
 namespace Combat.PlayerTagSystem
@@ -18,25 +18,26 @@ namespace Combat.PlayerTagSystem
         [SerializeField] private List<Player> _playerList;
         [SerializeField] private AimGroupController _aimGroup;
         [SerializeField] private int _currentPlayerIndex = 0;
+        [SerializeField] private CharacterSelectWindow _characterSelectWindow;
         public Player CurrentPlayer => _playerList[_currentPlayerIndex];
+        public PlayerSO CurrentPlayerData => _playerDatas[_currentPlayerIndex];
+
         [Header("Change Setting")]
         [SerializeField] private float _changeCooltime = 1f;
         private float _currentCooltime = 0f;
 
-        private void Awake()
+
+        private void Start()
         {
             Initialize();
             _playerInput.OnCharacterChangeEvent += Change;
-        }
-        private void Start()
-        {
             SetPlayer(CurrentPlayer);
         }
 
         private void Update()
         {
             _currentCooltime += Time.deltaTime;
-            
+
         }
 
         private void OnDestroy()
@@ -52,9 +53,16 @@ namespace Combat.PlayerTagSystem
                 Player playerCharacter = Instantiate(_playerDatas[i].playerPrefab, transform);
                 playerCharacter.GetComponentInChildren<AimController>().SetAimGroup(_aimGroup);
                 _playerList.Add(playerCharacter);
+                _characterSelectWindow.AddCharacterSlot(_playerDatas[i], playerCharacter);
+                playerCharacter.SetActive(false);
+                playerCharacter.SetStartDisable(i != 0);
             }
+
             CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
             _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
+            SetPlayer(CurrentPlayer);
+            _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
+            
         }
 
         /// <summary>
@@ -74,7 +82,7 @@ namespace Combat.PlayerTagSystem
         {
             Transform prevPlayerTrm = CurrentPlayer.transform;
             Vector2 changePosition = prevPlayerTrm.position;
-            //Quaternion prevRotation = prevPlayerTrm.rotation;
+
             CurrentPlayer.ExitCharacter();
             CurrentPlayer.SetActive(false);
             float direction = CurrentPlayer.GetCompo<AgentRenderer>().FacingDirection;
@@ -82,6 +90,7 @@ namespace Combat.PlayerTagSystem
             _currentPlayerIndex = (_currentPlayerIndex + 1) % _playerList.Count; // index change -> character Change
 
             yield return new WaitForSeconds(0.2f);
+            _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
             CurrentPlayer.transform.position = changePosition;
             //CurrentPlayer.transform.rotation = prevRotation;
             CurrentPlayer.GetCompo<AgentRenderer>().FlipController(direction);

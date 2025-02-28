@@ -17,6 +17,7 @@ namespace Agents.Players
         [field: SerializeField] public Transform RopeHolder { get; private set; }
         public bool CanCharacterChange { get; set; } = true;
         [field: SerializeField] public bool IsActive { get; private set; }
+        private bool _startDisable;
 
         protected override void Awake()
         {
@@ -33,6 +34,8 @@ namespace Agents.Players
         private void Start()
         {
             StateMachine.StartState();
+
+            if (_startDisable) gameObject.SetActive(false);
         }
         protected virtual void InitState()
         {
@@ -65,5 +68,7 @@ namespace Agents.Players
             IsDead = true;
             _stateMachine.ChangeState("Dead");
         }
+
+        public void SetStartDisable(bool value) => _startDisable = value;
     }
 }

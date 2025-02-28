@@ -19,11 +19,13 @@ namespace Combat
         [SerializeField] protected Vector2 _offset;
         [SerializeField] protected LayerMask _targetLayer;
         [SerializeField] protected int _targetMaxAmount;
+        
+        [Header("Gizmos Setting")]
+        [SerializeField] protected Color _gizmosColor = Color.red;
+
         protected ICastable[] _casters;
         protected Collider2D[] _hits;
         public Vector2 CenterPosition => (Vector2)transform.position + _offset;
-        [Header("Gizmos Setting")]
-        [SerializeField] protected Color _gizmosColor = Color.red;
 
         protected virtual void Awake()
         {
@@ -39,11 +41,7 @@ namespace Combat
         {
             for (int i = 0; i < hit.Length; i++)
             {
-                for (int j = 0; j < _casters.Length; j++)
-                {
-                    _casters[j].Cast(hit[i]);
-                }
-                OnCastSuccessEvent?.Invoke();
+                ForceCast(hit[i]);
             }
         }
 
