@@ -18,9 +18,10 @@ namespace Agents.Enemies.BT.ActionNodes
         {
             Enemy enemy = Entity.Value;
 
+            Debug.Log($"enemy.GetCompo<HighbinderMovement>()은 널인가? = {enemy.GetCompo<AgentMovement>() == null}");
             enemy.SetVariable("Mover", enemy.GetCompo<AgentMovement>());
             enemy.SetVariable("Renderer", enemy.GetCompo<AgentRenderer>());
-            enemy.SetVariable("AnimTrigger", enemy.GetCompo<AnimationTrigger>());
+            enemy.SetVariable("AnimTrigger", enemy.GetCompo<EnemyAnimationTrigger>());
 
             return Status.Running;
         }
