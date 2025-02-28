@@ -4,10 +4,8 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace Agents.Enemies.BT
+namespace Agents.Enemies.BT.ActionNodes
 {
-
-
     [Serializable, GeneratePropertyBag]
     [NodeDescription(name: "Wait", story: "Wait for [SecondsToWait] Second", category: "Action", id: "fb4c1af901aa3c18b50460728b06e21e")]
     public partial class WaitAction : Action

@@ -5,7 +5,7 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 
-namespace Agents.Enemies.BT
+namespace Agents.Enemies.BT.ActionNodes
 {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(name: "MoveToFront", story: "move to [Renderer] direction with [Mover]", category: "Action", id: "9f2bc0a2df4e7c8e20043c745c45b38c")]

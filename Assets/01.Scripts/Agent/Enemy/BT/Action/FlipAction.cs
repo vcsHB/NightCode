@@ -4,7 +4,7 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace Agents.Enemies.BT
+namespace Agents.Enemies.BT.ActionNodes
 {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(name: "Flip", story: "flip [Renderer]", category: "Action", id: "10376e130db5d3d4a654fc69e6041206")]

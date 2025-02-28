@@ -9,6 +9,6 @@ namespace UI.InGame.GameUI
         [SerializeField] private TextMeshProUGUI _questNameText;
         [SerializeField] private Slider _progressGauge;
 
-        
+        //private void Handle
     }
 }

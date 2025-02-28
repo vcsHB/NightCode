@@ -5,7 +5,7 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using Agents.Animate;
 
-namespace Agents.Enemies.BT
+namespace Agents.Enemies.BT.ActionNodes
 {
 
     [Serializable, GeneratePropertyBag]

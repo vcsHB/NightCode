@@ -1,27 +1,14 @@
-using System;
-using UnityEngine;
+using Agents.Animate;
 using UnityEngine.Events;
 namespace Agents.Players
 {
 
-    public abstract class PlayerAnimationTrigger : MonoBehaviour, IAgentComponent
+    public abstract class PlayerAnimationTrigger : AnimationTrigger
     {
         public UnityEvent OnFirstAttackEvent;
         public UnityEvent OnSecondAttackEvent;
         public UnityEvent OnThirdAttackEvent;
-        public event Action OnAnimationEnd;
-
-        public virtual void Initialize(Agent agent)
-        {
-        }
-        public void AfterInit() { }
-        public void Dispose() { }
-
-        public void AnimationEndTrigger()
-        {
-            OnAnimationEnd?.Invoke();
-        }
-
+        
 
         public void HandleAttack1()
         {
