@@ -3,6 +3,7 @@ using System;
 using Unity.Behavior;
 using UnityEngine;
 using Unity.Properties;
+using Agents.Enemies.Highbinders;
 
 namespace Agents.Enemies.BT.Event
 {
