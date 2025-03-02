@@ -1,6 +1,6 @@
 using Unity.Behavior;
 
-namespace Agents.Enemies
+namespace Agents.Enemies.Highbinders
 {
     
     [BlackboardEnum]
