@@ -20,6 +20,7 @@ namespace Agents.Enemies.BT.Event
         public void SendEventMessage(HighbinderStateEnum state)
         {
             Event?.Invoke(state);
+            //Debug.Log("SendEvent 호출됨: " + state);
         }
 
         public override void SendEventMessage(BlackboardVariable[] messageData)
@@ -28,6 +29,7 @@ namespace Agents.Enemies.BT.Event
             var state = stateBlackboardVariable != null ? stateBlackboardVariable.Value : default(HighbinderStateEnum);
 
             Event?.Invoke(state);
+            //Debug.Log("SendEvent 호출됨: " + state);
         }
 
         public override Delegate CreateEventHandler(BlackboardVariable[] vars, System.Action callback)
@@ -37,6 +39,8 @@ namespace Agents.Enemies.BT.Event
                 BlackboardVariable<HighbinderStateEnum> var0 = vars[0] as BlackboardVariable<HighbinderStateEnum>;
                 if (var0 != null)
                     var0.Value = state;
+                else
+                    Debug.Log("엥 Enum이 널인디");
 
                 callback();
             };

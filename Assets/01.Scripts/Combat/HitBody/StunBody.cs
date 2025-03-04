@@ -9,6 +9,7 @@ namespace Combat
         public UnityEvent OnStunEvent;
         public UnityEvent OnStunCompleteEvent;
         public event Action<float, float> OnStunLevelChangedEvent;
+
         [SerializeField] private float _currentStunLevel;
         [SerializeField] private float _maxStunLevel = 100f;
         [SerializeField] private float _stunReduceDelay;
@@ -40,6 +41,7 @@ namespace Combat
         {
             _currentStunLevel += stunData.power;
             _currentStunReduceCoolTime = 0f;
+            OnStunEvent?.Invoke();
             InvokeStunEvent();
             if (_currentStunLevel >= _maxStunLevel)
             {
