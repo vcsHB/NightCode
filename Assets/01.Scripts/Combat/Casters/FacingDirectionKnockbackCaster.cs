@@ -1,7 +1,7 @@
 using Agents;
 using UnityEngine;
 
-namespace Combat
+namespace Combat.Casters
 {
     public class FacingDirectionKnockbackCaster : KnockbackCaster
     {   

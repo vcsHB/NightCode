@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-namespace Combat
+namespace Combat.Casters
 {
     public class CasterData
     {

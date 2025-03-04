@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace Combat
+namespace Combat.Casters
 {
 
 
