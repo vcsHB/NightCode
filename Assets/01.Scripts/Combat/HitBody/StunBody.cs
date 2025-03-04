@@ -36,9 +36,9 @@ namespace Combat
         /// </summary>
         /// <param name="stun"></param>
         /// <returns>Is Stun Completely</returns>
-        public bool Stun(float stun)
+        public bool Stun(StunData stunData)
         {
-            _currentStunLevel += stun;
+            _currentStunLevel += stunData.power;
             _currentStunReduceCoolTime = 0f;
             InvokeStunEvent();
             if (_currentStunLevel >= _maxStunLevel)
