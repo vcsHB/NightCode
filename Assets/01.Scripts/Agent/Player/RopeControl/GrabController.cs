@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Combat;
+using Combat.Casters;
 using ObjectManage;
 using UnityEngine;
 namespace Agents.Players

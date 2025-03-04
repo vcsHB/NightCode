@@ -1,4 +1,5 @@
 using Combat;
+using Combat.Casters;
 using UnityEngine;
 namespace Agents.Enemies.Highbinders
 {
