@@ -15,16 +15,15 @@ namespace Agents.Enemies.BT.ActionNodes
 
         protected override Status OnStart()
         {
-            return Status.Running;
-        }
+            if (Target.Value == null)
+            {
+                return Status.Failure;
+            }
 
-        protected override Status OnUpdate()
-        {
+            Vector3 direction = Target.Value.position - Mover.Value.transform.position;
+            float movementX = Mathf.Sign(direction.x);
+            Mover.Value.SetMovement(movementX);
             return Status.Success;
-        }
-
-        protected override void OnEnd()
-        {
         }
     }
 
