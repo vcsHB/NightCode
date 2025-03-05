@@ -3,6 +3,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using Basement.Training;
+using Basement;
 
 public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 {
@@ -21,6 +22,7 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 
     public int CurrentIndex => _currentIdx;
 
+
     private void Awake()
     {
         for (int i = 0; i < 3; i++)
@@ -36,7 +38,7 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
             return;
 
         _characterPanels[1].UpdateStat();
-        Vector2 offset = new Vector2(-150, 0);
+        Vector2 offset = new Vector2(-300, 0);
 
         _seq = DOTween.Sequence();
         _seq.Append(_characterPanels[0].RectTrm.DOAnchorPos(_positions[0] + offset, 0.2f))
@@ -67,7 +69,7 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
             return;
 
         _characterPanels[2].UpdateStat();
-        Vector2 offset = new Vector2(-150, 0);
+        Vector2 offset = new Vector2(-300, 0);
 
         _seq = DOTween.Sequence();
         _seq.Append(_characterPanels[2].RectTrm.DOAnchorPos(_positions[0] + offset, 0.2f))

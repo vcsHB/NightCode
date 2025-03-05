@@ -4,20 +4,81 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Basement.Training
 {
     public class TrainingManager : MonoSingleton<TrainingManager>
     {
+        public Action<CharacterEnum,TrainingInfo> OnAddScadule;
+        public Action<CharacterEnum> OnRemoveScadule;
+        public Action OnUpdateScadule;
+
+        [SerializeField] private Time startTime;
+        [SerializeField] private Time endTime;
+
         private string _path = Path.Combine(Application.dataPath, "Training.json");
 
         private Dictionary<CharacterEnum, int> _fatigues;
         private Dictionary<CharacterEnum, SkillPoint> _skillPoints;
+        private Time currentTime;
+
+        public Dictionary<CharacterEnum, TrainingInfo> characterTrainingInfo;
+        public Time CurrentTime => currentTime;
+
 
         protected override void Awake()
         {
             base.Awake();
+            characterTrainingInfo = new Dictionary<CharacterEnum, TrainingInfo>();
             Load();
+
+            currentTime = startTime;
+        }
+
+        public void AddMinute(int minute)
+        {
+            currentTime.AddMinute(minute);
+            
+            foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                if (characterTrainingInfo.TryGetValue(character, out TrainingInfo info))
+                {
+                    info.remainTime -= minute;
+
+                    if(info.remainTime <= 0)
+                    {
+                        TrainingResult result = info.training.GetResult(character);
+                        int increaseValue = info.training.increaseValue[result];
+                        int increaseFatigue = info.training.requireFatigue;
+
+                        AddFatigue(character, increaseFatigue);
+                        AddSkillPoint(character, info.training.statType, increaseValue);
+
+                        characterTrainingInfo.Remove(character);
+                    }
+                }
+            }
+
+            OnUpdateScadule?.Invoke();
+        }
+
+        public void AddCharacterTraining(CharacterEnum character, TrainingSO training)
+        {
+            TrainingInfo trainingInfo = new TrainingInfo();
+            trainingInfo.training = training.GetInstance();
+            trainingInfo.remainTime = training.requireTime;
+            trainingInfo.startTime = currentTime;
+            trainingInfo.isStartTraining = false;
+
+            characterTrainingInfo.Add(character, trainingInfo);
+            OnAddScadule?.Invoke(character, trainingInfo);
+        }
+
+        public void CancelTraining(CharacterEnum character)
+        {
+            characterTrainingInfo.Remove(character);
+            OnRemoveScadule?.Invoke(character);
         }
 
         #region ValueGetSet
@@ -26,6 +87,7 @@ namespace Basement.Training
         {
             //뭐 더해졌을 때 빼졌을 때 효과같은거 추가 할 수도 있음
             _fatigues[character] += value;
+            Debug.Log(GetFatigue(character));
         }
 
         public int GetFatigue(CharacterEnum character)
@@ -85,11 +147,41 @@ namespace Basement.Training
         #endregion
     }
 
+    public struct TrainingInfo
+    {
+        public TrainingSO training;
+        public Time startTime;
+        public int remainTime;
+
+        public bool isStartTraining;
+
+    }
+
     public enum SkillPointEnum
     {
         Health,
         Intelligence,
         Dexdexterity
+    }
+
+    [Serializable]
+    public class Time
+    {
+        public int hour;
+        public int minute;
+
+        public Time(int h, int m)
+        {
+            hour = h;
+            minute = m;
+        }
+
+        public void AddMinute(int time)
+        {
+            minute += time;
+            hour += minute / 60;
+            minute %= 60;
+        }
     }
 
     [Serializable]

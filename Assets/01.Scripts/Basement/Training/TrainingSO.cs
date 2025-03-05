@@ -12,6 +12,8 @@ namespace Basement.Training
         public string trainingVisibleName;
         public string trainingExplain;
         public SkillPointEnum statType;
+        [Header("Unit is minute")]
+        public int requireTime;
 
         [Header("Chance is between 0 ~ 100")]
         [Space(5)]
@@ -34,9 +36,9 @@ namespace Basement.Training
         public float greatSuccesChance;
         public int greatSuccessValue;
         public Color greatSuccessColor;
-        
+
         [Space(15)]
-        public int minFatigue, maxFatigue;
+        public int requireFatigue;
 
         public Dictionary<TrainingResult, int> increaseValue;
         public Dictionary<TrainingResult, Color> textColor;
@@ -63,6 +65,29 @@ namespace Basement.Training
                 Random.Range(0, 101) > greatSuccessValue * fatigueCorrection ? TrainingResult.Success : TrainingResult.GreatSuccess;
 
             return result;
+        }
+
+        public TrainingSO GetInstance()
+        {
+            TrainingSO training = ScriptableObject.CreateInstance<TrainingSO>();
+
+            training.trainingId = trainingId;
+            training.trainingName = trainingName;
+            training.trainingVisibleName = trainingVisibleName;
+            training.trainingExplain = trainingExplain;
+            training.statType = statType;
+            training.requireTime = requireTime;
+            training.failValue = failValue;
+            training.failColor = failColor;
+            training.successChance = successChance;
+            training.successColor = successColor;
+            training.successValue = successValue;
+            training.greatSuccesChance = greatSuccesChance;
+            training.greatSuccessColor = greatSuccessColor;
+            training.greatSuccessValue = greatSuccessValue;
+            training.requireFatigue = requireFatigue;
+
+            return training;
         }
     }
 

@@ -14,7 +14,7 @@ namespace Basement
         {
             _room = room;
             _furnitureIndicator.SetBasementRoom(room);
-            _addFurnitureUI.Init(room);
+            _addFurnitureUI.Init(room, _furnitureIndicator);
         }
 
         public void Open(Vector2 position)
@@ -22,7 +22,6 @@ namespace Basement
             _addFurnitureUI.Open();
             _furnitureIndicator.Open();
             _closeBtn.gameObject.SetActive(true);
-
         }
 
         public void Close()

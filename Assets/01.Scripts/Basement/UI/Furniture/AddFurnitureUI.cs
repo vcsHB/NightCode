@@ -11,13 +11,17 @@ namespace Basement
         public Transform contentTrm;
         public FurnitureIcon iconPf;
 
+        private ExsistFurnitureIndicator _indicator;
         private List<FurnitureIcon> _iconList = new List<FurnitureIcon>();
         private BasementRoom _room;
         private Tween _tween;
         private RectTransform _rectTrm => transform as RectTransform;
 
-        public void Init(BasementRoom room)
-            => _room = room;
+        public void Init(BasementRoom room, ExsistFurnitureIndicator indicator)
+        {
+            _room = room;
+            _indicator = indicator;
+        }
 
         public void Close()
         {
@@ -43,8 +47,9 @@ namespace Basement
                 icon.SetFurniture(furniture);
                 icon.OnClick += furniture =>
                 {
-                    //_room.AddFurniture(furniture, Vector2.zero);
+                    _room.AddFurniture(furniture, Vector2.zero);
                     furnitureWhatIHave.Remove(furniture);
+                    _indicator.SetBasementRoom(_room);
                     Destroy(icon.gameObject);
                 };
 

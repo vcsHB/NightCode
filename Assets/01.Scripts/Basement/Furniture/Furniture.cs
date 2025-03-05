@@ -1,9 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.EventSystems;
-using NUnit.Framework.Constraints;
-using Basement.CameraController;
 
 namespace Basement
 {
@@ -39,30 +36,26 @@ namespace Basement
                 _stickToGround ? minPosition.y : Mathf.Clamp(position.y, minPosition.y, maxPosition.y));
         }
 
+        private void OnMouseUp()
+        {
+            if (_room.IsBasementMode == false) return;
+            InteractAction?.Invoke();
+        }
+
         private void OnMouseDown()
         {
-            //if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
+            if (_room.IsFurnitureSettingMode == false) return;
 
-            //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-            //_offset = (Vector2)transform.position - mousePosition;
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            _offset = (Vector2)transform.position - mousePosition;
         }
 
         private void OnMouseDrag()
         {
-            //if (BasementCameraManager.Instance.CameraMode != CameraMode.Build) return;
+            if (_room.IsFurnitureSettingMode == false) return;
 
-            //Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-            //SetPosition(mosuePosition);
-        }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-
+            Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            SetPosition(mosuePosition);
         }
     }
 }
