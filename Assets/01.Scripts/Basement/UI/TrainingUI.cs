@@ -69,6 +69,7 @@ namespace Basement.Training
             _nameText.SetText(training.trainingVisibleName);
             _explainText.SetText(training.trainingExplain);
             OnDropDownValueChange(0);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTrm);
         }
 
         public void OnDropDownValueChange(int value)

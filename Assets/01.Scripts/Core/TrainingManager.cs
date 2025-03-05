@@ -5,15 +5,12 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 namespace Basement.Training
 {
     public class TrainingManager : MonoSingleton<TrainingManager>
     {
-        public Action<CharacterEnum,TrainingInfo> OnAddScadule;
-        public Action<CharacterEnum> OnRemoveScadule;
-        public Action OnUpdateScadule;
-
         [SerializeField] private Time startTime;
         [SerializeField] private Time endTime;
 
@@ -23,8 +20,11 @@ namespace Basement.Training
         private Dictionary<CharacterEnum, SkillPoint> _skillPoints;
         private Time currentTime;
 
-        public Dictionary<CharacterEnum, TrainingInfo> characterTrainingInfo;
+        private Dictionary<CharacterEnum, TrainingInfo> characterTrainingInfo;
         public Time CurrentTime => currentTime;
+
+        public bool TryGetTrainingInfo(CharacterEnum character, out TrainingInfo info)
+            => characterTrainingInfo.TryGetValue(character, out info);
 
 
         protected override void Awake()
@@ -45,8 +45,9 @@ namespace Basement.Training
                 if (characterTrainingInfo.TryGetValue(character, out TrainingInfo info))
                 {
                     info.remainTime -= minute;
+                    characterTrainingInfo[character] = info;
 
-                    if(info.remainTime <= 0)
+                    if (info.remainTime <= 0)
                     {
                         TrainingResult result = info.training.GetResult(character);
                         int increaseValue = info.training.increaseValue[result];
@@ -55,12 +56,10 @@ namespace Basement.Training
                         AddFatigue(character, increaseFatigue);
                         AddSkillPoint(character, info.training.statType, increaseValue);
 
-                        characterTrainingInfo.Remove(character);
+                        CancelTraining(character);
                     }
                 }
             }
-
-            OnUpdateScadule?.Invoke();
         }
 
         public void AddCharacterTraining(CharacterEnum character, TrainingSO training)
@@ -72,13 +71,11 @@ namespace Basement.Training
             trainingInfo.isStartTraining = false;
 
             characterTrainingInfo.Add(character, trainingInfo);
-            OnAddScadule?.Invoke(character, trainingInfo);
         }
 
         public void CancelTraining(CharacterEnum character)
         {
             characterTrainingInfo.Remove(character);
-            OnRemoveScadule?.Invoke(character);
         }
 
         #region ValueGetSet

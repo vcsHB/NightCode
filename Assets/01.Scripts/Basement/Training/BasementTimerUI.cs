@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -30,14 +31,16 @@ namespace Basement.Training
         {
             int minimum = int.MaxValue;
 
-            List<TrainingInfo> infoList = TrainingManager.Instance.characterTrainingInfo.Values.ToList();
-            infoList.ForEach(info =>
+            foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                if (info.remainTime < minimum)
-                    minimum = info.remainTime;
-            });
+                if(TrainingManager.Instance.TryGetTrainingInfo(character, out TrainingInfo info))
+                {
+                    if (info.remainTime < minimum)
+                        minimum = info.remainTime;
+                }
+            }
 
-            if (infoList.Count == 0) minimum = 0;
+            if (minimum > 6000) minimum = 0;
 
             TrainingManager.Instance.AddMinute(minimum);
             SetTimer();
