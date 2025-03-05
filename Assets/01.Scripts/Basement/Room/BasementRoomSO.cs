@@ -7,15 +7,11 @@ namespace Basement
     [CreateAssetMenu(menuName = "SO/Basement/Room")]
     public class BasementRoomSO : ScriptableObject
     {
-        public BasementRoom roomPf;
-        public List<RequireResource> requireResource;
-    }
+        public string roomName;
 
-    [Serializable]
-    public struct RequireResource
-    {
-        public TestResourceType resourceType;
-        public int amount;
+        public BasementRoom roomPf;
+        public int maxSeatingCapacity;
+        public int requireMoney;
     }
 
     public enum TestResourceType
