@@ -1,9 +1,5 @@
 using Basement.CameraController;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using Unity.Android.Gradle.Manifest;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Basement
@@ -14,15 +10,15 @@ namespace Basement
         public List<Furniture> furnitureList;
         public BasementRoomSO roomSO;
 
-        [SerializeField]protected List<CharacterType> _selectedCharacters;
+        [SerializeField] protected List<CharacterType> _selectedCharacters;
         protected bool _isFurnitureSetting = false;
         protected bool _isBasementMode = false;
 
         [SerializeField] private Transform _cameraFocusTarget;
         [SerializeField] private float _zoomInValue = 1.5f;
+        [SerializeField] private BasementController _basement;
         private float _originZoomValue;
         private Transform _originFollow;
-        private BasementController _basement;
         private Collider2D _collider;
 
         public bool IsFurnitureSettingMode => _isFurnitureSetting;
@@ -35,7 +31,7 @@ namespace Basement
             furnitureList = new List<Furniture>();
             _selectedCharacters = new List<CharacterType>();
 
-            for(int i = 0; i < roomSO.maxSeatingCapacity; i++)
+            for (int i = 0; i < roomSO.maxSeatingCapacity; i++)
                 _selectedCharacters.Add(CharacterType.Null);
         }
 
@@ -78,13 +74,13 @@ namespace Basement
 
         public virtual void ChangeMode(BasementMode mode)
         {
-            if(mode == BasementMode.Basement)
+            if (mode == BasementMode.Basement)
             {
                 _isFurnitureSetting = false;
                 _isBasementMode = true;
             }
 
-            if(mode == BasementMode.Build)
+            if (mode == BasementMode.Build)
             {
                 _isFurnitureSetting = true;
                 _isBasementMode = false;

@@ -10,6 +10,10 @@ namespace Basement.Training
 {
     public class TrainingManager : MonoSingleton<TrainingManager>
     {
+        public Action<CharacterEnum,TrainingInfo> OnAddScadule;
+        public Action<CharacterEnum> OnRemoveScadule;
+        public Action OnUpdateScadule;
+
         [SerializeField] private Time startTime;
         [SerializeField] private Time endTime;
 
@@ -22,6 +26,7 @@ namespace Basement.Training
         public Dictionary<CharacterEnum, TrainingInfo> characterTrainingInfo;
         public Time CurrentTime => currentTime;
 
+
         protected override void Awake()
         {
             base.Awake();
@@ -31,19 +36,49 @@ namespace Basement.Training
             currentTime = startTime;
         }
 
-        public void AddCharacterTraining(CharacterEnum character, int trainingTime)
+        public void AddMinute(int minute)
+        {
+            currentTime.AddMinute(minute);
+            
+            foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                if (characterTrainingInfo.TryGetValue(character, out TrainingInfo info))
+                {
+                    info.remainTime -= minute;
+
+                    if(info.remainTime <= 0)
+                    {
+                        TrainingResult result = info.training.GetResult(character);
+                        int increaseValue = info.training.increaseValue[result];
+                        int increaseFatigue = info.training.requireFatigue;
+
+                        AddFatigue(character, increaseFatigue);
+                        AddSkillPoint(character, info.training.statType, increaseValue);
+
+                        characterTrainingInfo.Remove(character);
+                    }
+                }
+            }
+
+            OnUpdateScadule?.Invoke();
+        }
+
+        public void AddCharacterTraining(CharacterEnum character, TrainingSO training)
         {
             TrainingInfo trainingInfo = new TrainingInfo();
-            trainingInfo.isStartTraining = false;
+            trainingInfo.training = training.GetInstance();
+            trainingInfo.remainTime = training.requireTime;
             trainingInfo.startTime = currentTime;
-            trainingInfo.remainTime = trainingTime;
+            trainingInfo.isStartTraining = false;
 
             characterTrainingInfo.Add(character, trainingInfo);
+            OnAddScadule?.Invoke(character, trainingInfo);
         }
 
         public void CancelTraining(CharacterEnum character)
         {
             characterTrainingInfo.Remove(character);
+            OnRemoveScadule?.Invoke(character);
         }
 
         #region ValueGetSet
@@ -52,6 +87,7 @@ namespace Basement.Training
         {
             //뭐 더해졌을 때 빼졌을 때 효과같은거 추가 할 수도 있음
             _fatigues[character] += value;
+            Debug.Log(GetFatigue(character));
         }
 
         public int GetFatigue(CharacterEnum character)
@@ -113,10 +149,12 @@ namespace Basement.Training
 
     public struct TrainingInfo
     {
+        public TrainingSO training;
         public Time startTime;
         public int remainTime;
 
         public bool isStartTraining;
+
     }
 
     public enum SkillPointEnum

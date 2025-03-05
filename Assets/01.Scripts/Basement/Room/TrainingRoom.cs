@@ -31,14 +31,8 @@ namespace Basement
         private void Training()
         {
             _trainingExplain = UIManager.Instance.trainingUI;
-            _trainingExplain.gameObject.SetActive(true);
+            _trainingExplain.Open();
             _trainingExplain.SetTraining(training);
-        }
-
-        public override void FocusRoom()
-        {
-            base.FocusRoom();
-
         }
 
         public void SetTraining(TrainingSO training)

@@ -1,9 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.EventSystems;
-using NUnit.Framework.Constraints;
-using Basement.CameraController;
 
 namespace Basement
 {
@@ -37,6 +34,12 @@ namespace Basement
             transform.position = new Vector2(
                 Mathf.Clamp(position.x, minPosition.x, maxPosition.x),
                 _stickToGround ? minPosition.y : Mathf.Clamp(position.y, minPosition.y, maxPosition.y));
+        }
+
+        private void OnMouseUp()
+        {
+            if (_room.IsBasementMode == false) return;
+            InteractAction?.Invoke();
         }
 
         private void OnMouseDown()

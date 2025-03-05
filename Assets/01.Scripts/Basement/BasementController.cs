@@ -2,6 +2,8 @@ using Basement.CameraController;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Basement
@@ -10,8 +12,14 @@ namespace Basement
     {
         [SerializeField] private GameObject _buildModeObj;
         [SerializeField] private GameObject _basementModeObj;
+        private List<BasementBuildUI> _buildUISet;
 
         private BasementMode _currentMode = BasementMode.Basement;
+
+        private void Awake()
+        {
+            _buildUISet = _buildModeObj.GetComponentsInChildren<BasementBuildUI>().ToList();
+        }
 
         public void ChangeBuildMode(bool isBuildMode)
         {
@@ -25,11 +33,11 @@ namespace Basement
 
             if (mode == BasementMode.Basement)
             {
-                _buildModeObj.SetActive(false);
+                _buildUISet.ForEach(buildUI => buildUI.Close());
             }
             else
             {
-                _buildModeObj.SetActive(true);
+                _buildUISet.ForEach(buildUI => buildUI.Open());
             }
         }
 

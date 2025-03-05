@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace Basement
@@ -41,6 +42,8 @@ namespace Basement
 
             _tween = _buttonTrm.DOAnchorPosX(-85, 0.2f);
             _returnBtn.SetActive(false);
+            _roomInfo?.ReturnFocus();
+            _roomInfoUI?.Close();
         }
     }
 }

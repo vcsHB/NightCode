@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Android;
@@ -10,7 +11,10 @@ namespace Basement
         [SerializeField] private BasementRoomSO _roomSetSO;
         [SerializeField] private int _floor;
         [SerializeField] private int _roomNumber;
+        [SerializeField] private Color _openColor, _closeColor;
+        [SerializeField] private SpriteRenderer _sr;
         private bool _isMouseDown = false;
+        private bool _isOpen = false;
 
         #region MouseEvents
 
@@ -41,6 +45,7 @@ namespace Basement
 
         private void OnClick()
         {
+            if (_isOpen == false) return;
             buildConfirmPanel.gameObject.SetActive(true);
             buildConfirmPanel.SetRoom(_roomSetSO, Build);
         }
@@ -58,5 +63,17 @@ namespace Basement
 
         private void UseResource()
             => BasementManager.Instance.UseResource(_roomSetSO.requireMoney);
+
+        public void Close()
+        {
+            _sr.color = _closeColor;
+            _isOpen = false;
+        }
+
+        public void Open()
+        {
+            _sr.color = _openColor; 
+            _isOpen = true;
+        }
     }
 }
