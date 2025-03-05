@@ -12,6 +12,8 @@ namespace Basement.Training
         public string trainingVisibleName;
         public string trainingExplain;
         public SkillPointEnum statType;
+        [Header("Unit is minute")]
+        public int requireTime;
 
         [Header("Chance is between 0 ~ 100")]
         [Space(5)]

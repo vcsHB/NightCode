@@ -10,6 +10,7 @@ namespace Basement
         public string roomName;
 
         public BasementRoom roomPf;
+        public int maxSeatingCapacity;
         public int requireMoney;
     }
 

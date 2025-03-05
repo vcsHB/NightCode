@@ -4,20 +4,46 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Basement.Training
 {
     public class TrainingManager : MonoSingleton<TrainingManager>
     {
+        [SerializeField] private Time startTime;
+        [SerializeField] private Time endTime;
+
         private string _path = Path.Combine(Application.dataPath, "Training.json");
 
         private Dictionary<CharacterEnum, int> _fatigues;
         private Dictionary<CharacterEnum, SkillPoint> _skillPoints;
+        private Time currentTime;
+
+        public Dictionary<CharacterEnum, TrainingInfo> characterTrainingInfo;
+        public Time CurrentTime => currentTime;
 
         protected override void Awake()
         {
             base.Awake();
+            characterTrainingInfo = new Dictionary<CharacterEnum, TrainingInfo>();
             Load();
+
+            currentTime = startTime;
+        }
+
+        public void AddCharacterTraining(CharacterEnum character, int trainingTime)
+        {
+            TrainingInfo trainingInfo = new TrainingInfo();
+            trainingInfo.isStartTraining = false;
+            trainingInfo.startTime = currentTime;
+            trainingInfo.remainTime = trainingTime;
+
+            characterTrainingInfo.Add(character, trainingInfo);
+        }
+
+        public void CancelTraining(CharacterEnum character)
+        {
+            characterTrainingInfo.Remove(character);
         }
 
         #region ValueGetSet
@@ -85,11 +111,39 @@ namespace Basement.Training
         #endregion
     }
 
+    public struct TrainingInfo
+    {
+        public Time startTime;
+        public int remainTime;
+
+        public bool isStartTraining;
+    }
+
     public enum SkillPointEnum
     {
         Health,
         Intelligence,
         Dexdexterity
+    }
+
+    [Serializable]
+    public class Time
+    {
+        public int hour;
+        public int minute;
+
+        public Time(int h, int m)
+        {
+            hour = h;
+            minute = m;
+        }
+
+        public void AddMinute(int time)
+        {
+            minute += time;
+            hour += minute / 60;
+            minute %= 60;
+        }
     }
 
     [Serializable]

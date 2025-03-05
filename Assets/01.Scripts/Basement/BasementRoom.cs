@@ -14,7 +14,9 @@ namespace Basement
         public List<Furniture> furnitureList;
         public BasementRoomSO roomSO;
 
+        [SerializeField]protected List<CharacterType> _selectedCharacters;
         protected bool _isFurnitureSetting = false;
+        protected bool _isBasementMode = false;
 
         [SerializeField] private Transform _cameraFocusTarget;
         [SerializeField] private float _zoomInValue = 1.5f;
@@ -24,12 +26,17 @@ namespace Basement
         private Collider2D _collider;
 
         public bool IsFurnitureSettingMode => _isFurnitureSetting;
+        public bool IsBasementMode => _isBasementMode;
         public BasementController BasementController => _basement;
 
         protected virtual void Awake()
         {
             _collider = GetComponent<Collider2D>();
             furnitureList = new List<Furniture>();
+            _selectedCharacters = new List<CharacterType>();
+
+            for(int i = 0; i < roomSO.maxSeatingCapacity; i++)
+                _selectedCharacters.Add(CharacterType.Null);
         }
 
         public void FocusCamera()
@@ -47,6 +54,7 @@ namespace Basement
             BasementCameraManager.Instance.Zoom(_originZoomValue, 0.4f);
             _collider.enabled = true;
             _isFurnitureSetting = false;
+            _isBasementMode = false;
         }
 
         public void FurnitureSetting()
@@ -62,8 +70,25 @@ namespace Basement
         public virtual void FocusRoom()
         {
             FocusCamera();
+            _isBasementMode = true;
+
             UIManager.Instance.roomUI.SetRoom(this);
             UIManager.Instance.roomUI.Open();
+        }
+
+        public virtual void ChangeMode(BasementMode mode)
+        {
+            if(mode == BasementMode.Basement)
+            {
+                _isFurnitureSetting = false;
+                _isBasementMode = true;
+            }
+
+            if(mode == BasementMode.Build)
+            {
+                _isFurnitureSetting = true;
+                _isBasementMode = false;
+            }
         }
 
         public void OnMouseUp()
@@ -84,5 +109,13 @@ namespace Basement
         {
             _basement = basement;
         }
+    }
+
+    public enum CharacterType
+    {
+        Null,
+        Katana,
+        CrecentBlade,
+        Cross
     }
 }

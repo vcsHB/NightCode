@@ -15,6 +15,8 @@ namespace Basement
         public void SetRoom(BasementRoom room)
         {
             _roomInfo = room;
+
+
         }
 
         public void OnClickRoomInfoUI()
