@@ -5,15 +5,12 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 namespace Basement.Training
 {
     public class TrainingManager : MonoSingleton<TrainingManager>
     {
-        public Action<CharacterEnum,TrainingInfo> OnAddScadule;
-        public Action<CharacterEnum> OnRemoveScadule;
-        public Action OnUpdateScadule;
-
         [SerializeField] private Time startTime;
         [SerializeField] private Time endTime;
 
@@ -23,8 +20,11 @@ namespace Basement.Training
         private Dictionary<CharacterEnum, SkillPoint> _skillPoints;
         private Time currentTime;
 
-        public Dictionary<CharacterEnum, TrainingInfo> characterTrainingInfo;
+        private Dictionary<CharacterEnum, TrainingInfo> characterTrainingInfo;
         public Time CurrentTime => currentTime;
+
+        public bool TryGetTrainingInfo(CharacterEnum character, out TrainingInfo info)
+            => characterTrainingInfo.TryGetValue(character, out info);
 
 
         protected override void Awake()
@@ -39,28 +39,25 @@ namespace Basement.Training
         public void AddMinute(int minute)
         {
             currentTime.AddMinute(minute);
+
+            Debug.Log(currentTime.hour);
+            if(currentTime.hour >= endTime.hour)
+            {
+                BasementManager.Instance.basement.CompleteScadule();
+                return;
+            }
             
             foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
                 if (characterTrainingInfo.TryGetValue(character, out TrainingInfo info))
                 {
                     info.remainTime -= minute;
+                    characterTrainingInfo[character] = info;
 
-                    if(info.remainTime <= 0)
-                    {
-                        TrainingResult result = info.training.GetResult(character);
-                        int increaseValue = info.training.increaseValue[result];
-                        int increaseFatigue = info.training.requireFatigue;
-
-                        AddFatigue(character, increaseFatigue);
-                        AddSkillPoint(character, info.training.statType, increaseValue);
-
-                        characterTrainingInfo.Remove(character);
-                    }
+                    if (info.remainTime <= 0)
+                        CompleteTraining(character);
                 }
             }
-
-            OnUpdateScadule?.Invoke();
         }
 
         public void AddCharacterTraining(CharacterEnum character, TrainingSO training)
@@ -72,13 +69,28 @@ namespace Basement.Training
             trainingInfo.isStartTraining = false;
 
             characterTrainingInfo.Add(character, trainingInfo);
-            OnAddScadule?.Invoke(character, trainingInfo);
         }
 
         public void CancelTraining(CharacterEnum character)
         {
             characterTrainingInfo.Remove(character);
-            OnRemoveScadule?.Invoke(character);
+        }
+
+        public void CompleteTraining(CharacterEnum character)
+        {
+            TrainingInfo info = characterTrainingInfo[character];
+
+            TrainingResult result = info.training.GetResult(character);
+            int increaseValue = info.training.increaseValue[result];
+            int increaseFatigue = info.training.requireFatigue;
+
+            AddFatigue(character, increaseFatigue);
+            AddSkillPoint(character, info.training.statType, increaseValue);
+
+            string trainingCompleteText = $"{info.training.trainingVisibleName} Complete\n피로도 +{increaseFatigue}    {info.training.statType.ToString()} pt +{increaseValue}";
+            UIManager.Instance.msgText.PopMSGText(character, trainingCompleteText);
+
+            CancelTraining(character);
         }
 
         #region ValueGetSet
@@ -87,7 +99,6 @@ namespace Basement.Training
         {
             //뭐 더해졌을 때 빼졌을 때 효과같은거 추가 할 수도 있음
             _fatigues[character] += value;
-            Debug.Log(GetFatigue(character));
         }
 
         public int GetFatigue(CharacterEnum character)

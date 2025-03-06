@@ -1,15 +1,29 @@
+using Basement.Mission;
 using UnityEngine;
 
 namespace Basement
 {
     public class Office : BasementRoom
     {
-        [SerializeField] private ScaduleFurniture scaduleFurniture;
+        public MissionSelectPanel missionPanel;
+        public Furniture table;
 
         protected override void Awake()
         {
             base.Awake();
-            scaduleFurniture.Init(this);
+            table.Init(this);
+            table.InteractAction += missionPanel.Open;
+        }
+
+        private void OnDisable()
+        {
+            table.InteractAction -= missionPanel.Open;
+        }
+
+        public override void FocusRoom()
+        {
+            FocusCamera();
+            _isBasementMode = true;
         }
     }
 }
