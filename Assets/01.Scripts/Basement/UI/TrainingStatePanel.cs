@@ -23,9 +23,9 @@ namespace Basement.Training
             _trainingText.SetText($"{trainingName}중...");
 
             if (remainTime >= 60)
-                _timeTxt.SetText($"소요시간: {remainTime / 60}h {string.Format("{0,2}:2D", (remainTime % 60))}m");
+                _timeTxt.SetText($"소요시간: {remainTime / 60}h {string.Format("{0,2:D2}", (remainTime % 60))}m");
             else
-                _timeTxt.SetText($"소요시간: {string.Format("{0,2}:2D", (remainTime % 60))}m");
+                _timeTxt.SetText($"소요시간: {string.Format("{0,2:D2}", remainTime % 60)}m");
 
         }
     }

@@ -81,10 +81,10 @@ namespace Basement.CameraController
         //µð¹ö±ë¿ë
         private void Update()
         {
-            if (Keyboard.current.pKey.wasPressedThisFrame)
-                Zoom(1);
-            if (Keyboard.current.oKey.wasPressedThisFrame)
-                Zoom(5);
+            //if (Keyboard.current.pKey.wasPressedThisFrame)
+            //    Zoom(1);
+            //if (Keyboard.current.oKey.wasPressedThisFrame)
+            //    Zoom(5);
         }
     }
 

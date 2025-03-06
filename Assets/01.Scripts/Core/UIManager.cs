@@ -12,6 +12,7 @@ namespace Basement
         public Dictionary<UIType, IUIPanel> uiPanels;
         public TrainingUI trainingUI;
         public RoomUI roomUI;
+        public MSGText msgText;
 
         protected override void Awake()
         {
