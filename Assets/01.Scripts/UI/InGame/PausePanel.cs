@@ -1,6 +1,8 @@
 using DG.Tweening;
 using InputManage;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI.InGame.SystemUI
@@ -30,6 +32,7 @@ namespace UI.InGame.SystemUI
         {
             base.Open();
             _isActive = true;
+            Time.timeScale = 0f;
             _panelRectTrm.DOScaleY(1f, _activeDuration).SetUpdate(_useUnscaledTime);
             SetTweenLinesFillAmount(1f);
         }
@@ -37,6 +40,7 @@ namespace UI.InGame.SystemUI
         public override void Close()
         {
             base.Close();
+            Time.timeScale = 1f;
             _panelRectTrm.DOScaleY(0f, _activeDuration).SetUpdate(_useUnscaledTime);
             SetTweenLinesFillAmount(0f);
         }
@@ -63,6 +67,11 @@ namespace UI.InGame.SystemUI
         {
             _topLine.DOFillAmount(value, _activeDuration).SetUpdate(_useUnscaledTime);
             _bottomLine.DOFillAmount(value, _activeDuration).SetUpdate(_useUnscaledTime);
+        }
+
+        public void HandleMoveExit()
+        {
+            SceneManager.LoadScene("BasementScene_V2");
         }
 
     }

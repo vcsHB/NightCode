@@ -8,6 +8,7 @@ namespace UI.Common
     public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private Vector3 _highlightScale = new Vector3(1.2f, 1.2f, 1f);
+        [SerializeField] private bool _useUnscaledTime;
         private Vector3 _defaultScale;
         [SerializeField] private float _duration = 0.1f;
         private Tween _currentTween;
@@ -21,14 +22,14 @@ namespace UI.Common
         {
             // if (_currentTween.IsPlaying())
             //     _currentTween.Complete();
-            _currentTween = transform.DOScale(_highlightScale, _duration);
+            _currentTween = transform.DOScale(_highlightScale, _duration).SetUpdate(_useUnscaledTime);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             // if (_currentTween.IsPlaying())
             //     _currentTween.Complete();
-            _currentTween = transform.DOScale(_defaultScale, _duration);
+            _currentTween = transform.DOScale(_defaultScale, _duration).SetUpdate(_useUnscaledTime);
 
         }
     }
