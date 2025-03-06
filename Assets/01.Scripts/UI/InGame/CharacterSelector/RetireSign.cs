@@ -1,5 +1,4 @@
 using DG.Tweening;
-using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.UI;
 namespace UI.InGame.GameUI
@@ -18,7 +17,7 @@ namespace UI.InGame.GameUI
 
         public void SetRetire(bool value)
         {
-            _textLabel.enabled = value;
+            _backgroundPanel.enabled = value;
             _backgroundPanel.DOFade(value ? 1f : 0f, _fadeInDuration);
             _textLabel.enabled = value;
         }

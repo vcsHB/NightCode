@@ -14,7 +14,7 @@ namespace Agents.Players.FSM
         {
             base.Enter();
             _player.PlayerInput.JumpEvent += HandleJump;
-            _mover.SetMovementMultiplier(0.6f);
+            _mover.SetMovementMultiplier(0.8f);
         }
 
         private void HandleJump()

@@ -3,7 +3,6 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
-using Agents.Animate;
 
 namespace Agents.Enemies.BT.ActionNodes
 {
@@ -20,7 +19,7 @@ namespace Agents.Enemies.BT.ActionNodes
 
             enemy.SetVariable("Mover", enemy.GetCompo<AgentMovement>());
             enemy.SetVariable("Renderer", enemy.GetCompo<AgentRenderer>());
-            enemy.SetVariable("AnimTrigger", enemy.GetCompo<AnimationTrigger>());
+            enemy.SetVariable("AnimTrigger", enemy.GetCompo<EnemyAnimationTrigger>());
 
             return Status.Running;
         }

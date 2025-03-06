@@ -7,6 +7,7 @@ namespace Agents
 {
     public abstract class Agent : MonoBehaviour
     {
+        public event Action OnDieEvent;
         public bool IsDead { get; protected set; }
         private Dictionary<Type, IAgentComponent> _components = new Dictionary<Type, IAgentComponent>();
 
@@ -62,7 +63,11 @@ namespace Agents
             return default(T);
         }
 
-        protected abstract void HandleAgentDie();
+        protected virtual void HandleAgentDie()
+        {
+            IsDead = true;
+            OnDieEvent?.Invoke();
+        }
 
         public virtual void HandleForceStun()
         {

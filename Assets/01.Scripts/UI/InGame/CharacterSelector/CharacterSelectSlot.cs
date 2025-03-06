@@ -1,5 +1,6 @@
 using System;
 using Agents.Players;
+using Combat;
 using Combat.PlayerTagSystem;
 using DG.Tweening;
 using TMPro;
@@ -32,13 +33,21 @@ namespace UI.InGame.GameUI.CharacterSelector
             _rectTrm = transform as RectTransform;
         }
 
+        private void OnDestroy()
+        {
+            _player.HealthCompo.OnHealthChangedValueEvent -= HandleHealthChange;
+        }
+
         public void SetCharacterData(PlayerSO playerSO, Player player)
         {
             _playerSO = playerSO;
             _player = player;
             _playerIconImage.sprite = playerSO.characterIconSprite;
 
-            _player.HealthCompo.OnHealthChangedValueEvent += HandleHealthChange;
+            Health ownerHealth = _player.HealthCompo;
+            ownerHealth.OnHealthChangedValueEvent += HandleHealthChange;
+            HandleHealthChange(ownerHealth.CurrentHealth, ownerHealth.MaxHealth);
+            _characterNameText.text = playerSO.characterName;
             _player.HealthCompo.OnDieEvent.AddListener(HandleRetire);
 
         }
@@ -59,7 +68,7 @@ namespace UI.InGame.GameUI.CharacterSelector
         public void Select(bool value)
         {
             _rectTrm.DOAnchorPosX(value ? _selectPos : _unSelectPos, _tweenDuration);
-            
+
         }
 
     }

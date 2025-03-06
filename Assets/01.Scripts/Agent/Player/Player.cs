@@ -65,7 +65,8 @@ namespace Agents.Players
 
         protected override void HandleAgentDie()
         {
-            IsDead = true;
+            base.HandleAgentDie();
+
             _stateMachine.ChangeState("Dead");
         }
 

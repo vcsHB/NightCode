@@ -18,7 +18,7 @@ namespace ObjectManage
         private Material _bloodMaterial;
         private int _dissolveHash = Shader.PropertyToID("_DissolveLevel");
 
-        [field:SerializeField] public PoolingType type { get; set; }
+        [field: SerializeField] public PoolingType type { get; set; }
         public GameObject ObjectPrefab => gameObject;
 
         private void Awake()
@@ -40,10 +40,10 @@ namespace ObjectManage
         {
             yield return new WaitForSeconds(_lifeTime - _dissolveDuration);
             float currentTime = 0f;
-            while (currentTime > _dissolveDuration)
+            while (currentTime < _dissolveDuration)
             {
                 float ratio = currentTime / _dissolveDuration;
-                SetDissolveLevel(ratio);
+                SetDissolveLevel(1f - ratio);
                 currentTime += Time.deltaTime;
                 yield return null;
             }

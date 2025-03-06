@@ -15,7 +15,8 @@ namespace Agents.Enemies.BT.ConditionNodes
 
         public override bool IsTrue()
         {
-            return Mover.Value.IsGroundDetected() == Value.Value;
+            bool isGround = Mover.Value.IsGroundDetected();
+            return isGround == Value.Value;
         }
 
     }

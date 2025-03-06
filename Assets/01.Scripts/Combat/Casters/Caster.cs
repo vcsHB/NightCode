@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-namespace Combat
+namespace Combat.Casters
 {
     public class CasterData
     {
@@ -40,26 +40,21 @@ namespace Combat
         public void ForceCast(Collider2D[] hit)
         {
             for (int i = 0; i < hit.Length; i++)
-            {
                 ForceCast(hit[i]);
-            }
         }
 
         public void ForceCast(Collider2D hit)
         {
             for (int j = 0; j < _casters.Length; j++)
-            {
                 _casters[j].Cast(hit);
-            }
+
             OnCastSuccessEvent?.Invoke();
         }
 
         public void SendCasterData(CasterData data)
         {
             foreach (ICastable caster in _casters)
-            {
                 caster.HandleSetData(data);
-            }
         }
     }
 }

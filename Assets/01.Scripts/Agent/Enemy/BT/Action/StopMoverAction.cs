@@ -16,6 +16,7 @@ namespace Agents.Enemies.BT.ActionNodes
 
         protected override Status OnStart()
         {
+            if(Mover.Value == null) Debug.Log("걍 Mover가 null");
             Mover.Value.StopImmediately(YAxis.Value);
             return Status.Success;
         }

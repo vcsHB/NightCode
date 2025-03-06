@@ -1,9 +1,8 @@
 using UnityEngine;
-namespace Agents.Enemies
+namespace Agents.Enemies.Highbinders
 {
-
-    public class HighBinder : GrabableEnemy
+    public class Highbinder : GrabableEnemy
     {
-        
+                
     }
 }
