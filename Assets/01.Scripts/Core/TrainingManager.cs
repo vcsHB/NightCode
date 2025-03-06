@@ -39,6 +39,13 @@ namespace Basement.Training
         public void AddMinute(int minute)
         {
             currentTime.AddMinute(minute);
+
+            Debug.Log(currentTime.hour);
+            if(currentTime.hour >= endTime.hour)
+            {
+                BasementManager.Instance.basement.CompleteScadule();
+                return;
+            }
             
             foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
@@ -48,16 +55,7 @@ namespace Basement.Training
                     characterTrainingInfo[character] = info;
 
                     if (info.remainTime <= 0)
-                    {
-                        TrainingResult result = info.training.GetResult(character);
-                        int increaseValue = info.training.increaseValue[result];
-                        int increaseFatigue = info.training.requireFatigue;
-
-                        AddFatigue(character, increaseFatigue);
-                        AddSkillPoint(character, info.training.statType, increaseValue);
-
-                        CancelTraining(character);
-                    }
+                        CompleteTraining(character);
                 }
             }
         }
@@ -78,13 +76,29 @@ namespace Basement.Training
             characterTrainingInfo.Remove(character);
         }
 
+        public void CompleteTraining(CharacterEnum character)
+        {
+            TrainingInfo info = characterTrainingInfo[character];
+
+            TrainingResult result = info.training.GetResult(character);
+            int increaseValue = info.training.increaseValue[result];
+            int increaseFatigue = info.training.requireFatigue;
+
+            AddFatigue(character, increaseFatigue);
+            AddSkillPoint(character, info.training.statType, increaseValue);
+
+            string trainingCompleteText = $"{info.training.trainingVisibleName} Complete\n피로도 +{increaseFatigue}    {info.training.statType.ToString()} pt +{increaseValue}";
+            UIManager.Instance.msgText.PopMSGText(character, trainingCompleteText);
+
+            CancelTraining(character);
+        }
+
         #region ValueGetSet
 
         public void AddFatigue(CharacterEnum character, int value)
         {
             //뭐 더해졌을 때 빼졌을 때 효과같은거 추가 할 수도 있음
             _fatigues[character] += value;
-            Debug.Log(GetFatigue(character));
         }
 
         public int GetFatigue(CharacterEnum character)

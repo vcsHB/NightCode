@@ -1,4 +1,5 @@
 using Basement.CameraController;
+using Basement.Training;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,8 @@ namespace Basement
     {
         [SerializeField] private GameObject _buildModeObj;
         [SerializeField] private GameObject _basementModeObj;
+        [SerializeField] private Office _office;
+        [SerializeField] private BasementTimerUI _timer;
         private List<BasementBuildUI> _buildUISet;
 
         private BasementMode _currentMode = BasementMode.Basement;
@@ -44,6 +47,11 @@ namespace Basement
         public BasementMode GetCurrentMode()
             => _currentMode;
 
+        public void CompleteScadule()
+        {
+            _timer.Close();
+            _office.FocusRoom();
+        }
     }
 
     public enum BasementMode

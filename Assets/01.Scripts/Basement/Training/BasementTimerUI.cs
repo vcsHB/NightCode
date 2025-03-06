@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Basement.Training
     public class BasementTimerUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _timerText;
+        private Tween _tween;
+        private RectTransform _rectTrm => transform as RectTransform;
 
         private void Update()
         {
@@ -18,7 +21,7 @@ namespace Basement.Training
         public void SetTimer()
         {
             Time time = TrainingManager.Instance.CurrentTime;
-            _timerText.SetText($"{(time.hour < 13 ? "AM" : "PM")} {time.hour % 12 + 1} : {string.Format("{0,2:D2}", time.minute)}");
+            _timerText.SetText($"{(time.hour < 12 ? "AM" : "PM")} {time.hour % 12} : {string.Format("{0,2:D2}", time.minute)}");
         }
 
         public void AddTime(int minute)
@@ -44,6 +47,22 @@ namespace Basement.Training
 
             TrainingManager.Instance.AddMinute(minimum);
             SetTimer();
+        }
+
+        public void Open()
+        {
+            if (_tween != null && _tween.active)
+                _tween.Kill();
+
+            _tween = _rectTrm.DOAnchorPosY(480, 0.3f);
+        }
+
+        public void Close()
+        {
+            if (_tween != null && _tween.active)
+                _tween.Kill();
+
+            _tween = _rectTrm.DOAnchorPosY(600, 0.3f);
         }
     }
 }

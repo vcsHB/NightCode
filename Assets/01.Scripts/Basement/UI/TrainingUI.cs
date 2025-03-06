@@ -17,6 +17,8 @@ namespace Basement.Training
         [SerializeField] private TMP_Dropdown _dropDown;
         [SerializeField] private Image _iconImage;
         [SerializeField] private Button _checkButton;
+        [SerializeField] private GameObject _alreadyTrainingText;
+        [SerializeField] private GameObject _alreadyTrainigMark;
 
         [SerializeField] private List<Sprite> _iconList;
         private TrainingSO _training;
@@ -32,7 +34,7 @@ namespace Basement.Training
 
         public void Open()
         {
-            if (_tween != null && _tween.active) 
+            if (_tween != null && _tween.active)
                 _tween.Kill();
 
             _tween = _rectTrm.DOAnchorPosX(-10f, 0.3f);
@@ -50,6 +52,7 @@ namespace Basement.Training
         {
             CharacterEnum selectedCharacter = (CharacterEnum)_dropDown.value;
             TrainingManager.Instance.AddCharacterTraining(selectedCharacter, _training);
+            Close();
             //TrainingResult result = _training.GetResult(selectedCharacter);
 
             //int increaseValue = _training.increaseValue[result];
@@ -60,7 +63,6 @@ namespace Basement.Training
 
             //_trainingResultUI.gameObject.SetActive(true);
             //_trainingResultUI.SetResult(result, _training.textColor[result], _training.statType, increaseValue, _iconImage.sprite);
-            Close();
         }
 
         public void SetTraining(TrainingSO training)
@@ -76,10 +78,12 @@ namespace Basement.Training
         {
             CharacterEnum character = (CharacterEnum)value;
 
-            int fatigue = TrainingManager.Instance.GetFatigue(character);
-            //float fatigueCorrection = fatigueCorrection = (100f - fatigue) / 100f;
-            //float successChance = _training.successChance * fatigueCorrection;
+            bool isCharacterTraining = TrainingManager.Instance.TryGetTrainingInfo(character, out TrainingInfo info);
+            _alreadyTrainingText.SetActive(isCharacterTraining);
+            _alreadyTrainigMark.SetActive(isCharacterTraining);
 
+
+            int fatigue = TrainingManager.Instance.GetFatigue(character);
             _fatigueText.SetText($"{fatigue}<color=red>+{_training.requireFatigue}");
             _fatigueSlider.value = fatigue / 100f;
             _fatiguePreviewSlider.value = (fatigue + _training.requireFatigue) / 100f;
