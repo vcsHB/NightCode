@@ -14,7 +14,7 @@ namespace Agents.Players.FSM
         {
             base.Enter();
             _mover.jumpCount --;
-            Vector2 jumpPower = new Vector2(0, 17f);
+            Vector2 jumpPower = new Vector2(0, 30f);
             _mover.StopYVelocity();
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Jump"));
             _mover.AddForceToEntity(jumpPower);

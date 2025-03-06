@@ -15,6 +15,7 @@ namespace Agents.Players
         [Header("Move Setting")]
         [SerializeField] private float _moveSpeed = 5f;
         [SerializeField] private float _turboPower = 30f;
+        [SerializeField] private float _velocityLimit = 50f;
 
         private Player _player;
         private float _movementY;
@@ -43,7 +44,13 @@ namespace Agents.Players
                     _rigidCompo.linearVelocity = new Vector2(xVelocity, _rigidCompo.linearVelocity.y);
             }
             OnMovement?.Invoke(new Vector2(xVelocity, 0));
+            ClampVelocity();
             Velocity = _rigidCompo.linearVelocity;
+        }
+
+        private void ClampVelocity()
+        {
+            _rigidCompo.linearVelocity = Vector2.ClampMagnitude(_rigidCompo.linearVelocity, _velocityLimit);
         }
 
         
