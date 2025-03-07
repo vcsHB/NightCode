@@ -26,12 +26,22 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             base.UpdateState();
-            // if (_mover.IsGroundDetected())
-            // {
-            //     _stateMachine.ChangeState("Idle");
-            // }
+            
             _renderer.FlipController(_mover.Velocity.normalized.x);
             _renderer.SetRotate(_aimController.HangingDirection);
+
+            if (_mover.Velocity.magnitude < 0.3f)
+            {
+                if (CheckWallAndHold())
+                {
+                    HandleRemoveRope();
+
+                }
+                if (_mover.IsGroundDetected())
+                {
+                    _stateMachine.ChangeState("Idle");
+                }
+            }
         }
 
         public override void Exit()
