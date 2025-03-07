@@ -1,7 +1,7 @@
 using DG.Tweening;
 using InputManage;
-using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,7 +11,10 @@ namespace UI.InGame.SystemUI
     public class PausePanel : UIPanel
     {
         [SerializeField] private UIInputReader _uiInput;
+        [SerializeField] private PauseButtonGroup _buttonGroup;
         [SerializeField] private RectTransform _panelRectTrm;
+        private RectTransform _rectTrm;
+        [SerializeField] private float _activeHeight;
         [SerializeField] private Image _topLine;
         [SerializeField] private Image _bottomLine;
         private int _lineUnscaledTimeHash = Shader.PropertyToID("_CurrentUnscaledTime");
@@ -19,9 +22,12 @@ namespace UI.InGame.SystemUI
         protected override void Awake()
         {
             base.Awake();
+            _rectTrm = transform as RectTransform;
             _uiInput.OnEscEvent += HandleTogglePausePanel;
 
         }
+
+
 
         private void OnDestroy()
         {
@@ -33,7 +39,8 @@ namespace UI.InGame.SystemUI
             base.Open();
             _isActive = true;
             Time.timeScale = 0f;
-            _panelRectTrm.DOScaleY(1f, _activeDuration).SetUpdate(_useUnscaledTime);
+            _buttonGroup.Open();
+            _rectTrm.DOSizeDelta(new Vector2(_rectTrm.sizeDelta.x, _activeHeight), _activeDuration).SetUpdate(_useUnscaledTime);
             SetTweenLinesFillAmount(1f);
         }
 
@@ -41,7 +48,8 @@ namespace UI.InGame.SystemUI
         {
             base.Close();
             Time.timeScale = 1f;
-            _panelRectTrm.DOScaleY(0f, _activeDuration).SetUpdate(_useUnscaledTime);
+            _buttonGroup.Close();
+            _rectTrm.DOSizeDelta(new Vector2(_rectTrm.sizeDelta.x, 0f), _activeDuration).SetUpdate(_useUnscaledTime);
             SetTweenLinesFillAmount(0f);
         }
 
@@ -56,6 +64,10 @@ namespace UI.InGame.SystemUI
 
         private void Update()
         {
+            if (Keyboard.current.nKey.wasPressedThisFrame)
+            {
+                SceneManager.LoadScene("SpeedRunScene");
+            }
             if (_isActive)
             {
                 _topLine.material.SetFloat(_lineUnscaledTimeHash, Time.unscaledTime);

@@ -40,7 +40,7 @@ namespace Combat.CombatObjects.ProjectileManage
             _rigidCompo = GetComponent<Rigidbody2D>();
             _defaultGravityScale = _rigidCompo.gravityScale;
             _collider = GetComponent<Collider2D>();
-            _caster = GetComponent<Caster>();
+            _caster = GetComponentInChildren<Caster>();
             _visualTrm = transform.Find("Visual");
             _caster.OnCastSuccessEvent.AddListener(HandleCastSuccessed);
 
@@ -136,8 +136,8 @@ namespace Combat.CombatObjects.ProjectileManage
         {
             _isActive = false;
             OnDestroyEvent?.Invoke();
-            //PoolManager.Instance.Push(this);
-            Destroy(gameObject);
+            PoolManager.Instance.Push(this);
+            //Destroy(gameObject);
         }
 
         public void ApplyDamage(CombatData data)

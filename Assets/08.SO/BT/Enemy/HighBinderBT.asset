@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
-  m_Name: HighbinderBT Blackboard
+  m_Name: HighBinderBT Blackboard
   m_EditorClassIdentifier: 
   AssetID:
     m_Value0: 16462041868810602927
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b27bb6d9a2c8d540a10dff10acc543e, type: 3}
-  m_Name: HighbinderBT Debug Info
+  m_Name: HighBinderBT Debug Info
   m_EditorClassIdentifier: 
   m_CodeBreakPointsList: []
 --- !u!114 &-2860572090306162140
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db920e62f70f420bb33c771449926fa4, type: 3}
-  m_Name: HighbinderBT
+  m_Name: HighBinderBT
   m_EditorClassIdentifier: 
   Graphs:
   - rid: 2234905920627015899
@@ -1646,7 +1646,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
-  m_Name: HighbinderBT Blackboard
+  m_Name: HighBinderBT Blackboard
   m_EditorClassIdentifier: 
   VersionTimestamp: 638767517174083897
   AssetID:
@@ -1660,16 +1660,10 @@ MonoBehaviour:
     - rid: 741984662694134066
     - rid: 741984662694134067
     - rid: 741985017917866151
-    - rid: 741985017917866177
-    - rid: 741985062525599763
-    - rid: 741985062525599958
     - rid: 741985062525600355
-    - rid: 741985177865028379
     - rid: 2234905865775743761
     - rid: 2234905865775743762
-    - rid: 2234905866790764650
     - rid: 2234905866790764897
-    - rid: 2234905866790765128
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
@@ -1722,30 +1716,6 @@ MonoBehaviour:
           m_Value1: 10358492589464162292
         Name: CurrentAnimParam
         m_Value: 
-    - rid: 741985017917866177
-      type: {class: 'BlackboardVariable`1[[Agents.Enemies.BT.Event.StateChange, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 3662046293535377668
-          m_Value1: 3097193061935484766
-        Name: StateChange
-        m_Value: {fileID: 0}
-    - rid: 741985062525599763
-      type: {class: 'BlackboardVariable`1[[Agents.AgentMovement, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 18027399547735261555
-          m_Value1: 13404786337119321315
-        Name: Mover
-        m_Value: {fileID: 0}
-    - rid: 741985062525599958
-      type: {class: 'BlackboardVariable`1[[Agents.Enemies.BT.Event.AnimParamChange, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 2683779208480544511
-          m_Value1: 11966515553021486054
-        Name: AnimParamChange
-        m_Value: {fileID: 0}
     - rid: 741985062525600355
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1754,14 +1724,6 @@ MonoBehaviour:
           m_Value1: 18308068776573924058
         Name: NextAnimParam
         m_Value: 
-    - rid: 741985177865028379
-      type: {class: 'BlackboardVariable`1[[Agents.Enemies.EnemyAnimationTrigger, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 9296207994189539982
-          m_Value1: 15037951667119256761
-        Name: AnimTrigger
-        m_Value: {fileID: 0}
     - rid: 2234905865775743761
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1778,14 +1740,6 @@ MonoBehaviour:
           m_Value1: 18076543651942351396
         Name: PatrolFlipWaitDuration
         m_Value: 2
-    - rid: 2234905866790764650
-      type: {class: 'BlackboardVariable`1[[Agents.Enemies.EnemyAttackController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15473700980071834460
-          m_Value1: 16207505793001110568
-        Name: AttackController
-        m_Value: {fileID: 0}
     - rid: 2234905866790764897
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1794,14 +1748,6 @@ MonoBehaviour:
           m_Value1: 8783825139433266367
         Name: AttackRange
         m_Value: 2
-    - rid: 2234905866790765128
-      type: {class: 'BlackboardVariable`1[[Agents.Enemies.Highbinders.HighbinderStateEnum, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 12218751925333730627
-          m_Value1: 6016861651616287754
-        Name: CurrentState
-        m_Value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1812,7 +1758,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bad8f2220607dac4db5082ff333fafb8, type: 3}
-  m_Name: HighbinderBT
+  m_Name: HighBinderBT
   m_EditorClassIdentifier: 
   Blackboard: {fileID: -8606953996656909747}
   m_Description: 
