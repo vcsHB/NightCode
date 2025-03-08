@@ -2,12 +2,13 @@ using Basement.Training;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Basement
 {
-    public abstract class BasementRoomCharacterPlaceUI : MonoBehaviour
+    public abstract class BasementRoomCharacterPlaceUI : MonoBehaviour, IWindowPanel
     {
         public Image icon;
         public TMP_Dropdown characterSelectDropDown;
@@ -15,6 +16,10 @@ namespace Basement
         public List<GameObject> canNotSetCharacter;
 
         protected CharacterEnum _selectedCharacter;
+
+        public abstract void Open();
+        public abstract void Close();
+
 
         protected virtual void Awake()
         {

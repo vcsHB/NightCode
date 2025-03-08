@@ -45,7 +45,7 @@ namespace Basement
 
         private void OnClick()
         {
-            if (_isOpen == false) return;
+            if (_isOpen == false || EventSystem.current.IsPointerOverGameObject()) return;
             buildConfirmPanel.gameObject.SetActive(true);
             buildConfirmPanel.SetRoom(_roomSO, Build);
         }

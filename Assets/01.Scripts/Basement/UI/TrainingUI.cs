@@ -27,7 +27,7 @@ namespace Basement.Training
             _checkButton.onClick.AddListener(Training);
         }
 
-        public void Open()
+        public override void Open()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();
@@ -35,7 +35,7 @@ namespace Basement.Training
             _tween = _rectTrm.DOAnchorPosX(-10f, 0.3f);
         }
 
-        public void Close()
+        public override void Close()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();

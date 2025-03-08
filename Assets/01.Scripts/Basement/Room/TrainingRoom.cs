@@ -8,8 +8,6 @@ namespace Basement
         [SerializeField] private TrainingSetSO _trainingSetSO;
         [SerializeField] private Furniture _trainingFurniture;
         [SerializeField] private TrainingSO training;
-        private TrainingSO _training;
-        private CharacterEnum _selectedCharacter;
         private TrainingUI _trainingExplain;
 
         protected override void Awake()
@@ -21,6 +19,7 @@ namespace Basement
         private void OnEnable()
         {
             _trainingFurniture.InteractAction += Training;
+            _trainingExplain = UIManager.Instance.GetUIPanel(BasementRoomType.TrainingRoom) as TrainingUI;
         }
 
         private void OnDisable()
@@ -30,25 +29,25 @@ namespace Basement
 
         private void Training()
         {
-            _trainingExplain = UIManager.Instance.trainingUI;
             _trainingExplain.Open();
             _trainingExplain.SetTraining(training);
         }
 
         public void SetTraining(TrainingSO training)
         {
-            _training = training;
             _trainingFurniture.InteractAction += Training;
             _trainingFurniture.Init(this);
         }
-
-        public void SelectCharacter(CharacterEnum character)
-            => _selectedCharacter = character;
 
         public override void Init(BasementController basement)
         {
             base.Init(basement);
             SetTraining(training);
+        }
+
+        protected override void CloseUI()
+        {
+            _trainingExplain.Close();
         }
     }
 }

@@ -5,7 +5,8 @@ namespace Basement
 {
     public class Cafe : BasementRoom
     {
-        private CharacterEnum positionedCharacter;
+        private CharacterEnum _positionedCharacter;
+        private CafeUI _cafeUI;
 
         public bool isCafeOpen = false;
         public BasementTime cafeOpenTime;
@@ -15,24 +16,25 @@ namespace Basement
         {
             get
             {
-                return positionedCharacter;
+                return _positionedCharacter;
             }
             set
             {
-                positionedCharacter = value;
+                _positionedCharacter = value;
                 profitRange
-                    = CharacterManager.Instance.GetCharacterExpectationProfit(positionedCharacter);
+                    = CharacterManager.Instance.GetCharacterExpectationProfit(_positionedCharacter);
             }
         }
 
         public Vector2 profitRange;
         public int totalProfit = 0;
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
             counterFurniture.Init(this);
             counterFurniture.InteractAction += OpenCafeUI;
+            _cafeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Cafe) as CafeUI;
+            Init(BasementController);
         }
 
         private void OnDisable()
@@ -42,8 +44,8 @@ namespace Basement
 
         private void OpenCafeUI()
         {
-            UIManager.Instance.cafeUI.Init(this);
-            UIManager.Instance.cafeUI.Open();
+            _cafeUI.Init(this);
+            _cafeUI.Open();
         }
 
         public void PassTime(int time)
@@ -75,6 +77,11 @@ namespace Basement
             string text = $"{totalCustomer}명 방문\n수익: {totalCosts}{(totalTips > 0? $"+TIP{totalTips}" : "")}";
             UIManager.Instance.msgText.PopMSGText(PositionedCharacter, text);
             //재화 추가해주기
+        }
+
+        protected override void CloseUI()
+        {
+            _cafeUI.Close();
         }
     }
 }

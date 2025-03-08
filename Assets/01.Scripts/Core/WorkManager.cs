@@ -10,8 +10,8 @@ namespace Basement
     {
         public Cafe cafe;
 
-        [SerializeField] private BasementTime startTime;
-        [SerializeField] private BasementTime endTime;
+        public BasementTime startTime;
+        public BasementTime endTime;
         private BasementTime currentTime;
 
         private Dictionary<CharacterEnum, RoomActionInfo> characterTrainingInfo;

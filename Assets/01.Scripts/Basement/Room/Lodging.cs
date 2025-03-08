@@ -10,9 +10,15 @@ namespace Basement
         private int _fatigueDecreasePerHalfHour = 2;
         private CharacterEnum _character;
         private bool _isCharacterPlaced = false;
+        private LodgingUI _lodgingUI;
 
         public CharacterEnum characterEnum => _character;
         public bool IsCharacterPlaced => _isCharacterPlaced;
+
+        protected override void Start()
+        {
+            _lodgingUI = UIManager.Instance.GetUIPanel(BasementRoomType.Lodging) as LodgingUI;
+        }
 
         public int GetFatigueDecreaseValue(int restTime)
         {
@@ -21,13 +27,13 @@ namespace Basement
         }
 
         public int GetMaxRestTime()
-            => Mathf.Clamp(30, (CharacterManager.Instance.GetFatigue(_character) / _fatigueDecreasePerHalfHour) * 30,6000);
+            => Mathf.Clamp(30, (CharacterManager.Instance.GetFatigue(_character) / _fatigueDecreasePerHalfHour) * 30, 6000);
 
         public override void FocusRoom()
         {
             base.FocusRoom();
-            UIManager.Instance.lodgingUI.Init(this);
-            UIManager.Instance.lodgingUI.Open();
+            _lodgingUI.Init(this);
+            _lodgingUI.Open();
         }
 
         public void SetCharacter(CharacterEnum character)
@@ -38,5 +44,10 @@ namespace Basement
 
         public void CancelplaceCharacter()
             => _isCharacterPlaced = false;
+
+        protected override void CloseUI()
+        {
+            _lodgingUI.Close();
+        }
     }
 }

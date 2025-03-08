@@ -1,14 +1,12 @@
 using Basement.Mission;
 using System.Collections.Generic;
-using System.Linq;
 using UI;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Basement
 {
-    public class OfficeUI : MonoBehaviour
+    public class OfficeUI : MonoBehaviour, IWindowPanel
     {
         public Button moveLeftButton;
         public Button moveRightButton;
@@ -44,14 +42,6 @@ namespace Basement
 
             moveRightButton.gameObject.SetActive(uiState == OfficeUIState.MissionSelect);
             moveLeftButton.gameObject.SetActive(uiState == OfficeUIState.CharacterSelect);
-        }
-
-        private void Update()
-        {
-            if (Keyboard.current.oKey.wasPressedThisFrame)
-                Open();
-            if (Keyboard.current.pKey.wasPressedThisFrame)
-                Close();
         }
 
         public void Open()

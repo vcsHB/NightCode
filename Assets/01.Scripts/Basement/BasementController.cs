@@ -11,6 +11,8 @@ namespace Basement
 {
     public class BasementController : MonoBehaviour
     {
+        public Action<BasementMode> OnChangeBasmentMode;
+
         [SerializeField] private GameObject _buildModeObj;
         [SerializeField] private GameObject _basementModeObj;
         [SerializeField] private Office _office;
@@ -18,6 +20,7 @@ namespace Basement
         private List<BasementBuildUI> _buildUISet;
 
         private BasementMode _currentMode = BasementMode.Basement;
+
 
         private void Awake()
         {
@@ -33,15 +36,12 @@ namespace Basement
         public void ChangeBasementMode(BasementMode mode)
         {
             _currentMode = mode;
+            OnChangeBasmentMode?.Invoke(mode);
 
             if (mode == BasementMode.Basement)
-            {
                 _buildUISet.ForEach(buildUI => buildUI.Close());
-            }
             else
-            {
                 _buildUISet.ForEach(buildUI => buildUI.Open());
-            }
         }
 
         public BasementMode GetCurrentMode()

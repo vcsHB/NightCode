@@ -76,7 +76,7 @@ namespace Basement
             _restTimeText.SetText($"ÈÞ½Ä ½Ã°£: {hour}h{minite}m");
         }
 
-        public void Open()
+        public override void Open()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();
@@ -84,7 +84,7 @@ namespace Basement
             _tween = _rectTrm.DOAnchorPosX(0, 0.2f);
         }
 
-        public void Close()
+        public override void Close()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();

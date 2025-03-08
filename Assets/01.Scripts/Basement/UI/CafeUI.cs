@@ -27,7 +27,7 @@ namespace Basement
             _cafe = cafe;
         }
 
-        public void Open()
+        public override void Open()
         {
             characterSelectDropDown.ClearOptions();
             List<TMP_Dropdown.OptionData> options = new();
@@ -60,8 +60,7 @@ namespace Basement
             if (_tween != null && _tween.active) _tween.Kill();
             _tween = transform.DOScale(1, 0.2f);
         }
-
-        public void Close()
+        public override void Close()
         {
             cancelBtn.gameObject.SetActive(true);
             openStoreBtn.onClick.RemoveListener(OpenStore);

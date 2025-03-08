@@ -5,14 +5,15 @@ namespace Basement
 {
     public class Office : BasementRoom
     {
-        public OfficeUI officeUI;
         public Furniture table;
+        private OfficeUI _officeUI;
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
             table.Init(this);
             table.InteractAction += InteractTable;
+            _officeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Office) as OfficeUI;
+            Init(BasementController);
         }
 
         private void OnDisable()
@@ -22,13 +23,26 @@ namespace Basement
 
         private void InteractTable()
         {
-            officeUI.Open();
+            _officeUI.Open();
         }
 
         public override void FocusRoom()
         {
-            FocusCamera();
-            _isBasementMode = true;
+            bool isComplete = WorkManager.Instance.CurrentTime.hour >= WorkManager.Instance.endTime.hour;
+
+            if (isComplete)
+            {
+                FocusCamera();
+            }
+            else
+            {
+                base.FocusRoom();
+            }
+        }
+
+        protected override void CloseUI()
+        {
+            _officeUI.Close();
         }
     }
 }
