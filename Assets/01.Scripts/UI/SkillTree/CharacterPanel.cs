@@ -17,6 +17,7 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
     private int _index;
 
     public RectTransform RectTrm => transform as RectTransform;
+    public CharacterEnum CharacterType => _characterType;
 
     private void Awake()
     {
@@ -53,7 +54,6 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     public void OnPointerClick(PointerEventData eventData)
     {
-
         if (_selectPanel.CurrentIndex == _index)
         {
             SelectCharacter();
@@ -63,32 +63,22 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
             if (_index < _selectPanel.CurrentIndex || (_index == 3 && _selectPanel.CurrentIndex == 1))
             {
                 _selectPanel.onCompleteAnimation += SelectCharacter;
-                _selectPanel.MoveToNextCharacter();
+                _selectPanel.MoveToPrevCharacter();
             }
             else
             {
                 _selectPanel.onCompleteAnimation += SelectCharacter;
-                _selectPanel.MoveToPrevCharacter();
+                _selectPanel.MoveToNextCharacter();
             }
         }
     }
 
     private void SelectCharacter()
     {
-        _selectPanel.onCompleteAnimation += OpenSkillTree;
         _selectPanel.SelectCharacter();
         isSelected = true;
 
         _selectPanel.onCompleteAnimation -= SelectCharacter;
-    }
-
-    private void OpenSkillTree()
-    {
-        SkillTreePanel skillTreePanel = UIManager.Instance.GetUIPanel(UIType.SkillTreePanel) as SkillTreePanel;
-        skillTreePanel.Open();
-        skillTreePanel.OpenSkillTree(_characterType);
-
-        _selectPanel.onCompleteAnimation -= OpenSkillTree;
     }
 
     public void Init(int i)

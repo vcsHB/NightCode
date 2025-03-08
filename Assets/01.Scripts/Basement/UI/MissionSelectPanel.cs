@@ -56,7 +56,7 @@ namespace Basement.Mission
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
-            float insertTime = 0;
+            float insertTime = 0.5f;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
             {
                 _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x, 0.3f));
@@ -81,7 +81,10 @@ namespace Basement.Mission
                 }
                 else
                 {
-                    _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x + 500f, 0.3f));
+                    _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x + 500f, 0.3f))
+                        .Join(_selectButtons[i].RectTrm.DORotate(new Vector3(0, 0, 5), 0.3f));
+                    _selectButtons[i].UnSelectButton();
+
                     insertTime += 0.1f;
                 }
             }

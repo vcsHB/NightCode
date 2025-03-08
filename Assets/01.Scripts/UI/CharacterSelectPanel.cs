@@ -5,6 +5,7 @@ using UnityEngine;
 using Basement.Training;
 using Basement;
 using UI;
+using UnityEngine.UI;
 
 public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
 {
@@ -13,10 +14,10 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
     [SerializeField] private CharacterPanel[] _characterPanels;
     [SerializeField] private TextMeshProUGUI _pageText;
     [SerializeField] private RectTransform _btnParent;
+    [SerializeField] private RectTransform _closeButtonRect;
 
+    private OfficeUI _officeUI;
     private Vector2[] _positions = new Vector2[3];
-    private CharacterEnum _currentCharacter;
-    private Tween _tween;
     private int _currentIdx = 1;
 
     private Sequence _seq;
@@ -30,7 +31,13 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
         {
             _characterPanels[i].Init(i + 1);
             _positions[i] = _characterPanels[i].RectTrm.anchoredPosition;
+            _characterPanels[i].RectTrm.anchoredPosition = new Vector2(1250, _characterPanels[i].RectTrm.anchoredPosition.y);
         }
+    }
+    
+    public void Init(OfficeUI officeUi)
+    {
+        _officeUI = officeUi;
     }
 
     public void MoveToNextCharacter()
@@ -102,6 +109,7 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
             _seq.Complete();
         }
 
+        
         _characterPanels[1].UpdateStat();
 
         float left = -650;
@@ -113,9 +121,12 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
             .Join(_btnParent.DOAnchorPosY(-600, 0.2f))
             .Insert(0.1f, _characterPanels[1].RectTrm.DOAnchorPosX(right, 0.3f))
             .Insert(0.2f, _characterPanels[2].RectTrm.DOAnchorPosX(right, 0.3f))
+            .Join(_closeButtonRect.DOAnchorPosY(480, 0.3f))
             .OnComplete(() =>
             {
                 onCompleteAnimation?.Invoke();
+                _officeUI.skillTreePanel.Open();
+                _officeUI.skillTreePanel.InitSkillTree(_characterPanels[0].CharacterType);
             });
     }
 
@@ -126,7 +137,7 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
 
         _characterPanels[0].UpdateStat();
         _characterPanels[0].isSelected = false;
-        UIManager.Instance.GetUIPanel(UIType.SkillTreePanel).Close();
+        _officeUI.skillTreePanel.Close();
 
         _seq = DOTween.Sequence();
         _seq.AppendInterval(0.5f)
@@ -135,10 +146,7 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
             .Join(_btnParent.DOAnchorPosY(-400, 0.2f))
             .Insert(0.1f, _characterPanels[2].RectTrm.DOAnchorPos(_positions[2], 0.3f))
             .Insert(0.3f, _characterPanels[0].RectTrm.DOAnchorPos(_positions[0], 0.3f))
-            .OnComplete(() =>
-            {
-                onCompleteAnimation?.Invoke();
-            });
+            .OnComplete(() => onCompleteAnimation?.Invoke());
     }
 
 
@@ -156,6 +164,7 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
             .Join(_btnParent.DOAnchorPosY(-600, 0.2f))
             .Insert(0.1f, _characterPanels[1].RectTrm.DOAnchorPosX(right, 0.3f))
             .Insert(0.2f, _characterPanels[0].RectTrm.DOAnchorPosX(right, 0.3f))
+            .Join(_closeButtonRect.DOAnchorPosY(700, 0.3f))
             .OnComplete(() => onCompleteAnimation?.Invoke());
 
         _characterPanels[0].RectTrm.rotation = Quaternion.Euler(0, 0, 5);

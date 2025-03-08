@@ -24,9 +24,10 @@ namespace Basement
             _officeUIDic = new Dictionary<OfficeUIState, IWindowPanel>();
             _officeUIDic.Add(OfficeUIState.MissionSelect, missionSelectPanel);
             _officeUIDic.Add(OfficeUIState.CharacterSelect, characterSelectPanel);
+            characterSelectPanel.Init(this);
 
-            moveLeftButton.onClick.AddListener(() => ChangeState(OfficeUIState.CharacterSelect)); 
-            moveRightButton.onClick.AddListener(() => ChangeState(OfficeUIState.MissionSelect));
+            moveLeftButton.onClick.AddListener(() => ChangeState(OfficeUIState.MissionSelect));
+            moveRightButton.onClick.AddListener(() => ChangeState(OfficeUIState.CharacterSelect));
         }
 
         private void OnDisable()
@@ -37,12 +38,12 @@ namespace Basement
 
         private void ChangeState(OfficeUIState uiState)
         {
-            _officeUIDic[_currentUiState].Close();
+            if (_currentUiState != uiState) _officeUIDic[_currentUiState].Close();
             _currentUiState = uiState;
             _officeUIDic[_currentUiState].Open();
 
-            moveRightButton.gameObject.SetActive(uiState == OfficeUIState.CharacterSelect);
-            moveLeftButton.gameObject.SetActive(uiState == OfficeUIState.MissionSelect);
+            moveRightButton.gameObject.SetActive(uiState == OfficeUIState.MissionSelect);
+            moveLeftButton.gameObject.SetActive(uiState == OfficeUIState.CharacterSelect);
         }
 
         private void Update()

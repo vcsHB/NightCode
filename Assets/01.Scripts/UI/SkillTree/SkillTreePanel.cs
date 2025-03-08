@@ -3,7 +3,7 @@ using DG.Tweening;
 using UI;
 using UnityEngine;
 
-public class SkillTreePanel : MonoBehaviour, IWindowPanel
+public class SkillTreePanel : MonoBehaviour
 {
     public SkillTree[] skillTrees;
     private float _easingTime = 0.2f;
@@ -12,7 +12,7 @@ public class SkillTreePanel : MonoBehaviour, IWindowPanel
 
     private RectTransform RectTrm => transform as RectTransform;
 
-    public void OpenSkillTree(CharacterEnum characterType)
+    public void InitSkillTree(CharacterEnum characterType)
     {
         _characterStatPointIndicator.SetCharacter(characterType);
 
@@ -29,11 +29,10 @@ public class SkillTreePanel : MonoBehaviour, IWindowPanel
         }
     }
 
-
     public void Open()
     {
         RectTrm.DOAnchorPosY(0f, _easingTime);
-        OpenSkillTree(0);
+        InitSkillTree(0);
     }
 
     public void Close()

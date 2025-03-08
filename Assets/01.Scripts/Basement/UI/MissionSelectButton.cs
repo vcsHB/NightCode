@@ -34,8 +34,13 @@ public class MissionSelectButton : MonoBehaviour, IPointerEnterHandler, IPointer
         _missionNameText.SetText(_mission.missionName);
         _explainText.SetText(_mission.missionExplain);
         _icon.sprite = _mission.icon;
-        _selectMissionButton.onClick.AddListener(OnClickButton);
         _selectPanel = GetComponentInParent<MissionSelectPanel>();
+    }
+
+    public void UnSelectButton()
+    {
+        _isSelected = false;
+        _selectMissionButton.onClick.RemoveListener(OnClickButton);
     }
 
     public void OnClickButton()
@@ -49,7 +54,8 @@ public class MissionSelectButton : MonoBehaviour, IPointerEnterHandler, IPointer
         _isSelected = true;
 
         if (_tween != null && _tween.active) _tween.Kill();
-        _tween = childRect.DOAnchorPosY(0, 0.2f);
+        _tween = childRect.DOAnchorPosY(0, 0.2f)
+            .OnComplete(() => _selectMissionButton.onClick.AddListener(OnClickButton));
 
         _selectPanel.SelectPanel(this);
     }
