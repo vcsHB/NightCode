@@ -1,8 +1,9 @@
 using Basement.Training;
 using DG.Tweening;
+using UI;
 using UnityEngine;
 
-public class SkillTreePanel : MonoBehaviour, IUIPanel
+public class SkillTreePanel : MonoBehaviour, IWindowPanel
 {
     public SkillTree[] skillTrees;
     private float _easingTime = 0.2f;
@@ -29,7 +30,7 @@ public class SkillTreePanel : MonoBehaviour, IUIPanel
     }
 
 
-    public void Open(Vector2 position)
+    public void Open()
     {
         RectTrm.DOAnchorPosY(0f, _easingTime);
         OpenSkillTree(0);

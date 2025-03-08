@@ -4,8 +4,9 @@ using TMPro;
 using UnityEngine;
 using Basement.Training;
 using Basement;
+using UI;
 
-public class CharacterSelectPanel : MonoBehaviour, IUIPanel
+public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
 {
     public event Action onCompleteAnimation;
 
@@ -143,11 +144,37 @@ public class CharacterSelectPanel : MonoBehaviour, IUIPanel
 
     public void Close()
     {
-        gameObject.SetActive(false);
+        if (_seq != null && _seq.active)
+            _seq.Complete();
+
+        for (int i = 0; i < 3; i++)
+            _characterPanels[i].UpdateStat();
+
+        float right = 1215;
+        _seq = DOTween.Sequence();
+        _seq.Append(_characterPanels[2].RectTrm.DOAnchorPosX(right, 0.3f))
+            .Join(_btnParent.DOAnchorPosY(-600, 0.2f))
+            .Insert(0.1f, _characterPanels[1].RectTrm.DOAnchorPosX(right, 0.3f))
+            .Insert(0.2f, _characterPanels[0].RectTrm.DOAnchorPosX(right, 0.3f))
+            .OnComplete(() => onCompleteAnimation?.Invoke());
+
+        _characterPanels[0].RectTrm.rotation = Quaternion.Euler(0, 0, 5);
     }
 
-    public void Open(Vector2 position)
+    public void Open()
     {
-        gameObject.SetActive(true);
+        if (_seq != null && _seq.active)
+            _seq.Complete();
+
+        for (int i = 0; i < 3; i++)
+            _characterPanels[i].UpdateStat();
+
+        _seq = DOTween.Sequence();
+        _seq.AppendInterval(0.35f)
+            .Append(_characterPanels[2].RectTrm.DOAnchorPos(_positions[2], 0.3f))
+            .Join(_btnParent.DOAnchorPosY(-400, 0.2f))
+            .Insert(0.6f, _characterPanels[1].RectTrm.DOAnchorPos(_positions[1], 0.3f))
+            .Insert(0.7f, _characterPanels[0].RectTrm.DOAnchorPos(_positions[0], 0.3f))
+            .OnComplete(() => onCompleteAnimation?.Invoke());
     }
 }

@@ -30,9 +30,9 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     public void UpdateStat()
     {
-        int str = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Health);
-        int intel = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Intelligence);
-        int dex = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Dexdexterity);
+        int str = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Health);
+        int intel = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Intelligence);
+        int dex = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Dexdexterity);
 
         _strText.SetText($"str pt: {str}");
         _intText.SetText($"int pt: {intel}");
@@ -85,7 +85,7 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
     private void OpenSkillTree()
     {
         SkillTreePanel skillTreePanel = UIManager.Instance.GetUIPanel(UIType.SkillTreePanel) as SkillTreePanel;
-        skillTreePanel.Open(Vector2.zero);
+        skillTreePanel.Open();
         skillTreePanel.OpenSkillTree(_characterType);
 
         _selectPanel.onCompleteAnimation -= OpenSkillTree;

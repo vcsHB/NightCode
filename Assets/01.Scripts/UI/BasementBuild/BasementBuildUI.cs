@@ -8,7 +8,7 @@ namespace Basement
     public class BasementBuildUI : MonoBehaviour
     {
         [SerializeField] private BuildConfirmPanel buildConfirmPanel;
-        [SerializeField] private BasementRoomSO _roomSetSO;
+        [SerializeField] private BasementRoomSO _roomSO;
         [SerializeField] private int _floor;
         [SerializeField] private int _roomNumber;
         [SerializeField] private Color _openColor, _closeColor;
@@ -47,22 +47,22 @@ namespace Basement
         {
             if (_isOpen == false) return;
             buildConfirmPanel.gameObject.SetActive(true);
-            buildConfirmPanel.SetRoom(_roomSetSO, Build);
+            buildConfirmPanel.SetRoom(_roomSO, Build);
         }
 
         private void Build()
         {
             if (CheckResource() == false) return;
-            BasementManager.Instance.CreateRoom(_roomSetSO, _floor, _roomNumber);
+            BasementManager.Instance.CreateRoom(_roomSO, _floor, _roomNumber);
             UseResource();
             gameObject.SetActive(false);
         }
 
         private bool CheckResource()
-           => BasementManager.Instance.GetMoney() >= _roomSetSO.requireMoney;
+           => BasementManager.Instance.GetMoney() >= _roomSO.requireMoney;
 
         private void UseResource()
-            => BasementManager.Instance.UseResource(_roomSetSO.requireMoney);
+            => BasementManager.Instance.UseResource(_roomSO.requireMoney);
 
         public void Close()
         {

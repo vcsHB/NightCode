@@ -11,8 +11,10 @@ namespace Basement
     {
         public Dictionary<UIType, IUIPanel> uiPanels;
         public TrainingUI trainingUI;
-        public RoomUI roomUI;
+        public LodgingUI lodgingUI;
         public MSGText msgText;
+        public RoomUI roomUI;
+        public CafeUI cafeUI;
 
         protected override void Awake()
         {
@@ -20,17 +22,17 @@ namespace Basement
 
             uiPanels = new Dictionary<UIType, IUIPanel>();
 
-            IUIPanel techTreePanel = FindFirstObjectByType<SkillTreePanel>().GetComponent<IUIPanel>();
+            //IUIPanel techTreePanel = FindFirstObjectByType<SkillTreePanel>().GetComponent<IUIPanel>();
             IUIPanel furniturePanel = FindFirstObjectByType<FurnitureUI>().GetComponent<IUIPanel>();
-            IUIPanel characterSelectPanel = FindFirstObjectByType<CharacterSelectPanel>().GetComponent<IUIPanel>();
+            //IUIPanel characterSelectPanel = FindFirstObjectByType<CharacterSelectPanel>().GetComponent<IUIPanel>();
 
-            techTreePanel.Close();
+            //techTreePanel.Close();
             furniturePanel.Close();
-            characterSelectPanel.Close();
+            //characterSelectPanel.Close();
 
             uiPanels.Add(UIType.FurnitureUI, furniturePanel);
-            uiPanels.Add(UIType.SkillTreePanel, techTreePanel);
-            uiPanels.Add(UIType.CharacterSelectPanel, characterSelectPanel);
+            //uiPanels.Add(UIType.SkillTreePanel, techTreePanel);
+            //uiPanels.Add(UIType.CharacterSelectPanel, characterSelectPanel);
         }
 
         public IUIPanel GetUIPanel(UIType uiType) => uiPanels[uiType];

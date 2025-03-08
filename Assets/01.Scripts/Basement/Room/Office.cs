@@ -5,8 +5,7 @@ namespace Basement
 {
     public class Office : BasementRoom
     {
-        public MissionSelectPanel missionPanel;
-        public CharacterSelectPanel selectaPanel;
+        public OfficeUI officeUI;
         public Furniture table;
 
         protected override void Awake()
@@ -23,8 +22,7 @@ namespace Basement
 
         private void InteractTable()
         {
-            missionPanel.Open();
-            selectaPanel.Open(Vector2.zero);
+            officeUI.Open();
         }
 
         public override void FocusRoom()

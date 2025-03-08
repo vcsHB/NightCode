@@ -67,9 +67,9 @@ namespace Basement
 
                 if (trainingPanel.TryGetValue(character, out panel))
                 {
-                    if (TrainingManager.Instance.TryGetTrainingInfo(character, out TrainingInfo info))
+                    if (WorkManager.Instance.TryGetTrainingInfo(character, out RoomActionInfo info))
                     {
-                        panel.SetInfo(character, info.remainTime, info.training.trainingName);
+                        panel.SetInfo(character, info.remainTime, info.displayAction);
                         LayoutRebuilder.ForceRebuildLayoutImmediate(_trainingStatePanelParent);
                     }
                     else
@@ -80,10 +80,10 @@ namespace Basement
                 }
                 else
                 {
-                    if (TrainingManager.Instance.TryGetTrainingInfo(character, out TrainingInfo training))
+                    if (WorkManager.Instance.TryGetTrainingInfo(character, out RoomActionInfo training))
                     {
                         panel = Instantiate(_trainingStatePanel, _trainingStatePanelParent);
-                        panel.SetInfo(character, training.remainTime, training.training.trainingVisibleName);
+                        panel.SetInfo(character, training.remainTime, training.displayAction);
                         LayoutRebuilder.ForceRebuildLayoutImmediate(_trainingStatePanelParent);
                         trainingPanel.Add(character, panel);
                     }
@@ -93,10 +93,10 @@ namespace Basement
 
             trainingPanel.Keys.ToList().ForEach(character =>
             {
-                if (TrainingManager.Instance.TryGetTrainingInfo(character, out TrainingInfo info))
+                if (WorkManager.Instance.TryGetTrainingInfo(character, out RoomActionInfo info))
                 {
                     var panel = trainingPanel[character];
-                    panel.SetInfo(character, info.remainTime, info.training.trainingName);
+                    panel.SetInfo(character, info.remainTime, info.displayAction);
                 }
             });
         }
