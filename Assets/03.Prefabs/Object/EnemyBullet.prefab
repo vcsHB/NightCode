@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2251773411181356434}
   - component: {fileID: 7177591293910982843}
   - component: {fileID: 4062313180797190203}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Caster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2940679730303285625}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.808, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -82,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8840641971452745460}
   - component: {fileID: 6824188890605151162}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.025, z: 0}
-  m_LocalScale: {x: 3, y: 0.55, z: 1}
+  m_LocalScale: {x: 2, y: 0.55, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3067158975892649996}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 2681224816116468598}
   - component: {fileID: 4742807705235618242}
   - component: {fileID: 3877496024630710755}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,12 +277,19 @@ MonoBehaviour:
       m_Calls: []
   _projectileData:
     direction: {x: 0, y: 0}
-    speed: 30
+    speed: 20
     lifeTime: 6
     canPenetrate: 0
     canDestroy: 0
     damage: 2
-  <type>k__BackingField: 0
+  <type>k__BackingField: 5
+  _canDamagedReflect: 1
+  _defaultTargetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _reflectTargetLayer:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &4742807705235618242
 MonoBehaviour:
   m_ObjectHideFlags: 0

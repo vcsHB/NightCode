@@ -16,7 +16,12 @@ namespace Combat.CombatObjects.ProjectileManage
         private bool _isActive;
         private float _currentLifeTime = 0f;
         [SerializeField] private ProjectileData _projectileData;
-        [field:SerializeField] public PoolingType type { get; set; }
+        [field: SerializeField] public PoolingType type { get; set; }
+        [Header("Projectile Damage Reflect Setting")]
+        [SerializeField] private bool _canDamagedReflect;
+        [SerializeField] private LayerMask _defaultTargetLayer;
+        [SerializeField] private LayerMask _reflectTargetLayer;
+        private bool _isReflected;
 
         public GameObject ObjectPrefab => gameObject;
         private IProjectileComponent[] _projectileComponents;
@@ -46,6 +51,7 @@ namespace Combat.CombatObjects.ProjectileManage
 
             InitComponents();
         }
+        #region Essential Setting Functions
 
         private void InitComponents()
         {
@@ -76,12 +82,15 @@ namespace Combat.CombatObjects.ProjectileManage
                 OnDestroyEvent -= compo.OnProjectileDestroy;
             }
         }
+
+        #endregion
+
         private void Update()
         {
             if (!_isActive) return;
             _currentLifeTime += Time.deltaTime;
             _caster.Cast();
-            if(_currentLifeTime >= _projectileData.lifeTime)
+            if (_currentLifeTime >= _projectileData.lifeTime)
             {
                 _currentLifeTime = 0f;
                 HandleDestroy();
@@ -97,6 +106,7 @@ namespace Combat.CombatObjects.ProjectileManage
                 HandleDestroy();
             }
         }
+
         [ContextMenu("DebugShoot")]
         private void DebugShoot()
         {
@@ -116,7 +126,7 @@ namespace Combat.CombatObjects.ProjectileManage
             _isActive = true;
             _projectileData = data;
             _visualTrm.right = data.direction;
-            _caster.SendCasterData(new DamageCasterData() {damage = data.damage});
+            _caster.SendCasterData(new DamageCasterData() { damage = data.damage });
             _rigidCompo.linearVelocity = data.direction.normalized * data.speed;
             OnShotEvent?.Invoke();
             OnShotSerializedEvent?.Invoke();
@@ -126,6 +136,8 @@ namespace Combat.CombatObjects.ProjectileManage
         {
             _currentLifeTime = 0f;
             OnGeneratedEvent?.Invoke();
+            _isReflected = false;
+            _caster.SetTargetLayer(_defaultTargetLayer);
         }
 
         #endregion
@@ -142,6 +154,15 @@ namespace Combat.CombatObjects.ProjectileManage
 
         public void ApplyDamage(CombatData data)
         {
+            if (_canDamagedReflect && !_isReflected)
+            {
+                Vector2 direction = (Vector2)transform.position - data.originPosition;
+                _isReflected = true;
+                _caster.SetTargetLayer(_reflectTargetLayer);
+                _currentLifeTime = 0f;
+                Shoot(-_projectileData.direction + UnityEngine.Random.insideUnitCircle);
+                return;
+            }
             if (!_projectileData.canDestroy) return;
             OnDamagedEvent?.Invoke();
             HandleDestroy();
