@@ -113,6 +113,7 @@ Transform:
   - {fileID: 2854451243147776584}
   - {fileID: 1436509845540175009}
   - {fileID: 6349108460186505549}
+  - {fileID: 6631406932214230030}
   m_Father: {fileID: 4264095113676399738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4745497125477941781
@@ -134,6 +135,78 @@ MonoBehaviour:
     moveduration: 0.1
   - movePower: 0.9
     moveduration: 0.1
+--- !u!1 &478053729390255149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6631406932214230030}
+  - component: {fileID: 5664495780694541100}
+  - component: {fileID: 8139130523788739418}
+  m_Layer: 6
+  m_Name: SwingGuardCaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6631406932214230030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478053729390255149}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.39, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4072476359948441073}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5664495780694541100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478053729390255149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c8df37b2355b64ca70555c9b0ded02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnCastEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCastSuccessEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _offset: {x: 0, y: 0}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 2176
+  _targetMaxAmount: 3
+  _gizmosColor: {r: 1, g: 0.45834017, b: 0, a: 1}
+  _detectRadius: 3
+--- !u!114 &8139130523788739418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478053729390255149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85a0be73c02b55e42aa26e86ba184cd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 2
+  _attackType: 0
 --- !u!1 &526915845203266580
 GameObject:
   m_ObjectHideFlags: 0
@@ -36527,6 +36600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e80ccfb7da80d6643b64c1d5e4f0b15e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _swingGaurdCaster: {fileID: 5664495780694541100}
   OnFirstAttackEvent:
     m_PersistentCalls:
       m_Calls:
