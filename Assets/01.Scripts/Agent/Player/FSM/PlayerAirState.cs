@@ -2,22 +2,32 @@ using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
-
-
     public class PlayerAirState : PlayerState
     {
         public PlayerAirState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
+            _canGrab = true;
         }
+        
 
         public override void Enter()
         {
             base.Enter();
-            _mover.SetMovementMultiplier(0.6f);
+            _player.PlayerInput.JumpEvent += HandleJump;
+            _mover.SetMovementMultiplier(0.8f);
+        }
+
+        private void HandleJump()
+        {
+            if (_mover.CanJump)
+            {
+                _stateMachine.ChangeState("Jump");
+            }
         }
 
         public override void Exit()
         {
+            _player.PlayerInput.JumpEvent -= HandleJump;
             _mover.SetMovementMultiplier(1f);
             base.Exit();
         }
@@ -29,5 +39,7 @@ namespace Agents.Players.FSM
             if (Mathf.Abs(xInput) > 0)
                 _mover.SetMovement(xInput);
         }
+
+        
     }
 }

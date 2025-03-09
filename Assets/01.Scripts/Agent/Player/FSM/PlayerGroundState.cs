@@ -1,6 +1,4 @@
-using System;
 using Agents.Animate;
-using UnityEngine;
 namespace Agents.Players.FSM
 {
 
@@ -16,20 +14,31 @@ namespace Agents.Players.FSM
         {
             base.Enter();
             _renderer.SetLockRotation(true);
+            _aimController.RemoveWire();
             _player.PlayerInput.JumpEvent += HandleJump;
+            _player.PlayerInput.TurboEvent += HandleDash;
+            
         }
 
 
         public override void Exit()
         {
             _player.PlayerInput.JumpEvent -= HandleJump;
+            _player.PlayerInput.TurboEvent -= HandleDash;
+
             base.Exit();
 
+        }
+
+        private void HandleDash()
+        {
+            // 대쉬 구현
         }
 
         public override void UpdateState()
         {
             base.UpdateState();
+            CheckWallAndHold();
             if (_mover.IsGroundDetected() == false && _mover.CanManualMove)
             {
                 _stateMachine.ChangeState("Fall");
@@ -39,8 +48,8 @@ namespace Agents.Players.FSM
 
         private void HandleJump()
         {
-
-            _stateMachine.ChangeState("Jump");
+            if(_mover.CanJump)
+                _stateMachine.ChangeState("Jump");
         }
     }
 }

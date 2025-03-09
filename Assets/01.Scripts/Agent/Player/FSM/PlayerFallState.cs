@@ -13,6 +13,7 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             base.UpdateState();
+            CheckWallAndHold();
             if (_mover.IsGroundDetected())
             {
                 _stateMachine.ChangeState("Idle");

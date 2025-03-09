@@ -1,5 +1,5 @@
-using System;
 using Agents.Players.FSM;
+using Combat;
 using Core.EventSystem;
 using InputManage;
 using UnityEngine;
@@ -11,26 +11,31 @@ namespace Agents.Players
         protected PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
         [field: SerializeField] public GameEventChannelSO FeedbackChannel { get; private set; }
-        public bool IsDead { get; protected set; }
+
         public Health HealthCompo { get; protected set; }
+        public Rigidbody2D RigidCompo { get; protected set; }
+        [field: SerializeField] public Transform RopeHolder { get; private set; }
+        public bool CanCharacterChange { get; set; } = true;
+        [field: SerializeField] public bool IsActive { get; private set; }
+        private bool _startDisable;
 
         protected override void Awake()
         {
+            FeedbackChannel = Instantiate(FeedbackChannel);
             base.Awake();
+            RigidCompo = GetComponent<Rigidbody2D>();
             HealthCompo = GetComponent<Health>();
-            HealthCompo.OnDieEvent.AddListener(HandlePlayerDieEvent);
+            HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
+
+            InitState();
         }
 
-        private void HandlePlayerDieEvent()
-        {
-            IsDead = true;
-            _stateMachine.ChangeState("Dead");
-        }
 
         private void Start()
         {
-            InitState();
+            StateMachine.StartState();
 
+            if (_startDisable) gameObject.SetActive(false);
         }
         protected virtual void InitState()
         {
@@ -40,7 +45,12 @@ namespace Agents.Players
 
         private void Update()
         {
-            _stateMachine.UpdateState();
+            if (IsActive)
+                _stateMachine.UpdateState();
+        }
+        public void SetActive(bool value)
+        {
+            IsActive = value;
         }
 
         public void EnterCharacter()
@@ -48,12 +58,18 @@ namespace Agents.Players
             _stateMachine.ChangeState("Enter");
 
         }
-
-
         public void ExitCharacter()
         {
             _stateMachine.ChangeState("Exit");
         }
 
+        protected override void HandleAgentDie()
+        {
+            base.HandleAgentDie();
+
+            _stateMachine.ChangeState("Dead");
+        }
+
+        public void SetStartDisable(bool value) => _startDisable = value;
     }
 }

@@ -1,4 +1,4 @@
-using Agents;
+using Combat;
 using UnityEngine;
 using UnityEngine.UI;
 namespace UI.InGame

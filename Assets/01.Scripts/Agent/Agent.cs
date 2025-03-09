@@ -5,9 +5,10 @@ using UnityEngine;
 
 namespace Agents
 {
-    public class Agent : MonoBehaviour
+    public abstract class Agent : MonoBehaviour
     {
-
+        public event Action OnDieEvent;
+        public bool IsDead { get; protected set; }
         private Dictionary<Type, IAgentComponent> _components = new Dictionary<Type, IAgentComponent>();
 
         protected virtual void Awake()
@@ -38,12 +39,13 @@ namespace Agents
             if (_components.TryGetValue(typeof(T), out IAgentComponent compo))
             {
                 return compo as T;
-            }else
+            }
+            else
             {
                 // 상속구조의 예외 발생 가능 
                 //Debug.Log("Not Exist In components dictionary");
                 T newComponent = GetComponentInChildren<T>();
-                if(newComponent is IAgentComponent)
+                if (newComponent is IAgentComponent)
                 {
 
                     _components.Add(typeof(T), newComponent as IAgentComponent);
@@ -59,6 +61,20 @@ namespace Agents
                 return _components[findType] as T;
 
             return default(T);
+        }
+
+        protected virtual void HandleAgentDie()
+        {
+            IsDead = true;
+            OnDieEvent?.Invoke();
+        }
+
+        public virtual void HandleForceStun()
+        {
+            // 페링, 또는 추가 상태 이상시 스턴효과 구현
+            // 플레이어 : 미상
+            // 에너미 : Stun State강제 전환
+             
         }
 
     }

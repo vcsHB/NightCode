@@ -50,8 +50,11 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         _edge.transform.SetParent(_techTree.edgeParent);
         _edgeFill.transform.SetParent(_techTree.edgeFillParent);
 
-        _edge.SetMaterial(_lineMaterial);
-        _edgeFill.SetMaterial(_lineMaterial);
+        Material edgeMat = new Material(_lineMaterial);
+        Material edgeFillmat = new Material(_lineMaterial);
+
+        _edge.SetMaterial(edgeMat);
+        _edgeFill.SetMaterial(edgeFillmat);
     }
 
     #region EnableNode

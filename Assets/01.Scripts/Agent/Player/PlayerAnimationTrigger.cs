@@ -1,28 +1,14 @@
-using System;
-using UnityEngine;
+using Agents.Animate;
 using UnityEngine.Events;
 namespace Agents.Players
 {
 
-    public class PlayerAnimationTrigger : MonoBehaviour, IAgentComponent
+    public abstract class PlayerAnimationTrigger : AnimationTrigger
     {
         public UnityEvent OnFirstAttackEvent;
         public UnityEvent OnSecondAttackEvent;
         public UnityEvent OnThirdAttackEvent;
-        public event Action OnAnimationEnd;
-
-
-        public void Initialize(Agent agent)
-        {
-        }
-        public void AfterInit() { }
-        public void Dispose() { }
-
-        public void AnimationEndTrigger()
-        {
-            OnAnimationEnd?.Invoke();
-        }
-
+        
 
         public void HandleAttack1()
         {
@@ -37,6 +23,9 @@ namespace Agents.Players
         {
             OnSecondAttackEvent?.Invoke();
         }
+
+        public abstract void HandleAirAttack1();
+        public abstract void HandleAirAttack2();
 
 
     }
