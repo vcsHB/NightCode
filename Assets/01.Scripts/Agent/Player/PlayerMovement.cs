@@ -35,7 +35,7 @@ namespace Agents.Players
 
         private void FixedUpdate()
         {
-            float xVelocity = _movementX * _moveSpeed * _moveSpeedMultiplier;
+            float xVelocity = _movementX * _speedStat.Value * _moveSpeedMultiplier;
             if (CanManualMove)
             {
                 if (Mathf.Abs(_movementY) > 0f)
@@ -55,7 +55,7 @@ namespace Agents.Players
 
         public void ClampVelocityWithMoveSpeed()
         {
-            _rigidCompo.linearVelocity = Vector2.ClampMagnitude(_rigidCompo.linearVelocity, _moveSpeed * _moveSpeedMultiplier);
+            _rigidCompo.linearVelocity = Vector2.ClampMagnitude(_rigidCompo.linearVelocity, _speedStat.Value * _moveSpeedMultiplier);
         }
 
         public void SetYMovement(float yMovement)

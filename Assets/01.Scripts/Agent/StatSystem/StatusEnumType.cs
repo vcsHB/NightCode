@@ -4,6 +4,8 @@ namespace StatSystem
     {
         Health,
         Power,
+        JumpPower,
+        DashPower,
         Intelligence,
         Speed,
         Resistance,
