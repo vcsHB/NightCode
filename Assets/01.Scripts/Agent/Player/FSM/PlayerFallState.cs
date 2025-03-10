@@ -10,6 +10,12 @@ namespace Agents.Players.FSM
             _canUseRope = true;
         }
 
+        public override void Enter()
+        {
+            base.Enter();
+            _mover.ClampVelocityWithMoveSpeed();
+        }
+
         public override void UpdateState()
         {
             base.UpdateState();

@@ -19,7 +19,7 @@ namespace Agents.Players
 
         private Player _player;
         private float _movementY;
-        
+
         public int jumpCount = 1;
         public bool CanJump => jumpCount > 0;
         private PlayerRenderer _playerRenderer;
@@ -48,12 +48,15 @@ namespace Agents.Players
             Velocity = _rigidCompo.linearVelocity;
         }
 
-        private void ClampVelocity()
+        public void ClampVelocity()
         {
             _rigidCompo.linearVelocity = Vector2.ClampMagnitude(_rigidCompo.linearVelocity, _velocityLimit);
         }
 
-        
+        public void ClampVelocityWithMoveSpeed()
+        {
+            _rigidCompo.linearVelocity = Vector2.ClampMagnitude(_rigidCompo.linearVelocity, _moveSpeed * _moveSpeedMultiplier);
+        }
 
         public void SetYMovement(float yMovement)
         {
@@ -86,13 +89,13 @@ namespace Agents.Players
             SetVelocity(result.normalized * _turboPower);
         }
 
-        
+
 
         public virtual bool IsWallDetected()
         {
-            if(IsDirectionWall(Vector2.left))
+            if (IsDirectionWall(Vector2.left))
                 return true;
-            if(IsDirectionWall(Vector2.right))
+            if (IsDirectionWall(Vector2.right))
                 return true;
             WallDirection = 0f;
             return false;
@@ -111,7 +114,7 @@ namespace Agents.Players
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + (Vector3)Velocity);
-            if(_wallCheckerTrm != null)
+            if (_wallCheckerTrm != null)
             {
                 Gizmos.DrawLine(_wallCheckerTrm.position, _wallCheckerTrm.position + (Vector3)(Vector2.left * _wallDetectDistance));
                 Gizmos.DrawLine(_wallCheckerTrm.position, _wallCheckerTrm.position + (Vector3)(Vector2.right * _wallDetectDistance));
