@@ -280,6 +280,7 @@ Transform:
   - {fileID: 1999371668300468464}
   - {fileID: 3174235353205496250}
   - {fileID: 4072476359948441073}
+  - {fileID: 3624473335044442156}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &9056945047484168308
@@ -392,7 +393,7 @@ MonoBehaviour:
   <CanManualMove>k__BackingField: 1
   _wallCheckerTrm: {fileID: 5126648570187029290}
   _wallDetectDistance: 0.7
-  _moveSpeed: 20
+  _moveSpeed: 28
   _turboPower: 80
   _velocityLimit: 100
   jumpCount: 1
@@ -31209,6 +31210,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a462d89fd5c9a74bbec23a9a8b852f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6564568855742992466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3624473335044442156}
+  - component: {fileID: 785585861621682915}
+  m_Layer: 6
+  m_Name: AgentStat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3624473335044442156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6564568855742992466}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4264095113676399738}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &785585861621682915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6564568855742992466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a461afd234549844834906f427a05e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statOverrides:
+  - _stat: {fileID: 11400000, guid: 77110b074c0f3e144ba0d4652527bfdb, type: 2}
+    _isUseOverride: 0
+    _overrideBaseValue: 0
+  - _stat: {fileID: 11400000, guid: a6b4b37c0f23ae243ad33e831d3b78ab, type: 2}
+    _isUseOverride: 0
+    _overrideBaseValue: 0
+  - _stat: {fileID: 11400000, guid: c900a7510d5ac6640b42244f737fa2e9, type: 2}
+    _isUseOverride: 0
+    _overrideBaseValue: 0
 --- !u!1 &6622982516331550393
 GameObject:
   m_ObjectHideFlags: 0

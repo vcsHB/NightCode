@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GGM.Core.StatSystem
+namespace StatSystem
 {
     [Serializable]
     public class StatOverride
