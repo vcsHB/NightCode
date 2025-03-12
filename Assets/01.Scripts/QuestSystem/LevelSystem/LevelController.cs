@@ -22,7 +22,6 @@ namespace QuestSystem.LevelSystem
         {
             if (_currentLevel != null)
                 _currentLevel.Destroy();
-            print("맵 생성하기");
             _currentLevel = Instantiate(levelData.mapPrefab, transform.position, Quaternion.identity);
             _playerManager.SetCurrentPlayerPosition(_currentLevel.StartPos);
 

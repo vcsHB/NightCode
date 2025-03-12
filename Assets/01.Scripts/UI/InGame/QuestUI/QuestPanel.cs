@@ -72,12 +72,12 @@ namespace UI.InGame.GameUI.QuestSyetem
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
             OnOpenEvent?.Invoke();
-            RefreshInformations();
+            HandleQuestSetEvent(_questManager.CurrentQuest);
             _isActive = true;
         }
 
         #endregion
-        
+
         private void RefreshLabelsMaterial()
         {
             _labelMaterial1.SetFloat(_labelUnscaledTimeHash, Time.unscaledTime);
@@ -108,14 +108,5 @@ namespace UI.InGame.GameUI.QuestSyetem
             displayer.SetEnable();
         }
 
-        private void RefreshInformations()
-        {
-            QuestSO currentQuestSO = _questManager.CurrentQuest;
-
-
-
-
-
-        }
     }
 }

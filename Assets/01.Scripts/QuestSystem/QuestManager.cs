@@ -120,6 +120,7 @@ namespace QuestSystem
 
                     break;
             }
+            //OnQuestChangeEvent?.Invoke(CurrentQuest);
         }
     }
 }

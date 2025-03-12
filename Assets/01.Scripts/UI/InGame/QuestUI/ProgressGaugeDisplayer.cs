@@ -13,7 +13,7 @@ namespace UI.InGame.GameUI.QuestSyetem
         {
             base.SetProgress(data);
             _progressGaugeSlider.value = 0f;
-            _progressGaugeSlider.DOValue(data.ProgressRatio, _tweenDuration);
+            _progressGaugeSlider.DOValue(data.ProgressRatio, _tweenDuration).SetUpdate(true);
         }
 
     }
