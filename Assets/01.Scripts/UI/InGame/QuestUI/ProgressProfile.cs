@@ -12,7 +12,6 @@ namespace UI.InGame.GameUI.QuestSyetem
         [SerializeField] private Color _defaultColor;
         [SerializeField] private Color _completeColor;
 
-
         public void SetActive(bool value)
         {
             gameObject.SetActive(value);
