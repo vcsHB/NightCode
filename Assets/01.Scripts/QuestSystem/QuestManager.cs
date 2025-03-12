@@ -6,8 +6,11 @@ namespace QuestSystem
     [System.Serializable]
     public struct QuestData
     {
+        public QuestType questType;
         public float goalProgress;
         public float currentProgress;
+
+        public float ProgressRatio => currentProgress / goalProgress;
     }
 
     public class QuestManager : MonoBehaviour
@@ -35,6 +38,7 @@ namespace QuestSystem
         public void ChangeQuest(QuestSO questSO)
         {
             CurrentQuest = questSO;
+            _currentQuestData.questType = questSO.questType;
             _currentQuestData.currentProgress = 0f;
             _currentQuestData.goalProgress = CurrentQuest.goalProgress;
             InvokeQuestProgressChanged();

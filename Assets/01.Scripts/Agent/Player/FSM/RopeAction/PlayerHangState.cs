@@ -26,7 +26,7 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             base.UpdateState();
-            
+
             _renderer.FlipController(_mover.Velocity.normalized.x);
             _renderer.SetRotate(_aimController.HangingDirection);
 
@@ -34,8 +34,8 @@ namespace Agents.Players.FSM
             {
                 if (CheckWallAndHold())
                 {
-                    HandleRemoveRope();
-
+                    //HandleRemoveRope();
+                    _aimController.RemoveWire();
                 }
                 if (_mover.IsGroundDetected())
                 {

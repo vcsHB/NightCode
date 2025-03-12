@@ -1,4 +1,5 @@
 using DG.Tweening;
+using QuestSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,6 +9,7 @@ namespace UI.InGame.GameUI.QuestSyetem
 {
     public class QuestPanel : MonoBehaviour, IWindowPanel
     {
+        [SerializeField] private QuestManager _questManager;
         public UnityEvent OnOpenEvent;
         public UnityEvent OnCloseEvent;
         [SerializeField] private float _activeHeight;
@@ -20,7 +22,10 @@ namespace UI.InGame.GameUI.QuestSyetem
         private CanvasGroup _canvasGroup;
         private RectTransform _rectTrm;
         [SerializeField] private TextMeshProUGUI _titleText;
-        
+        [SerializeField] private TextMeshProUGUI _descriptionText;
+
+        [Header("Progress Displayers")]
+        [SerializeField] private ProgressDisplayer[] _progressDisplayers;
         private readonly int _labelUnscaledTimeHash = Shader.PropertyToID("_CurrentUnscaledTime");
         private bool _isActive;
         private void Awake()
@@ -34,7 +39,7 @@ namespace UI.InGame.GameUI.QuestSyetem
 
         private void Update()
         {
-            if(_isActive)
+            if (_isActive)
             {
                 RefreshLabelsMaterial();
             }
@@ -58,6 +63,7 @@ namespace UI.InGame.GameUI.QuestSyetem
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
             OnOpenEvent?.Invoke();
+            RefreshInformations();
             _isActive = true;
         }
 
@@ -65,6 +71,25 @@ namespace UI.InGame.GameUI.QuestSyetem
         {
             _labelMaterial1.SetFloat(_labelUnscaledTimeHash, Time.unscaledTime);
             _labelMaterial2.SetFloat(_labelUnscaledTimeHash, Time.unscaledTime);
+        }
+
+        private void RefreshInformations()
+        {
+            QuestData data = _questManager.CurrentQuestData;
+            QuestSO currentQuestSO = _questManager.CurrentQuest;
+            
+            _descriptionText.text = currentQuestSO.description;
+            _titleText.text = currentQuestSO.questName;
+
+
+            for (int i = 0; i < _progressDisplayers.Length; i++)
+                _progressDisplayers[i].SetDisable();
+
+            ProgressDisplayer displayer = _progressDisplayers[(int)data.questType];
+            displayer.SetProgress(data.ProgressRatio);
+            displayer.SetEnable();
+
+
         }
     }
 }

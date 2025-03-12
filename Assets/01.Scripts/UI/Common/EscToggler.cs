@@ -19,6 +19,8 @@ namespace UI.Common
 
         private void OnDestroy()
         {
+            if (_canControl)
+                _uiInput.OnEscEvent -= HandleTogglePanel;
         }
 
         public override void SetDisableControl()
