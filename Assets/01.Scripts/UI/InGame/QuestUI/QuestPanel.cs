@@ -35,6 +35,14 @@ namespace UI.InGame.GameUI.QuestSyetem
 
             _labelMaterial1 = _topLabelImage.material;
             _labelMaterial2 = _bottomLabelImage.material;
+
+            _questManager.OnQuestChangeEvent += HandleQuestSetEvent;
+        }
+
+        private void OnDestroy()
+        {
+            _questManager.OnQuestChangeEvent -= HandleQuestSetEvent;
+
         }
 
         private void Update()
@@ -44,6 +52,7 @@ namespace UI.InGame.GameUI.QuestSyetem
                 RefreshLabelsMaterial();
             }
         }
+        #region OnOff Control
 
         [ContextMenu("DebugClose")]
         public void Close()
@@ -67,27 +76,44 @@ namespace UI.InGame.GameUI.QuestSyetem
             _isActive = true;
         }
 
+        #endregion
+        
         private void RefreshLabelsMaterial()
         {
             _labelMaterial1.SetFloat(_labelUnscaledTimeHash, Time.unscaledTime);
             _labelMaterial2.SetFloat(_labelUnscaledTimeHash, Time.unscaledTime);
         }
 
-        private void RefreshInformations()
+        private void HandleQuestSetEvent(QuestSO quest)
         {
             QuestData data = _questManager.CurrentQuestData;
-            QuestSO currentQuestSO = _questManager.CurrentQuest;
-            
-            _descriptionText.text = currentQuestSO.description;
-            _titleText.text = currentQuestSO.questName;
 
-
+            _descriptionText.text = quest.description;
+            _titleText.text = quest.questName;
             for (int i = 0; i < _progressDisplayers.Length; i++)
                 _progressDisplayers[i].SetDisable();
 
             ProgressDisplayer displayer = _progressDisplayers[(int)data.questType];
-            displayer.SetProgress(data.ProgressRatio);
+            switch (quest.questType)
+            {
+                case QuestType.KillSingleTarget:
+                case QuestType.KillMultiTarget:
+                    displayer.SetQuestData(quest);
+                    break;
+                case QuestType.Rescue:
+                    // 구조대상 설정
+                    break;
+            }
+            displayer.SetProgress(data);
             displayer.SetEnable();
+        }
+
+        private void RefreshInformations()
+        {
+            QuestSO currentQuestSO = _questManager.CurrentQuest;
+
+
+
 
 
         }

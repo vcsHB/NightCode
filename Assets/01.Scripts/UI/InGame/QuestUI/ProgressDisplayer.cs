@@ -1,4 +1,5 @@
 using Microsoft.Unity.VisualStudio.Editor;
+using QuestSystem;
 using UnityEngine;
 
 namespace UI.InGame.GameUI.QuestSyetem
@@ -16,7 +17,11 @@ namespace UI.InGame.GameUI.QuestSyetem
             gameObject.SetActive(false);
 
         }
-        public virtual void SetProgress(float ratio)
+        public virtual void SetQuestData(QuestSO data)
+        {
+
+        }
+        public virtual void SetProgress(QuestData data)
         {
         }
     }

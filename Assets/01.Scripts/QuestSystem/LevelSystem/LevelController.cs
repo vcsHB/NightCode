@@ -1,3 +1,4 @@
+using System;
 using Combat.PlayerTagSystem;
 using UnityEngine;
 namespace QuestSystem.LevelSystem
@@ -21,10 +22,15 @@ namespace QuestSystem.LevelSystem
         {
             if (_currentLevel != null)
                 _currentLevel.Destroy();
-
-            _currentLevel = Instantiate(levelData.mapPrefab);
+            print("맵 생성하기");
+            _currentLevel = Instantiate(levelData.mapPrefab, transform.position, Quaternion.identity);
             _playerManager.SetCurrentPlayerPosition(_currentLevel.StartPos);
 
+        }
+
+        public void AddQuestHandler(Action<QuestTargetData> completeHandle)
+        {
+            _currentLevel.AddQuestHandler(completeHandle);
         }
 
 

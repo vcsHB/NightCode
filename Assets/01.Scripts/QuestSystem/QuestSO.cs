@@ -1,3 +1,5 @@
+using QuestSystem.LevelSystem;
+using QuestSystem.QuestTarget;
 using UnityEngine;
 namespace QuestSystem
 {
@@ -11,7 +13,8 @@ namespace QuestSystem
         // 목표 설정
         public float startProgress = 0f; //초기 진행상황. 보통의 경우 0임
         public float goalProgress;
-        public string[] targetCodeList;
+        public TargetInfoSO[] targetInfoList;
+        public LevelDataSO levelData;
 
         #region External Functions
 
@@ -19,13 +22,26 @@ namespace QuestSystem
         {
             for (int i = 0; i < targetCode.Length; i++)
             {
-                if(targetCodeList[i].Equals(targetCode))
+                if(targetInfoList[i].targetName.Equals(targetCode))
                 {
                     return true;
                 }
             }
             return false;
         }
+
+        public int GetTargetIndex(string targetCode)
+        {
+            for (int i = 0; i < targetCode.Length; i++)
+            {
+                if(targetInfoList[i].targetName.Equals(targetCode))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         #endregion
 
 
