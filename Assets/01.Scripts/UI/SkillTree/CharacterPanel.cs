@@ -1,10 +1,15 @@
 using Basement;
 using Basement.Training;
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+namespace Basement
+{
+
+}
 public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public bool isSelected = false;
@@ -22,11 +27,6 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
     private void Awake()
     {
         _selectPanel = GetComponentInParent<CharacterSelectPanel>();
-    }
-
-    private void Start()
-    {
-        UpdateStat();
     }
 
     public void UpdateStat()
@@ -49,36 +49,18 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (isSelected) return;
-        RectTrm.localScale = Vector3.one * 1.025f;
+        RectTrm.localScale = Vector3.one * 1.02f;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (_selectPanel.CurrentIndex == _index)
-        {
-            SelectCharacter();
-        }
-        else
-        {
-            if (_index < _selectPanel.CurrentIndex || (_index == 3 && _selectPanel.CurrentIndex == 1))
-            {
-                _selectPanel.onCompleteAnimation += SelectCharacter;
-                _selectPanel.MoveToPrevCharacter();
-            }
-            else
-            {
-                _selectPanel.onCompleteAnimation += SelectCharacter;
-                _selectPanel.MoveToNextCharacter();
-            }
-        }
+        SelectCharacter();
     }
 
     private void SelectCharacter()
     {
-        _selectPanel.SelectCharacter();
         isSelected = true;
-
-        _selectPanel.onCompleteAnimation -= SelectCharacter;
+        _selectPanel.SelectCharacter(_index);
     }
 
     public void Init(int i)

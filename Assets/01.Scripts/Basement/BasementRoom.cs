@@ -1,6 +1,7 @@
 using Basement.CameraController;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Basement
@@ -18,8 +19,8 @@ namespace Basement
 
         [SerializeField] private Transform _cameraFocusTarget;
         [SerializeField] private float _zoomInValue = 1.5f;
-        [SerializeField] private BasementController _basement;
-        private float _originZoomValue;
+        private BasementController _basement;
+        private float _originZoomValue =999;
         private Transform _originFollow;
         private Collider2D _collider;
 
@@ -60,12 +61,30 @@ namespace Basement
             _isFocusMode = true;
         }
 
-        protected abstract void CloseUI();
+        public abstract void CloseUI();
+        public abstract void OpenUI(); 
+
+        public void ChangeReturnButtonListener(UnityAction onClickReturnBtn)
+        {
+            _roomUI.returnBtn.onClick.RemoveAllListeners();
+            _roomUI.returnBtn.onClick.AddListener(onClickReturnBtn);
+        }
+
+        public void ReturnButtonCloseAllUI()
+        {
+            _roomUI.returnBtn.onClick.RemoveAllListeners();
+            _roomUI.returnBtn.onClick.AddListener(_roomUI.Close);
+        }
 
         public void FocusCamera()
         {
-            _originFollow = BasementCameraManager.Instance.GetCameraFollow();
-            _originZoomValue = BasementCameraManager.Instance.CameraSize;
+            Transform targetTrm = BasementCameraManager.Instance.GetCameraFollow();
+            float targetZoomValue = BasementCameraManager.Instance.CameraSize;
+
+            if (targetTrm != _cameraFocusTarget) _originFollow = targetTrm;
+            if (targetZoomValue > _zoomInValue) _originZoomValue = targetZoomValue;
+
+            _basement.OnFocusRoom(this);
             BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, null);
             BasementCameraManager.Instance.Zoom(_zoomInValue, 0.4f);
             _collider.enabled = false;
@@ -81,6 +100,7 @@ namespace Basement
             CloseUI();
         }
 
+
         public void FurnitureSetting()
         {
             if (_isFocusMode == false)
@@ -95,15 +115,14 @@ namespace Basement
             if (_isFocusMode == false)
                 FocusCamera();
 
-            _roomUI.SetRoom(this);
-            _roomUI.Open();
+            OpenUI();
         }
 
         public void OnMouseUp()
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            if (_basement.GetCurrentMode() == BasementMode.Basement) FocusRoom();
+            if (_basement.GetCurrentBasementMode() == BasementMode.Basement) FocusRoom();
             else FurnitureSetting();
         }
 

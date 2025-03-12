@@ -1,3 +1,4 @@
+using Basement;
 using Basement.Training;
 using DG.Tweening;
 using UI;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class SkillTreePanel : MonoBehaviour
 {
     public SkillTree[] skillTrees;
-    private float _easingTime = 0.2f;
+    private float _easingTime = 0.3f;
 
     [SerializeField] private CharacterStatPointIndicator _characterStatPointIndicator;
 
@@ -37,6 +38,6 @@ public class SkillTreePanel : MonoBehaviour
 
     public void Close()
     {
-        RectTrm.DOAnchorPosY(-1920f, _easingTime);
+        RectTrm.DOAnchorPosY(-1080f, _easingTime);
     }
 }

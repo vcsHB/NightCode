@@ -17,6 +17,7 @@ namespace Basement
 
         protected override void Start()
         {
+            base.Start();
             _lodgingUI = UIManager.Instance.GetUIPanel(BasementRoomType.Lodging) as LodgingUI;
         }
 
@@ -45,9 +46,15 @@ namespace Basement
         public void CancelplaceCharacter()
             => _isCharacterPlaced = false;
 
-        protected override void CloseUI()
+        public override void CloseUI()
         {
             _lodgingUI.Close();
+        }
+
+        public override void OpenUI()
+        {
+            _roomUI.SetRoom(this);
+            _roomUI.Open();
         }
     }
 }

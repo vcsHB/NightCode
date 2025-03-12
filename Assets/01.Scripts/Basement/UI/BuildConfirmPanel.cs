@@ -22,4 +22,9 @@ public class BuildConfirmPanel : MonoBehaviour
             gameObject.SetActive(false);
         });
     }
+
+    internal void Open()
+    {
+        throw new NotImplementedException();
+    }
 }

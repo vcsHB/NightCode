@@ -1,4 +1,6 @@
 using Basement.Training;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Basement
@@ -7,10 +9,18 @@ namespace Basement
     {
         private CharacterEnum _positionedCharacter;
         private CafeUI _cafeUI;
+        private Queue<Customer> _lineUpCustomers;
+        private List<Customer> _exsistCustomers;
+        private float _customerLineUpTime;
+        private Customer _currentCustomer;
+        private bool _isCustomerLinedUp = false;
+        private List<Table> _tableList;
+
 
         public bool isCafeOpen = false;
         public BasementTime cafeOpenTime;
         public Furniture counterFurniture;
+        public Transform currentLineTrm;
 
         public CharacterEnum PositionedCharacter
         {
@@ -31,15 +41,48 @@ namespace Basement
 
         protected override void Start()
         {
-            counterFurniture.Init(this);
-            counterFurniture.InteractAction += OpenCafeUI;
+            base.Start();
             _cafeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Cafe) as CafeUI;
-            Init(BasementController);
+            _exsistCustomers = new List<Customer>();
+            _lineUpCustomers = new Queue<Customer>();
+
+            _tableList = GetComponentsInChildren<Table>().ToList();
         }
 
         private void OnDisable()
         {
             counterFurniture.InteractAction -= OpenCafeUI;
+        }
+
+        private Table FindEmptyTable()
+            => _tableList.Find(table => table.IsCustomerExsist());
+
+        private void Update()
+        {
+            if (_isCustomerLinedUp == false) return;
+
+            //TODO: Change require time to follow selected Character's stat
+            float requireTime = 3f; //3초에 1명씩 처리하는 씹 ACE
+
+            if (_currentCustomer == null)
+            {
+                bool customerExsist = _lineUpCustomers.TryDequeue(out _currentCustomer);
+                _customerLineUpTime = Time.time;
+
+                _isCustomerLinedUp = customerExsist;
+            }
+            else if(_customerLineUpTime + requireTime < Time.time)
+            {
+                _currentCustomer.SetTable(FindEmptyTable());
+                _currentCustomer = null;
+            }
+        }
+
+        public override void Init(BasementController basement)
+        {
+            base.Init(basement);
+            counterFurniture.Init(this);
+            counterFurniture.InteractAction += OpenCafeUI;
         }
 
         private void OpenCafeUI()
@@ -74,14 +117,33 @@ namespace Basement
             }
             if (isCustomerEnter == false) return;
 
-            string text = $"{totalCustomer}명 방문\n수익: {totalCosts}{(totalTips > 0? $"+TIP{totalTips}" : "")}";
+            string text = $"{totalCustomer}명 방문\n수익: {totalCosts}{(totalTips > 0 ? $"+TIP{totalTips}" : "")}";
             UIManager.Instance.msgText.PopMSGText(PositionedCharacter, text);
             //재화 추가해주기
         }
 
-        protected override void CloseUI()
+        public void EnterCustomer(Customer customer)
+        {
+            customer.Init(this);
+            customer.SetDestination(currentLineTrm);
+            _exsistCustomers.Add(customer);
+        }
+
+        public void LineUpCustomer(Customer customer)
+        {
+            _isCustomerLinedUp = true;
+            _lineUpCustomers.Enqueue(customer);
+            currentLineTrm.position += Vector3.right * customer.customerInfo.width;
+        }
+
+        public override void CloseUI()
         {
             _cafeUI.Close();
+        }
+        public override void OpenUI()
+        {
+            _roomUI.SetRoom(this);
+            _roomUI.Open();
         }
     }
 }

@@ -1,4 +1,5 @@
 using Basement.Mission;
+using System;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
@@ -8,11 +9,13 @@ namespace Basement
 {
     public class OfficeUI : MonoBehaviour, IWindowPanel
     {
+        public Office office;
         public Button moveLeftButton;
         public Button moveRightButton;
         public CharacterSelectPanel characterSelectPanel;
         public SkillTreePanel skillTreePanel;
         public MissionSelectPanel missionSelectPanel;
+
 
         private Dictionary<OfficeUIState, IWindowPanel> _officeUIDic;
         private OfficeUIState _currentUiState;

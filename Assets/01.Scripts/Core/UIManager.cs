@@ -12,6 +12,8 @@ namespace Basement
     {
         public Dictionary<BasementRoomType, IWindowPanel> basementRoomUI;
 
+        public BuildConfirmPanel buildConfirmPanel;
+        public BasementTimerUI timer;
         public FurnitureUI furnitureUI;
         public MSGText msgText;
         public RoomUI roomUI;

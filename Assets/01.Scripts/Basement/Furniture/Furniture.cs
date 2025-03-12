@@ -40,14 +40,14 @@ namespace Basement
         private void OnMouseUp()
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
-            if (_room.BasementController.GetCurrentMode() == BasementMode.Build) return;
+            if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Build) return;
             InteractAction?.Invoke();
         }
 
         private void OnMouseDown()
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
-            if (_room.BasementController.GetCurrentMode() == BasementMode.Basement) return;
+            if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Basement) return;
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             _offset = (Vector2)transform.position - mousePosition;
@@ -55,7 +55,7 @@ namespace Basement
 
         private void OnMouseDrag()
         {
-            if (_room.BasementController.GetCurrentMode() == BasementMode.Basement) return;
+            if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Basement) return;
 
             Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             SetPosition(mosuePosition);

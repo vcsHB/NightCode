@@ -46,15 +46,19 @@ namespace Basement
         private void OnClick()
         {
             if (_isOpen == false || EventSystem.current.IsPointerOverGameObject()) return;
-            buildConfirmPanel.gameObject.SetActive(true);
-            buildConfirmPanel.SetRoom(_roomSO, Build);
+
+            BuildConfirmPanel confirmPanel = UIManager.Instance.buildConfirmPanel;
+            confirmPanel.SetRoom(_roomSO, Build);
+            confirmPanel.Open();
         }
 
         private void Build()
         {
             if (CheckResource() == false) return;
+
             BasementManager.Instance.CreateRoom(_roomSO, _floor, _roomNumber);
             UseResource();
+
             gameObject.SetActive(false);
         }
 
@@ -64,16 +68,16 @@ namespace Basement
         private void UseResource()
             => BasementManager.Instance.UseResource(_roomSO.requireMoney);
 
-        public void Close()
-        {
-            _sr.color = _closeColor;
-            _isOpen = false;
-        }
-
         public void Open()
         {
             _sr.color = _openColor; 
             _isOpen = true;
+        }
+
+        public void Close()
+        {
+            _sr.color = _closeColor;
+            _isOpen = false;
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Basement
     public class BasementRoomSO : ScriptableObject
     {
         public string roomName;
+        public string roomExplain;
 
         public BasementRoom roomPf;
         public int maxSeatingCapacity;

@@ -1,4 +1,5 @@
-using Basement.Mission;
+using Basement.Quest;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Basement
@@ -7,18 +8,25 @@ namespace Basement
     {
         public Furniture table;
         private OfficeUI _officeUI;
+        [SerializeField]private List<DailyQuestSO> _questList;
 
         protected override void Start()
         {
-            table.Init(this);
-            table.InteractAction += InteractTable;
+            base.Start();
             _officeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Office) as OfficeUI;
-            Init(BasementController);
+            FocusRoom();
         }
 
         private void OnDisable()
         {
             table.InteractAction -= InteractTable;
+        }
+
+        public override void Init(BasementController basement)
+        {
+            base.Init(basement);
+            table.Init(this);
+            table.InteractAction += InteractTable;
         }
 
         private void InteractTable()
@@ -29,20 +37,21 @@ namespace Basement
         public override void FocusRoom()
         {
             bool isComplete = WorkManager.Instance.CurrentTime.hour >= WorkManager.Instance.endTime.hour;
+            Debug.Log("¾ßÇã");
 
-            if (isComplete)
-            {
-                FocusCamera();
-            }
-            else
-            {
-                base.FocusRoom();
-            }
+            if (isComplete) FocusCamera();
+            else base.FocusRoom();
         }
 
-        protected override void CloseUI()
+        public override void CloseUI()
         {
             _officeUI.Close();
+        }
+
+        public override void OpenUI()
+        {
+            _roomUI.SetRoom(this);
+            _roomUI.Open();
         }
     }
 }

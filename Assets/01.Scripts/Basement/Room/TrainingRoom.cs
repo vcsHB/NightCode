@@ -45,9 +45,15 @@ namespace Basement
             SetTraining(training);
         }
 
-        protected override void CloseUI()
+        public override void CloseUI()
         {
             _trainingExplain.Close();
+        }
+
+        public override void OpenUI()
+        {
+            _roomUI.SetRoom(this);
+            _roomUI.Open();
         }
     }
 }
