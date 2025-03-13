@@ -1,17 +1,19 @@
+using Basement;
 using Basement.Training;
 using DG.Tweening;
+using UI;
 using UnityEngine;
 
-public class SkillTreePanel : MonoBehaviour, IUIPanel
+public class SkillTreePanel : MonoBehaviour
 {
     public SkillTree[] skillTrees;
-    private float _easingTime = 0.2f;
+    private float _easingTime = 0.3f;
 
     [SerializeField] private CharacterStatPointIndicator _characterStatPointIndicator;
 
     private RectTransform RectTrm => transform as RectTransform;
 
-    public void OpenSkillTree(CharacterEnum characterType)
+    public void InitSkillTree(CharacterEnum characterType)
     {
         _characterStatPointIndicator.SetCharacter(characterType);
 
@@ -28,15 +30,14 @@ public class SkillTreePanel : MonoBehaviour, IUIPanel
         }
     }
 
-
-    public void Open(Vector2 position)
+    public void Open()
     {
         RectTrm.DOAnchorPosY(0f, _easingTime);
-        OpenSkillTree(0);
+        InitSkillTree(0);
     }
 
     public void Close()
     {
-        RectTrm.DOAnchorPosY(-1920f, _easingTime);
+        RectTrm.DOAnchorPosY(-1080f, _easingTime);
     }
 }

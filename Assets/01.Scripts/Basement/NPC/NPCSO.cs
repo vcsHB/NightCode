@@ -11,8 +11,6 @@ namespace Basement.NPC
     [CreateAssetMenu(menuName = "SO/Basement/NPC")]
     public class NPCSO : ScriptableObject
     {
-        public Vector2 idleTime;
-        public Vector2 roamingTime;
         public float speed;
 
         [Range(0, 100)]
@@ -27,11 +25,5 @@ namespace Basement.NPC
             int idx = npcEmotionList.Count;
             return npcEmotionList[Random.Range(0, idx)];
         }
-
-        public float GetRandomIdleTime()
-            => Random.Range(idleTime.x, idleTime.y);
-
-        public float GetRandomRoamingTime()
-            => Random.Range(roamingTime.x, roamingTime.y);
     }
 }

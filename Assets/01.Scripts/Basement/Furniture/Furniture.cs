@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Basement
@@ -38,13 +39,15 @@ namespace Basement
 
         private void OnMouseUp()
         {
-            if (_room.IsBasementMode == false) return;
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Build) return;
             InteractAction?.Invoke();
         }
 
         private void OnMouseDown()
         {
-            if (_room.IsFurnitureSettingMode == false) return;
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Basement) return;
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             _offset = (Vector2)transform.position - mousePosition;
@@ -52,7 +55,7 @@ namespace Basement
 
         private void OnMouseDrag()
         {
-            if (_room.IsFurnitureSettingMode == false) return;
+            if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Basement) return;
 
             Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             SetPosition(mosuePosition);

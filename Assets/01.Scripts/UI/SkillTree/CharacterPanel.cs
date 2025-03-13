@@ -1,10 +1,15 @@
 using Basement;
 using Basement.Training;
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+namespace Basement
+{
+
+}
 public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public bool isSelected = false;
@@ -17,22 +22,18 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
     private int _index;
 
     public RectTransform RectTrm => transform as RectTransform;
+    public CharacterEnum CharacterType => _characterType;
 
     private void Awake()
     {
         _selectPanel = GetComponentInParent<CharacterSelectPanel>();
     }
 
-    private void Start()
-    {
-        UpdateStat();
-    }
-
     public void UpdateStat()
     {
-        int str = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Health);
-        int intel = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Intelligence);
-        int dex = TrainingManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Dexdexterity);
+        int str = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Health);
+        int intel = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Intelligence);
+        int dex = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Dexdexterity);
 
         _strText.SetText($"str pt: {str}");
         _intText.SetText($"int pt: {intel}");
@@ -48,47 +49,18 @@ public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnter
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (isSelected) return;
-        RectTrm.localScale = Vector3.one * 1.025f;
+        RectTrm.localScale = Vector3.one * 1.02f;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-
-        if (_selectPanel.CurrentIndex == _index)
-        {
-            SelectCharacter();
-        }
-        else
-        {
-            if (_index < _selectPanel.CurrentIndex || (_index == 3 && _selectPanel.CurrentIndex == 1))
-            {
-                _selectPanel.onCompleteAnimation += SelectCharacter;
-                _selectPanel.MoveToNextCharacter();
-            }
-            else
-            {
-                _selectPanel.onCompleteAnimation += SelectCharacter;
-                _selectPanel.MoveToPrevCharacter();
-            }
-        }
+        SelectCharacter();
     }
 
     private void SelectCharacter()
     {
-        _selectPanel.onCompleteAnimation += OpenSkillTree;
-        _selectPanel.SelectCharacter();
         isSelected = true;
-
-        _selectPanel.onCompleteAnimation -= SelectCharacter;
-    }
-
-    private void OpenSkillTree()
-    {
-        SkillTreePanel skillTreePanel = UIManager.Instance.GetUIPanel(UIType.SkillTreePanel) as SkillTreePanel;
-        skillTreePanel.Open(Vector2.zero);
-        skillTreePanel.OpenSkillTree(_characterType);
-
-        _selectPanel.onCompleteAnimation -= OpenSkillTree;
+        _selectPanel.SelectCharacter(_index);
     }
 
     public void Init(int i)

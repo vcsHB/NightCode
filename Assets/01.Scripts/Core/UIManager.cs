@@ -3,73 +3,54 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Basement;
 using Basement.Training;
+using UI;
 
 namespace Basement
 {
 
     public class UIManager : MonoSingleton<UIManager>
     {
-        public Dictionary<UIType, IUIPanel> uiPanels;
-        public TrainingUI trainingUI;
-        public RoomUI roomUI;
+        public Dictionary<BasementRoomType, IWindowPanel> basementRoomUI;
+
+        public Transform popupTextParent;
+        public PopupText popupText;
+        public BuildConfirmPanel buildConfirmPanel;
+        public BasementTimerUI timer;
+        public FurnitureUI furnitureUI;
         public MSGText msgText;
+        public RoomUI roomUI;
+        public BasementUI basementUI;
+        public ReturnButton returnButton;
 
         protected override void Awake()
         {
             base.Awake();
 
-            uiPanels = new Dictionary<UIType, IUIPanel>();
+            basementRoomUI = new Dictionary<BasementRoomType, IWindowPanel>();
 
-            IUIPanel techTreePanel = FindFirstObjectByType<SkillTreePanel>().GetComponent<IUIPanel>();
-            IUIPanel furniturePanel = FindFirstObjectByType<FurnitureUI>().GetComponent<IUIPanel>();
-            IUIPanel characterSelectPanel = FindFirstObjectByType<CharacterSelectPanel>().GetComponent<IUIPanel>();
+            IWindowPanel trainingUI = FindFirstObjectByType<TrainingUI>().GetComponent<IWindowPanel>();
+            IWindowPanel lodgingUI = FindFirstObjectByType<LodgingUI>().GetComponent<IWindowPanel>();
+            IWindowPanel cafeUI = FindFirstObjectByType<CafeUI>().GetComponent<IWindowPanel>();
+            IWindowPanel officeUI = FindFirstObjectByType<OfficeUI>().GetComponent<IWindowPanel>();
 
-            techTreePanel.Close();
-            furniturePanel.Close();
-            characterSelectPanel.Close();
-
-            uiPanels.Add(UIType.FurnitureUI, furniturePanel);
-            uiPanels.Add(UIType.SkillTreePanel, techTreePanel);
-            uiPanels.Add(UIType.CharacterSelectPanel, characterSelectPanel);
+            basementRoomUI.Add(BasementRoomType.TrainingRoom, trainingUI);
+            basementRoomUI.Add(BasementRoomType.Lodging, lodgingUI);
+            basementRoomUI.Add(BasementRoomType.Cafe, cafeUI);
+            basementRoomUI.Add(BasementRoomType.Office, officeUI);
         }
 
-        public IUIPanel GetUIPanel(UIType uiType) => uiPanels[uiType];
-
-        //디버깅용 코드
-
-        private bool _trainingPanelOpen = false;
-        private bool _skillTreePanelOpen = false;
-        private void Update()
+        public void SetPopupText(string text, Vector2 position)
         {
-            if (Keyboard.current.tabKey.wasPressedThisFrame)
-            {
-                if (!_trainingPanelOpen)
-                {
-                    // uiPanels[UIType.TrainingPanel].Open(Vector2.zero);
-                    _trainingPanelOpen = true;
-                }
-                else
-                {
-                    //uiPanels[UIType.TrainingPanel].Close();
-                    _trainingPanelOpen = false;
-                }
-            }
-
-            if (Keyboard.current.qKey.wasPressedThisFrame)
-            {
-                if (!_skillTreePanelOpen)
-                {
-                    uiPanels[UIType.SkillTreePanel].Open(Vector2.zero);
-                    _skillTreePanelOpen = true;
-                }
-                else
-                {
-                    uiPanels[UIType.SkillTreePanel].Close();
-                    _skillTreePanelOpen = false;
-                }
-            }
+            PopupText popup = Instantiate(popupText, popupTextParent);
+            popup.RectTrm.anchoredPosition = position;
+            popup.SetText(text);
         }
+
+        public IWindowPanel GetUIPanel(BasementRoomType uiType) 
+            => basementRoomUI[uiType];
     }
+
+
 
     public enum UIType
     {
