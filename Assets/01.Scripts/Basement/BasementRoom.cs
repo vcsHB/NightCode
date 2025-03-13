@@ -26,15 +26,6 @@ namespace Basement
         private RoomUI _roomUI;
         private ReturnButton _returnButton;
 
-        protected ReturnButton ReturnButton
-        {
-            get
-            {
-                if (_returnButton == null)
-                    _returnButton = UIManager.Instance.returnButton;
-                return _returnButton;
-            }
-        }
         protected FurnitureUI FurnitureUI
         {
             get
@@ -92,7 +83,7 @@ namespace Basement
 
         public void ReturnButtonCloseAllUI()
         {
-            UIManager.Instance.returnButton.ChangeReturnAction(RoomUI.Close);
+            //UIManager.Instance.returnButton.ChangeReturnAction(RoomUI.Close);
         }
 
         public void FocusCamera()

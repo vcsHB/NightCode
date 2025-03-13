@@ -86,7 +86,7 @@ namespace Basement
         {
             CafeUI.Init(this);
             CafeUI.Open();
-            UIManager.Instance.returnButton.ChangeReturnAction(CafeUI.Close);
+            //UIManager.Instance.returnButton.ChangeReturnAction(CafeUI.Close);
             UIManager.Instance.basementUI.Close();
             RoomUI.Close();
         }

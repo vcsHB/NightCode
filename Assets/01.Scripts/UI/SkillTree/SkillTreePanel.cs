@@ -4,14 +4,13 @@ using DG.Tweening;
 using UI;
 using UnityEngine;
 
-public class SkillTreePanel : MonoBehaviour
+public class SkillTreePanel : BasementCommonUI
 {
+    [Space]
     public SkillTree[] skillTrees;
-    private float _easingTime = 0.3f;
-
+    public OfficeUI _office;
     [SerializeField] private CharacterStatPointIndicator _characterStatPointIndicator;
 
-    private RectTransform RectTrm => transform as RectTransform;
 
     public void InitSkillTree(CharacterEnum characterType)
     {
@@ -30,14 +29,18 @@ public class SkillTreePanel : MonoBehaviour
         }
     }
 
-    public void Open()
+    public override void Open()
     {
-        RectTrm.DOAnchorPosY(0f, _easingTime);
         InitSkillTree(0);
+        base.Open();
     }
-
-    public void Close()
+    protected override void CloseAnimation()
     {
-        RectTrm.DOAnchorPosY(-1080f, _easingTime);
+        base.CloseAnimation();
+        _office.characterSelectPanel.ReturnToSelectPanel();
+    }
+    public void Init(OfficeUI office)
+    {
+        _office = office;
     }
 }

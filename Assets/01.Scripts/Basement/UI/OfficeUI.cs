@@ -7,66 +7,46 @@ using UnityEngine.UI;
 
 namespace Basement
 {
-    public class OfficeUI : MonoBehaviour, IWindowPanel
+    public class OfficeUI : BasementUI
     {
+        [Space]
         public Office office;
-        public Button moveLeftButton;
-        public Button moveRightButton;
+
+        //init panel
         public CharacterSelectPanel characterSelectPanel;
         public SkillTreePanel skillTreePanel;
+
+        //next panel
         public MissionSelectPanel missionSelectPanel;
 
-
-        private Dictionary<OfficeUIState, IWindowPanel> _officeUIDic;
-        private OfficeUIState _currentUiState;
+        public Button returnBtn;
+        public BasementUI returnBtnUI => returnBtn.GetComponent<BasementUI>();
 
         private void Awake()
         {
-            _officeUIDic = new Dictionary<OfficeUIState, IWindowPanel>();
-            _officeUIDic.Add(OfficeUIState.MissionSelect, missionSelectPanel);
-            _officeUIDic.Add(OfficeUIState.CharacterSelect, characterSelectPanel);
+            skillTreePanel.Init(this);
             characterSelectPanel.Init(this);
-
-            moveLeftButton.onClick.AddListener(() => ChangeState(OfficeUIState.MissionSelect));
-            moveRightButton.onClick.AddListener(() => ChangeState(OfficeUIState.CharacterSelect));
+            characterSelectPanel.SetUILink(skillTreePanel);
         }
 
-        private void OnDisable()
+        protected override void OpenAnimation()
         {
-            moveLeftButton.onClick.RemoveAllListeners();
-            moveRightButton.onClick.RemoveAllListeners();
+            characterSelectPanel.SetOppositeUI(missionSelectPanel);
+
+            returnBtnUI.Open();
+            characterSelectPanel.Open();
+            onCompleteClose?.Invoke();
         }
 
-        private void ChangeState(OfficeUIState uiState)
+        protected override void CloseAnimation()
         {
-            if (_currentUiState != uiState) _officeUIDic[_currentUiState].Close();
-            _currentUiState = uiState;
-            _officeUIDic[_currentUiState].Open();
+            characterSelectPanel.RemoveOppositeUI(true);
+            characterSelectPanel.CloseAllUI();
+            returnBtnUI.Close();
 
-            moveRightButton.gameObject.SetActive(uiState == OfficeUIState.MissionSelect);
-            moveLeftButton.gameObject.SetActive(uiState == OfficeUIState.CharacterSelect);
-        }
-
-        public void Open()
-        {
-            moveLeftButton.gameObject.SetActive(true);
-            moveRightButton.gameObject.SetActive(true);
-            ChangeState(OfficeUIState.CharacterSelect);
-        }
-
-        public void Close()
-        {
-            moveLeftButton.gameObject.SetActive(false);
-            moveRightButton.gameObject.SetActive(false);
-            _officeUIDic[_currentUiState].Close();
             UIManager.Instance.roomUI.Open();
             UIManager.Instance.basementUI.Open();
-        }
-
-        private enum OfficeUIState
-        {
-            CharacterSelect,
-            MissionSelect,
+            onCompleteClose?.Invoke();
         }
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Basement
 {
-    public abstract class BasementRoomCharacterPlaceUI : MonoBehaviour, IWindowPanel
+    public abstract class BasementRoomCharacterPlaceUI : BasementUI
     {
         public Image icon;
         public TMP_Dropdown characterSelectDropDown;
@@ -16,10 +16,6 @@ namespace Basement
         public List<GameObject> canNotSetCharacter;
 
         protected CharacterEnum _selectedCharacter;
-
-        public abstract void Open();
-        public abstract void Close();
-
 
         protected virtual void Awake()
         {

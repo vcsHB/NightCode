@@ -7,9 +7,9 @@ using Basement;
 using UI;
 using UnityEngine.UI;
 
-public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
+public class CharacterSelectPanel : BasementUI
 {
-    public event Action onCompleteAnimation;
+    public event Action onCompleteReturnAnimation;
 
     [SerializeField] private CharacterPanel[] _characterPanels;
     [SerializeField] private RectTransform _panelRect;
@@ -20,6 +20,7 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
     private int _selectedIndex = -1;
     private Vector2[] _originPositions;
     private readonly Vector2 _selectedPosition = new Vector2(-1500, -390);
+    private bool _isReturning = false;
 
     private RectTransform _rectTrm => transform as RectTransform;
 
@@ -61,30 +62,32 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
                 .OnComplete(_officeUI.skillTreePanel.Open);
         }
 
-        UIManager.Instance.returnButton.ChangeReturnAction(ReturnToSelectPanel);
+        //UIManager.Instance.returnButton.ChangeReturnAction(ReturnToSelectPanel);
         _selectedIndex = index;
     }
 
     public void ReturnToSelectPanel()
     {
+        _isReturning = true;
+        //_officeUI.skillTreePanel.Close();
+        //_officeUI.office.ReturnButtonCloseAllUI();
+
         if (_seq != null && _seq.active)
             _seq.Complete();
-
 
         _seq = DOTween.Sequence();
         _seq.Append(_panelRect.DOAnchorPosX(0, 0.3f))
             .Join(_characterPanels[_selectedIndex].RectTrm.DOAnchorPos(_originPositions[_selectedIndex], 0.3f))
-            .OnStart(() =>
+            .OnComplete(() =>
             {
-                _officeUI.skillTreePanel.Close();
-                _officeUI.office.ReturnButtonCloseAllUI();
-                UIManager.Instance.returnButton.ChangeReturnAction(_officeUI.Close);
+                _isReturning = false;
+                onCompleteClose?.Invoke();
             });
 
         _selectedIndex = -1;
     }
 
-    public void Open()
+    protected override void OpenAnimation()
     {
         if (_tween != null && _tween.active)
             _tween.Kill();
@@ -92,21 +95,28 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
         for (int i = 0; i < 3; i++)
             _characterPanels[i].UpdateStat();
 
-        _tween = _rectTrm.DOAnchorPosX(0, 0.3f);
+        _tween = _rectTrm.DOAnchorPosX(0, 0.3f)
+                .OnComplete(() => onCompleteReturnAnimation?.Invoke());
     }
 
-    public void Close()
+    protected override void CloseAnimation()
     {
-        if (_selectedIndex != -1)
+        //if (_selectedIndex != -1)
+        //{
+        //    ReturnToSelectPanel();
+        //    return;
+        //}
+
+        if (_isReturning)
         {
-            ReturnToSelectPanel();
-            _officeUI.skillTreePanel.Close();
+            onCompleteReturnAnimation += CloseAnimation;
             return;
         }
 
         if (_tween != null && _tween.active)
             _tween.Kill();
 
-        _tween = _rectTrm.DOAnchorPosX(470, 0.3f);
+        _tween = _rectTrm.DOAnchorPosX(470, 0.3f)
+                .OnComplete(() => onCompleteClose?.Invoke());
     }
 }

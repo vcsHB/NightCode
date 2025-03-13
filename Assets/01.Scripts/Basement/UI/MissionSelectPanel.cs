@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Basement.Mission
 {
-    public class MissionSelectPanel : MonoBehaviour, IWindowPanel
+    public class MissionSelectPanel : BasementUI
     {
         public List<MissionSO> missions;
         public MissionSelectButton button;
@@ -36,12 +36,14 @@ namespace Basement.Mission
             });
         }
 
-        public void Close()
+        protected override void CloseAnimation()
         {
             if (_seq != null && _seq.active)
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
+            _seq.OnComplete(() => onCompleteClose?.Invoke());
+
             float insertTime = 0;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
             {
@@ -50,12 +52,13 @@ namespace Basement.Mission
             }
         }
 
-        public void Open()
+        protected override void OpenAnimation()
         {
             if (_seq != null && _seq.active)
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
+            _seq.OnComplete(() => onCompleteOpen?.Invoke());
             float insertTime = 0.5f;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
             {
