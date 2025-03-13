@@ -1,4 +1,4 @@
-using GGM.Core.StatSystem;
+using StatSystem;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/StatIncreaseNode")]

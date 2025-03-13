@@ -4,10 +4,14 @@ using Combat;
 using Combat.Casters;
 using ObjectManage;
 using UnityEngine;
+using UnityEngine.Events;
 namespace Agents.Players
 {
     public class GrabController : MonoBehaviour, IAgentComponent
     {
+        public UnityEvent OnPullEvent;
+        public UnityEvent OnThrowEvent;
+
         [SerializeField] private ThrowDirectionMark _throwDirectionMark;
         private bool _isComboComplete;
         private Player _player;
@@ -41,7 +45,7 @@ namespace Agents.Players
 
         public void Grab()
         {
-            if(_currentGrabData.grabTarget == null) return;
+            if (_currentGrabData.grabTarget == null) return;
             _grabTarget = _currentGrabData.grabTarget;
             _grabTargetTrm = _grabTarget.GetTransform;
             _grabTarget.Grab();
@@ -75,6 +79,7 @@ namespace Agents.Players
 
             }
             _grabTarget.Release();
+            OnThrowEvent?.Invoke();
             _throwCaster.ForceCast(_grabTargetTrm.GetComponent<Collider2D>());
             _isComboComplete = false;
             IsPulled = false;
@@ -88,6 +93,7 @@ namespace Agents.Players
             // 당기기
             if (!_currentGrabData.isTargeted) return;
 
+            OnPullEvent?.Invoke();
             StartCoroutine(PullCoroutine(OnComplete));
 
         }

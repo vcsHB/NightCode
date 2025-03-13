@@ -23,12 +23,10 @@ namespace Agents.Enemies
 
             _btAgent = GetComponent<BehaviorGraphAgent>();
         }
-        protected override void HandleAgentDie()
-        {
-            IsDead = true;
-        }
-
-
+        // protected override void HandleAgentDie()
+        // {
+        //     IsDead = true;
+        // }
 
         public BlackboardVariable<T> GetVariable<T>(string variableName)
         {

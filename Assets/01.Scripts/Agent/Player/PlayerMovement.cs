@@ -15,10 +15,11 @@ namespace Agents.Players
         [Header("Move Setting")]
         [SerializeField] private float _moveSpeed = 5f;
         [SerializeField] private float _turboPower = 30f;
+        [SerializeField] private float _velocityLimit = 50f;
 
         private Player _player;
         private float _movementY;
-        
+
         public int jumpCount = 1;
         public bool CanJump => jumpCount > 0;
         private PlayerRenderer _playerRenderer;
@@ -34,7 +35,7 @@ namespace Agents.Players
 
         private void FixedUpdate()
         {
-            float xVelocity = _movementX * _moveSpeed * _moveSpeedMultiplier;
+            float xVelocity = _movementX * _speedStat.Value * _moveSpeedMultiplier;
             if (CanManualMove)
             {
                 if (Mathf.Abs(_movementY) > 0f)
@@ -43,10 +44,19 @@ namespace Agents.Players
                     _rigidCompo.linearVelocity = new Vector2(xVelocity, _rigidCompo.linearVelocity.y);
             }
             OnMovement?.Invoke(new Vector2(xVelocity, 0));
+            ClampVelocity();
             Velocity = _rigidCompo.linearVelocity;
         }
 
-        
+        public void ClampVelocity()
+        {
+            _rigidCompo.linearVelocity = Vector2.ClampMagnitude(_rigidCompo.linearVelocity, _velocityLimit);
+        }
+
+        public void ClampVelocityWithMoveSpeed()
+        {
+            _rigidCompo.linearVelocity = Vector2.ClampMagnitude(_rigidCompo.linearVelocity, _speedStat.Value * _moveSpeedMultiplier);
+        }
 
         public void SetYMovement(float yMovement)
         {
@@ -79,13 +89,13 @@ namespace Agents.Players
             SetVelocity(result.normalized * _turboPower);
         }
 
-        
+
 
         public virtual bool IsWallDetected()
         {
-            if(IsDirectionWall(Vector2.left))
+            if (IsDirectionWall(Vector2.left))
                 return true;
-            if(IsDirectionWall(Vector2.right))
+            if (IsDirectionWall(Vector2.right))
                 return true;
             WallDirection = 0f;
             return false;
@@ -104,7 +114,7 @@ namespace Agents.Players
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + (Vector3)Velocity);
-            if(_wallCheckerTrm != null)
+            if (_wallCheckerTrm != null)
             {
                 Gizmos.DrawLine(_wallCheckerTrm.position, _wallCheckerTrm.position + (Vector3)(Vector2.left * _wallDetectDistance));
                 Gizmos.DrawLine(_wallCheckerTrm.position, _wallCheckerTrm.position + (Vector3)(Vector2.right * _wallDetectDistance));

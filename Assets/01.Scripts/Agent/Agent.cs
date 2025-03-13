@@ -65,6 +65,7 @@ namespace Agents
 
         protected virtual void HandleAgentDie()
         {
+            if(IsDead) return;
             IsDead = true;
             OnDieEvent?.Invoke();
         }

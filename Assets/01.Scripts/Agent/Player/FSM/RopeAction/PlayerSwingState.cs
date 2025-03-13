@@ -35,6 +35,7 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             _currentRollingTime += Time.deltaTime;
+            //_animationTrigger.CastSwingGuard();
             if (_currentRollingTime > _duration)
             {
                 _stateMachine.ChangeState("Fall");

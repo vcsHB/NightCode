@@ -1,3 +1,4 @@
+using System;
 using Agents.Animate;
 using UnityEngine;
 namespace Agents.Players.FSM
@@ -19,6 +20,15 @@ namespace Agents.Players.FSM
             _renderer.FlipController(_mover.WallDirection);
             base.Enter();
             _player.PlayerInput.JumpEvent += HandleWallJump;
+            _player.PlayerInput.MovementEvent += HandleMove;
+        }
+
+        private void HandleMove(Vector2 direction)
+        {
+            if(Mathf.Sign(direction.x) != Mathf.Sign(_mover.WallDirection))
+            {
+                HandleWallJump();
+            }
         }
 
         public override void UpdateState()
@@ -38,6 +48,7 @@ namespace Agents.Players.FSM
         {
             base.Exit();
             _player.PlayerInput.JumpEvent -= HandleWallJump;
+            _player.PlayerInput.MovementEvent -= HandleMove;
             //_mover.StopImmediately(true);
             _mover.SetYMovement(0f);
             _mover.ResetGravityMultiplier();
@@ -45,7 +56,7 @@ namespace Agents.Players.FSM
 
         private void HandleWallJump()
         {
-            Vector2 jumpDirection = new Vector2(-_mover.WallDirection * 20f, 10f); // 벽 반대 방향 연산
+            Vector2 jumpDirection = new Vector2(-_mover.WallDirection * 30f, 10f); // 벽 반대 방향 연산
             _mover.CanManualMove = false;
             _mover.SetVelocity(jumpDirection);
             

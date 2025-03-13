@@ -5,7 +5,6 @@ namespace Agents.Enemies
     public class EnemyMovement : AgentMovement
     {
         [SerializeField] private float _moveSpeed = 4f;
-
         
         private void FixedUpdate()
         {

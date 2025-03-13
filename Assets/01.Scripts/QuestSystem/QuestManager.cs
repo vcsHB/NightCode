@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using QuestSystem.LevelSystem;
 using UnityEngine;
 using UnityEngine.Events;
 namespace QuestSystem
@@ -6,8 +8,12 @@ namespace QuestSystem
     [System.Serializable]
     public struct QuestData
     {
+        public QuestType questType;
         public float goalProgress;
         public float currentProgress;
+        public bool[] clearList;
+
+        public float ProgressRatio => currentProgress / goalProgress;
     }
 
     public class QuestManager : MonoBehaviour
@@ -15,9 +21,10 @@ namespace QuestSystem
         [Header("Events Setting")]
         public UnityEvent OnQuestCompleteEvent;
         public event Action<float, float> OnQuestProgressChangedEvent; // <Progress, GoalProgress>
-
+        public event Action<QuestSO> OnQuestChangeEvent;
         [Header("Essential Setting")]
         [SerializeField] private QuestListSO _listSO;
+        [SerializeField] private LevelController _levelController;
         [Header("Current Status")]
         [field: SerializeField] public QuestSO CurrentQuest { get; private set; }
         [SerializeField] private QuestData _currentQuestData;
@@ -25,17 +32,23 @@ namespace QuestSystem
         public bool IsComplete => _currentQuestData.currentProgress >= _currentQuestData.goalProgress;
 
 
-
         public void Initialize()
         {
 
         }
 
+        private void Start()
+        {
+            SetQuest(CurrentQuest);
+        }
 
-        public void ChangeQuest(QuestSO questSO)
+
+        public void SetQuest(QuestSO questSO)
         {
             CurrentQuest = questSO;
+            _currentQuestData.questType = questSO.questType;
             _currentQuestData.currentProgress = 0f;
+            _currentQuestData.clearList = new bool[CurrentQuest.targetInfoList.Length];
             _currentQuestData.goalProgress = CurrentQuest.goalProgress;
             InvokeQuestProgressChanged();
 
@@ -51,6 +64,13 @@ namespace QuestSystem
                 case QuestType.Rescue:
                     break;
             }
+
+            if (CurrentQuest.levelData != null)
+            {
+                _levelController.Initialize(CurrentQuest.levelData);
+                _levelController.AddQuestHandler(HandleQuestTargetComplete);
+            }
+            OnQuestChangeEvent?.Invoke(CurrentQuest);
         }
 
         public void IncreaseProgress(float amount)
@@ -59,13 +79,48 @@ namespace QuestSystem
             InvokeQuestProgressChanged();
             if (IsComplete)
             {
-                OnQuestCompleteEvent?.Invoke();
+                ClearQuest();
             }
+        }
+        private void ClearQuest()
+        {
+            _currentQuestData.currentProgress = _currentQuestData.goalProgress;
+            OnQuestCompleteEvent?.Invoke();
         }
 
         private void InvokeQuestProgressChanged()
         {
             OnQuestProgressChangedEvent?.Invoke(_currentQuestData.currentProgress, _currentQuestData.goalProgress);
+        }
+
+        private void HandleQuestTargetComplete(QuestTargetData completeData)
+        {
+
+            float strictProgress = 1 / CurrentQuest.goalProgress;
+            switch (CurrentQuest.questType)
+            {
+                case QuestType.KillSingleTarget:
+                    if (CurrentQuest.CheckCorrectTarget(completeData.targetCode))
+                    {
+                        ClearQuest();
+                    }
+                    break;
+                case QuestType.KillMultiTarget:
+                    if (CurrentQuest.CheckCorrectTarget(completeData.targetCode))
+                    {
+                        _currentQuestData.clearList[CurrentQuest.GetTargetIndex(completeData.targetCode)] = true;
+                        IncreaseProgress(strictProgress);
+                    }
+                    break;
+                case QuestType.KillAll:
+                    IncreaseProgress(completeData.completeLevel);
+                    break;
+                case QuestType.Rescue:
+                    IncreaseProgress(strictProgress);
+
+                    break;
+            }
+            //OnQuestChangeEvent?.Invoke(CurrentQuest);
         }
     }
 }

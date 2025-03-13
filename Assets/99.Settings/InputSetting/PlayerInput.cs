@@ -11,6 +11,7 @@ namespace InputManage
         public event Action<bool> OnShootEvent;
         public event Action OnShootRopeEvent;
         public event Action OnRemoveRopeEvent;
+        public event Action<Vector2> MovementEvent;
         public event Action JumpEvent;
         public event Action PullEvent;
         public event Action TurboEvent;
@@ -39,6 +40,7 @@ namespace InputManage
         public void OnMove(InputAction.CallbackContext context)
         {
             InputDirection = context.ReadValue<Vector2>();
+            MovementEvent?.Invoke(InputDirection);
         }
 
         public void OnAttack(InputAction.CallbackContext context)

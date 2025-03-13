@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace Basement
 {
@@ -30,6 +32,14 @@ namespace Basement
             else ChangeBasementMode(BasementMode.Basement);
         }
 
+
+        private void Update()
+        {
+            if (Keyboard.current.nKey.wasPressedThisFrame)
+            {
+                SceneManager.LoadScene("SpeedRunScene");
+            }
+        }
         public void ChangeBasementMode(BasementMode mode)
         {
             _currentMode = mode;

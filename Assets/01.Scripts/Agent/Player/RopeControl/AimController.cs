@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using ObjectManage;
 using ObjectManage.Rope;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Agents.Players
         [SerializeField] private float _wireClampedDistance = 12f;
         [SerializeField] private float _clampDuration = 0.2f;
         [SerializeField] private float _pullClampDuration = 0.01f;
+        [SerializeField] private SlashVFXPlayer _slashVFXPlayer;
         // Properties
         public bool canShoot = true;
         public bool IsShoot => _isShoot;
@@ -91,10 +93,11 @@ namespace Agents.Players
             //_playerController.turboCount = 1;
 
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
-
             if (_currentGrabData.isTargeted)
             { // Grab
                 HandleGrab();
+                _slashVFXPlayer.SetDirection(AimDirection);
+                _slashVFXPlayer.Play();
                 return new ShootData
                 {
                     isHanged = true,
@@ -149,6 +152,7 @@ namespace Agents.Players
             _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
             OnComplete?.Invoke();
+
             _clampCoroutine = null;
         }
 

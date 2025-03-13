@@ -56,5 +56,9 @@ namespace Combat.Casters
             foreach (ICastable caster in _casters)
                 caster.HandleSetData(data);
         }
+        public void SetTargetLayer(LayerMask whatIsTarget)
+        {
+            _targetLayer = whatIsTarget;
+        }
     }
 }
