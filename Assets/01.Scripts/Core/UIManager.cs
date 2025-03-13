@@ -19,6 +19,8 @@ namespace Basement
         public FurnitureUI furnitureUI;
         public MSGText msgText;
         public RoomUI roomUI;
+        public BasementUI basementUI;
+        public ReturnButton returnButton;
 
         protected override void Awake()
         {

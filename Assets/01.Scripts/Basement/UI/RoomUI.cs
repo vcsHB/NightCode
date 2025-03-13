@@ -7,7 +7,6 @@ namespace Basement
 {
     public class RoomUI : MonoBehaviour
     {
-        public Button returnBtn;
         [SerializeField] private RoomInfoUI _roomInfoUI;
         [SerializeField] private RectTransform _buttonTrm;
         
@@ -17,7 +16,8 @@ namespace Basement
         public void SetRoom(BasementRoom room)
         {
             _roomInfo = room;
-            returnBtn.onClick.AddListener(Close);
+            UIManager.Instance.returnButton.AddReturnAction(Close);
+            UIManager.Instance.returnButton.Open();
         }
 
         public void OnClickRoomInfoUI()
@@ -32,6 +32,7 @@ namespace Basement
                 _tween.Kill();
 
             _tween = _buttonTrm.DOAnchorPosX(85, 0.2f);
+            UIManager.Instance.returnButton.Open();
         }
 
         public void Close()
@@ -40,10 +41,9 @@ namespace Basement
                 _tween.Kill();
 
             _tween = _buttonTrm.DOAnchorPosX(-85, 0.2f);
-            _roomInfo?.ReturnFocus();
             _roomInfoUI?.Close();
 
-            returnBtn.onClick.RemoveAllListeners();
+            UIManager.Instance.returnButton.Close();
         }
     }
 }

@@ -7,8 +7,10 @@ namespace Basement
     {
         [SerializeField] private TrainingSetSO _trainingSetSO;
         [SerializeField] private Furniture _trainingFurniture;
-        [SerializeField] private TrainingSO training;
+        [SerializeField] private TrainingSO _training;
         private TrainingUI _trainingExplain;
+
+
 
         protected override void Awake()
         {
@@ -18,42 +20,39 @@ namespace Basement
 
         private void OnEnable()
         {
-            _trainingFurniture.InteractAction += Training;
+            _trainingFurniture.InteractAction += OpenTrainingUI;
             _trainingExplain = UIManager.Instance.GetUIPanel(BasementRoomType.TrainingRoom) as TrainingUI;
         }
 
         private void OnDisable()
         {
-            _trainingFurniture.InteractAction -= Training;
+            _trainingFurniture.InteractAction -= OpenTrainingUI;
         }
 
-        private void Training()
+        private void OpenTrainingUI()
         {
             _trainingExplain.Open();
-            _trainingExplain.SetTraining(training);
+            _trainingExplain.SetTraining(_training);
+            UIManager.Instance.basementUI.Close();
         }
 
         public void SetTraining(TrainingSO training)
         {
-            _trainingFurniture.InteractAction += Training;
+            _training = training;
+            _trainingFurniture.InteractAction += OpenTrainingUI;
             _trainingFurniture.Init(this);
         }
 
         public override void Init(BasementController basement)
         {
             base.Init(basement);
-            SetTraining(training);
+            SetTraining(_training);
         }
 
         public override void CloseUI()
         {
             _trainingExplain.Close();
-        }
-
-        public override void OpenUI()
-        {
-            _roomUI.SetRoom(this);
-            _roomUI.Open();
+            UIManager.Instance.basementUI.Open();
         }
     }
 }

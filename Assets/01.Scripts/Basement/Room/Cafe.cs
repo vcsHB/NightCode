@@ -8,8 +8,6 @@ namespace Basement
 {
     public class Cafe : BasementRoom
     {
-        private CafeUI _cafeUI;
-
         private Queue<Customer> _lineUpCustomers;
         private List<Customer> _exsistCustomers;
         private List<Table> _tableList;
@@ -30,16 +28,21 @@ namespace Basement
         [SerializeField] private CustomerSO debugCustomer;
         [SerializeField] private CafeNPC npc;
 
+        private CafeUI _cafeUI;
+        public CafeUI CafeUI
+        {
+            get
+            {
+                if(_cafeUI == null)
+                    _cafeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Cafe) as CafeUI;
+                return _cafeUI;
+            }
+        }
+
         protected override void Awake()
         {
             base.Awake();
             npc.Init(this);
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-            _cafeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Cafe) as CafeUI;
             _exsistCustomers = new List<Customer>();
             _lineUpCustomers = new Queue<Customer>();
             menuWaitingCustomers = new Queue<Customer>();
@@ -81,8 +84,11 @@ namespace Basement
 
         private void OpenCafeUI()
         {
-            _cafeUI.Init(this);
-            _cafeUI.Open();
+            CafeUI.Init(this);
+            CafeUI.Open();
+            UIManager.Instance.returnButton.ChangeReturnAction(CafeUI.Close);
+            UIManager.Instance.basementUI.Close();
+            RoomUI.Close();
         }
 
         private void SetCustomerTable()
@@ -118,7 +124,7 @@ namespace Basement
 
         public void EnterCustomer(Customer customer)
         {
-            customer.SetDestination(currentLineTrm.position); 
+            customer.SetDestination(currentLineTrm.position);
             customer.Init(this);
             _exsistCustomers.Add(customer);
         }
@@ -137,12 +143,7 @@ namespace Basement
 
         public override void CloseUI()
         {
-            _cafeUI.Close();
-        }
-        public override void OpenUI()
-        {
-            _roomUI.SetRoom(this);
-            _roomUI.Open();
+            CafeUI.Close();
         }
 
         public override void Init(BasementController basement)

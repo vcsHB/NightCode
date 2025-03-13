@@ -15,9 +15,9 @@ namespace Basement
         public CharacterEnum characterEnum => _character;
         public bool IsCharacterPlaced => _isCharacterPlaced;
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             _lodgingUI = UIManager.Instance.GetUIPanel(BasementRoomType.Lodging) as LodgingUI;
         }
 
@@ -35,6 +35,7 @@ namespace Basement
             base.FocusRoom();
             _lodgingUI.Init(this);
             _lodgingUI.Open();
+            UIManager.Instance.basementUI.Close();
         }
 
         public void SetCharacter(CharacterEnum character)
@@ -49,12 +50,7 @@ namespace Basement
         public override void CloseUI()
         {
             _lodgingUI.Close();
-        }
-
-        public override void OpenUI()
-        {
-            _roomUI.SetRoom(this);
-            _roomUI.Open();
+            UIManager.Instance.basementUI.Open();
         }
     }
 }

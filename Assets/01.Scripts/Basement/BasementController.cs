@@ -17,7 +17,6 @@ namespace Basement
         [SerializeField] private Office _office;
         [SerializeField] private float _dragSkipDist = 2;
         [SerializeField] private float _dragMaxDist = 3;
-        [SerializeField] private GameObject _leftButton, _rightButton;
 
         private BasementMode _currentMode = BasementMode.Basement;
         private List<BasementBuildUI> _buildUISet;
@@ -37,11 +36,11 @@ namespace Basement
 
             Office office = FindAnyObjectByType<Office>();
             Cafe cafe = FindAnyObjectByType<Cafe>();
-            office.Init(this);
-            cafe.Init(this);
-
             _basementRooms[0, 0] = office;
             _basementRooms[0, 1] = _basementRooms[0, 2] = cafe;
+
+            office.Init(this);
+            cafe.Init(this);
         }
 
         private void OnDisable()
@@ -81,8 +80,7 @@ namespace Basement
                         bool canGoRight = (_currentRoomNumber < 2 && _basementRooms[_currentFloor, _currentRoomNumber + 1] != null);
                         if (_currentFloor == 0 && _currentRoomNumber == 1) canGoRight = false;
 
-                        _leftButton.SetActive(canGoLeft);
-                        _rightButton.SetActive(canGoRight);
+                        UIManager.Instance.basementUI.OnChangeRoom(canGoLeft, canGoRight);
                         return;
                     }
                 }
@@ -134,14 +132,14 @@ namespace Basement
         {
             _basementRooms[_currentFloor, _currentRoomNumber--].CloseUI();
             _basementRooms[_currentFloor, _currentRoomNumber].FocusCamera();
-            _basementRooms[_currentFloor, _currentRoomNumber].OpenUI();
+            _basementRooms[_currentFloor, _currentRoomNumber].OpenRoomUI();
         }
 
         public void MoveRight()
         {
             _basementRooms[_currentFloor, _currentRoomNumber++].CloseUI();
             _basementRooms[_currentFloor, _currentRoomNumber].FocusCamera();
-            _basementRooms[_currentFloor, _currentRoomNumber].OpenUI();
+            _basementRooms[_currentFloor, _currentRoomNumber].OpenRoomUI();
         }
 
         public void SetRoom(BasementRoom room, int floor, int roomNumber)

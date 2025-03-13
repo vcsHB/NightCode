@@ -13,6 +13,7 @@ namespace Basement.CameraController
         public int currentCameraTargetFloor;
         public bool isFocus = false;
 
+        [SerializeField] private float _zoomOutSize;
         private CinemachineCamera _currentCamera;
         private CinemachineConfiner2D _confinder;
         private Vector3 _cameraOriginPos;
@@ -39,6 +40,10 @@ namespace Basement.CameraController
                 x => _currentCamera.Lens.OrthographicSize = x,
                 value, duration).SetEase(ease);
         }
+
+        public void ZoomOut(float duration = 0.2f, Ease ease = Ease.Linear)
+            =>Zoom(_zoomOutSize, duration, ease);
+        
 
         public void ChangeFollowToFloor(int floor, float duration, Action onComplete)
         {
@@ -74,7 +79,12 @@ namespace Basement.CameraController
         }
 
         public Transform GetCameraFollow()
-            => _currentCamera.Follow;
+        {
+            if (_currentCamera == null)
+                _currentCamera = mainCamera;
+
+            return _currentCamera.Follow;
+        }
 
         public void OffsetCamera(Vector2 dragValue)
         {

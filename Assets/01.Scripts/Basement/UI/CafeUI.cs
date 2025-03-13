@@ -68,7 +68,9 @@ namespace Basement
             openStoreBtn.onClick.RemoveListener(Close);
 
             if (_tween != null && _tween.active) _tween.Kill();
-            _tween = transform.DOScale(0, 0.2f);
+            _tween = transform.DOScale(0, 0.2f)
+                .OnComplete(() => UIManager.Instance.roomUI.Open());
+            
         }
 
         protected override void OnSelectCharacter(int value)

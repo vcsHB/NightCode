@@ -61,7 +61,7 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
                 .OnComplete(_officeUI.skillTreePanel.Open);
         }
 
-        _officeUI.office.ChangeReturnButtonListener(ReturnToSelectPanel);
+        UIManager.Instance.returnButton.ChangeReturnAction(ReturnToSelectPanel);
         _selectedIndex = index;
     }
 

@@ -7,14 +7,17 @@ namespace Basement
     public class Office : BasementRoom
     {
         public Furniture table;
-        private OfficeUI _officeUI;
         [SerializeField]private List<DailyQuestSO> _questList;
 
-        protected override void Start()
+        private OfficeUI _officeUI;
+        public OfficeUI OfficeUI
         {
-            base.Start();
-            _officeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Office) as OfficeUI;
-            FocusRoom();
+            get
+            {
+                if (_officeUI == null)
+                    _officeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Office) as OfficeUI;
+                return _officeUI;
+            }
         }
 
         private void OnDisable()
@@ -27,11 +30,18 @@ namespace Basement
             base.Init(basement);
             table.Init(this);
             table.InteractAction += InteractTable;
+
+            FocusCamera();
+            OpenRoomUI();
         }
 
         private void InteractTable()
         {
-            _officeUI.Open();
+            OfficeUI.Open();
+            RoomUI.Close();
+            UIManager.Instance.returnButton.Open();
+            UIManager.Instance.returnButton.AddReturnAction(OfficeUI.Close);
+            UIManager.Instance.basementUI.Close();
         }
 
         public override void FocusRoom()
@@ -44,13 +54,8 @@ namespace Basement
 
         public override void CloseUI()
         {
-            _officeUI.Close();
-        }
-
-        public override void OpenUI()
-        {
-            _roomUI.SetRoom(this);
-            _roomUI.Open();
+            OfficeUI.Close();
+            UIManager.Instance.basementUI.Open();
         }
     }
 }
