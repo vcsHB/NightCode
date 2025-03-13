@@ -7,32 +7,27 @@ using UnityEngine.UI;
 
 namespace Basement.Training
 {
-    public class TrainingUI : MonoBehaviour
+    public class TrainingUI : BasementRoomCharacterPlaceUI
     {
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _fatigueText;
         [SerializeField] private Slider _fatigueSlider;
         [SerializeField] private Slider _fatiguePreviewSlider;
         [SerializeField] private TextMeshProUGUI _explainText;
-        [SerializeField] private TMP_Dropdown _dropDown;
-        [SerializeField] private Image _iconImage;
         [SerializeField] private Button _checkButton;
-        [SerializeField] private GameObject _alreadyTrainingText;
-        [SerializeField] private GameObject _alreadyTrainigMark;
 
-        [SerializeField] private List<Sprite> _iconList;
         private TrainingSO _training;
 
         private RectTransform _rectTrm => transform as RectTransform;
         private Tween _tween;
 
-        private void Awake()
+        protected override void Awake()
         {
-            _dropDown.onValueChanged.AddListener(OnDropDownValueChange);
+            base.Awake();
             _checkButton.onClick.AddListener(Training);
         }
 
-        public void Open()
+        public override void Open()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();
@@ -40,7 +35,7 @@ namespace Basement.Training
             _tween = _rectTrm.DOAnchorPosX(-10f, 0.3f);
         }
 
-        public void Close()
+        public override void Close()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();
@@ -50,8 +45,8 @@ namespace Basement.Training
 
         private void Training()
         {
-            CharacterEnum selectedCharacter = (CharacterEnum)_dropDown.value;
-            TrainingManager.Instance.AddCharacterTraining(selectedCharacter, _training);
+            CharacterEnum selectedCharacter = (CharacterEnum)characterSelectDropDown.value;
+            WorkManager.Instance.AddRoomAction(selectedCharacter, _training.requireTime, $"{_nameText.text}중...", OnCompleteTraining);
             Close();
             //TrainingResult result = _training.GetResult(selectedCharacter);
 
@@ -70,24 +65,32 @@ namespace Basement.Training
             _training = training;
             _nameText.SetText(training.trainingVisibleName);
             _explainText.SetText(training.trainingExplain);
-            OnDropDownValueChange(0);
+            OnSelectCharacter(0);
             LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTrm);
         }
 
-        public void OnDropDownValueChange(int value)
+        protected override void OnSelectCharacter(int value)
         {
-            CharacterEnum character = (CharacterEnum)value;
+            base.OnSelectCharacter(value);
+            
+            int fatigue = CharacterManager.Instance.GetFatigue(_selectedCharacter);
 
-            bool isCharacterTraining = TrainingManager.Instance.TryGetTrainingInfo(character, out TrainingInfo info);
-            _alreadyTrainingText.SetActive(isCharacterTraining);
-            _alreadyTrainigMark.SetActive(isCharacterTraining);
-
-
-            int fatigue = TrainingManager.Instance.GetFatigue(character);
             _fatigueText.SetText($"{fatigue}<color=red>+{_training.requireFatigue}");
             _fatigueSlider.value = fatigue / 100f;
             _fatiguePreviewSlider.value = (fatigue + _training.requireFatigue) / 100f;
-            _iconImage.sprite = _iconList[value];
+        }
+
+        private void OnCompleteTraining(CharacterEnum character)
+        {
+            TrainingResult result = _training.GetResult(character);
+            int increaseValue = _training.increaseValue[result];
+            int increaseFatigue = _training.requireFatigue;
+
+            CharacterManager.Instance.AddFatigue(character, increaseFatigue);
+            CharacterManager.Instance.AddSkillPoint(character, _training.statType, increaseValue);
+
+            string trainingCompleteText = $"{_training.trainingVisibleName} Complete\n피로도 +{increaseFatigue}    {_training.statType.ToString()} pt +{increaseValue}";
+            UIManager.Instance.msgText.PopMSGText(character, trainingCompleteText);
         }
     }
 }

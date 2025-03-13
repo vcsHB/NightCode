@@ -1,11 +1,11 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Layouts;
 using UnityEngine.UI;
 
 namespace Basement
 {
+
     public class MSGTextBox : MonoBehaviour
     {
         public RectTransform rectTrm => transform as RectTransform;
@@ -64,7 +64,7 @@ namespace Basement
 
             _msgText = msgText;
             _text.SetText(text);
-            if(prevTextBox != this) _prevTextBox = prevTextBox;
+            if (prevTextBox != this) _prevTextBox = prevTextBox;
             LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
 
             rectTrm.anchoredPosition = new Vector2(-childRect.rect.width, 0);
@@ -89,7 +89,6 @@ namespace Basement
                 {
                     _timerStart = true;
                     _timer = Time.time;
-                    Debug.Log("¾ßÈ£");
                 });
         }
 

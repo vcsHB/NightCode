@@ -13,14 +13,16 @@ namespace Basement
         [SerializeField] private TextMeshProUGUI _explainText;
 
         private Tween _tween;
-        private BasementRoomSO _roomSO;
         private bool _isOpen = false;
         private bool _isMouseEnter = false;
 
         private RectTransform _rctTrm => transform as RectTransform;
 
         public void SetRoomSO(BasementRoomSO roomSO)
-            => _roomSO = roomSO;
+        {
+            _nameText.SetText(roomSO.roomName);
+            _explainText.SetText(roomSO.roomExplain);
+        }
 
         private void Update()
         {

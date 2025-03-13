@@ -8,10 +8,12 @@ namespace Basement
     public class BasementRoomSO : ScriptableObject
     {
         public string roomName;
+        public string roomExplain;
 
         public BasementRoom roomPf;
         public int maxSeatingCapacity;
         public int requireMoney;
+        public float cameraMoveDist;
     }
 
     public enum TestResourceType

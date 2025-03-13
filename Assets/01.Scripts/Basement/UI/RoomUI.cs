@@ -9,15 +9,15 @@ namespace Basement
     {
         [SerializeField] private RoomInfoUI _roomInfoUI;
         [SerializeField] private RectTransform _buttonTrm;
-        [SerializeField] private GameObject _returnBtn;
+        
         private BasementRoom _roomInfo;
         private Tween _tween;
 
         public void SetRoom(BasementRoom room)
         {
             _roomInfo = room;
-
-
+            UIManager.Instance.returnButton.AddReturnAction(Close);
+            UIManager.Instance.returnButton.Open();
         }
 
         public void OnClickRoomInfoUI()
@@ -28,11 +28,11 @@ namespace Basement
 
         public void Open()
         {
-            if(_tween != null && _tween.active)
+            if (_tween != null && _tween.active)
                 _tween.Kill();
 
             _tween = _buttonTrm.DOAnchorPosX(85, 0.2f);
-            _returnBtn.SetActive(true);
+            UIManager.Instance.returnButton.Open();
         }
 
         public void Close()
@@ -41,9 +41,9 @@ namespace Basement
                 _tween.Kill();
 
             _tween = _buttonTrm.DOAnchorPosX(-85, 0.2f);
-            _returnBtn.SetActive(false);
-            _roomInfo?.ReturnFocus();
             _roomInfoUI?.Close();
+
+            UIManager.Instance.returnButton.Close();
         }
     }
 }

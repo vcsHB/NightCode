@@ -20,13 +20,13 @@ namespace Basement.Training
 
         public void SetTimer()
         {
-            Time time = TrainingManager.Instance.CurrentTime;
+            BasementTime time = WorkManager.Instance.CurrentTime;
             _timerText.SetText($"{(time.hour < 12 ? "AM" : "PM")} {time.hour % 12} : {string.Format("{0,2:D2}", time.minute)}");
         }
 
         public void AddTime(int minute)
         {
-            TrainingManager.Instance.AddMinute(minute);
+            WorkManager.Instance.AddMinute(minute);
             SetTimer();
         }
 
@@ -36,7 +36,7 @@ namespace Basement.Training
 
             foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                if(TrainingManager.Instance.TryGetTrainingInfo(character, out TrainingInfo info))
+                if(WorkManager.Instance.TryGetTrainingInfo(character, out RoomActionInfo info))
                 {
                     if (info.remainTime < minimum)
                         minimum = info.remainTime;
@@ -45,7 +45,7 @@ namespace Basement.Training
 
             if (minimum > 6000) minimum = 0;
 
-            TrainingManager.Instance.AddMinute(minimum);
+            WorkManager.Instance.AddMinute(minimum);
             SetTimer();
         }
 

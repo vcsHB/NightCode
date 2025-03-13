@@ -58,7 +58,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""Turbo"",
                     ""type"": ""Button"",
                     ""id"": ""1135caa6-a774-4694-a608-aa5c4bdb3c85"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -67,7 +67,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""3d1e1eef-684e-4778-903a-d5ceccbaf645"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -242,6 +242,173 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Basement"",
+            ""id"": ""0ee7d667-10e2-4f47-b32f-9fe91c21a681"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""37e751b5-9b30-4b3f-9fef-6b063e1c212f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""82001aab-6e19-4b30-8015-6be44076ee38"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""d636f5e9-902f-44d1-b142-88d691081211"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""b848ed86-e007-4c65-9658-07be19c7d5e2"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""879eb157-a1f4-4367-9337-7759ed8126fb"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b2e88f43-ef2a-47d5-99e9-09bdfc4bb571"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b2c347b8-7fdf-4ea1-9a9b-61df194d31a2"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ae32e22f-49cf-4340-8c2e-770a147827b6"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""dde29885-0186-4a4f-8748-3e30a407db82"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""b535bb9a-c8e5-4500-847a-3ac3947e3975"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""91181d73-6025-48a4-9990-e129028ade17"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""9c0d64d8-38a1-442b-a0e1-46955334d7ad"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""9e2afa45-2aa4-48b2-83fc-3aff334084cd"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5362322e-9aa0-43bb-9081-ce2817426638"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7169df0-0c15-4647-82c1-198adb243cc1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -275,12 +442,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_OnEsc = m_UI.FindAction("OnEsc", throwIfNotFound: true);
+        // Basement
+        m_Basement = asset.FindActionMap("Basement", throwIfNotFound: true);
+        m_Basement_Move = m_Basement.FindAction("Move", throwIfNotFound: true);
+        m_Basement_MouseDown = m_Basement.FindAction("MouseDown", throwIfNotFound: true);
+        m_Basement_MouseMove = m_Basement.FindAction("MouseMove", throwIfNotFound: true);
     }
 
     ~@Controls()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, Controls.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, Controls.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Basement.enabled, "This will cause a leak and performance issues, Controls.Basement.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -478,6 +651,68 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Basement
+    private readonly InputActionMap m_Basement;
+    private List<IBasementActions> m_BasementActionsCallbackInterfaces = new List<IBasementActions>();
+    private readonly InputAction m_Basement_Move;
+    private readonly InputAction m_Basement_MouseDown;
+    private readonly InputAction m_Basement_MouseMove;
+    public struct BasementActions
+    {
+        private @Controls m_Wrapper;
+        public BasementActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Basement_Move;
+        public InputAction @MouseDown => m_Wrapper.m_Basement_MouseDown;
+        public InputAction @MouseMove => m_Wrapper.m_Basement_MouseMove;
+        public InputActionMap Get() { return m_Wrapper.m_Basement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BasementActions set) { return set.Get(); }
+        public void AddCallbacks(IBasementActions instance)
+        {
+            if (instance == null || m_Wrapper.m_BasementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_BasementActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @MouseDown.started += instance.OnMouseDown;
+            @MouseDown.performed += instance.OnMouseDown;
+            @MouseDown.canceled += instance.OnMouseDown;
+            @MouseMove.started += instance.OnMouseMove;
+            @MouseMove.performed += instance.OnMouseMove;
+            @MouseMove.canceled += instance.OnMouseMove;
+        }
+
+        private void UnregisterCallbacks(IBasementActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @MouseDown.started -= instance.OnMouseDown;
+            @MouseDown.performed -= instance.OnMouseDown;
+            @MouseDown.canceled -= instance.OnMouseDown;
+            @MouseMove.started -= instance.OnMouseMove;
+            @MouseMove.performed -= instance.OnMouseMove;
+            @MouseMove.canceled -= instance.OnMouseMove;
+        }
+
+        public void RemoveCallbacks(IBasementActions instance)
+        {
+            if (m_Wrapper.m_BasementActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IBasementActions instance)
+        {
+            foreach (var item in m_Wrapper.m_BasementActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_BasementActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public BasementActions @Basement => new BasementActions(this);
     private int m_KeyMouseSchemeIndex = -1;
     public InputControlScheme KeyMouseScheme
     {
@@ -500,5 +735,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IUIActions
     {
         void OnOnEsc(InputAction.CallbackContext context);
+    }
+    public interface IBasementActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnMouseDown(InputAction.CallbackContext context);
+        void OnMouseMove(InputAction.CallbackContext context);
     }
 }

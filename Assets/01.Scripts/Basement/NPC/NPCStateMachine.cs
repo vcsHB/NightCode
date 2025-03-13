@@ -10,6 +10,7 @@ namespace Basement.NPC
         private Dictionary<string, NPCState> _stateDic;
         private NPC _npc;
         public NPCState currentState { get; private set; }
+        public string currentStateString { get; private set; }
 
         public NPCStateMachine(NPC npc)
         {
@@ -26,6 +27,7 @@ namespace Basement.NPC
 
         public void ChangeState(string name)
         {
+            currentStateString = name;
             currentState?.ExitState();
             currentState = _stateDic[name];
             currentState?.EnterState();

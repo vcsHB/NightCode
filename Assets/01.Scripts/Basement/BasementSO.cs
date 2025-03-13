@@ -9,7 +9,7 @@ namespace Basement
         public readonly int maxFloor = 4;
         public int expendedFloor = 1;
 
-        public List<FloorInfo> floorInfos = new List<FloorInfo>();
+        //public List<FloorInfo> floorInfos = new List<FloorInfo>();
     }
 
     public enum BasementRoomType
