@@ -15,7 +15,6 @@ namespace Agents.Enemies.Highbinders
             Vector2 direction = targetPosition - (Vector2)_owner.transform.position;
             _shooter.SetDirection(direction * Random.insideUnitSphere);
             _shooter.FireProjectile();
-            print("asdasd");
         }
 
     }
