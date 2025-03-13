@@ -26,7 +26,7 @@ namespace Agents.Players.FSM
         private void HandleMove(Vector2 direction)
         {
             if(Mathf.Approximately(direction.x, 0f)) return;
-            
+
             if(Mathf.Sign(direction.x) != Mathf.Sign(_mover.WallDirection))
             {
                 HandleWallJump();
@@ -40,8 +40,8 @@ namespace Agents.Players.FSM
                 _mover.SetYMovement(0f);
                 _mover.ResetGravityMultiplier();
                 _mover.StopImmediately(true);
-                //_stateMachine.ChangeState("Fall");
-                HandleWallJump();
+                _stateMachine.ChangeState("Fall");
+                //HandleWallJump();
             }
         }
 
