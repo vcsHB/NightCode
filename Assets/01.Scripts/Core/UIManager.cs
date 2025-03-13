@@ -12,6 +12,8 @@ namespace Basement
     {
         public Dictionary<BasementRoomType, IWindowPanel> basementRoomUI;
 
+        public Transform popupTextParent;
+        public PopupText popupText;
         public BuildConfirmPanel buildConfirmPanel;
         public BasementTimerUI timer;
         public FurnitureUI furnitureUI;
@@ -33,6 +35,13 @@ namespace Basement
             basementRoomUI.Add(BasementRoomType.Lodging, lodgingUI);
             basementRoomUI.Add(BasementRoomType.Cafe, cafeUI);
             basementRoomUI.Add(BasementRoomType.Office, officeUI);
+        }
+
+        public void SetPopupText(string text, Vector2 position)
+        {
+            PopupText popup = Instantiate(popupText, popupTextParent);
+            popup.RectTrm.anchoredPosition = position;
+            popup.SetText(text);
         }
 
         public IWindowPanel GetUIPanel(BasementRoomType uiType) 

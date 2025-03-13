@@ -75,7 +75,7 @@ namespace Basement
         {
             base.OnSelectCharacter(value);
             icon.gameObject.SetActive(true);
-            profitText.SetText($"수익: {_cafe.profitRange.x} ~ {_cafe.profitRange.y}/1h");
+            //profitText.SetText($"수익: {_cafe.profitRange.x} ~ {_cafe.profitRange.y}/1h");
             _cafe.PositionedCharacter = (CharacterEnum)value;
         }
 
@@ -102,7 +102,7 @@ namespace Basement
             string passedTimeText = (passedHour > 0 || passedMinute > 0) ? $"({(passedHour > 0 ? $"{passedHour}시간" : "")}{(passedMinute > 0 ? $"{passedMinute}분" : "")})" : "";
 
             workTimeText.SetText($"{timeText} {passedTimeText}");
-            totalProfiText.SetText($"총수입: {_cafe.totalProfit}");
+            //totalProfiText.SetText($"총수입: {_cafe.totalProfit}");
 
             _cafe.isCafeOpen = false;
             cancelBtn.gameObject.SetActive(false);

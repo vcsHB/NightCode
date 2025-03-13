@@ -15,7 +15,7 @@ namespace Basement
         [SerializeField] private BasementInput _input;
         [SerializeField] private GameObject _buildModeObj;
         [SerializeField] private Office _office;
-        [SerializeField] private float _dragSkipDist =2;
+        [SerializeField] private float _dragSkipDist = 2;
         [SerializeField] private float _dragMaxDist = 3;
         [SerializeField] private GameObject _leftButton, _rightButton;
 
@@ -114,11 +114,14 @@ namespace Basement
                 }
 
                 if (isChanged == false)
+                {
+                    
                     BasementCameraManager.Instance.ResetCameraOffset();
+                }
             }
             else
             {
-                if (EventSystem.current.IsPointerOverGameObject()) 
+                if (EventSystem.current.IsPointerOverGameObject())
                 {
                     _isMousePressed = false;
                     return;

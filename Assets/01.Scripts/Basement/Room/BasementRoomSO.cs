@@ -13,6 +13,7 @@ namespace Basement
         public BasementRoom roomPf;
         public int maxSeatingCapacity;
         public int requireMoney;
+        public float cameraMoveDist;
     }
 
     public enum TestResourceType

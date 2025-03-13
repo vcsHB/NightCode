@@ -37,7 +37,6 @@ namespace Basement
         public override void FocusRoom()
         {
             bool isComplete = WorkManager.Instance.CurrentTime.hour >= WorkManager.Instance.endTime.hour;
-            Debug.Log("¾ßÇã");
 
             if (isComplete) FocusCamera();
             else base.FocusRoom();

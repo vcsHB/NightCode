@@ -96,6 +96,9 @@ namespace Basement.CameraController
             //_offset = Vector2.zero;
         }
 
+        public float GetCameraOffset()
+            => _currentCamera.Follow.transform.position.x - _originPos.x;
+
         //µð¹ö±ë¿ë
         private void Update()
         {

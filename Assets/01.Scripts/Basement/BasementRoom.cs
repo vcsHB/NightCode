@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.TextCore.Text;
 
 namespace Basement
 {
@@ -12,7 +13,8 @@ namespace Basement
         public List<Furniture> furnitureList;
         public BasementRoomSO roomSO;
 
-        [SerializeField] protected List<CharacterType> _selectedCharacters;
+        protected bool _isCharacterSelected = false;
+        protected CharacterEnum _selectedCharacter;
         protected bool _isFocusMode = false;
         protected FurnitureUI _furnitureUI;
         protected RoomUI _roomUI;
@@ -30,10 +32,6 @@ namespace Basement
         {
             _collider = GetComponent<Collider2D>();
             furnitureList = new List<Furniture>();
-            _selectedCharacters = new List<CharacterType>();
-
-            for (int i = 0; i < roomSO.maxSeatingCapacity; i++)
-                _selectedCharacters.Add(CharacterType.Null);
         }
 
         protected virtual void Start()
@@ -85,21 +83,31 @@ namespace Basement
             if (targetZoomValue > _zoomInValue) _originZoomValue = targetZoomValue;
 
             _basement.OnFocusRoom(this);
-            BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(_zoomInValue, 0.4f);
+            BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.2f, null);
+            BasementCameraManager.Instance.Zoom(_zoomInValue, 0.3f);
             _collider.enabled = false;
             _isFocusMode = true;
         }
 
         public virtual void ReturnFocus()
         {
-            BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(_originZoomValue, 0.4f);
+            BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.2f, null);
+            BasementCameraManager.Instance.Zoom(_originZoomValue, 0.3f);
             _collider.enabled = true;
             _isFocusMode = false;
             CloseUI();
         }
 
+        public virtual void PlaceCharacter(CharacterEnum charcter)
+        {
+            _selectedCharacter = charcter;
+            _isCharacterSelected = true;
+        }
+
+        public virtual void RemoveCharacter()
+        {
+            _isCharacterSelected = false;
+        }
 
         public void FurnitureSetting()
         {
@@ -139,13 +147,5 @@ namespace Basement
             _basement = basement;
             _basement.OnChangeBasmentMode += BasmentModeChangeOnFocusMode;
         }
-    }
-
-    public enum CharacterType
-    {
-        Null,
-        Katana,
-        CrecentBlade,
-        Cross
     }
 }
