@@ -66,6 +66,7 @@ namespace Agents.Players
         {
             _aimGroupController.SetAimMarkPosition(data.mousePosition);
             _aimGroupController.SetVirtualAim(data.isTargeted);
+            _aimGroupController.SetVirtualAimPosition(data.targetPosition);
 
             _currentAimData = data;
         }

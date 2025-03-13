@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using QuestSystem.LevelSystem;
+using UI.InGame.SystemUI.AlertSystem;
 using UnityEngine;
 using UnityEngine.Events;
 namespace QuestSystem
@@ -25,6 +25,7 @@ namespace QuestSystem
         [Header("Essential Setting")]
         [SerializeField] private QuestListSO _listSO;
         [SerializeField] private LevelController _levelController;
+        [SerializeField] private AlertGroup _alertGroup;
         [Header("Current Status")]
         [field: SerializeField] public QuestSO CurrentQuest { get; private set; }
         [SerializeField] private QuestData _currentQuestData;
@@ -85,6 +86,7 @@ namespace QuestSystem
         private void ClearQuest()
         {
             _currentQuestData.currentProgress = _currentQuestData.goalProgress;
+            _alertGroup.ShowAlert(CurrentQuest.cleatMessage);
             OnQuestCompleteEvent?.Invoke();
         }
 

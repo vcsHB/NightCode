@@ -20,6 +20,7 @@ namespace Agents.Players.FSM
             _grabThrower.Grab();
             _player.PlayerInput.PullEvent += HandlePullTarget;
             _player.PlayerInput.OnAttackEvent += HandleAttack;
+            _renderer.FlipController(_aimController.AimDirection.x);
             _isComboComplete = false;
         }
 

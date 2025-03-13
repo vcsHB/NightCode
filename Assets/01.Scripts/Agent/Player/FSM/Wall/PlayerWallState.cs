@@ -25,6 +25,8 @@ namespace Agents.Players.FSM
 
         private void HandleMove(Vector2 direction)
         {
+            if(Mathf.Approximately(direction.x, 0f)) return;
+            
             if(Mathf.Sign(direction.x) != Mathf.Sign(_mover.WallDirection))
             {
                 HandleWallJump();
