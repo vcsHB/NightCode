@@ -69,6 +69,8 @@ public class CharacterSelectPanel : MonoBehaviour, IWindowPanel
     {
         if (_seq != null && _seq.active)
             _seq.Complete();
+        
+        UIManager.Instance.returnButton.ChangeReturnAction(_officeUI.Close);
 
         _seq = DOTween.Sequence();
         _seq.Append(_panelRect.DOAnchorPosX(0, 0.3f))
