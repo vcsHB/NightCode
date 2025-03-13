@@ -60,6 +60,7 @@ namespace Basement
             moveRightButton.gameObject.SetActive(false);
             _officeUIDic[_currentUiState].Close();
             UIManager.Instance.roomUI.Open();
+            UIManager.Instance.basementUI.Open();
         }
 
         private enum OfficeUIState
