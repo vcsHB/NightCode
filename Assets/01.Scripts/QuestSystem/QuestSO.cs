@@ -20,7 +20,7 @@ namespace QuestSystem
 
         public bool CheckCorrectTarget(string targetCode)
         {
-            for (int i = 0; i < targetCode.Length; i++)
+            for (int i = 0; i < targetInfoList.Length; i++)
             {
                 if(targetInfoList[i].targetName.Equals(targetCode))
                 {
@@ -32,7 +32,7 @@ namespace QuestSystem
 
         public int GetTargetIndex(string targetCode)
         {
-            for (int i = 0; i < targetCode.Length; i++)
+            for (int i = 0; i < targetInfoList.Length; i++)
             {
                 if(targetInfoList[i].targetName.Equals(targetCode))
                 {
