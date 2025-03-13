@@ -16,9 +16,9 @@ namespace FeedbackSystem
             _owner = transform.parent.GetComponent<Agent>();
         }
 
-        protected void OnDisable()
-        {
-            FinishFeedback();
-        }
+        // protected void OnDisable()
+        // {
+        //     FinishFeedback();
+        // }
     }
 }

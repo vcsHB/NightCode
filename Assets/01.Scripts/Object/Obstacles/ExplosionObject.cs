@@ -1,5 +1,4 @@
-using Combat;
-using UnityEngine;
+using Combat.Casters;
 namespace ObjectManage.Obstacles
 {
 

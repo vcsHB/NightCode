@@ -16,13 +16,23 @@ namespace FeedbackSystem
 
         public override void CreateFeedback()
         {
-            _cameraShaker.Shake(_shakePower, _shakeDuration);
+            if(_cameraShaker == null)
+            {
+                Debug.LogWarning("CameraShaker is Null!");
+                return;
+            }
+            _cameraShaker?.Shake(_shakePower, _shakeDuration);
         }
 
 
         public override void FinishFeedback()
         {
-            _cameraShaker.StopShake();
+            if(_cameraShaker == null)
+            {
+                Debug.LogWarning("CameraShaker is Null!");
+                return;
+            }
+            _cameraShaker?.StopShake();
         }
     }
 }

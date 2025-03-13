@@ -7,7 +7,7 @@ namespace Combat
 {
     public class ParryBody : MonoBehaviour, IParryable
     {
-        public UnityEvent OnParryEvent;
+        public UnityEvent OnParrySuccessEvent;
         public UnityEvent OnCanParryEvent;
         [SerializeField] private float _parryResistance;
         private Agent _owner;
@@ -19,6 +19,11 @@ namespace Combat
             _owner = GetComponent<Agent>();
         }
 
+        /// <summary>
+        /// Try To Parry Method
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns> isSuccess To Parry</returns>
         public bool Parry(ParryData data)
         {
             if (!_canParry) return false;
@@ -26,6 +31,7 @@ namespace Combat
             SetCanParry(false);
             float totalStunDuration = data.stunPower;
             StartCoroutine(ParryedCoroutine(totalStunDuration));
+            OnParrySuccessEvent?.Invoke();
             return true;
         }
 
@@ -33,7 +39,8 @@ namespace Combat
         private IEnumerator ParryedCoroutine(float duration)
         {
             yield return new WaitForSeconds(duration);
-
+            // 스턴 해제
+            
         }
 
 

@@ -8,9 +8,11 @@ namespace Combat
     {
         public UnityEvent OnHealthChangedEvent;
         public UnityEvent OnDieEvent;
+        public UnityEvent OnReviveEvent;
         public event Action<float, float> OnHealthChangedValueEvent;
         public event Action<CombatData> OnHitCombatDataEvent;
         public float MaxHealth => _maxHealth;
+        public float CurrentHealth => _currentHealth;
         [SerializeField] private float _maxHealth;
         [SerializeField] private float _currentHealth = 0;
         [SerializeField] private float _hitResistanceCooltime = 0.15f;
@@ -30,7 +32,7 @@ namespace Combat
 
         public void ApplyDamage(CombatData data)
         {
-            if(!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return;
+            if (!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return;
 
             _currentHealth -= data.damage;
             _lastHitTime = Time.time;
@@ -45,6 +47,12 @@ namespace Combat
             HandleHealthChanged();
 
         }
+
+        public void Revive()
+        {
+            OnReviveEvent?.Invoke();
+        }
+
         private void CheckDie()
         {
             if (_currentHealth <= 0)

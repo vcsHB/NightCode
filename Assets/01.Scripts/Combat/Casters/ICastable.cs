@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Combat
+namespace Combat.Casters
 {
     public interface ICastable
     {

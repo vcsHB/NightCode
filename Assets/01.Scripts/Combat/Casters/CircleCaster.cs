@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace Combat
+namespace Combat.Casters
 {
 
 
@@ -15,8 +15,8 @@ namespace Combat
             ForceCast(_hits);
         }
 
-        private void OnDrawGizmos() {
-            
+        private void OnDrawGizmos()
+        {
             Gizmos.color = _gizmosColor;
             Gizmos.DrawWireSphere(CenterPosition, _detectRadius);
         }
