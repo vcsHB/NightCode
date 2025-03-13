@@ -9,7 +9,7 @@ namespace UI.InGame.SystemUI.AlertSystem
 
     public class AlertBox : MonoBehaviour
     {
-        public event Action OnDisableEvent;
+        public event Action<AlertBox> OnDisableEvent;
         [SerializeField] private TextMeshProUGUI _contentText;
         private RectTransform _rectTrm;
         [SerializeField] private float _displayDuration;
@@ -38,7 +38,8 @@ namespace UI.InGame.SystemUI.AlertSystem
 
             _canvasGroup.DOFade(0f, _disableDuration);
             _rectTrm.DOAnchorPosY(300f, _disableDuration);
-            OnDisableEvent?.Invoke();
+            yield return new WaitForSeconds(_disableDuration);
+            OnDisableEvent?.Invoke(this);
         }
     }
 
