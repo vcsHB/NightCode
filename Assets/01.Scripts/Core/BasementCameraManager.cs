@@ -9,6 +9,9 @@ namespace Basement.CameraController
 {
     public class BasementCameraManager : MonoSingleton<BasementCameraManager>
     {
+        private bool _isOffset = false;
+        private Transform _originOffsetTrm;
+        [SerializeField] private Transform _cameraOffsetFollow;
         public CinemachineCamera mainCamera;
         public int currentCameraTargetFloor;
         public bool isFocus = false;
@@ -16,9 +19,6 @@ namespace Basement.CameraController
         [SerializeField] private float _zoomOutSize;
         private CinemachineCamera _currentCamera;
         private CinemachineConfiner2D _confinder;
-        private Vector3 _cameraOriginPos;
-        private Vector2 _originPos;
-        private Vector2 _offset;
 
         private Tween _cameraMoveTween;
         private Tween _zoomTween;
@@ -42,8 +42,8 @@ namespace Basement.CameraController
         }
 
         public void ZoomOut(float duration = 0.2f, Ease ease = Ease.Linear)
-            =>Zoom(_zoomOutSize, duration, ease);
-        
+            => Zoom(_zoomOutSize, duration, ease);
+
 
         public void ChangeFollowToFloor(int floor, float duration, Action onComplete)
         {
@@ -63,17 +63,24 @@ namespace Basement.CameraController
         {
             if (target == null) return;
 
-            if (_cameraMoveTween != null && _cameraMoveTween.active) _cameraMoveTween.Kill();
-             _cameraOriginPos = _currentCamera.Follow.position - (Vector3)_offset;
-            _offset = Vector2.zero;
+            if (_cameraMoveTween != null && _cameraMoveTween.active)
+                _cameraMoveTween.Kill();
 
-            _cameraMoveTween = _currentCamera.Follow.DOMove(target.position, duration)
+            if (_isOffset == false)
+            {
+                _isOffset = true;
+                _originOffsetTrm = _currentCamera.Follow;
+                _cameraOffsetFollow.position = _currentCamera.Follow.position;
+                _currentCamera.Follow = _cameraOffsetFollow;
+            }
+
+            _cameraMoveTween = _cameraOffsetFollow.DOMove(target.position, duration)
                 .SetEase(easing)
                 .OnComplete(() =>
                 {
-                    _currentCamera.Follow.position = _cameraOriginPos;
                     _currentCamera.Follow = target;
                     onComplete?.Invoke();
+                    _isOffset = false;
                 });
 
         }
@@ -88,11 +95,19 @@ namespace Basement.CameraController
 
         public void OffsetCamera(Vector2 dragValue)
         {
+            //카메라가 움직이는 애니메이션 실행중일때는 오프셋을 적용 안 시켜줌
             if (_cameraMoveTween != null && _cameraMoveTween.active)
                 return;
 
-            _offset = dragValue;
-            _currentCamera.Follow.transform.position = _originPos + dragValue;
+            if (_isOffset == false)
+            {
+                _isOffset = true;
+                _originOffsetTrm = _currentCamera.Follow;
+                _cameraOffsetFollow.position = _currentCamera.Follow.position;
+                _currentCamera.Follow = _cameraOffsetFollow;
+            }
+
+            _cameraOffsetFollow.position = _originOffsetTrm.position + (Vector3)dragValue;
         }
 
         public void ResetCameraOffset()
@@ -100,14 +115,22 @@ namespace Basement.CameraController
             if (_cameraMoveTween != null && _cameraMoveTween.active)
                 _cameraMoveTween.Kill();
 
-            _cameraMoveTween = DOTween.To(() => _offset, x => _offset = x, Vector2.zero, 0.2f)
-                .OnUpdate(() => _currentCamera.Follow.position = _originPos + _offset);
+            _cameraMoveTween = _cameraOffsetFollow.DOMove(_originOffsetTrm.position, 0.2f)
+                .OnComplete(() =>
+                {
+                    _currentCamera.Follow = _originOffsetTrm;
+                    _isOffset = false;
+                });
+
             // = .DOMove(_originPos, 0.1f);
             //_offset = Vector2.zero;
         }
 
-        public float GetCameraOffset()
-            => _currentCamera.Follow.transform.position.x - _originPos.x;
+        public Vector2 GetCameraOffset()
+        {
+            if (_isOffset == false) return Vector2.zero;
+            return (_cameraOffsetFollow.position - _originOffsetTrm.position);
+        }
 
         //디버깅용
         private void Update()
@@ -117,9 +140,6 @@ namespace Basement.CameraController
             //if (Keyboard.current.oKey.wasPressedThisFrame)
             //    Zoom(5);
         }
-
-        public void StartDrag()
-            => _originPos = _currentCamera.Follow.position;
     }
 
 }

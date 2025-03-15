@@ -42,7 +42,7 @@ namespace Basement.Mission
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
-            _seq.OnComplete(() => onCompleteClose?.Invoke());
+            _seq.OnComplete(OnCompleteCloseAction);
 
             float insertTime = 0;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
@@ -58,8 +58,9 @@ namespace Basement.Mission
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
-            _seq.OnComplete(() => onCompleteOpen?.Invoke());
-            float insertTime = 0.5f;
+            _seq.OnComplete(OnCompleteOpenAction);
+
+            float insertTime = 0f;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
             {
                 _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x, 0.3f));

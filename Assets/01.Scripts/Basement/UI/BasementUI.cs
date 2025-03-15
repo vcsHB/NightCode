@@ -18,105 +18,156 @@ namespace Basement
         // 반대 UI: 이 UI끄면 저게 켜짐
         public BasementUI oppositeUI;
 
-        //동시에 끌지 말지
         private bool _isOpenCloseByOpposite = false;
-        [SerializeField] protected bool _openWithConnectedUI;
-        [SerializeField] protected bool _closeWithConnectedUI;
-        [SerializeField] protected bool _openAfterConnectedUICloseAnim;
-        [SerializeField] protected bool _closeAfterConnectedUICloseAnim;
-        [SerializeField] protected bool _openAfterLinkedUICloseAnim;
-        [SerializeField] protected bool _closeAfterLinkedUICloseAnim;
+
+
+        [SerializeField] protected bool _openCloseAfterAnim;
 
         #region Property
-        public bool OpenWithConnectedUI => _openWithConnectedUI;
-        public bool CloseWithConnectedUI => _closeWithConnectedUI;
-        public bool OpenAfterConnectedUICloseAnim => _openAfterConnectedUICloseAnim;
-        public bool CloseAfterConnectedUICloseAnim => _closeAfterConnectedUICloseAnim;
-        public bool OpenAfterLinkedUICloseAnim => _openAfterLinkedUICloseAnim;
-        public bool CloseAfterLinkedUICloseAnim => _closeAfterLinkedUICloseAnim;
-        public bool isOpend { get; private set; } = false;
+
+        public bool OpenCloseAfterAnim => _openCloseAfterAnim;
+        public bool isOpend { get; protected set; } = false;
+        public bool isLinkedUIOpend 
+        { 
+            get 
+            {
+                if (linkedUI == null) return false;
+                return linkedUI.isOpend;
+            }
+        }
 
         #endregion
 
         protected abstract void OpenAnimation();
         protected abstract void CloseAnimation();
 
+        protected virtual void OnCompleteCloseAction()
+        {
+            onCompleteClose?.Invoke();
+            onCompleteClose = null;
+        }
+
+        protected virtual void OnCompleteOpenAction()
+        {
+            onCompleteOpen?.Invoke();
+            onCompleteOpen = null;
+        }
+
         public virtual void Open()
         {
+            // 이미 열려 있으면 RETURN
+            if (isOpend) return;
+
+            isOpend = true;
+
+            // 연동된 UI 함께 열기
             if (connectedUIList != null)
             {
                 connectedUIList.ForEach(ui =>
                 {
-                    if (ui.OpenAfterConnectedUICloseAnim) onCompleteOpen += ui.Open;
-                    else if (ui.OpenWithConnectedUI) ui.Open();
+                    if (ui.OpenCloseAfterAnim) onCompleteOpen += ui.Open;
+                    else ui.Open();
                 });
             }
+
+
+            //반대쪽 UI 끄기
             if (oppositeUI != null)
             {
-                if (_isOpenCloseByOpposite)
-                {
-                    _isOpenCloseByOpposite = false;
-                }
+                //반대쪽에서 신호를 받아서 끄는거면 안해
+                if (_isOpenCloseByOpposite) _isOpenCloseByOpposite = false;
                 else
                 {
                     oppositeUI.OpenCloseByOpposite();
-                    oppositeUI.CloseAllUI();
+
+                    if (oppositeUI.OpenCloseAfterAnim) onCompleteOpen += oppositeUI.CloseAllUI;
+                    else oppositeUI.CloseAllUI();
                 }
             }
-            isOpend = true;
+
+            //여는 애니메이션
             OpenAnimation();
         }
 
         public virtual void Close()
         {
+            // 닫혀있으면 RETURN
+            if (isOpend == false) return;
+
+            // 연결되있는 UI를 먼저 확인해서 연결된 UI만 꺼줘
             if (linkedUI != null && linkedUI.isOpend)
             {
-                if (linkedUI.CloseAfterLinkedUICloseAnim) onCompleteClose += linkedUI.Close;
-                else linkedUI.Close();
-
+                linkedUI.Close();
                 return;
             }
+
+            isOpend = false;
+
+            // 연동된 UI 함께 꺼줘
             if (connectedUIList != null)
             {
                 connectedUIList.ForEach(ui =>
                 {
-                    if (ui.CloseAfterConnectedUICloseAnim) onCompleteClose += ui.Close;
-                    else if (ui.CloseWithConnectedUI) ui.Close();
+                    if (ui.OpenCloseAfterAnim) onCompleteClose += ui.Close;
+                    else ui.Close();
                 });
             }
+
+
+            // 반대쪽은 켜줘
             if (oppositeUI != null)
             {
-                if (_isOpenCloseByOpposite)
-                {
-                    _isOpenCloseByOpposite = false;
-                }
+                if (_isOpenCloseByOpposite) _isOpenCloseByOpposite = false;
                 else
                 {
                     oppositeUI.OpenCloseByOpposite();
-                    oppositeUI.Open();
+
+                    if (oppositeUI.OpenCloseAfterAnim) onCompleteClose += oppositeUI.Open;
+                    else oppositeUI.Open();
                 }
             }
-            isOpend = false;
+
+
             CloseAnimation();
         }
 
+        /// <summary>
+        /// Close All UI that connected and linked
+        /// opposite UI will be opend
+        /// </summary>
         public virtual void CloseAllUI()
         {
-            if (linkedUI != null && linkedUI.isOpend) linkedUI.Close();
+            if (linkedUI != null && linkedUI.isOpend)
+            {
+                if(linkedUI.OpenCloseAfterAnim)
+                {
+                    linkedUI.onCompleteClose += Close;
+                    linkedUI.Close();
+                    return;
+                }
+                linkedUI.Close();
+            }
+
+            isOpend = false;
             if (connectedUIList != null) connectedUIList.ForEach(ui => ui.Close());
+
             if (oppositeUI != null)
             {
-                if (_isOpenCloseByOpposite)
-                {
-                    _isOpenCloseByOpposite = false;
-                }
+                if (_isOpenCloseByOpposite) _isOpenCloseByOpposite = false;
                 else
                 {
                     oppositeUI.OpenCloseByOpposite();
-                    oppositeUI.Open();
+                    if(oppositeUI.OpenCloseAfterAnim)
+                    {
+                        onCompleteClose += oppositeUI.Open;
+                    }
+                    else
+                    {
+                        oppositeUI.Open();
+                    }
                 }
             }
-            isOpend = false;
+
             CloseAnimation();
         }
 
@@ -139,8 +190,8 @@ namespace Basement
         {
             if (oppositeUI == null) return;
 
-            if (closeOpositeUI) oppositeUI.Close();
             oppositeUI.oppositeUI = null;
+            if (closeOpositeUI) oppositeUI.Close();
             oppositeUI = null;
         }
 

@@ -14,13 +14,14 @@ public class CharacterSelectPanel : BasementUI
     [SerializeField] private CharacterPanel[] _characterPanels;
     [SerializeField] private RectTransform _panelRect;
 
-    private Tween _tween;
-    private Sequence _seq;
     private OfficeUI _officeUI;
     private int _selectedIndex = -1;
     private Vector2[] _originPositions;
     private readonly Vector2 _selectedPosition = new Vector2(-1500, -390);
     private bool _isReturning = false;
+
+    private Tween _openCloseTween;
+    private Sequence _selectPanelSeq;
 
     private RectTransform _rectTrm => transform as RectTransform;
 
@@ -42,22 +43,22 @@ public class CharacterSelectPanel : BasementUI
     {
         if (_selectedIndex != -1)
         {
-            if (_seq != null && _seq.active)
-                _seq.Complete();
+            if (_selectPanelSeq != null && _selectPanelSeq.active)
+                _selectPanelSeq.Complete();
 
-            _seq = DOTween.Sequence();
-            _seq.Append(_characterPanels[_selectedIndex].RectTrm.DOAnchorPos(_originPositions[_selectedIndex], 0.3f))
+            _selectPanelSeq = DOTween.Sequence();
+            _selectPanelSeq.Append(_characterPanels[_selectedIndex].RectTrm.DOAnchorPos(_originPositions[_selectedIndex], 0.3f))
                 .Join(_characterPanels[index].RectTrm.DOAnchorPos(_selectedPosition, 0.3f))
                 .Join(_panelRect.DOAnchorPosX(470, 0.3f))
                 .OnComplete(_officeUI.skillTreePanel.Open);
         }
         else
         {
-            if (_seq != null && _seq.active)
-                _seq.Complete();
+            if (_selectPanelSeq != null && _selectPanelSeq.active)
+                _selectPanelSeq.Complete();
 
-            _seq = DOTween.Sequence();
-            _seq.Append(_characterPanels[index].RectTrm.DOAnchorPos(_selectedPosition, 0.3f))
+            _selectPanelSeq = DOTween.Sequence();
+            _selectPanelSeq.Append(_characterPanels[index].RectTrm.DOAnchorPos(_selectedPosition, 0.3f))
                 .Join(_panelRect.DOAnchorPosX(470, 0.3f))
                 .OnComplete(_officeUI.skillTreePanel.Open);
         }
@@ -72,16 +73,16 @@ public class CharacterSelectPanel : BasementUI
         //_officeUI.skillTreePanel.Close();
         //_officeUI.office.ReturnButtonCloseAllUI();
 
-        if (_seq != null && _seq.active)
-            _seq.Complete();
+        if (_selectPanelSeq != null && _selectPanelSeq.active)
+            _selectPanelSeq.Complete();
 
-        _seq = DOTween.Sequence();
-        _seq.Append(_panelRect.DOAnchorPosX(0, 0.3f))
+        _selectPanelSeq = DOTween.Sequence();
+        _selectPanelSeq.Append(_panelRect.DOAnchorPosX(0, 0.3f))
             .Join(_characterPanels[_selectedIndex].RectTrm.DOAnchorPos(_originPositions[_selectedIndex], 0.3f))
             .OnComplete(() =>
             {
                 _isReturning = false;
-                onCompleteClose?.Invoke();
+                onCompleteReturnAnimation?.Invoke();
             });
 
         _selectedIndex = -1;
@@ -89,14 +90,14 @@ public class CharacterSelectPanel : BasementUI
 
     protected override void OpenAnimation()
     {
-        if (_tween != null && _tween.active)
-            _tween.Kill();
+        if (_openCloseTween != null && _openCloseTween.active)
+            _openCloseTween.Kill();
 
         for (int i = 0; i < 3; i++)
             _characterPanels[i].UpdateStat();
 
-        _tween = _rectTrm.DOAnchorPosX(0, 0.3f)
-                .OnComplete(() => onCompleteReturnAnimation?.Invoke());
+        _openCloseTween = _rectTrm.DOAnchorPosX(0, 0.3f)
+                .OnComplete(OnCompleteOpenAction);
     }
 
     protected override void CloseAnimation()
@@ -113,10 +114,10 @@ public class CharacterSelectPanel : BasementUI
             return;
         }
 
-        if (_tween != null && _tween.active)
-            _tween.Kill();
+        if (_openCloseTween != null && _openCloseTween.active)
+            _openCloseTween.Kill();
 
-        _tween = _rectTrm.DOAnchorPosX(470, 0.3f)
-                .OnComplete(() => onCompleteClose?.Invoke());
+        _openCloseTween = _rectTrm.DOAnchorPosX(470, 0.3f)
+                .OnComplete(OnCompleteCloseAction);
     }
 }

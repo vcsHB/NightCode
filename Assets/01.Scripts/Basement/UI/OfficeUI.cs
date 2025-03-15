@@ -20,6 +20,8 @@ namespace Basement
         public MissionSelectPanel missionSelectPanel;
 
         public Button returnBtn;
+
+        private RoomUI _roomUI;
         public BasementUI returnBtnUI => returnBtn.GetComponent<BasementUI>();
 
         private void Awake()
@@ -27,26 +29,34 @@ namespace Basement
             skillTreePanel.Init(this);
             characterSelectPanel.Init(this);
             characterSelectPanel.SetUILink(skillTreePanel);
+            _roomUI = UIManager.Instance.roomUI;
         }
 
         protected override void OpenAnimation()
         {
+            //SetOppositeUI(_roomUI);
             characterSelectPanel.SetOppositeUI(missionSelectPanel);
 
             returnBtnUI.Open();
             characterSelectPanel.Open();
-            onCompleteClose?.Invoke();
+            OnCompleteOpenAction();
         }
 
         protected override void CloseAnimation()
         {
+            if(characterSelectPanel.isLinkedUIOpend)
+            {
+                characterSelectPanel.Close();
+                isOpend = true;
+                return;
+            }
             characterSelectPanel.RemoveOppositeUI(true);
             characterSelectPanel.CloseAllUI();
             returnBtnUI.Close();
 
             UIManager.Instance.roomUI.Open();
             UIManager.Instance.basementUI.Open();
-            onCompleteClose?.Invoke();
+            OnCompleteCloseAction();
         }
     }
 }
