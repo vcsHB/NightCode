@@ -14,7 +14,9 @@ namespace ObjectManage.GimmickObjects
         public bool IsSolved{ get; set;}
 
         public void ResetGimmick();
-        public void Solve(LogicData data);
+
+        public void Trigger(LogicData data);
+        public void Solve();
         
     }
 }

@@ -11,7 +11,7 @@ namespace ObjectManage.GimmickObjects
     }
 
 
-    public class GimmickLogic : MonoBehaviour, ISovleable
+    public abstract class GimmickLogic : MonoBehaviour, ISovleable
     {
         public UnityEvent OnLogicCompleteEvent;
         public UnityEvent OnLogicResetEvent;
@@ -28,17 +28,22 @@ namespace ObjectManage.GimmickObjects
             OnLogicResetEvent?.Invoke();
         }
 
-        public virtual void Solve(LogicData data)
+        public virtual void Solve()
+        {
+            IsSolved = true;
+            OnLogicCompleteEvent?.Invoke();
+        }
+
+        public void Trigger(LogicData data)
         {
             if(IsSolved) return;
-            OnLogicCompleteEvent?.Invoke();
-            IsSolved = true;
+            if(CheckSolved(data))
+            {
+                Solve();
+            }
         }
 
-        protected virtual void CheckSolved()
-        {
-
-        }
+        protected abstract bool CheckSolved(LogicData data);
 
 
     }

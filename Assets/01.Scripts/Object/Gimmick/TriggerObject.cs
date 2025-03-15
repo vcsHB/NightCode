@@ -7,11 +7,13 @@ namespace ObjectManage.GimmickObjects
     {
         [SerializeField] private GimmickLogic[] _triggerTargets;
         [SerializeField] private LogicData _data;
+
+        
         public void HandleTrigger()
         {
             for (int i = 0; i < _triggerTargets.Length; i++)
             {
-                _triggerTargets[i].Solve(_data);
+                _triggerTargets[i].Trigger(_data);
             }
         }
     }
