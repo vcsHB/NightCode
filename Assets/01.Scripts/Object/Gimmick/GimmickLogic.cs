@@ -10,19 +10,34 @@ namespace ObjectManage.GimmickObjects
         Or
     }
 
+
     public class GimmickLogic : MonoBehaviour, ISovleable
     {
         public UnityEvent OnLogicCompleteEvent;
+        public UnityEvent OnLogicResetEvent;
         public LogicType logicType;
 
-        public virtual void Solve()
-        {
+        [SerializeField] private bool _defaultSolveState;
+        public bool DefaultSolveState => _defaultSolveState;
+        public bool IsSolved { get; set; }
 
+        public void ResetGimmick()
+        {
+            if(IsSolved == _defaultSolveState) return;
+            IsSolved = _defaultSolveState;
+            OnLogicResetEvent?.Invoke();
+        }
+
+        public virtual void Solve(LogicData data)
+        {
+            if(IsSolved) return;
+            OnLogicCompleteEvent?.Invoke();
+            IsSolved = true;
         }
 
         protected virtual void CheckSolved()
         {
-            
+
         }
 
 

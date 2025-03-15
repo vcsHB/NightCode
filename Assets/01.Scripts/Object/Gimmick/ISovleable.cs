@@ -4,12 +4,17 @@ namespace ObjectManage.GimmickObjects
     [System.Serializable]
     public struct LogicData
     {
-        public string logicId;
+        public int intValue;
+        public float floatValue;
+        public string stringValue;
     }
 
     public interface ISovleable 
     {
-        public void Solve();
+        public bool IsSolved{ get; set;}
+
+        public void ResetGimmick();
+        public void Solve(LogicData data);
         
     }
 }
