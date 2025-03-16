@@ -1,15 +1,17 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 namespace ObjectManage.GimmickObjects
 {
 
-    public class SolveActor : MonoBehaviour
+    public abstract class SolveActor : MonoBehaviour
     {
-        private GimmickLogic[] _logicSolvers;
+        public UnityEvent OnSolveEvent;
+        protected GimmickLogic[] _logicSolvers;
         public int LogicAmount => _logicSolvers.Length;
         private int _solveProgressLevel;
         public float SolveProgress => _solveProgressLevel / (float)LogicAmount;
-        private void Awake()
+        public bool IsLogicsSolved => Mathf.Approximately(SolveProgress, 1f);
+        protected virtual void Awake()
         {
             Initialize();
 
@@ -33,11 +35,23 @@ namespace ObjectManage.GimmickObjects
 
         private void HandleLogicReset()
         {
+            _solveProgressLevel = 0;
         }
 
         private void HandleLogicSolved()
         {
             _solveProgressLevel += 1;
+
+            if (IsLogicsSolved)
+            {
+                HandleSolveAct();
+                OnSolveEvent?.Invoke();
+            }
         }
+
+        protected abstract void HandleSolveAct();
+
+
+
     }
 }

@@ -9,14 +9,19 @@ namespace ObjectManage.GimmickObjects
         public string stringValue;
     }
 
-    public interface ISovleable 
+    public interface ISovleable
     {
-        public bool IsSolved{ get; set;}
+        public bool IsSolved { get; set; }
 
         public void ResetGimmick();
 
-        public void Trigger(LogicData data);
         public void Solve();
-        
+
+    }
+
+    public interface ITriggerable
+    {
+        public void Trigger(LogicData data);
+
     }
 }

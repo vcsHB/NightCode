@@ -34,16 +34,7 @@ namespace ObjectManage.GimmickObjects
             OnLogicCompleteEvent?.Invoke();
         }
 
-        public void Trigger(LogicData data)
-        {
-            if(IsSolved) return;
-            if(CheckSolved(data))
-            {
-                Solve();
-            }
-        }
-
-        protected abstract bool CheckSolved(LogicData data);
+        
 
 
     }
