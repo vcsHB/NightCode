@@ -172,14 +172,14 @@ namespace Agents.Players
 
         }
 
-        public void HandlePull()
+        public void HandlePull(Action OnComplete = null)
         {
             if (IsClamping) return;
             _playerMovement.StopImmediately(true);
             _clampCoroutine = StartCoroutine(DistanceClampCoroutine(
                 GetLerpTargetPositionByRatio(0.9f),
-                _currentAimData.distance * _pullClampDuration
-                ));
+                _currentAimData.distance * _pullClampDuration,
+                OnComplete));
 
         }
 

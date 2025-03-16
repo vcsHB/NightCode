@@ -17,7 +17,8 @@ namespace Agents.Players
         public UnityEvent OnFirstAttackEvent;
         public UnityEvent OnSecondAttackEvent;
         public UnityEvent OnThirdAttackEvent;
-        
+        public UnityEvent OnGroundPullAttackEvent;
+
 
         public void HandleAttack1()
         {
@@ -31,6 +32,11 @@ namespace Agents.Players
         public void HandleAttack3()
         {
             OnSecondAttackEvent?.Invoke();
+        }
+
+        public void HandleGroundPullAttack()
+        {
+            OnGroundPullAttackEvent?.Invoke();
         }
 
         public abstract void HandleAirAttack1();

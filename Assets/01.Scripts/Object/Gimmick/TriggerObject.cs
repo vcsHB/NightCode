@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 namespace ObjectManage.GimmickObjects
 {
@@ -8,7 +7,7 @@ namespace ObjectManage.GimmickObjects
         [SerializeField] private GimmickLogic[] _triggerTargets;
         [SerializeField] private LogicData _data;
 
-        
+
         public void HandleTrigger()
         {
             for (int i = 0; i < _triggerTargets.Length; i++)
