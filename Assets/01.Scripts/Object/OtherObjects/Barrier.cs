@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Combat;
 using Combat.Casters;
 using DG.Tweening;
@@ -17,6 +18,7 @@ namespace ObjectManage.OtherObjects
         [SerializeField] private CombatData _damageData;
         [SerializeField] private DamageCaster _damageCaster;
         [SerializeField] private KnockbackCaster _knockbackCaster;
+        [SerializeField] private float _knockbackPower = 10f;
         [SerializeField] private bool _isActive;
 
         private void Awake()
@@ -53,9 +55,14 @@ namespace ObjectManage.OtherObjects
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-
-            _knockbackCaster.Cast(collision.collider);
-            _damageCaster.Cast(collision.collider);
+            Collider2D collider = collision.collider;
+            Vector2 direction = collider.transform.position - (Vector3)collision.GetContact(0).point;
+            direction.Normalize();
+            direction *= _knockbackPower;
+            Debug.Log(direction);
+            _knockbackCaster.SetDirection(direction);
+            _knockbackCaster.Cast(collider);
+            _damageCaster.Cast(collider);
 
         }
         private void OnTriggerEnter2D(Collider2D collision)
