@@ -41,6 +41,8 @@ namespace Agents.Players.FSM
 
         protected override void HandleRemoveRope()
         {
+            if(!_canRemoveRope) return;
+            if (!_player.IsActive) return;
             base.HandleRemoveRope();
             _grabThrower.ThrowTarget();
         }

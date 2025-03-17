@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 2744962543700373401}
   - component: {fileID: 8857233724296627185}
   - component: {fileID: 6748916523761705892}
+  - component: {fileID: 5476432786840455472}
   m_Layer: 6
   m_Name: KatanaPlayer
   m_TagString: Untagged
@@ -447,6 +448,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bloodAmount: 2
+--- !u!114 &5476432786840455472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604570429902489132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0beef7345eb3344baf4d2c245dc498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnCrashedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _ownerHealth: {fileID: 8857233724296627185}
+  _knockbackResistance: 1
 --- !u!1 &698156802665004259
 GameObject:
   m_ObjectHideFlags: 0
@@ -30854,7 +30872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _castRadius: 0.4
-  _shootRadius: 40
+  _shootRadius: 50
   _wallLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -30875,7 +30893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _aimGroupController: {fileID: 0}
   _shootCooltime: 0.2
-  _wireClampedDistance: 20
+  _wireClampedDistance: 25
   _clampDuration: 0.06
   _pullClampDuration: 0.01
   _slashVFXPlayer: {fileID: 7852925464297101088}
