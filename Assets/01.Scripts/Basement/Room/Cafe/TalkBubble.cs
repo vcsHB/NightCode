@@ -11,7 +11,6 @@ namespace Basement
             => foodIcon.sprite = sprite;
 
 
-
         public void Open()
         {
             //나중에 애니메이션 같은거 추가해주

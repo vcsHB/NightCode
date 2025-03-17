@@ -6,7 +6,7 @@ namespace Basement
     public class Table : Furniture
     {
         public Transform customerPositionTrm;
-        public Transform employeePositionTrm;
+        public Transform servingPositionTrm;
         private Customer _enteredCustomer;
         private float _enterTime;
 

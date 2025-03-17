@@ -15,8 +15,7 @@ namespace Basement.NPC
         public override void OnTriggerEnter()
         {
             base.OnTriggerEnter();
-            _customer.cafe.OnCustomerSitTable(_customer);
-            stateMachine.ChangeState("Sit");
+            _customer.OnSitDown();
         }
     }
 }

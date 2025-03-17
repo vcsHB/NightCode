@@ -36,7 +36,7 @@ namespace Basement.NPC
             {
                 if (_menuGetTime + 1 < Time.time)
                 {
-                    _cafeNPC.SetMoveTarget(_customer.TargetTable.employeePositionTrm);
+                    _cafeNPC.SetMoveTarget(_customer.TargetTable.servingPositionTrm);
                     _cafeNPC.SetNextState("Serving");
                     stateMachine.ChangeState("Move");
                     _customer = null;
