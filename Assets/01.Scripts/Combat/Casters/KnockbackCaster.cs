@@ -20,6 +20,11 @@ namespace Combat.Casters
     {
         [SerializeField] protected KnockbackCasterData _knockbackData;
 
+        public void SetDirection(Vector2 direction)
+        {
+            _knockbackData.powerDirection = direction;
+        }
+
         public virtual void Cast(Collider2D target)
         {
             if (_knockbackData == null) return;

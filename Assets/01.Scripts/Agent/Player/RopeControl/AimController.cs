@@ -127,7 +127,7 @@ namespace Agents.Players
         {
             _aimGroupController.SetActiveWire(true);
             _anchorPosition = TargetPoint;
-            if (_currentAimData.distance > _wireClampedDistance)
+            if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 _clampCoroutine = StartCoroutine(
@@ -178,7 +178,7 @@ namespace Agents.Players
             _playerMovement.StopImmediately(true);
             _clampCoroutine = StartCoroutine(DistanceClampCoroutine(
                 GetLerpTargetPositionByRatio(0.9f),
-                _currentAimData.distance * _pullClampDuration,
+                _currentAimData.distanceToPoint * _pullClampDuration,
                 OnComplete));
 
         }
@@ -187,7 +187,7 @@ namespace Agents.Players
 
         private Vector2 GetLerpTargetPosition(float clampDistance)
         {
-            float distance = _currentAimData.distance;
+            float distance = _currentAimData.distanceToPoint;
             return Vector2.Lerp(_currentAimData.originPlayerPosition, TargetPoint, (distance - clampDistance) / distance);
         }
 

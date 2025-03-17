@@ -1,3 +1,4 @@
+using Combat;
 using Combat.Casters;
 using DG.Tweening;
 using UnityEngine;
@@ -13,6 +14,9 @@ namespace ObjectManage.OtherObjects
         [SerializeField] private float _barrierLength;
         [SerializeField] private float _barrierWidth;
         [SerializeField] private float _disableDuration;
+        [SerializeField] private CombatData _damageData;
+        [SerializeField] private DamageCaster _damageCaster;
+        [SerializeField] private KnockbackCaster _knockbackCaster;
         [SerializeField] private bool _isActive;
 
         private void Awake()
@@ -26,7 +30,7 @@ namespace ObjectManage.OtherObjects
         public void SetBarrierActive(bool value)
         {
             if (_isActive == value) return;
-            
+
             if (_isVertical)
                 _visualTrm.DOScaleX(value ? 1f : 0f, _disableDuration).OnComplete(() => _collider.enabled = value);
             else
@@ -47,9 +51,10 @@ namespace ObjectManage.OtherObjects
 
         }
 
-        void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-
+            _knockbackCaster.Cast(collision);
+            _damageCaster.Cast(collision);
         }
     }
 }

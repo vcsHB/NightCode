@@ -1,4 +1,6 @@
 using System;
+using Unity.VisualScripting;
+using UnityEditor.VersionControl;
 using UnityEngine;
 namespace Agents.Players
 {
@@ -71,22 +73,20 @@ namespace Agents.Players
 
         public void UseTurbo(Vector2 hangingDirection)
         {
-            Vector2 baseDirection = -hangingDirection.normalized;
-            Vector2 inputDirection = new Vector2(_player.PlayerInput.InputDirection.x, 0f);
+            float directionSign = -hangingDirection.x;
+            Vector2 rotatedDirection = new Vector2(-hangingDirection.y, hangingDirection.x) * directionSign;
+            rotatedDirection.Normalize();
+
+            Vector2 inputDirection = _player.PlayerInput.InputDirection;
             if (inputDirection.magnitude < 0.1f)
                 inputDirection = Velocity.normalized;
+            inputDirection.y = 0f;
 
-            // 1. 입력 벡터를 HangingDirection 벡터에 투영
-            Vector2 projection = Vector3.Project(inputDirection, baseDirection);
-            projection.Normalize();
+            Vector2 result = rotatedDirection * Vector2.Dot(inputDirection, rotatedDirection);
+            result.Normalize();
+            Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)result, Color.magenta, 2f);
 
-            // 2. 입력 벡터를 HangingDirection 벡터에 수직인 방향으로 분리
-            Vector2 perpendicular = inputDirection - projection;
-
-            // 3. 결과 벡터 계산 (필요한 연산 방식에 따라 다르게 적용 가능)
-            Vector2 result = baseDirection + projection.normalized + perpendicular.normalized;
-
-            SetVelocity(result.normalized * _turboPower);
+            SetVelocity(result * _turboPower);
         }
 
 
