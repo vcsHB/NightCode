@@ -12,6 +12,8 @@ namespace Basement.NPC
         public NPCSO npcSO;
 
         public float MoveDir { get; protected set; } = 1;
+        public Transform MoveTarget { get; protected set; }
+        public string NextState { get; protected set; }
 
         private Rigidbody2D _rigid;
 
@@ -28,6 +30,13 @@ namespace Basement.NPC
         {
             stateMachine.currentState.UpdateState();
         }
+
+
+        public void SetNextState(string state)
+            => NextState = state;
+
+        public void SetMoveTarget(Transform target)
+            => MoveTarget = target;
 
         public virtual void Move(float direction)
             => transform.position += Vector3.right * (direction * npcSO.speed * Time.deltaTime);

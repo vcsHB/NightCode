@@ -1,7 +1,4 @@
 using Basement.Mission;
-using System;
-using System.Collections.Generic;
-using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,8 +17,6 @@ namespace Basement
         public MissionSelectPanel missionSelectPanel;
 
         public Button returnBtn;
-
-        private RoomUI _roomUI;
         public BasementUI returnBtnUI => returnBtn.GetComponent<BasementUI>();
 
         private void Awake()
@@ -29,7 +24,6 @@ namespace Basement
             skillTreePanel.Init(this);
             characterSelectPanel.Init(this);
             characterSelectPanel.SetUILink(skillTreePanel);
-            _roomUI = UIManager.Instance.roomUI;
         }
 
         protected override void OpenAnimation()
@@ -50,6 +44,7 @@ namespace Basement
                 isOpend = true;
                 return;
             }
+
             characterSelectPanel.RemoveOppositeUI(true);
             characterSelectPanel.CloseAllUI();
             returnBtnUI.Close();

@@ -11,23 +11,30 @@ namespace Basement
     public class BasementController : MonoBehaviour
     {
         public Action<BasementMode> OnChangeBasmentMode;
+        public bool IsFocusRoom { get; private set; }
+
 
         [SerializeField] private BasementInput _input;
         [SerializeField] private GameObject _buildModeObj;
         [SerializeField] private Office _office;
         [SerializeField] private float _dragSkipDist = 2;
         [SerializeField] private float _dragMaxDist = 3;
+        [SerializeField] private float _cameraMoveSpeed = 10;
 
         private BasementMode _currentMode = BasementMode.Basement;
         private List<BasementBuildUI> _buildUISet;
         private BasementTimerUI _timer;
+        private bool _isWideView = false;
 
-        private BasementRoom[,] _basementRooms = new BasementRoom[4, 3];
+        private Vector2 _prevEndPosition;
+        private Vector2 _clickPos;
         private BasementRoom _currentRoom;
+        private BasementRoom[,] _basementRooms = new BasementRoom[4, 3];
         private int _currentFloor, _currentRoomNumber;
         private bool _isMousePressed = false;
         private Vector2 _dragValue;
         private readonly float _screenRatio = (float)Screen.height / (float)Screen.width;
+        private readonly float _cameraMultiply = 500;
 
         private void Awake()
         {
@@ -51,20 +58,35 @@ namespace Basement
 
         public void Update()
         {
-            if (_isMousePressed)
-            {
-                float cameraSize = BasementCameraManager.Instance.CameraSize;
-                _dragValue = (_input.MousePosition - _input.MouseClickpoint) / -500 * cameraSize;
+            if (_currentRoom != null && _currentRoom.IsUIOpend) _isMousePressed = false;
 
+            if (_isMousePressed) MouseDragEvent();
+        }
+
+        private void MouseDragEvent()
+        {
+            float cameraSize = BasementCameraManager.Instance.CameraSize;
+            _dragValue = (_input.MousePosition - _clickPos) / -_cameraMultiply * cameraSize;
+
+            if (!_isWideView)
+            {
                 _dragValue.x = Mathf.Clamp(_dragValue.x, -_dragMaxDist, _dragMaxDist);
                 _dragValue.y = Mathf.Clamp(_dragValue.y, -_dragMaxDist * _screenRatio, _dragMaxDist * _screenRatio);
-
-                BasementCameraManager.Instance.OffsetCamera(_dragValue);
             }
+            //else
+            //{
+            //    Debug.Log(_clickPos);
+            //    _dragValue += ;
+            //}
+
+            BasementCameraManager.Instance.OffsetCamera(_dragValue);
+            _prevEndPosition = -(_input.MousePosition - _clickPos);
         }
+
 
         public void OnFocusRoom(BasementRoom room)
         {
+            _isWideView = false;
             _currentRoom = room;
 
             for (int i = 0; i < 4; i++)
@@ -76,12 +98,13 @@ namespace Basement
                         _currentFloor = i;
                         _currentRoomNumber = j;
 
-                        bool canGoLeft = (_currentRoomNumber > 0 && _basementRooms[_currentFloor, _currentRoomNumber - 1] != null);
-                        bool canGoRight = (_currentRoomNumber < 2 && _basementRooms[_currentFloor, _currentRoomNumber + 1] != null);
+                        bool canGoLeft = (_currentRoomNumber > 0 && _basementRooms[i, j] != null);
+                        bool canGoRight = (_currentRoomNumber < 2 && _basementRooms[i, j] != null);
                         //카페는 2칸을 차지해서 오른쪽으로는 못감
                         if (_currentRoom is Cafe) canGoRight = false;
 
                         UIManager.Instance.basementUI.OnChangeRoom(canGoLeft, canGoRight);
+
                         return;
                     }
                 }
@@ -90,81 +113,91 @@ namespace Basement
 
         public void MouseEvent(bool isPress)
         {
+            if (_currentRoom != null && _currentRoom.IsUIOpend) return;
+
             _isMousePressed = isPress;
             if (EventSystem.current.IsPointerOverGameObject()) _isMousePressed = false;
 
-            if (isPress == false)
+            if (isPress)
             {
-                bool isChanged = false;
-
-                if (_currentRoomNumber >= 0 && _currentRoomNumber < 3)
-                {
-                    if (_dragValue.x > _dragSkipDist && _currentRoomNumber < 2)
-                    {
-                        isChanged = true;
-                        MoveRight();
-                    }
-                    else if (_dragValue.x < -_dragSkipDist && _currentRoomNumber > 0)
-                    {
-                        isChanged = true;
-                        MoveLeft();
-                    }
-                }
-
-                if (isChanged == false)
-                    BasementCameraManager.Instance.ResetCameraOffset();
+                _clickPos = _input.MousePosition;
+                if (_isWideView) _clickPos += _prevEndPosition;
+                Debug.Log(_prevEndPosition);
+                return;
             }
+
+            if (_isWideView) return;
+            bool isChanged = false;
+
+            int x = 0;
+            int y = 0;
+
+            if (_dragValue.x > _dragSkipDist && _currentRoomNumber < 2)
+            {
+                isChanged = true;
+                x = 1;
+            }
+            else if (_dragValue.x < -_dragSkipDist && _currentRoomNumber > 0)
+            {
+                isChanged = true;
+                x = -1;
+            }
+
+            if (_dragValue.y > _dragSkipDist * _screenRatio && _currentFloor > 0)
+            {
+                isChanged = true;
+                y = -1;
+            }
+            else if (_dragValue.y < -_dragSkipDist * _screenRatio && _currentFloor < 3)
+            {
+                isChanged = true;
+                y = 1;
+            }
+
+            if (_basementRooms[_currentFloor + y, _currentRoomNumber + x] == null) isChanged = false;
+
+            if (isChanged == false)
+            {
+                BasementCameraManager.Instance.ResetCameraOffset();
+                _dragValue = Vector2.zero;
+            }
+            else
+            {
+                CameraMove(x, y);
+            }
+
         }
 
+        #region CameraMoveEvnet
+
+        //카메라 움직이기
         public void CameraMove(int x, int y)
         {
-            if(_basementRooms[_currentFloor, _currentRoomNumber] != null)
+            if (_basementRooms[_currentFloor, _currentRoomNumber] != null)
                 _basementRooms[_currentFloor, _currentRoomNumber].CloseUI();
 
-            _currentFloor += x;
-            _currentRoomNumber += y;
+            _currentFloor += y;
+            _currentRoomNumber += x;
 
             if (_basementRooms[_currentFloor, _currentRoomNumber] != null)
             {
                 _basementRooms[_currentFloor, _currentRoomNumber].FocusCamera();
                 _basementRooms[_currentFloor, _currentRoomNumber].OpenRoomUI();
             }
-            else
-            {
-                //BasementCameraManager.Instance.ChangeFollow();
-            }
         }
 
+        //버튼 이벤트
         public void MoveLeft()
         {
-            if (_basementRooms[_currentFloor, _currentRoomNumber - 1] != null)
-            {
-                _basementRooms[_currentFloor, _currentRoomNumber--].CloseUI();
-                _basementRooms[_currentFloor, _currentRoomNumber].FocusCamera();
-                _basementRooms[_currentFloor, _currentRoomNumber].OpenRoomUI();
-            }
-            else
-            {
-
-            }
+            CameraMove(-1, 0);
         }
 
         public void MoveRight()
         {
-            if (_basementRooms[_currentFloor, _currentRoomNumber + 1] != null)
-            {
-                _basementRooms[_currentFloor, _currentRoomNumber++].CloseUI();
-                _basementRooms[_currentFloor, _currentRoomNumber].FocusCamera();
-                _basementRooms[_currentFloor, _currentRoomNumber].OpenRoomUI();
-            }
-            else
-            {
-
-            }
+            CameraMove(1, 0);
         }
 
-        public void SetRoom(BasementRoom room, int floor, int roomNumber)
-            => _basementRooms[floor, roomNumber] = room;
+        #endregion
 
         public void ChangeBuildMode(bool isBuildMode)
         {
@@ -181,13 +214,24 @@ namespace Basement
             });
         }
 
-        public BasementMode GetCurrentBasementMode() => _currentMode;
-
         public void CompleteScadule()
         {
+            //임시 코드임
+
             _timer.Close();
             _office.FocusRoom();
         }
+
+        public void ReturnToWideView()
+        {
+            BasementCameraManager.Instance.ChangeOriginFollow(0.2f);
+            BasementCameraManager.Instance.ZoomOut(0.2f);
+            _isWideView = true;
+        }
+
+        public void SetRoom(BasementRoom room, int floor, int roomNumber)
+            => _basementRooms[floor, roomNumber] = room;
+        public BasementMode GetCurrentBasementMode() => _currentMode;
     }
 
     public enum BasementMode

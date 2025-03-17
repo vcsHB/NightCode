@@ -19,7 +19,6 @@ namespace Basement
             _goRightButton.gameObject.SetActive(canGoRight);
         }
 
-
         public void Open()
         {
             if (_seq != null && _seq.active)

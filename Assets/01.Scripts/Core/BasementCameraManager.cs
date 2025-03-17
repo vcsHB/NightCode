@@ -17,6 +17,7 @@ namespace Basement.CameraController
         public bool isFocus = false;
 
         [SerializeField] private float _zoomOutSize;
+        [SerializeField] private Transform _originFollow;
         private CinemachineCamera _currentCamera;
         private CinemachineConfiner2D _confinder;
 
@@ -43,6 +44,9 @@ namespace Basement.CameraController
 
         public void ZoomOut(float duration = 0.2f, Ease ease = Ease.Linear)
             => Zoom(_zoomOutSize, duration, ease);
+
+        public void ChangeOriginFollow(float duration = 0.2f, Action onComplete = null, Ease ease = Ease.Linear)
+            => ChangeFollow(_originFollow, duration, onComplete, ease);
 
 
         public void ChangeFollowToFloor(int floor, float duration, Action onComplete)
@@ -93,6 +97,11 @@ namespace Basement.CameraController
             return _currentCamera.Follow;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dragValue"></param>
+        /// <returns>return clamp value</returns>
         public void OffsetCamera(Vector2 dragValue)
         {
             //카메라가 움직이는 애니메이션 실행중일때는 오프셋을 적용 안 시켜줌
@@ -108,6 +117,9 @@ namespace Basement.CameraController
             }
 
             _cameraOffsetFollow.position = _originOffsetTrm.position + (Vector3)dragValue;
+
+            if (Vector2.Distance(_cameraOffsetFollow.position, _currentCamera.transform.position) > 1f)
+                _cameraOffsetFollow.position = (Vector2)_currentCamera.transform.position;
         }
 
         public void ResetCameraOffset()

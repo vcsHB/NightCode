@@ -1,3 +1,4 @@
+using Basement.NPC;
 using UnityEngine;
 
 namespace Basement

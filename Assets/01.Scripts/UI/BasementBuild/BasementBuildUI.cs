@@ -43,6 +43,7 @@ namespace Basement
 
         private void OnClick()
         {
+            Debug.Log(_isOpen);
             if (_isOpen == false || EventSystem.current.IsPointerOverGameObject()) return;
 
             BuildConfirmPanel confirmPanel = UIManager.Instance.buildConfirmPanel;
@@ -50,7 +51,7 @@ namespace Basement
             confirmPanel.Open();
         }
 
-        private void Build()
+        public void Build()
         {
             if (CheckResource() == false) return;
 

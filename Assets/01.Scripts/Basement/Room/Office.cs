@@ -20,6 +20,11 @@ namespace Basement
             }
         }
 
+        private void Start()
+        {
+            _connectedUI = OfficeUI;
+        }
+
         private void OnDisable()
         {
             table.InteractAction -= InteractTable;

@@ -2,7 +2,7 @@ using Agents.Animate;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Basement
+namespace Basement.NPC
 {
     [CreateAssetMenu(menuName = "SO/Basement/Cafe/CustomerSO")]
     public class CustomerSO : ScriptableObject

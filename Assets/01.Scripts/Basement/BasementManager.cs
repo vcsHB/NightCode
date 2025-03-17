@@ -23,7 +23,10 @@ namespace Basement
             => money -= amount;
 
         public Transform GetRoomPosition(int floor, int roomNumber)
-            => roomPositions[floor].roomPositions[roomNumber];
+        {
+            if (floor < 1 || floor > 3 || roomNumber < 0 || roomNumber > 2) return null;
+            return roomPositions[floor - 1].roomPositions[roomNumber];
+        }
 
         public BasementRoom CreateRoom(BasementRoomType roomType, int floor, int roomNumber)
         {

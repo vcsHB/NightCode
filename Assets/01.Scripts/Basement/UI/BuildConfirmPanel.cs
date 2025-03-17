@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildConfirmPanel : MonoBehaviour
+public class BuildConfirmPanel : BasementCommonUI
 {
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _coinText;
@@ -21,10 +21,5 @@ public class BuildConfirmPanel : MonoBehaviour
             createRoomAction?.Invoke();
             gameObject.SetActive(false);
         });
-    }
-
-    internal void Open()
-    {
-        throw new NotImplementedException();
     }
 }

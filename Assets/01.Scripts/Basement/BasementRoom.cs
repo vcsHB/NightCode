@@ -16,6 +16,9 @@ namespace Basement
         protected bool _isCharacterSelected = false;
         protected CharacterEnum _selectedCharacter;
         protected bool _isFocusMode = false;
+        protected BasementUI _connectedUI;
+
+        #region 
 
         [SerializeField] private Transform _cameraFocusTarget;
         [SerializeField] private float _zoomInValue = 1.5f;
@@ -24,7 +27,8 @@ namespace Basement
         private Collider2D _collider;
         private FurnitureUI _furnitureUI;
         private RoomUI _roomUI;
-        private ReturnButton _returnButton;
+
+        #endregion
 
         protected FurnitureUI FurnitureUI
         {
@@ -54,6 +58,14 @@ namespace Basement
             }
         }
         public BasementController BasementController => _basement;
+        public bool IsUIOpend
+        {
+            get
+            {
+                if (_connectedUI == null) return false;
+                return _connectedUI.isOpend;
+            }
+        }
 
 
         protected virtual void Awake()
@@ -144,8 +156,8 @@ namespace Basement
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            if (_basement.GetCurrentBasementMode() == BasementMode.Basement) FocusRoom();
-            else FurnitureSetting();
+            //if (_basement.GetCurrentBasementMode() == BasementMode.Basement) FocusRoom();
+            //else FurnitureSetting();
         }
 
         public void AddFurniture(FurnitureSO furniture, Vector2 position)
