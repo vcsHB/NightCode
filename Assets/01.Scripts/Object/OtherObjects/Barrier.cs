@@ -51,6 +51,13 @@ namespace ObjectManage.OtherObjects
 
         }
 
+        void OnCollisionEnter2D(Collision2D collision)
+        {
+
+            _knockbackCaster.Cast(collision.collider);
+            _damageCaster.Cast(collision.collider);
+
+        }
         private void OnTriggerEnter2D(Collider2D collision)
         {
             _knockbackCaster.Cast(collision);
