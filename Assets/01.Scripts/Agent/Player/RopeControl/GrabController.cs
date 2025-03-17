@@ -78,11 +78,11 @@ namespace Agents.Players
                 _throwCaster.SendCasterData(new KnockbackCasterData(direction, 10f, false));
 
             }
+            IsPulled = false;
             _grabTarget.Release();
             OnThrowEvent?.Invoke();
             _throwCaster.ForceCast(_grabTargetTrm.GetComponent<Collider2D>());
             _isComboComplete = false;
-            IsPulled = false;
             _throwDirectionMark.SetTargetMark(false);
         }
 

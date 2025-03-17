@@ -7,6 +7,7 @@ namespace Agents.Players.FSM
     public class PlayerGrabState : PlayerAirBorneState
     {
         protected bool _isComboComplete;
+        private bool _isGrabRelease;
         public PlayerGrabState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
 
@@ -15,9 +16,10 @@ namespace Agents.Players.FSM
 
         public override void Enter()
         {
-            base.Enter();
             _mover.StopImmediately(true);
+            if (_player.PlayerInput.IsShootRelease) HandleRemoveRope();
             _grabThrower.Grab();
+            base.Enter();
             _player.PlayerInput.PullEvent += HandlePullTarget;
             _player.PlayerInput.OnAttackEvent += HandleAttack;
             _renderer.FlipController(_aimController.AimDirection.x);
@@ -41,10 +43,12 @@ namespace Agents.Players.FSM
 
         protected override void HandleRemoveRope()
         {
-            if(!_canRemoveRope) return;
+            _isGrabRelease = false;
+            if (!_canRemoveRope) return;
             if (!_player.IsActive) return;
-            base.HandleRemoveRope();
-            _grabThrower.ThrowTarget();
+            _aimController.RemoveWire();
+            if (_grabThrower.IsPulled)
+                _grabThrower.ThrowTarget();
         }
 
         protected void SetCompleteCombo()

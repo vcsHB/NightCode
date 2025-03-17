@@ -9,7 +9,7 @@ namespace Agents.Players.FSM
         public PlayerWallState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
             _canUseRope = true;
-
+            _canRemoveRope = false;
         }
 
         public override void Enter()
@@ -25,9 +25,9 @@ namespace Agents.Players.FSM
 
         private void HandleMove(Vector2 direction)
         {
-            if(Mathf.Approximately(direction.x, 0f)) return;
+            if (Mathf.Approximately(direction.x, 0f)) return;
 
-            if(Mathf.Sign(direction.x) != Mathf.Sign(_mover.WallDirection))
+            if (Mathf.Sign(direction.x) != Mathf.Sign(_mover.WallDirection))
             {
                 HandleWallJump();
             }
@@ -61,7 +61,7 @@ namespace Agents.Players.FSM
             Vector2 jumpDirection = new Vector2(-_mover.WallDirection * 30f, 10f); // 벽 반대 방향 연산
             _mover.CanManualMove = false;
             _mover.SetVelocity(jumpDirection);
-            
+
             _stateMachine.ChangeState("Swing");
         }
 
