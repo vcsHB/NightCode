@@ -81,7 +81,12 @@ namespace Agents.Players
         {
             _currentShootTime += Time.deltaTime;
             if (_isShoot)
-                HangingDirection = _aimGroupController.AnchorPos - OriginPosition;
+                HangingDirection = _aimGroupController.AnchorPos - (Vector2)_player.transform.position;
+        }
+        public void RefreshHangingDirection()
+        {
+            HangingDirection = _aimGroupController.AnchorPos - (Vector2)_player.transform.position;
+
         }
 
 
@@ -127,6 +132,7 @@ namespace Agents.Players
         {
             _aimGroupController.SetActiveWire(true);
             _anchorPosition = TargetPoint;
+            _aimGroupController.SetAnchorPosition(TargetPoint);
             if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));

@@ -70,6 +70,8 @@ namespace Agents.Players.FSM
         {
             if (!_player.IsActive) return;
             if (!_canUseTurbo) return;
+
+            _aimController.RefreshHangingDirection();
             _mover.UseTurbo(_aimController.HangingDirection);
             _canUseTurbo = false;
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));

@@ -73,6 +73,9 @@ namespace Agents.Players
 
         public void UseTurbo(Vector2 hangingDirection)
         {
+            hangingDirection.Normalize();
+            Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)hangingDirection * 10, Color.magenta, 2f);
+
             float directionSign = -hangingDirection.x;
             Vector2 rotatedDirection = new Vector2(-hangingDirection.y, hangingDirection.x) * directionSign;
             rotatedDirection.Normalize();
@@ -84,7 +87,7 @@ namespace Agents.Players
 
             Vector2 result = rotatedDirection * Vector2.Dot(inputDirection, rotatedDirection);
             result.Normalize();
-            Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)result, Color.magenta, 2f);
+//            Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)result, Color.magenta, 2f);
 
             SetVelocity(result * _turboPower);
         }
