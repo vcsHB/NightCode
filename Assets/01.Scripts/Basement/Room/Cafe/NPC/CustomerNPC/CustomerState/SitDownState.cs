@@ -12,6 +12,13 @@ namespace Basement.NPC
             _customer = npc as Customer;
         }
 
+        //얘도 디버깅용 애니메이션 넣으면 바꾸면 됨
+        public override void EnterState()
+        {
+            base.EnterState();
+            _customer.OnSitDown();
+        }
+
         public override void OnTriggerEnter()
         {
             base.OnTriggerEnter();

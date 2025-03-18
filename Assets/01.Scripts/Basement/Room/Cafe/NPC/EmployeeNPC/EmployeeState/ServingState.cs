@@ -6,10 +6,11 @@ namespace Basement.NPC
     public class ServingState : NPCState
     {
         private float _enterTime;
+        private Employee _employee;
 
         public ServingState(NPC npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
-
+            _employee = npc as Employee;
         }
 
         public override void EnterState()
@@ -17,14 +18,18 @@ namespace Basement.NPC
             base.EnterState();
 
             _enterTime = Time.time;
-
         }
 
         public override void UpdateState()
         {
             base.UpdateState();
 
-
+            //ÀÏ´Ü µð¹ö±ë
+            if (_enterTime + 1f < Time.time)
+            {
+                _employee.ServeMenu();
+                stateMachine.ChangeState("Service");
+            }
         }
 
 

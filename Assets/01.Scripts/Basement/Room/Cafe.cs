@@ -16,12 +16,13 @@ namespace Basement
         //아직 가게 들어오기 전
         private Queue<Customer> _lineUpCustomers;
         // 테이블에 앉은 상태
-        public Queue<Customer> menuWaitingCustomers;
+        private Queue<Customer> _menuWaitingCustomers;
 
         public bool isCafeOpen = false;
         public BasementTime cafeOpenTime;
         public Furniture counterFurniture;
 
+        public Transform employeeParent;
         public Transform customerParent;
         public Transform employeePosition;
         public Transform exit;
@@ -30,6 +31,7 @@ namespace Basement
         //디버깅용
         [SerializeField] private CustomerSO debugCustomer;
         [SerializeField] private CafeNPC npc;
+        [SerializeField] private List<EmployeeSO> employeeList;
 
         private CafeUI _cafeUI;
         public CafeUI CafeUI
@@ -48,10 +50,17 @@ namespace Basement
             npc.Init(this);
             _exsistCustomers = new List<Customer>();
             _lineUpCustomers = new Queue<Customer>();
-            menuWaitingCustomers = new Queue<Customer>();
+            _menuWaitingCustomers = new Queue<Customer>();
             _employeeQueue = new Queue<Employee>();
 
             _tableList = GetComponentsInChildren<Table>().ToList();
+
+            employeeList.ForEach(employee =>
+            {
+                Employee employeeInstance = Instantiate(employee.employeePf, employeeParent);
+                employeeInstance.gameObject.SetActive(false);
+                _employeeQueue.Enqueue(employeeInstance);
+            });
         }
 
         private void OnDisable()
@@ -64,31 +73,32 @@ namespace Basement
             //FOR DEBUGING
             if (Keyboard.current.cKey.wasPressedThisFrame)
                 AddCustomer(debugCustomer);
-
-
         }
 
-        private void ServeMenu()
+        /// <summary>
+        /// 서빙하러 움직이기 시작
+        /// </summary>
+        private void StartServeMenu()
         {
-            if(_employeeQueue.TryDequeue(out Employee employee))
+            if (_employeeQueue.TryDequeue(out Employee employee))
             {
-                if (menuWaitingCustomers.TryDequeue(out Customer customer))
+                if (_lineUpCustomers.TryDequeue(out Customer customer))
                 {
-
+                    employee.transform.position = employeePosition.position;
+                    employee.Init(this, customer.TargetTable);
                 }
                 else return;
             }
         }
 
+        private Table FindEmptyTable()
+            => _tableList.Find(table => table.IsCustomerExsist() == false);
 
         private void AddCustomer(CustomerSO customerSO)
         {
             Customer customer = Instantiate(customerSO.customerPf, customerParent);
             EnterCustomer(customer);
         }
-
-        private Table FindEmptyTable()
-            => _tableList.Find(table => table.IsCustomerExsist() == false);
 
         private void EnterCustomer(Customer customer)
         {
@@ -111,16 +121,30 @@ namespace Basement
             }
         }
 
+        /// <summary>
+        /// 손님이 테이블에 앉았을 때
+        /// </summary>
+        /// <param name="customer"></param>
         public void OnCustomerSitTable(Customer customer)
         {
-            menuWaitingCustomers.Enqueue(customer);
-            ServeMenu();
+            _menuWaitingCustomers.Enqueue(customer);
+            StartServeMenu();
         }
 
-        public void GetMoney(int money)
+        /// <summary>
+        /// 손님이 테이블을 떠날 때
+        /// </summary>
+        /// <param name="employee"></param>
+        public void ReturnEmployee(Employee employee)
         {
-            Vector2 position = Camera.main.WorldToScreenPoint(employeePosition.position + new Vector3(0, 1, 0));
-            UIManager.Instance.SetPopupText($"<color=green>{money}$", position);
+            employee.gameObject.SetActive(false);
+            _employeeQueue.Enqueue(employee);
+        }
+
+        public void OnLeaveCustomer(Customer customer)
+        {
+            _menuWaitingCustomers.Enqueue(customer);
+            StartServeMenu();
         }
 
         public void PassTime(int time)

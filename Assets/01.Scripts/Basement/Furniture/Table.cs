@@ -8,14 +8,14 @@ namespace Basement
         public Transform customerPositionTrm;
         public Transform servingPositionTrm;
         private Customer _enteredCustomer;
-        private float _enterTime;
+
+        public Customer customer => _enteredCustomer;
 
         public bool IsCustomerExsist() => _enteredCustomer != null;
 
         public void CustomerSitdown(Customer customer)
         {
             _enteredCustomer = customer;
-            _enterTime = Time.time;
         }
 
         public void CustomerLeave()

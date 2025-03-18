@@ -11,6 +11,7 @@ namespace Basement.NPC
         public NPCRenderer npcRenderer;
         public NPCSO npcSO;
 
+        public Action onCompleteMove;
         public float MoveDir { get; protected set; } = 1;
         public Transform MoveTarget { get; protected set; }
         public string NextState { get; protected set; }
@@ -28,6 +29,7 @@ namespace Basement.NPC
 
         protected virtual void Update()
         {
+            Debug.Log(stateMachine.currentStateString);
             stateMachine.currentState.UpdateState();
         }
 

@@ -19,16 +19,22 @@ namespace Basement.NPC
 
         #endregion
 
-        protected override void Awake()
+        protected void Start()
         {
-            base.Awake();
-
             stateMachine.AddState("Move", "Move", customerInfo.MoveParam);
             stateMachine.AddState("SitDown", "SitDown", customerInfo.SitdownParam);
             stateMachine.AddState("Sit", "Sit", customerInfo.SitParam);
             stateMachine.AddState("Eat", "Eat", customerInfo.EatParam);
             stateMachine.AddState("StandUp", "StandUp", customerInfo.StandupParam);
             stateMachine.ChangeState("Move");
+        }
+
+        private void OnExit()
+        {
+            _cafe.OnLeaveCustomer(this);
+
+            onCompleteMove -= OnExit;
+            Destroy(gameObject);
         }
 
         public void OnSitDown()
@@ -54,8 +60,10 @@ namespace Basement.NPC
             Vector2 popupPosition = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1));
             UIManager.Instance.SetPopupText($"<color=green>{RequireFood.cost}$</color>", popupPosition);
 
+            onCompleteMove += OnExit;
             SetMoveTarget(_cafe.exit);
             stateMachine.ChangeState("Move");
+            TargetTable.CustomerLeave();
         }
 
         public void GiveTip()
@@ -71,6 +79,7 @@ namespace Basement.NPC
         {
             TargetTable = emptyTable;
             SetMoveTarget(emptyTable.customerPositionTrm);
+            TargetTable.CustomerSitdown(this);              //데이터 상으로는 미리 할당해줘야함
             NextState = "SitDown";
         }
 

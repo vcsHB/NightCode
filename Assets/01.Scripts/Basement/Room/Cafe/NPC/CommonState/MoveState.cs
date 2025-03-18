@@ -23,6 +23,7 @@ namespace Basement.NPC
 
             if (distance < 0.4f)
             {
+                npc.onCompleteMove?.Invoke();
                 stateMachine.ChangeState(_npc.NextState);
             }
             else

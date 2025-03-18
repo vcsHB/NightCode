@@ -11,6 +11,7 @@ namespace Basement.NPC
         public AnimParamSO MoveParam;
         public AnimParamSO ServingParam;
         public AnimParamSO ServiceParam;
+        public AnimParamSO ReturnParam;
     }
 }
 
