@@ -6,9 +6,9 @@ namespace ObjectManage.GimmickObjects
 
     public class TriggerObject : MonoBehaviour
     {
-        [SerializeField] private UnityEvent OnTriggerEvent;
-        [SerializeField] private TriggerLogic[] _triggerTargets;
-        [SerializeField] private LogicData _data;
+        public UnityEvent OnTriggerEvent;
+        [SerializeField] protected TriggerLogic[] _triggerTargets;
+        [SerializeField] protected LogicData _data;
 
         [ContextMenu("DebugTrigger")]
         public void HandleTrigger()
