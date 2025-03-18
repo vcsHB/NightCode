@@ -8,7 +8,6 @@ namespace Basement
 {
     public class Cafe : BasementRoom
     {
-        private List<Customer> _exsistCustomers;
         private List<Table> _tableList;
 
         private Queue<Employee> _employeeQueue;
@@ -16,7 +15,7 @@ namespace Basement
         //아직 가게 들어오기 전
         private Queue<Customer> _lineUpCustomers;
         // 테이블에 앉은 상태
-        public Queue<Customer> menuWaitingCustomers;
+        private Queue<Customer> _menuWaitingCustomers;
 
         public bool isCafeOpen = false;
         public BasementTime cafeOpenTime;
@@ -48,9 +47,8 @@ namespace Basement
         {
             base.Awake();
             npc.Init(this);
-            _exsistCustomers = new List<Customer>();
             _lineUpCustomers = new Queue<Customer>();
-            menuWaitingCustomers = new Queue<Customer>();
+            _menuWaitingCustomers = new Queue<Customer>();
             _employeeQueue = new Queue<Employee>();
 
             _tableList = GetComponentsInChildren<Table>().ToList();
@@ -73,22 +71,41 @@ namespace Basement
             //FOR DEBUGING
             if (Keyboard.current.cKey.wasPressedThisFrame)
                 AddCustomer(debugCustomer);
+
+            if(Keyboard.current.vKey.wasPressedThisFrame)
+            {
+                Debug.Log($"직원 수: {_employeeQueue.Count} 고객 수{_menuWaitingCustomers.Count}");
+            }
         }
 
         /// <summary>
         /// 서빙하러 움직이기 시작
         /// </summary>
-        private void StartServeMenu()
+        private void TryServeMenu()
         {
-            if (_employeeQueue.TryDequeue(out Employee employee))
+            while(_menuWaitingCustomers.TryPeek(out Customer customer))
             {
-                if (_lineUpCustomers.TryDequeue(out Customer customer))
+                if (_employeeQueue.TryDequeue(out Employee employee))
                 {
+                    //직원 출동
                     employee.transform.position = employeePosition.position;
                     employee.Init(this, customer.TargetTable);
+                    _menuWaitingCustomers.Dequeue();
                 }
-                else return;
+                else break;
             }
+
+            //현재 직원이 있고
+            //if (_employeeQueue.TryDequeue(out Employee employee))
+            //{
+            //    //메뉴를 기다리는 고객이 있다면
+            //    if (_menuWaitingCustomers.TryDequeue(out Customer customer))
+            //    {
+            //        Debug.Log(_menuWaitingCustomers.Count);
+            //        employee.transform.position = employeePosition.position;
+            //        employee.Init(this, customer.TargetTable);
+            //    }
+            //}
         }
 
         private Table FindEmptyTable()
@@ -110,8 +127,6 @@ namespace Basement
                 customer.SetTable(emptyTable);
                 customer.Init(this);
                 customer.transform.position = exit.position;
-
-                _exsistCustomers.Add(customer);
             }
             else
             {
@@ -127,8 +142,8 @@ namespace Basement
         /// <param name="customer"></param>
         public void OnCustomerSitTable(Customer customer)
         {
-            menuWaitingCustomers.Enqueue(customer);
-            StartServeMenu();
+            _menuWaitingCustomers.Enqueue(customer);
+            TryServeMenu();
         }
 
         /// <summary>
@@ -141,11 +156,14 @@ namespace Basement
             _employeeQueue.Enqueue(employee);
         }
 
+        // 손님이 떠나면 테이블이 비었다는 뜻임으로
+        // 다시 서빙할 애들이 있는지 확인
         public void OnLeaveCustomer(Customer customer)
         {
-            menuWaitingCustomers.Enqueue(customer);
-            StartServeMenu();
+            TryServeMenu();
         }
+
+
 
         public void PassTime(int time)
         {

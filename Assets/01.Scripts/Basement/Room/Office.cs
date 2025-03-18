@@ -1,6 +1,7 @@
 using Basement.Quest;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Basement
 {
@@ -15,7 +16,9 @@ namespace Basement
             get
             {
                 if (_officeUI == null)
+                {
                     _officeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Office) as OfficeUI;
+                }
                 return _officeUI;
             }
         }
@@ -53,11 +56,11 @@ namespace Basement
             bool isComplete = WorkManager.Instance.CurrentTime.hour >= WorkManager.Instance.endTime.hour;
 
             if (isComplete) FocusCamera();
-            else
+            else 
             {
-                base.FocusRoom();
-                RoomUI.SetOppositeUI(OfficeUI);
-            }
+                FocusCamera();
+                OpenRoomUI();
+            } 
         }
 
         public override void CloseUI()

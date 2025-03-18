@@ -44,9 +44,14 @@ namespace Basement
             if (_uiMoveTween != null && _uiMoveTween.active)
                 _uiMoveTween.Kill();
 
-            BasementManager.Instance.basement.ReturnToWideView();
             _uiMoveTween = _buttonTrm.DOAnchorPosX(-85, 0.2f)
                 .OnComplete(() => onCompleteClose?.Invoke());
+        }
+
+        public void ReturnToWideView()
+        {
+            BasementManager.Instance.basement.ReturnToWideView();
+            Close();
         }
     }
 }

@@ -1,4 +1,5 @@
 using Basement.CameraController;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,12 +8,13 @@ using UnityEngine.TextCore.Text;
 
 namespace Basement
 {
-    public abstract class BasementRoom : MonoBehaviour
+    public abstract class BasementRoom : IngameInteractiveObject
     {
         public BasementRoomType roomType;
         public List<Furniture> furnitureList;
         public BasementRoomSO roomSO;
 
+        [SerializeField] protected Collider2D _collider;
         protected bool _isCharacterSelected = false;
         protected CharacterEnum _selectedCharacter;
         protected bool _isFocusMode = false;
@@ -24,7 +26,6 @@ namespace Basement
         [SerializeField] private float _zoomInValue = 1.5f;
         private BasementController _basement;
         private Transform _originFollow;
-        private Collider2D _collider;
         private FurnitureUI _furnitureUI;
         private RoomUI _roomUI;
 
@@ -46,15 +47,6 @@ namespace Basement
                 if (_roomUI == null)
                     _roomUI = UIManager.Instance.roomUI;
                 return _roomUI;
-            }
-        }
-        private Collider2D Collider
-        {
-            get
-            {
-                if (_collider == null)
-                    _collider = GetComponent<Collider2D>();
-                return _collider;
             }
         }
         public BasementController BasementController => _basement;
@@ -106,7 +98,6 @@ namespace Basement
             _basement.OnFocusRoom(this);
             BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.2f, null);
             BasementCameraManager.Instance.Zoom(_zoomInValue, 0.3f);
-            Collider.enabled = false;
             _isFocusMode = true;
         }
 
@@ -114,7 +105,6 @@ namespace Basement
         {
             BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.2f, null);
             BasementCameraManager.Instance.ZoomOut(0.3f);
-            _collider.enabled = true;
             _isFocusMode = false;
             CloseUI();
         }
@@ -152,12 +142,12 @@ namespace Basement
             RoomUI.Open();
         }
 
-        public void OnMouseUp()
+        protected override void OnMouseLeftButtonUp()
         {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
-
-            //if (_basement.GetCurrentBasementMode() == BasementMode.Basement) FocusRoom();
-            //else FurnitureSetting();
+            base.OnMouseLeftButtonUp();
+            
+            if (_basement.GetCurrentBasementMode() == BasementMode.Basement) FocusRoom();
+            else FurnitureSetting();
         }
 
         public void AddFurniture(FurnitureSO furniture, Vector2 position)
@@ -173,5 +163,8 @@ namespace Basement
             _basement = basement;
             _basement.OnChangeBasmentMode += BasmentModeChangeOnFocusMode;
         }
+
+        public void SetColliderEnable(bool isEnable) 
+            => _collider.enabled = isEnable;
     }
 }

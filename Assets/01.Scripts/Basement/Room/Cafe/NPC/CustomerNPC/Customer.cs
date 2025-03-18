@@ -60,6 +60,7 @@ namespace Basement.NPC
             Vector2 popupPosition = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1));
             UIManager.Instance.SetPopupText($"<color=green>{RequireFood.cost}$</color>", popupPosition);
 
+            NextState = "Move";
             onCompleteMove += OnExit;
             SetMoveTarget(_cafe.exit);
             stateMachine.ChangeState("Move");

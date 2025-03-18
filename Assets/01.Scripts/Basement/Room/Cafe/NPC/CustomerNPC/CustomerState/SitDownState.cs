@@ -22,7 +22,7 @@ namespace Basement.NPC
         public override void OnTriggerEnter()
         {
             base.OnTriggerEnter();
-            _customer.OnSitDown();
+            //_customer.OnSitDown();
         }
     }
 }

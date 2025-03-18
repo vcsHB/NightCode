@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Basement
 {
@@ -13,7 +12,7 @@ namespace Basement
         public Action<BasementMode> OnChangeBasmentMode;
         public bool IsFocusRoom { get; private set; }
 
-
+        [SerializeField] private LayerMask _whatIsBasementObject;
         [SerializeField] private BasementInput _input;
         [SerializeField] private GameObject _buildModeObj;
         [SerializeField] private Office _office;
@@ -26,6 +25,7 @@ namespace Basement
         private BasementTimerUI _timer;
         private bool _isWideView = false;
 
+        private Collider2D mouseTarget;
         private Vector2 _prevEndPosition;
         private Vector2 _clickPos;
         private BasementRoom _currentRoom;
@@ -59,7 +59,6 @@ namespace Basement
         public void Update()
         {
             if (_currentRoom != null && _currentRoom.IsUIOpend) _isMousePressed = false;
-
             if (_isMousePressed) MouseDragEvent();
         }
 
@@ -73,19 +72,14 @@ namespace Basement
                 _dragValue.x = Mathf.Clamp(_dragValue.x, -_dragMaxDist, _dragMaxDist);
                 _dragValue.y = Mathf.Clamp(_dragValue.y, -_dragMaxDist * _screenRatio, _dragMaxDist * _screenRatio);
             }
-            //else
-            //{
-            //    Debug.Log(_clickPos);
-            //    _dragValue += ;
-            //}
 
             BasementCameraManager.Instance.OffsetCamera(_dragValue);
             _prevEndPosition = -(_input.MousePosition - _clickPos);
         }
 
-
         public void OnFocusRoom(BasementRoom room)
         {
+            SetBasementColliderEnable(false);
             _isWideView = false;
             _currentRoom = room;
 
@@ -111,21 +105,45 @@ namespace Basement
             }
         }
 
+        public void ReturnToWideView()
+        {
+            BasementCameraManager.Instance.ChangeOriginFollow(0.2f);
+            BasementCameraManager.Instance.ZoomOut(0.2f);
+            SetBasementColliderEnable(true);
+            _isWideView = true;
+        }
+
         public void MouseEvent(bool isPress)
         {
             if (_currentRoom != null && _currentRoom.IsUIOpend) return;
 
             _isMousePressed = isPress;
-            if (EventSystem.current.IsPointerOverGameObject()) _isMousePressed = false;
+
+            Vector2 position = Camera.main.ScreenToWorldPoint(_input.MousePosition);
+            mouseTarget = Physics2D.OverlapCircle(position, 0.1f, _whatIsBasementObject);
+
+            if (mouseTarget != null &&
+                mouseTarget.TryGetComponent(out IngameInteractiveObject interactObject))
+            {
+                interactObject.MouseEvent(isPress);
+                _isMousePressed = false;
+                return;
+            }
 
             if (isPress)
             {
                 _clickPos = _input.MousePosition;
                 if (_isWideView) _clickPos += _prevEndPosition;
-                Debug.Log(_prevEndPosition);
-                return;
+            }
+            else
+            {
+                MouseUpEvent();
             }
 
+        }
+
+        private void MouseUpEvent()
+        {
             if (_isWideView) return;
             bool isChanged = false;
 
@@ -165,10 +183,23 @@ namespace Basement
             {
                 CameraMove(x, y);
             }
-
         }
 
-        #region CameraMoveEvnet
+        private void SetBasementColliderEnable(bool isEnable)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (_basementRooms[i, j] != null)
+                    {
+                        _basementRooms[i, j].SetColliderEnable(isEnable);
+                    }
+                }
+            }
+        }
+
+        #region CameraMoveEvent
 
         //카메라 움직이기
         public void CameraMove(int x, int y)
@@ -222,15 +253,7 @@ namespace Basement
             _office.FocusRoom();
         }
 
-        public void ReturnToWideView()
-        {
-            BasementCameraManager.Instance.ChangeOriginFollow(0.2f);
-            BasementCameraManager.Instance.ZoomOut(0.2f);
-            _isWideView = true;
-        }
-
-        public void SetRoom(BasementRoom room, int floor, int roomNumber)
-            => _basementRooms[floor, roomNumber] = room;
+        public void SetRoom(BasementRoom room, int floor, int roomNumber) => _basementRooms[floor, roomNumber] = room;
         public BasementMode GetCurrentBasementMode() => _currentMode;
     }
 

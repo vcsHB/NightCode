@@ -20,7 +20,7 @@ namespace Basement.NPC
         private void Start()
         {
             stateMachine.AddState("Counter", "Counter", CounterParam);
-            stateMachine.AddState("Serving", "Serving", ServingParam);
+            //stateMachine.AddState("Serving", "Serving", ServingParam);
             stateMachine.AddState("Move", "Move", MoveParam);
             stateMachine.ChangeState("Counter");
         }

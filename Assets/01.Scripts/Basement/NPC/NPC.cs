@@ -29,7 +29,6 @@ namespace Basement.NPC
 
         protected virtual void Update()
         {
-            Debug.Log(stateMachine.currentStateString);
             stateMachine.currentState.UpdateState();
         }
 

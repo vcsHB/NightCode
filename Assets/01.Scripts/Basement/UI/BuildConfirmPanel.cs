@@ -22,4 +22,10 @@ public class BuildConfirmPanel : BasementCommonUI
             gameObject.SetActive(false);
         });
     }
+
+    public override void Open()
+    {
+        Debug.Log("นึ");
+        base.Open();
+    }
 }

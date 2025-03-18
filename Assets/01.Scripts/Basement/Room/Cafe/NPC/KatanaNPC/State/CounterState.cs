@@ -21,27 +21,27 @@ namespace Basement.NPC
         {
             base.EnterState();
 
-            if(Mathf.Sign(_cafeNPC.MoveDir) != 1)
-                _cafeNPC.Flip();
+            //if(Mathf.Sign(_cafeNPC.MoveDir) != 1)
+            //    _cafeNPC.Flip();
         }
 
         public override void UpdateState()
         {
-            if (_customer == null)
-            {
-                if (_cafe.menuWaitingCustomers.TryPeek(out _customer))
-                    _menuGetTime = Time.time;
-            }
-            else
-            {
-                if (_menuGetTime + 1 < Time.time)
-                {
-                    _cafeNPC.SetMoveTarget(_customer.TargetTable.servingPositionTrm);
-                    _cafeNPC.SetNextState("Serving");
-                    stateMachine.ChangeState("Move");
-                    _customer = null;
-                }
-            }
+            //if (_customer == null)
+            //{
+            //    if (_cafe.menuWaitingCustomers.TryPeek(out _customer))
+            //        _menuGetTime = Time.time;
+            //}
+            //else
+            //{
+            //    if (_menuGetTime + 1 < Time.time)
+            //    {
+            //        _cafeNPC.SetMoveTarget(_customer.TargetTable.servingPositionTrm);
+            //        _cafeNPC.SetNextState("Serving");
+            //        stateMachine.ChangeState("Move");
+            //        _customer = null;
+            //    }
+            //}
         }
     }
 }

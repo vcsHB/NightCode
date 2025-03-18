@@ -53,6 +53,7 @@ namespace Basement.NPC
         {
             talkBubble.Close();
             MoveTarget = _cafe.employeePosition;
+            NextState = "Move";
             onCompleteMove += OnExit;
             stateMachine.ChangeState("Move");
         }

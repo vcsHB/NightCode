@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace Basement
 {
-    public class BasementBuildUI : MonoBehaviour
+    public class BasementBuildUI : IngameInteractiveObject
     {
         [SerializeField] private BuildConfirmPanel buildConfirmPanel;
         [SerializeField] private BasementRoomSO _roomSO;
@@ -26,24 +26,16 @@ namespace Basement
             transform.localScale = Vector3.one;
         }
 
-        private void OnMouseDown()
+        protected override void OnMouseLeftButtonUp()
         {
-            _isMouseDown = true;
-        }
-
-        private void OnMouseUp()
-        {
-            if (_isMouseDown)
-                OnClick();
-
-            _isMouseDown = false;
+            base.OnMouseLeftButtonUp();
+            OnClick();
         }
 
         #endregion
 
         private void OnClick()
         {
-            Debug.Log(_isOpen);
             if (_isOpen == false || EventSystem.current.IsPointerOverGameObject()) return;
 
             BuildConfirmPanel confirmPanel = UIManager.Instance.buildConfirmPanel;
