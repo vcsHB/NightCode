@@ -10,6 +10,7 @@ namespace Agents.Enemies.Highbinders
         PATROL,
         CHASE,
         COMBAT,
-        STUN
+        STUN,
+        DEAD
     }
 }

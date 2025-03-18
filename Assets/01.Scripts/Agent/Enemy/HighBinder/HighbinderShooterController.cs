@@ -7,13 +7,14 @@ namespace Agents.Enemies.Highbinders
     {
         [SerializeField] private ProjectileShooter _shooter;
 
-
-
         public override void Attack()
         {
-            Vector2 targetPosition = _owner.GetVariable<Transform>("Target").Value.position;
+            Vector2 targetPosition = _targetVariable.Value.position;
             Vector2 direction = targetPosition - (Vector2)_owner.transform.position;
-            _shooter.SetDirection(direction * Random.insideUnitSphere);
+            Debug.Log(direction);
+            _shooter.SetDirection(direction + (Vector2)Random.insideUnitSphere);
+            _shooter.FireProjectile();
+            _shooter.SetDirection(direction + (Vector2)Random.insideUnitSphere);
             _shooter.FireProjectile();
         }
 
