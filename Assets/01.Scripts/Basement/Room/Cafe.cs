@@ -16,7 +16,7 @@ namespace Basement
         //아직 가게 들어오기 전
         private Queue<Customer> _lineUpCustomers;
         // 테이블에 앉은 상태
-        private Queue<Customer> _menuWaitingCustomers;
+        public Queue<Customer> menuWaitingCustomers;
 
         public bool isCafeOpen = false;
         public BasementTime cafeOpenTime;
@@ -50,7 +50,7 @@ namespace Basement
             npc.Init(this);
             _exsistCustomers = new List<Customer>();
             _lineUpCustomers = new Queue<Customer>();
-            _menuWaitingCustomers = new Queue<Customer>();
+            menuWaitingCustomers = new Queue<Customer>();
             _employeeQueue = new Queue<Employee>();
 
             _tableList = GetComponentsInChildren<Table>().ToList();
@@ -127,7 +127,7 @@ namespace Basement
         /// <param name="customer"></param>
         public void OnCustomerSitTable(Customer customer)
         {
-            _menuWaitingCustomers.Enqueue(customer);
+            menuWaitingCustomers.Enqueue(customer);
             StartServeMenu();
         }
 
@@ -143,7 +143,7 @@ namespace Basement
 
         public void OnLeaveCustomer(Customer customer)
         {
-            _menuWaitingCustomers.Enqueue(customer);
+            menuWaitingCustomers.Enqueue(customer);
             StartServeMenu();
         }
 
