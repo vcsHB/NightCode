@@ -59,7 +59,6 @@ namespace ObjectManage.OtherObjects
             Vector2 direction = collider.transform.position - (Vector3)collision.GetContact(0).point;
             direction.Normalize();
             direction *= _knockbackPower;
-            Debug.Log(direction);
             _knockbackCaster.SetDirection(direction);
             _knockbackCaster.Cast(collider);
             _damageCaster.Cast(collider);
