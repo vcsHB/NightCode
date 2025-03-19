@@ -69,8 +69,12 @@ namespace Basement
 
             if (_tween != null && _tween.active) _tween.Kill();
             _tween = transform.DOScale(0, 0.2f)
-                .OnComplete(() => UIManager.Instance.roomUI.Open());
-            
+                .OnComplete(() =>
+                {
+                    UIManager.Instance.roomUI.Open();
+                    UIManager.Instance.basementUI.Open();
+                });
+
         }
 
         protected override void OnSelectCharacter(int value)
