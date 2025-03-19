@@ -11,7 +11,9 @@ namespace Basement.Mission
     {
         public List<MissionSO> missions;
         public MissionSelectButton button;
+        public RectTransform bottomBarTrm;
 
+        private float _easingDuration = 0.3f;
         [SerializeField] private Vector2 _offset;
         private List<MissionSelectButton> _selectButtons;
         private List<Vector2> _position;
@@ -42,12 +44,13 @@ namespace Basement.Mission
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
-            _seq.OnComplete(OnCompleteCloseAction);
+            _seq.Append(bottomBarTrm.DOAnchorPosY(-50f, _easingDuration))
+                .OnComplete(OnCompleteCloseAction);
 
             float insertTime = 0;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
             {
-                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(-1250, 0.3f));
+                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(-1250, _easingDuration));
                 insertTime += 0.1f;
             }
         }
@@ -58,14 +61,22 @@ namespace Basement.Mission
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
-            _seq.OnComplete(OnCompleteOpenAction);
+
+            _seq.Append(bottomBarTrm.DOAnchorPosY(50f, _easingDuration))
+                .OnComplete(OnCompleteOpenAction);
 
             float insertTime = 0f;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
             {
-                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x, 0.3f));
+                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x, _easingDuration));
                 insertTime += 0.1f;
             }
+        }
+
+        public void SelectPanel(MissionSO mission)
+        {
+            MissionSelectButton panel = _selectButtons.Find(btn => btn.Mission == mission);
+            SelectPanel(panel);
         }
 
         public void SelectPanel(MissionSelectButton missionSelectButton)
@@ -85,6 +96,7 @@ namespace Basement.Mission
                 }
                 else
                 {
+
                     _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x + 500f, 0.3f))
                         .Join(_selectButtons[i].RectTrm.DORotate(new Vector3(0, 0, 5), 0.3f));
                     _selectButtons[i].UnSelectButton();

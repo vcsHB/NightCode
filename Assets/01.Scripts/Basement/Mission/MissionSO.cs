@@ -10,6 +10,8 @@ namespace Basement.Mission
         public Sprite icon;
         [TextArea(5,10)]
         public string missionExplain;
+        [Range(1,5)]
+        public int missionDifficulty;
 
         [Space(10)]
         public string sceneName;
