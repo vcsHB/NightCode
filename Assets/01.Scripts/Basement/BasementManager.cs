@@ -24,8 +24,8 @@ namespace Basement
 
         public Transform GetRoomPosition(int floor, int roomNumber)
         {
-            if (floor < 1 || floor > 3 || roomNumber < 0 || roomNumber > 2) return null;
-            return roomPositions[floor - 1].roomPositions[roomNumber];
+            if (floor < 0 || floor > 2 || roomNumber < 0 || roomNumber > 2) return null;
+            return roomPositions[floor].roomPositions[roomNumber];
         }
 
         public BasementRoom CreateRoom(BasementRoomType roomType, int floor, int roomNumber)

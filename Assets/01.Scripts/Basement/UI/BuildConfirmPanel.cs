@@ -19,13 +19,12 @@ public class BuildConfirmPanel : BasementCommonUI
         _confirmButton.onClick.AddListener(() =>
         {
             createRoomAction?.Invoke();
-            gameObject.SetActive(false);
+            Close();
         });
     }
 
     public override void Open()
     {
-        Debug.Log("นึ");
         base.Open();
     }
 }

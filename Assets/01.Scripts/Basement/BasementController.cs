@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Basement
 {
@@ -26,7 +27,8 @@ namespace Basement
         private bool _isWideView = false;
 
         private Collider2D mouseTarget;
-        private Vector2 _prevEndPosition;
+        private Vector2 _mouseOffsetTemp;
+        private Vector2 _prevMouseOffset;
         private Vector2 _clickPos;
         private BasementRoom _currentRoom;
         private BasementRoom[,] _basementRooms = new BasementRoom[4, 3];
@@ -62,78 +64,20 @@ namespace Basement
             if (_isMousePressed) MouseDragEvent();
         }
 
-        private void MouseDragEvent()
-        {
-            float cameraSize = BasementCameraManager.Instance.CameraSize;
-            _dragValue = (_input.MousePosition - _clickPos) / -_cameraMultiply * cameraSize;
-
-            if (!_isWideView)
-            {
-                _dragValue.x = Mathf.Clamp(_dragValue.x, -_dragMaxDist, _dragMaxDist);
-                _dragValue.y = Mathf.Clamp(_dragValue.y, -_dragMaxDist * _screenRatio, _dragMaxDist * _screenRatio);
-            }
-
-            BasementCameraManager.Instance.OffsetCamera(_dragValue);
-            _prevEndPosition = -(_input.MousePosition - _clickPos);
-        }
-
-        public void OnFocusRoom(BasementRoom room)
-        {
-            SetBasementColliderEnable(false);
-            _isWideView = false;
-            _currentRoom = room;
-
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (_basementRooms[i, j] == room)
-                    {
-                        _currentFloor = i;
-                        _currentRoomNumber = j;
-
-                        bool canGoLeft = (_currentRoomNumber > 0 && _basementRooms[i, j] != null);
-                        bool canGoRight = (_currentRoomNumber < 2 && _basementRooms[i, j] != null);
-                        //카페는 2칸을 차지해서 오른쪽으로는 못감
-                        if (_currentRoom is Cafe) canGoRight = false;
-
-                        UIManager.Instance.basementUI.OnChangeRoom(canGoLeft, canGoRight);
-
-                        return;
-                    }
-                }
-            }
-        }
-
-        public void ReturnToWideView()
-        {
-            BasementCameraManager.Instance.ChangeOriginFollow(0.2f);
-            BasementCameraManager.Instance.ZoomOut(0.2f);
-            SetBasementColliderEnable(true);
-            _isWideView = true;
-        }
+        #region MouseEvent
 
         public void MouseEvent(bool isPress)
         {
+            if (EventSystem.current.IsPointerOverGameObject() && isPress) return;
             if (_currentRoom != null && _currentRoom.IsUIOpend) return;
 
             _isMousePressed = isPress;
-
-            Vector2 position = Camera.main.ScreenToWorldPoint(_input.MousePosition);
-            mouseTarget = Physics2D.OverlapCircle(position, 0.1f, _whatIsBasementObject);
-
-            if (mouseTarget != null &&
-                mouseTarget.TryGetComponent(out IngameInteractiveObject interactObject))
-            {
-                interactObject.MouseEvent(isPress);
-                _isMousePressed = false;
-                return;
-            }
+            if (CheckIngameObjectInteract(isPress)) return;
 
             if (isPress)
             {
                 _clickPos = _input.MousePosition;
-                if (_isWideView) _clickPos += _prevEndPosition;
+                if (_isWideView) _prevMouseOffset = _mouseOffsetTemp;
             }
             else
             {
@@ -185,6 +129,83 @@ namespace Basement
             }
         }
 
+        private void MouseDragEvent()
+        {
+            float cameraSize = BasementCameraManager.Instance.CameraSize;
+            _dragValue = ((_input.MousePosition - _clickPos) / -_cameraMultiply * cameraSize);
+            
+            if (!_isWideView)
+            {
+                _dragValue.x = Mathf.Clamp(_dragValue.x, -_dragMaxDist, _dragMaxDist);
+                _dragValue.y = Mathf.Clamp(_dragValue.y, -_dragMaxDist * _screenRatio, _dragMaxDist * _screenRatio);
+            }
+            else
+            {
+                _dragValue += _prevMouseOffset;
+            }
+
+                BasementCameraManager.Instance.OffsetCamera(_dragValue);
+            _mouseOffsetTemp = _dragValue;
+        }
+
+        private bool CheckIngameObjectInteract(bool isPress)
+        {
+            Vector2 position = Camera.main.ScreenToWorldPoint(_input.MousePosition);
+            mouseTarget = Physics2D.OverlapCircle(position, 0.1f, _whatIsBasementObject);
+
+            if (mouseTarget != null &&
+                mouseTarget.TryGetComponent(out IngameInteractiveObject interactObject))
+            {
+                interactObject.MouseEvent(isPress);
+                _isMousePressed = false;
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region MouseEventFeedback
+
+        public void OnFocusRoom(BasementRoom room)
+        {
+            SetBasementColliderEnable(false);
+            _isWideView = false;
+            _currentRoom = room;
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (_basementRooms[i, j] == room)
+                    {
+                        _currentFloor = i;
+                        _currentRoomNumber = j;
+
+                        bool canGoLeft = (_currentRoomNumber > 0 && _basementRooms[i, j] != null);
+                        bool canGoRight = (_currentRoomNumber < 2 && _basementRooms[i, j] != null);
+                        //카페는 2칸을 차지해서 오른쪽으로는 못감
+                        if (_currentRoom is Cafe) canGoRight = false;
+
+                        UIManager.Instance.basementUI.OnChangeRoom(canGoLeft, canGoRight);
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        public void ReturnToWideView()
+        {
+            BasementCameraManager.Instance.ChangeOriginFollow(0.2f);
+            BasementCameraManager.Instance.ZoomOut(0.2f);
+            SetBasementColliderEnable(true);
+            _mouseOffsetTemp = Vector2.zero;
+            _prevMouseOffset = Vector2.zero;
+            _isWideView = true;
+        }
+
         private void SetBasementColliderEnable(bool isEnable)
         {
             for (int i = 0; i < 4; i++)
@@ -198,6 +219,8 @@ namespace Basement
                 }
             }
         }
+
+        #endregion
 
         #region CameraMoveEvent
 
@@ -230,6 +253,10 @@ namespace Basement
 
         #endregion
 
+        /// <summary>
+        /// 토글에서 사용함
+        /// </summary>
+        /// <param name="isBuildMode"></param>
         public void ChangeBuildMode(bool isBuildMode)
         {
             if (isBuildMode) _currentMode = BasementMode.Build;
@@ -245,6 +272,9 @@ namespace Basement
             });
         }
 
+        /// <summary>
+        /// 일단 임시로 만들어둔거지만 
+        /// </summary>
         public void CompleteScadule()
         {
             //임시 코드임

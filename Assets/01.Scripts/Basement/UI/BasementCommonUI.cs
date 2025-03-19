@@ -19,7 +19,7 @@ namespace Basement
 
         public RectTransform RectTrm => transform as RectTransform;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             if (closeOnStart == false) return;
             switch (animType)
