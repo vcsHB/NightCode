@@ -1,46 +1,44 @@
+using System;
 using Agents.Animate;
-using Combat.Casters;
-using UnityEngine;
 using UnityEngine.Events;
 namespace Agents.Players
 {
 
     public abstract class PlayerAnimationTrigger : AnimationTrigger
     {
-        [SerializeField] private Caster _swingGaurdCaster;
-
-        public void CastSwingGuard()
-        {
-            _swingGaurdCaster.Cast();
-        }
-
-        public UnityEvent OnFirstAttackEvent;
-        public UnityEvent OnSecondAttackEvent;
-        public UnityEvent OnThirdAttackEvent;
         public UnityEvent OnGroundPullAttackEvent;
 
+       
 
+#region Old Prototype Attack System Functions
+
+        // public UnityEvent OnFirstAttackEvent;
+        // public UnityEvent OnSecondAttackEvent;
+        // public UnityEvent OnThirdAttackEvent;
+
+        [Obsolete("Old Type Attack Handler")]
         public void HandleAttack1()
         {
-            OnFirstAttackEvent?.Invoke();
+            //OnFirstAttackEvent?.Invoke();
         }
-
+        [Obsolete("Old Type Attack Handler")]
         public void HandleAttack2()
         {
-            OnSecondAttackEvent?.Invoke();
+            //OnSecondAttackEvent?.Invoke();
         }
+        [Obsolete("Old Type Attack Handler")]
         public void HandleAttack3()
         {
-            OnSecondAttackEvent?.Invoke();
+            //OnSecondAttackEvent?.Invoke();
         }
 
+        // public abstract void HandleAirAttack1();
+        // public abstract void HandleAirAttack2();
+#endregion
         public void HandleGroundPullAttack()
         {
             OnGroundPullAttackEvent?.Invoke();
         }
-
-        public abstract void HandleAirAttack1();
-        public abstract void HandleAirAttack2();
 
 
     }

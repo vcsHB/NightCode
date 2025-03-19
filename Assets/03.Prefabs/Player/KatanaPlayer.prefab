@@ -36128,11 +36128,6 @@ MonoBehaviour:
   <ClimbParam>k__BackingField: {fileID: 11400000, guid: 71c121d3b49b14d41a5bff50ee88fea9, type: 2}
   <EnterParam>k__BackingField: {fileID: 11400000, guid: 783ff1433dd39f443a08e4f956697783, type: 2}
   <ExitParam>k__BackingField: {fileID: 11400000, guid: 239eabc2d567c6446bf8a20346432868, type: 2}
-  <AttackParam>k__BackingField: {fileID: 11400000, guid: 9bd0e45692af5014fa11ef5e59b2ef56, type: 2}
-  <GrabParam>k__BackingField: {fileID: 11400000, guid: cffe7fa0fe031d64eb8bd70ce9b3be41, type: 2}
-  <PullParam>k__BackingField: {fileID: 11400000, guid: 1e18d3253b595b845b24b899fd6f6e3b, type: 2}
-  <AirAttackParam>k__BackingField: {fileID: 11400000, guid: 7fd406dc6be039946a213e061dd1b1ed, type: 2}
-  <SkillParam>k__BackingField: {fileID: 11400000, guid: 9b488b365757a7642a08377b524bd181, type: 2}
 --- !u!114 &2092558108735833551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36146,87 +36141,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _swingGaurdCaster: {fileID: 5664495780694541100}
-  OnFirstAttackEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Combat.BoxCaster, Assembly-CSharp
-        m_MethodName: Cast
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FeedbackSystem.FeedbackPlayer, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnSecondAttackEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Combat.BoxCaster, Assembly-CSharp
-        m_MethodName: Cast
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FeedbackSystem.FeedbackPlayer, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnThirdAttackEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Combat.BoxCaster, Assembly-CSharp
-        m_MethodName: Cast
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FeedbackSystem.FeedbackPlayer, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   OnGroundPullAttackEvent:
     m_PersistentCalls:
       m_Calls:
@@ -36242,13 +36156,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _airAttackShooter: {fileID: 4418418723516817600}
-  OnAirAttack1Event:
-    m_PersistentCalls:
-      m_Calls: []
-  OnAirAttack2Event:
-    m_PersistentCalls:
-      m_Calls: []
   _swingAttackCaster: {fileID: 5664495780694541100}
 --- !u!1 &8219204419753669800
 GameObject:
