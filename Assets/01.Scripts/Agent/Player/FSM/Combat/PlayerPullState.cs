@@ -20,6 +20,7 @@ namespace Agents.Players.FSM
 
         private void HandleChangeGrab()
         {
+            
             _stateMachine.ChangeState("Grab");
         }
     }

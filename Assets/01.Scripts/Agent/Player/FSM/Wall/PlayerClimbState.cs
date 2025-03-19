@@ -17,7 +17,13 @@ namespace Agents.Players.FSM
             {
                 _stateMachine.ChangeState("HoldingWall");
             }
-            base.UpdateState();
+            if (!_mover.IsWallDetected())
+            {
+                //_mover.SetYMovement(5f);
+                _mover.ResetGravityMultiplier();
+                _stateMachine.ChangeState("Fall");
+                //HandleWallJump();
+            }
         }
     }
 }

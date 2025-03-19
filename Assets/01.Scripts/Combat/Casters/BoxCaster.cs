@@ -14,10 +14,12 @@ namespace Combat.Casters
             ForceCast(_hits);
         }
 
-        private void OnDrawGizmos()
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = _gizmosColor;
             Gizmos.DrawWireCube(CenterPosition, _boxSize);
         }
+#endif
     }
 }

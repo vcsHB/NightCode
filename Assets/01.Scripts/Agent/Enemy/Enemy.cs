@@ -1,3 +1,4 @@
+using Agents.Enemies.BT.Event;
 using Combat;
 using Core.EventSystem;
 using Unity.Behavior;
@@ -23,10 +24,11 @@ namespace Agents.Enemies
 
             _btAgent = GetComponent<BehaviorGraphAgent>();
         }
-        // protected override void HandleAgentDie()
-        // {
-        //     IsDead = true;
-        // }
+        protected override void HandleAgentDie()
+        {
+            base.HandleAgentDie();
+            GetVariable<StateChange>("StateChange").Value.SendEventMessage(Highbinders.HighbinderStateEnum.DEAD);
+        }
 
         public BlackboardVariable<T> GetVariable<T>(string variableName)
         {

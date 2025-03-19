@@ -66,6 +66,7 @@ namespace Agents.Players
         {
             _aimGroupController.SetAimMarkPosition(data.mousePosition);
             _aimGroupController.SetVirtualAim(data.isTargeted);
+            _aimGroupController.SetVirtualAimPosition(data.targetPosition);
 
             _currentAimData = data;
         }
@@ -80,7 +81,12 @@ namespace Agents.Players
         {
             _currentShootTime += Time.deltaTime;
             if (_isShoot)
-                HangingDirection = _aimGroupController.AnchorPos - OriginPosition;
+                HangingDirection = _aimGroupController.AnchorPos - (Vector2)_player.transform.position;
+        }
+        public void RefreshHangingDirection()
+        {
+            HangingDirection = _aimGroupController.AnchorPos - (Vector2)_player.transform.position;
+
         }
 
 
@@ -126,7 +132,8 @@ namespace Agents.Players
         {
             _aimGroupController.SetActiveWire(true);
             _anchorPosition = TargetPoint;
-            if (_currentAimData.distance > _wireClampedDistance)
+            _aimGroupController.SetAnchorPosition(TargetPoint);
+            if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 _clampCoroutine = StartCoroutine(
@@ -134,7 +141,7 @@ namespace Agents.Players
                         GetLerpTargetPosition(_wireClampedDistance), _clampDuration));
             }
             else
-                _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _currentAimData.distance);
+                _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
 
         }
 
@@ -171,14 +178,14 @@ namespace Agents.Players
 
         }
 
-        public void HandlePull()
+        public void HandlePull(Action OnComplete = null)
         {
-            if (IsClamping) return;
+            if (IsClamping ||  _currentAimData.distanceToPoint < 2f) return;
             _playerMovement.StopImmediately(true);
             _clampCoroutine = StartCoroutine(DistanceClampCoroutine(
                 GetLerpTargetPositionByRatio(0.9f),
-                _currentAimData.distance * _pullClampDuration
-                ));
+                _currentAimData.distanceToPoint * _pullClampDuration,
+                OnComplete));
 
         }
 
@@ -186,7 +193,7 @@ namespace Agents.Players
 
         private Vector2 GetLerpTargetPosition(float clampDistance)
         {
-            float distance = _currentAimData.distance;
+            float distance = _currentAimData.distanceToPoint;
             return Vector2.Lerp(_currentAimData.originPlayerPosition, TargetPoint, (distance - clampDistance) / distance);
         }
 

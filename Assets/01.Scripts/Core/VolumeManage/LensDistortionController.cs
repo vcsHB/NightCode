@@ -1,47 +1,22 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-
-namespace Core
+namespace Core.VolumeControlSystem
 {
-    public enum VolumeEffectType
+
+    public class LensDistortionController : VolumeController
     {
-        ChromaticAberration
-    }
-    public class VolumeManager : MonoSingleton<VolumeManager>
-    {
-        [SerializeField] private Volume _globalVolume;
-        private ChromaticAberration _chromaticEffect;
         private LensDistortion _lensDistortion;
+        
         private bool _isLensEffectTweening;
         private readonly float _defaultLensDistortionLevel;
-
-
-        protected override void Awake()
+        public override void Initialize(Volume globalVolume)
         {
-            base.Awake();
-            _globalVolume.profile.TryGet(out _chromaticEffect);
-            _globalVolume.profile.TryGet(out _lensDistortion);
+            globalVolume.profile.TryGet(out _lensDistortion);
+            
         }
 
-        public void HandleEnableChromatic()
-        {
-            SetChromatic(0.13f);
-        }
-
-        public void HandleDisableChromatic()
-        {
-            SetChromatic(0f);
-        }
-
-
-        public void SetChromatic(float value)
-        {
-            _chromaticEffect.intensity.value = value;
-
-        }
 
         public void SetDefaultLensDistortion()
         {
@@ -81,7 +56,5 @@ namespace Core
             SetLensDistortion(defaultValue);
             _isLensEffectTweening = false;
         }
-
-
     }
 }

@@ -1,4 +1,5 @@
 using Core;
+using Core.VolumeControlSystem;
 using UnityEngine;
 namespace FeedbackSystem
 {
@@ -9,14 +10,20 @@ namespace FeedbackSystem
         [SerializeField] private float _tweenDuration = 0.06f;
         [SerializeField] private float _duration = 0.05f;
 
+        private LensDistortionController _controller;
+        private void Start()
+        {
+            _controller = VolumeManager.Instance.GetCompo<LensDistortionController>();
+        }
+
         public override void CreateFeedback()
         {
-            VolumeManager.Instance.SetLensDistortion(_intensity, _tweenDuration, _duration);
+            _controller.SetLensDistortion(_intensity, _tweenDuration, _duration);
         }
 
         public override void FinishFeedback()
         {
-            VolumeManager.Instance.SetDefaultLensDistortion();
+            _controller.SetDefaultLensDistortion();
         }
     }
 }

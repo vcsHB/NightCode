@@ -20,6 +20,7 @@ namespace Agents.Enemies.BT.ActionNodes
             enemy.SetVariable("Mover", enemy.GetCompo<AgentMovement>());
             enemy.SetVariable("Renderer", enemy.GetCompo<AgentRenderer>());
             enemy.SetVariable("AnimTrigger", enemy.GetCompo<EnemyAnimationTrigger>());
+            enemy.SetVariable("Collider", enemy.GetComponent<Collider2D>());
 
             return Status.Running;
         }
