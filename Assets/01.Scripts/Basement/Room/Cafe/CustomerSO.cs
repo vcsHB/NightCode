@@ -2,7 +2,7 @@ using Agents.Animate;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Basement
+namespace Basement.NPC
 {
     [CreateAssetMenu(menuName = "SO/Basement/Cafe/CustomerSO")]
     public class CustomerSO : ScriptableObject
@@ -11,15 +11,14 @@ namespace Basement
         public Customer customerPf;
         public float customerMoveSpeed;
 
-        public AnimParamSO idleAnim;
-        public AnimParamSO moveAnim;
-        public AnimParamSO sitdownAnim;
-        public AnimParamSO sitStateAnim;
-        public AnimParamSO eatAnim;
-        public AnimParamSO standUpAnim;
+        public AnimParamSO MoveParam;
+        public AnimParamSO SitdownParam;
+        public AnimParamSO SitParam;
+        public AnimParamSO EatParam;
+        public AnimParamSO StandupParam;
 
         public float width;
-        public Vector2 stayTimeRange;
+        public Vector2 foodEatingTime;
         public List<FoodSO> canOrderFoods;
         [Header("devide to 10000")]
         public float tipChance;
@@ -30,8 +29,8 @@ namespace Basement
             return tipChance <= random;
         }
 
-        public float GetRandomStayTime()
-            => Random.Range(stayTimeRange.x, stayTimeRange.y);
+        public float GetRandomEatingTime()
+            => Random.Range(foodEatingTime.x, foodEatingTime.y);
 
         public FoodSO GetRandomFood()
             => canOrderFoods[Random.Range(0, canOrderFoods.Count)];

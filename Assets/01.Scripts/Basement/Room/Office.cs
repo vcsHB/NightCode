@@ -1,13 +1,14 @@
 using Basement.Quest;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Basement
 {
     public class Office : BasementRoom
     {
         public Furniture table;
-        [SerializeField]private List<DailyQuestSO> _questList;
+        [SerializeField] private List<DailyQuestSO> _questList;
 
         private OfficeUI _officeUI;
         public OfficeUI OfficeUI
@@ -15,9 +16,16 @@ namespace Basement
             get
             {
                 if (_officeUI == null)
+                {
                     _officeUI = UIManager.Instance.GetUIPanel(BasementRoomType.Office) as OfficeUI;
+                }
                 return _officeUI;
             }
+        }
+
+        private void Start()
+        {
+            _connectedUI = OfficeUI;
         }
 
         private void OnDisable()
@@ -39,8 +47,7 @@ namespace Basement
         {
             OfficeUI.Open();
             RoomUI.Close();
-            UIManager.Instance.returnButton.Open();
-            UIManager.Instance.returnButton.AddReturnAction(OfficeUI.Close);
+            //UIManager.Instance.returnButton.AddReturnAction(OfficeUI.Close);
             UIManager.Instance.basementUI.Close();
         }
 
@@ -49,7 +56,11 @@ namespace Basement
             bool isComplete = WorkManager.Instance.CurrentTime.hour >= WorkManager.Instance.endTime.hour;
 
             if (isComplete) FocusCamera();
-            else base.FocusRoom();
+            else 
+            {
+                FocusCamera();
+                OpenRoomUI();
+            } 
         }
 
         public override void CloseUI()

@@ -27,7 +27,15 @@ namespace Basement
             _cafe = cafe;
         }
 
-        public override void Open()
+        protected override void OnSelectCharacter(int value)
+        {
+            base.OnSelectCharacter(value);
+            icon.gameObject.SetActive(true);
+            //profitText.SetText($"수익: {_cafe.profitRange.x} ~ {_cafe.profitRange.y}/1h");
+            _cafe.PositionedCharacter = (CharacterEnum)value;
+        }
+
+        protected override void OpenAnimation()
         {
             characterSelectDropDown.ClearOptions();
             List<TMP_Dropdown.OptionData> options = new();
@@ -58,14 +66,15 @@ namespace Basement
             OnSelectCharacter(0);
 
             if (_tween != null && _tween.active) _tween.Kill();
-            _tween = transform.DOScale(1, 0.2f);
+            _tween = transform.DOScale(1, 0.2f)
+                .OnComplete(() => onCompleteOpen?.Invoke());
         }
-        public override void Close()
+        protected override void CloseAnimation()
         {
             cancelBtn.gameObject.SetActive(true);
             openStoreBtn.onClick.RemoveListener(OpenStore);
             openStoreBtn.onClick.RemoveListener(CloseStore);
-            openStoreBtn.onClick.RemoveListener(Close);
+            //openStoreBtn.onClick.RemoveListener(Close);
 
             if (_tween != null && _tween.active) _tween.Kill();
             _tween = transform.DOScale(0, 0.2f)
@@ -73,16 +82,8 @@ namespace Basement
                 {
                     UIManager.Instance.roomUI.Open();
                     UIManager.Instance.basementUI.Open();
+                    onCompleteClose?.Invoke();
                 });
-
-        }
-
-        protected override void OnSelectCharacter(int value)
-        {
-            base.OnSelectCharacter(value);
-            icon.gameObject.SetActive(true);
-            //profitText.SetText($"수익: {_cafe.profitRange.x} ~ {_cafe.profitRange.y}/1h");
-            _cafe.PositionedCharacter = (CharacterEnum)value;
         }
 
         public void OpenStore()
@@ -115,7 +116,7 @@ namespace Basement
             openStoreText.SetText("닫기");
 
             openStoreBtn.onClick.RemoveListener(CloseStore);
-            openStoreBtn.onClick.AddListener(Close);
+            //openStoreBtn.onClick.AddListener(Close);
         }
     }
 }

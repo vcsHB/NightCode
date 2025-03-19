@@ -7,11 +7,13 @@ using UnityEngine.UIElements;
 
 namespace Basement.Mission
 {
-    public class MissionSelectPanel : MonoBehaviour, IWindowPanel
+    public class MissionSelectPanel : BasementUI
     {
         public List<MissionSO> missions;
         public MissionSelectButton button;
+        public RectTransform bottomBarTrm;
 
+        private float _easingDuration = 0.3f;
         [SerializeField] private Vector2 _offset;
         private List<MissionSelectButton> _selectButtons;
         private List<Vector2> _position;
@@ -36,32 +38,45 @@ namespace Basement.Mission
             });
         }
 
-        public void Close()
+        protected override void CloseAnimation()
         {
             if (_seq != null && _seq.active)
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
+            _seq.Append(bottomBarTrm.DOAnchorPosY(-50f, _easingDuration))
+                .OnComplete(OnCompleteCloseAction);
+
             float insertTime = 0;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
             {
-                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(-1250, 0.3f));
+                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(-1250, _easingDuration));
                 insertTime += 0.1f;
             }
         }
 
-        public void Open()
+        protected override void OpenAnimation()
         {
             if (_seq != null && _seq.active)
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
-            float insertTime = 0.5f;
+
+            _seq.Append(bottomBarTrm.DOAnchorPosY(50f, _easingDuration))
+                .OnComplete(OnCompleteOpenAction);
+
+            float insertTime = 0f;
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
             {
-                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x, 0.3f));
+                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x, _easingDuration));
                 insertTime += 0.1f;
             }
+        }
+
+        public void SelectPanel(MissionSO mission)
+        {
+            MissionSelectButton panel = _selectButtons.Find(btn => btn.Mission == mission);
+            SelectPanel(panel);
         }
 
         public void SelectPanel(MissionSelectButton missionSelectButton)
@@ -81,6 +96,7 @@ namespace Basement.Mission
                 }
                 else
                 {
+
                     _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x + 500f, 0.3f))
                         .Join(_selectButtons[i].RectTrm.DORotate(new Vector3(0, 0, 5), 0.3f));
                     _selectButtons[i].UnSelectButton();

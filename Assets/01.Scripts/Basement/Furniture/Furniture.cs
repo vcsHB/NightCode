@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Basement
 {
-    public class Furniture : MonoBehaviour
+    public class Furniture : IngameInteractiveObject
     {
         public Action InteractAction;
         public FurnitureSO furnitureSO;
@@ -37,28 +37,34 @@ namespace Basement
                 _stickToGround ? minPosition.y : Mathf.Clamp(position.y, minPosition.y, maxPosition.y));
         }
 
-        private void OnMouseUp()
-        {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
-            if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Build) return;
-            InteractAction?.Invoke();
-        }
-
-        private void OnMouseDown()
+        protected override void OnMouseLeftButtonDown()
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
             if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Basement) return;
+
+            base.OnMouseLeftButtonDown();
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             _offset = (Vector2)transform.position - mousePosition;
         }
 
-        private void OnMouseDrag()
+        protected override void OnMouseLeftButtonUp()
+        {
+            base.OnMouseLeftButtonUp();
+            
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Build) return;
+
+            InteractAction?.Invoke();
+        }
+
+        protected override void OnDrag(Vector2 mousePosition)
         {
             if (_room.BasementController.GetCurrentBasementMode() == BasementMode.Basement) return;
 
             Vector2 mosuePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             SetPosition(mosuePosition);
+            base.OnDrag(mousePosition);
         }
     }
 }

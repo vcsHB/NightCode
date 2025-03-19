@@ -53,17 +53,37 @@ namespace Basement
             SetTimerText();
         }
 
-        public void AddRestTime()
+        protected override void OpenAnimation()
         {
-            _restTime += 30;
+            if (_tween != null && _tween.active)
+                _tween.Kill();
+
+            _tween = _rectTrm.DOAnchorPosX(0, 0.2f)
+                .OnComplete(() => onCompleteOpen?.Invoke());
+        }
+
+        protected override void CloseAnimation()
+        {
+            if (_tween != null && _tween.active)
+                _tween.Kill();
+
+            _tween = _rectTrm.DOAnchorPosX(500, 0.2f)
+                .OnComplete(() => onCompleteClose?.Invoke());
+        }
+
+        #region Timer
+
+        public void MinusRestTime()
+        {
+            _restTime -= 30;
             _restTime = Mathf.Clamp(_restTime, 30, _lodging.GetMaxRestTime());
             SetTimerText();
             SetFatigueText();
         }
 
-        public void MinusRestTime()
+        public void AddRestTime()
         {
-            _restTime -= 30;
+            _restTime += 30;
             _restTime = Mathf.Clamp(_restTime, 30, _lodging.GetMaxRestTime());
             SetTimerText();
             SetFatigueText();
@@ -76,21 +96,9 @@ namespace Basement
             _restTimeText.SetText($"ÈÞ½Ä ½Ã°£: {hour}h{minite}m");
         }
 
-        public override void Open()
-        {
-            if (_tween != null && _tween.active)
-                _tween.Kill();
+        #endregion
 
-            _tween = _rectTrm.DOAnchorPosX(0, 0.2f);
-        }
-
-        public override void Close()
-        {
-            if (_tween != null && _tween.active)
-                _tween.Kill();
-
-            _tween = _rectTrm.DOAnchorPosX(500, 0.2f);
-        }
+        #region SetRest
 
         public void SetCharacterRest()
         {
@@ -111,6 +119,8 @@ namespace Basement
             int fatigueDecrease = _lodging.GetFatigueDecreaseValue(_restTime);
             CharacterManager.Instance.AddFatigue(character, -fatigueDecrease);
         }
+
+        #endregion
 
         private void SetFatigueText()
         {

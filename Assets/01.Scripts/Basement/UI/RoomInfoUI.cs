@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace Basement
 {
-    public class RoomInfoUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class RoomInfoUI : BasementUI, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _explainText;
@@ -31,21 +31,23 @@ namespace Basement
                 Close();
         }
 
-        public void Open()
+        protected override void OpenAnimation()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();
 
-            _tween = _rctTrm.DOAnchorPosX(0, 0.3f);
+            _tween = _rctTrm.DOAnchorPosX(0, 0.3f)
+                .OnComplete(() => onCompleteOpen?.Invoke());
             _isOpen = true;
         }
 
-        public void Close()
+        protected override void CloseAnimation()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();
 
-            _tween = _rctTrm.DOAnchorPosX(500, 0.3f);
+            _tween = _rctTrm.DOAnchorPosX(500, 0.3f)
+                .OnComplete(() => onCompleteClose?.Invoke());
             _isOpen = false;
         }
 

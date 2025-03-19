@@ -27,20 +27,21 @@ namespace Basement.Training
             _checkButton.onClick.AddListener(Training);
         }
 
-        public override void Open()
+        protected override void OpenAnimation()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();
 
-            _tween = _rectTrm.DOAnchorPosX(-10f, 0.3f);
+            _tween = _rectTrm.DOAnchorPosX(-10f, 0.3f)
+                .OnComplete(() => onCompleteOpen?.Invoke());
         }
-
-        public override void Close()
+        protected override void CloseAnimation()
         {
             if (_tween != null && _tween.active)
                 _tween.Kill();
 
-            _tween = _rectTrm.DOAnchorPosX(500f, 0.3f);
+            _tween = _rectTrm.DOAnchorPosX(500f, 0.3f)
+                .OnComplete(() => onCompleteClose?.Invoke());
         }
 
         private void Training()

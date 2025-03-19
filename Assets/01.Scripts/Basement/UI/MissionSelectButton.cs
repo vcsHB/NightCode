@@ -16,6 +16,8 @@ public class MissionSelectButton : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public RectTransform RectTrm => transform as RectTransform;
     public RectTransform childRect => transform.GetChild(0) as RectTransform;
+    public MissionSO Mission => _mission;
+
     private MissionSelectPanel _selectPanel;
     private bool _isSelected = false;
     private MissionSO _mission;

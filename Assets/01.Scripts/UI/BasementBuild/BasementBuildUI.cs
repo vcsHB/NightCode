@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace Basement
 {
-    public class BasementBuildUI : MonoBehaviour
+    public class BasementBuildUI : IngameInteractiveObject
     {
         [SerializeField] private BuildConfirmPanel buildConfirmPanel;
         [SerializeField] private BasementRoomSO _roomSO;
@@ -11,8 +11,19 @@ namespace Basement
         [SerializeField] private int _roomNumber;
         [SerializeField] private Color _openColor, _closeColor;
         [SerializeField] private SpriteRenderer _sr;
+        private Collider2D _collider;
         private bool _isMouseDown = false;
         private bool _isOpen = false;
+
+        public Collider2D Collider
+        {
+            get
+            {
+                if (_collider == null)
+                    _collider = GetComponent<Collider2D>();
+                return _collider;
+            }
+        }
 
         #region MouseEvents
 
@@ -26,17 +37,10 @@ namespace Basement
             transform.localScale = Vector3.one;
         }
 
-        private void OnMouseDown()
+        protected override void OnMouseLeftButtonUp()
         {
-            _isMouseDown = true;
-        }
-
-        private void OnMouseUp()
-        {
-            if (_isMouseDown)
-                OnClick();
-
-            _isMouseDown = false;
+            base.OnMouseLeftButtonUp();
+            OnClick();
         }
 
         #endregion
@@ -50,7 +54,7 @@ namespace Basement
             confirmPanel.Open();
         }
 
-        private void Build()
+        public void Build()
         {
             if (CheckResource() == false) return;
 
@@ -68,12 +72,14 @@ namespace Basement
 
         public void Open()
         {
+            Collider.enabled = true;
             _sr.color = _openColor; 
             _isOpen = true;
         }
 
         public void Close()
         {
+            Collider.enabled = false;
             _sr.color = _closeColor;
             _isOpen = false;
         }

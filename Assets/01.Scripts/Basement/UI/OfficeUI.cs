@@ -1,72 +1,67 @@
 using Basement.Mission;
-using System;
-using System.Collections.Generic;
-using UI;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Basement
 {
-    public class OfficeUI : MonoBehaviour, IWindowPanel
+    public class OfficeUI : BasementUI
     {
+        [Space]
         public Office office;
-        public Button moveLeftButton;
-        public Button moveRightButton;
+
+        //init panel
         public CharacterSelectPanel characterSelectPanel;
         public SkillTreePanel skillTreePanel;
+
+        //next panel
         public MissionSelectPanel missionSelectPanel;
 
+        public RectTransform bgRect;
+        public Button returnBtn;
+        public BasementUI returnBtnUI => returnBtn.GetComponent<BasementUI>();
 
-        private Dictionary<OfficeUIState, IWindowPanel> _officeUIDic;
-        private OfficeUIState _currentUiState;
+        private Tween _bgTween;
 
         private void Awake()
         {
-            _officeUIDic = new Dictionary<OfficeUIState, IWindowPanel>();
-            _officeUIDic.Add(OfficeUIState.MissionSelect, missionSelectPanel);
-            _officeUIDic.Add(OfficeUIState.CharacterSelect, characterSelectPanel);
+            skillTreePanel.Init(this);
             characterSelectPanel.Init(this);
-
-            moveLeftButton.onClick.AddListener(() => ChangeState(OfficeUIState.MissionSelect));
-            moveRightButton.onClick.AddListener(() => ChangeState(OfficeUIState.CharacterSelect));
+            characterSelectPanel.SetUILink(skillTreePanel);
         }
 
-        private void OnDisable()
+        protected override void OpenAnimation()
         {
-            moveLeftButton.onClick.RemoveAllListeners();
-            moveRightButton.onClick.RemoveAllListeners();
+            _bgTween = bgRect.DOAnchorPosY(0, 0.2f)
+                .OnComplete(() =>
+                {
+                    characterSelectPanel.SetOppositeUI(missionSelectPanel);
+
+                    returnBtnUI.Open();
+                    characterSelectPanel.Open();
+                    OnCompleteOpenAction();
+                });
         }
 
-        private void ChangeState(OfficeUIState uiState)
+        protected override void CloseAnimation()
         {
-            if (_currentUiState != uiState) _officeUIDic[_currentUiState].Close();
-            _currentUiState = uiState;
-            _officeUIDic[_currentUiState].Open();
+            if (characterSelectPanel.isLinkedUIOpend)
+            {
+                characterSelectPanel.Close();
+                isOpend = true;
+                return;
+            }
 
-            moveRightButton.gameObject.SetActive(uiState == OfficeUIState.MissionSelect);
-            moveLeftButton.gameObject.SetActive(uiState == OfficeUIState.CharacterSelect);
-        }
 
-        public void Open()
-        {
-            moveLeftButton.gameObject.SetActive(true);
-            moveRightButton.gameObject.SetActive(true);
-            ChangeState(OfficeUIState.CharacterSelect);
-        }
+            _bgTween = bgRect.DOAnchorPosY(1080, 0.2f);
 
-        public void Close()
-        {
-            moveLeftButton.gameObject.SetActive(false);
-            moveRightButton.gameObject.SetActive(false);
-            _officeUIDic[_currentUiState].Close();
+            characterSelectPanel.RemoveOppositeUI(true);
+            characterSelectPanel.CloseAllUI();
+            returnBtnUI.Close();
+
             UIManager.Instance.roomUI.Open();
             UIManager.Instance.basementUI.Open();
-        }
-
-        private enum OfficeUIState
-        {
-            CharacterSelect,
-            MissionSelect,
+            OnCompleteCloseAction();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Basement
 
     public class UIManager : MonoSingleton<UIManager>
     {
-        public Dictionary<BasementRoomType, IWindowPanel> basementRoomUI;
+        public Dictionary<BasementRoomType, BasementUI> basementRoomUI;
 
         public Transform popupTextParent;
         public PopupText popupText;
@@ -19,19 +19,18 @@ namespace Basement
         public FurnitureUI furnitureUI;
         public MSGText msgText;
         public RoomUI roomUI;
-        public BasementUI basementUI;
-        public ReturnButton returnButton;
+        public BasementRoomChangeUI basementUI;
 
         protected override void Awake()
         {
             base.Awake();
 
-            basementRoomUI = new Dictionary<BasementRoomType, IWindowPanel>();
+            basementRoomUI = new Dictionary<BasementRoomType, BasementUI>();
 
-            IWindowPanel trainingUI = FindFirstObjectByType<TrainingUI>().GetComponent<IWindowPanel>();
-            IWindowPanel lodgingUI = FindFirstObjectByType<LodgingUI>().GetComponent<IWindowPanel>();
-            IWindowPanel cafeUI = FindFirstObjectByType<CafeUI>().GetComponent<IWindowPanel>();
-            IWindowPanel officeUI = FindFirstObjectByType<OfficeUI>().GetComponent<IWindowPanel>();
+            BasementUI trainingUI = FindFirstObjectByType<TrainingUI>();
+            BasementUI lodgingUI = FindFirstObjectByType<LodgingUI>();
+            BasementUI cafeUI = FindFirstObjectByType<CafeUI>();
+            BasementUI officeUI = FindFirstObjectByType<OfficeUI>();
 
             basementRoomUI.Add(BasementRoomType.TrainingRoom, trainingUI);
             basementRoomUI.Add(BasementRoomType.Lodging, lodgingUI);
@@ -46,7 +45,7 @@ namespace Basement
             popup.SetText(text);
         }
 
-        public IWindowPanel GetUIPanel(BasementRoomType uiType) 
+        public BasementUI GetUIPanel(BasementRoomType uiType) 
             => basementRoomUI[uiType];
     }
 

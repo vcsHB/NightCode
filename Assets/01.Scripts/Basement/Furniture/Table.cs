@@ -1,3 +1,4 @@
+using Basement.NPC;
 using UnityEngine;
 
 namespace Basement
@@ -5,16 +6,16 @@ namespace Basement
     public class Table : Furniture
     {
         public Transform customerPositionTrm;
-        public Transform employeePositionTrm;
+        public Transform servingPositionTrm;
         private Customer _enteredCustomer;
-        private float _enterTime;
+
+        public Customer customer => _enteredCustomer;
 
         public bool IsCustomerExsist() => _enteredCustomer != null;
 
         public void CustomerSitdown(Customer customer)
         {
             _enteredCustomer = customer;
-            _enterTime = Time.time;
         }
 
         public void CustomerLeave()
