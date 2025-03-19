@@ -42,6 +42,13 @@ namespace Agents.Players.FSM
             base.UpdateState();
 
         }
+
+        public override void Exit()
+        {
+            base.Exit();
+            _player.HealthCompo.SetResist(false);
+
+        }
         protected override void HandleUseTurbo()
         {
             if (!_player.IsActive) return;
