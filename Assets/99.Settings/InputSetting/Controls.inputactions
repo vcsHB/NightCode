@@ -198,9 +198,18 @@
             "id": "d68dd5b8-112c-48ee-affd-35397f313689",
             "actions": [
                 {
-                    "name": "OnEsc",
+                    "name": "Esc",
                     "type": "Button",
                     "id": "eb87c389-83d8-4429-ac37-ffa9608f009b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Space",
+                    "type": "Button",
+                    "id": "75737f8c-aa99-406b-87f8-e598ba3bf259",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -215,7 +224,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyMouse",
-                    "action": "OnEsc",
+                    "action": "Esc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d19ac1b5-a35c-464c-8b69-4b8f07c3c8b8",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyMouse",
+                    "action": "Space",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

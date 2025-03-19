@@ -20,14 +20,15 @@ namespace Dialog
         private NodeSO _nextNode;
         private List<OptionButton> _optionBtns;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _animPlayer = GetComponent<AnimationPlayer>();
         }
 
         private void Update()
         {
-            //µð¹ö±×¿ë
+            //ï¿½ï¿½ï¿½ï¿½×¿ï¿½
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 StartDialog();
@@ -36,7 +37,7 @@ namespace Dialog
 
         private void LateUpdate()
         {
-            //¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà
+            //ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (_curReadingNode is NormalNodeSO node && _isReadingDialog)
             {
                 _animPlayer.PlayAnimation(_curCharacter.contentTxt, node.contentTagAnimations);
@@ -49,7 +50,7 @@ namespace Dialog
         public override void StartDialog()
         {
             if (_isReadingDialog)
-                Debug.Log("ÀÌ¹Ì ½ÇÇàÁßÀÎµ¥~\nÇã~Á¢ ¢¾");
+                Debug.Log("ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½~\nï¿½ï¿½~ï¿½ï¿½ ï¿½ï¿½");
 
             _isReadingDialog = true;
             _curReadingNode = dialog.nodes[0];
@@ -70,7 +71,7 @@ namespace Dialog
                 return;
             }
 
-            //ÇØ´ç ³ëµå¸¦ ¹æ¹®Çß´Ù°í È®ÀÎÇØÁÜ
+            //ï¿½Ø´ï¿½ ï¿½ï¿½å¸¦ ï¿½æ¹®ï¿½ß´Ù°ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
 
             if (_curReadingNode is NormalNodeSO node)
@@ -112,11 +113,11 @@ namespace Dialog
 
             while (tmp.maxVisibleCharacters < tmp.text.Length)
             {
-                //°ø¹éÀº ¹Ù·Î ³Ñ°Ü
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½Ñ°ï¿½
                 if (tmp.text[tmp.maxVisibleCharacters++] == ' ') continue;
 
                 yield return new WaitForSeconds(_textOutDelay);
-                //ÅØ½ºÆ® Ãâ·ÂÀ» ¸ØÃçµÑ°ÇÁö
+                //ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½
                 yield return new WaitUntil(() => stopReading == false);
             }
 
@@ -172,7 +173,7 @@ namespace Dialog
             _curReadingNode = _nextNode;
             _isReadingDialog = false;
 
-            yield return new WaitForSeconds(_nextNodeDealy);
+            yield return new WaitForSeconds(_nextNodeDelay);
             ReadSingleLine();
         }
 
@@ -184,7 +185,6 @@ namespace Dialog
         }
 
         #endregion
-
 
         private void InitNodeAnim(NodeSO node)
         {

@@ -1,3 +1,5 @@
+using System;
+using InputManage;
 using UnityEngine;
 
 namespace Dialog
@@ -5,6 +7,7 @@ namespace Dialog
     [RequireComponent(typeof(AnimationPlayer))]
     public abstract class DialogPlayer : MonoBehaviour
     {
+        [SerializeField] protected UIInputReader _uiInputReader;
         public DialogSO dialog;
         [HideInInspector]public bool stopReading = false;
         protected NodeSO _curReadingNode;
@@ -13,8 +16,9 @@ namespace Dialog
         protected bool _isReadingDialog = false;
         
         [SerializeField] protected float _textOutDelay;
-        [SerializeField] protected float _nextNodeDealy;
+        [SerializeField] protected float _nextNodeDelay;
 
+        public float TextOutDelay => _textOutDelay;
         public bool PlayingEndAnimation => _playingEndAnimation;
 
         public abstract void StartDialog();
@@ -22,10 +26,32 @@ namespace Dialog
         public abstract void ReadSingleLine();
 
         public virtual void CompleteEndAnimation() => _playingEndAnimation = false;
+        public virtual void SetTextOutDelay(float delay) => _textOutDelay = delay;
+        private bool _isInputDetected;
+        protected virtual void Awake()
+        {
+            _uiInputReader.OnSpaceEvent += HandleMoveToNextDialogue;
+        }
+        void OnDestroy()
+        {
+            
+            _uiInputReader.OnSpaceEvent -= HandleMoveToNextDialogue;
+        }
+
+        private void HandleMoveToNextDialogue()
+        {
+            _isInputDetected = true;
+        }
 
         protected virtual bool GetInput()
         {
-            return Input.GetKeyDown(KeyCode.Space);
+            if(_isInputDetected) 
+            {
+                Debug.Log("asdasd");
+                _isInputDetected = false;
+                return true;
+            }
+            return false;
         }
     }
 }

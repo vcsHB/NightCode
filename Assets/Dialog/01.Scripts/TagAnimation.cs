@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEngine;
 
 namespace Dialog
 {
@@ -7,11 +8,13 @@ namespace Dialog
         protected TMP_TextInfo _txtInfo;
 
         protected AnimTiming _timing;
-        protected string _param;        //ÆÄ¶ó¹ÌÅÍ
-        protected bool _checkEndPos;    //³¡À» È®ÀÎÇÏ´ÂÁö </¸¦ Ã£¾Æ¾ßÇÏ´ÂÁö È®ÀÎÇÏ´Â°ÅÀÓ
-        protected bool _endAnimating;   //Å¸ÀÌ¹ÖÀÌ Start³ª EndÀÏ ¶§ Àú°É ¹Ù²ã¼­ È®ÀÎ¤¡
+        protected string _param;        //ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½
+        protected bool _checkEndPos;    //ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ </ï¿½ï¿½ Ã£ï¿½Æ¾ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´Â°ï¿½ï¿½ï¿½
+        protected bool _endAnimating;   //Å¸ï¿½Ì¹ï¿½ï¿½ï¿½ Startï¿½ï¿½ Endï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ã¼­ È®ï¿½Î¤ï¿½
         protected bool _stopReadingDuringAnimation = false;
         protected bool _animationComplete = false;
+        protected bool _isTagStart = false;
+        protected bool _isTagEnd = false;
 
         public TagEnum tagType;
         public int animStartPos;
@@ -25,7 +28,45 @@ namespace Dialog
 
         public void SetParameter(string param) => _param = param;
 
-        public abstract void Play();
+        public virtual void OnStartTag()
+        {
+
+        }
+
+        public virtual void OnEndTag()
+        {
+
+        }
+
+        public virtual void Play()
+        {
+            bool start = CheckTextEnable(animStartPos - 1);
+            bool end = CheckTextEnable((animStartPos + animLength));
+
+            if (start && !_isTagStart)
+            {
+                OnStartTag();
+                _isTagStart = true;
+            }
+
+            if (end && !_isTagEnd)
+            {
+                OnEndTag();
+                _isTagEnd = true;
+            }
+        }
+
+        private bool CheckTextEnable(int index)
+        {
+            while (_txtInfo.textComponent.text[index] == ' ')
+            {
+                index--;
+                if (index <= 0) break;
+            }
+
+            return _txtInfo.characterInfo[index].isVisible;
+        }
+
         public abstract void Complete();
         public abstract bool SetParameter();
 
@@ -33,6 +74,8 @@ namespace Dialog
         {
             _endAnimating = false;
             _animationComplete = false;
+            _isTagStart = false;
+            _isTagEnd = false;
         }
 
         public virtual void SetTextInfo(TMP_TextInfo txtInfo)
@@ -44,9 +87,9 @@ namespace Dialog
 
     public enum AnimTiming
     {
-        //Start¶û Update´Â µÑ´Ù LateUpdate¿¡¼­ ½ÇÇàÇØÁàµµ µÊ
-        //±Ùµ¥ End´Â ³¡³¾ ¶§ while¹®¾È¿¡ Àâ¾ÆµÎ°í ÇØ¾ßÇÔ
-        //OnTextOutÀº ÅØ½ºÆ® Ãâ·ÂÇÒ ¶§ While¹®¿¡ Àâ¾ÆµÎ°í
+        //Startï¿½ï¿½ Updateï¿½ï¿½ ï¿½Ñ´ï¿½ LateUpdateï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½àµµ ï¿½ï¿½
+        //ï¿½Ùµï¿½ Endï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ whileï¿½ï¿½ï¿½È¿ï¿½ ï¿½ï¿½ÆµÎ°ï¿½ ï¿½Ø¾ï¿½ï¿½ï¿½
+        //OnTextOutï¿½ï¿½ ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Whileï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ÆµÎ°ï¿½
         Start,
         Update,
         OnTextOut,

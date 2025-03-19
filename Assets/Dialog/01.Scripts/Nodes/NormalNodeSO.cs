@@ -10,6 +10,7 @@ namespace Dialog
         [SerializeField] protected string reader;
         [TextArea(5,20)]
         [SerializeField] protected string contents;
+        public float nodeDelay;
 
         protected string tagExceptedReader;
         protected string tagExceptedContents;
