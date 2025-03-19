@@ -26,8 +26,6 @@ namespace InputManage
         #region InputSwitchs
 
 
-        
-
         #endregion
 
         private void OnEnable()
