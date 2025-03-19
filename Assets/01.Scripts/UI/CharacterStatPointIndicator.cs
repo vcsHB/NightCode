@@ -1,4 +1,3 @@
-using GGM.Core.StatSystem;
 using TMPro;
 using UnityEngine;
 using Basement.Training;

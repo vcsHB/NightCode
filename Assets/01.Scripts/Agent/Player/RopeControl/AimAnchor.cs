@@ -1,3 +1,4 @@
+using ObjectManage.OtherObjects;
 using UnityEngine;
 namespace Agents.Players
 {
@@ -5,6 +6,7 @@ namespace Agents.Players
     {
         [SerializeField] private Sprite[] _aimMarkSprites;
         [SerializeField] private ParticleSystem _anchorVFX;
+        [SerializeField] private InstantFlashLight _light;
         private SpriteRenderer _aimRenderer;
         [SerializeField] private GameObject _anchorPhysicObject;
         private DistanceJoint2D _jointCompo;
@@ -32,6 +34,7 @@ namespace Agents.Players
             transform.position = position;
             _anchorPhysicObject.transform.localPosition = Vector2.zero;
             _anchorVFX.Play();
+            _light.Play();
 
         }
 

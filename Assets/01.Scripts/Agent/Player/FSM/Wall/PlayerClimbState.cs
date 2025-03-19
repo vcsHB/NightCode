@@ -12,12 +12,18 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             float yInput = _player.PlayerInput.InputDirection.y;
-            _mover.SetYMovement(yInput * 13f);
+            _mover.SetYMovement(yInput * 20f);
             if (yInput <= 0f)
             {
                 _stateMachine.ChangeState("HoldingWall");
             }
-            base.UpdateState();
+            if (!_mover.IsWallDetected())
+            {
+                //_mover.SetYMovement(5f);
+                _mover.ResetGravityMultiplier();
+                _stateMachine.ChangeState("Fall");
+                //HandleWallJump();
+            }
         }
     }
 }
