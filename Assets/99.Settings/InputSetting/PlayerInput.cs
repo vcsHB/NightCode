@@ -23,6 +23,11 @@ namespace InputManage
         public Vector2 MouseWorldPosition { get; private set; }
         public bool IsShootRelease { get; private set;}
 
+        #region InputSwitchs
+
+
+        #endregion
+
         private void OnEnable()
         {
             if (_controls == null)
