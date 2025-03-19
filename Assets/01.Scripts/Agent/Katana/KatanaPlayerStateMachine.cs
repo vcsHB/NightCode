@@ -14,8 +14,6 @@ namespace Agents.Players.FSM
         {
             AddState("Hang", "KatanaPlayerHang", playerRenderer.HangParam);
 
-            AddState("Attack", "KatanaPlayerAttack", _katanaRenderer.AttackParam);
-            AddState("AirAttack", "PlayerAirAttack", _katanaRenderer.AirAttackParam);
 
 
             base.Initialize(firstState);
