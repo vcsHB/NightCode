@@ -84,6 +84,7 @@ namespace Agents.Players.FSM
         {
             if(!_canRemoveRope) return;
             if (!_player.IsActive) return;
+            if(!_aimController.IsShoot) return;
             _aimController.RemoveWire();
             _player.StateMachine.ChangeState("Swing");
         }

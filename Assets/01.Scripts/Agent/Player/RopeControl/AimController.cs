@@ -180,7 +180,7 @@ namespace Agents.Players
 
         public void HandlePull(Action OnComplete = null)
         {
-            if (IsClamping) return;
+            if (IsClamping ||  _currentAimData.distanceToPoint < 2f) return;
             _playerMovement.StopImmediately(true);
             _clampCoroutine = StartCoroutine(DistanceClampCoroutine(
                 GetLerpTargetPositionByRatio(0.9f),

@@ -35,7 +35,7 @@ namespace Agents.Players.FSM
             _renderer.SetRotate(_aimController.HangingDirection);
 
 
-            if (_mover.Velocity.magnitude < 0.3f)
+            if (_mover.Velocity.magnitude < 0.6f)
             {
                 if (CheckWallAndHold())
                 {
@@ -47,7 +47,8 @@ namespace Agents.Players.FSM
 
                     if (_mover.IsGroundDetected())
                     {
-                        _stateMachine.ChangeState("Idle");
+                        _aimController.RemoveWire();
+                        _stateMachine.ChangeState("Fall");
                     }
                 }
             }

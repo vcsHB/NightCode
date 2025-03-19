@@ -56,6 +56,8 @@ namespace ObjectManage.OtherObjects
         void OnCollisionEnter2D(Collision2D collision)
         {
             Collider2D collider = collision.collider;
+            if (!collider.transform.CompareTag("Player")) return;
+
             Vector2 direction = collider.transform.position - (Vector3)collision.GetContact(0).point;
             direction.Normalize();
             direction *= _knockbackPower;
