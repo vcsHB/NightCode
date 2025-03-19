@@ -39,7 +39,6 @@ namespace Agents.Players.FSM
         public override void UpdateState()
         {
             _currentRollingTime += Time.deltaTime;
-            //_animationTrigger.CastSwingGuard();
 
             if (_stateEnterTime + _floatingDuration > Time.time) return;
             if (_currentRollingTime > _duration)

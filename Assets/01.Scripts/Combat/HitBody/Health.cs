@@ -17,6 +17,7 @@ namespace Combat
         [SerializeField] private float _currentHealth = 0;
         [SerializeField] private float _hitResistanceCooltime = 0.15f;
         private float _lastHitTime;
+        public bool IsResist { get; private set; }
 
         public void Initialize(float health)
         {
@@ -33,7 +34,7 @@ namespace Combat
         public void ApplyDamage(CombatData data)
         {
             if (!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return;
-
+            if (IsResist) return;
             _currentHealth -= data.damage;
             _lastHitTime = Time.time;
             OnHitCombatDataEvent?.Invoke(data);
@@ -65,6 +66,11 @@ namespace Combat
         {
             OnHealthChangedValueEvent?.Invoke(_currentHealth, MaxHealth);
             OnHealthChangedEvent?.Invoke();
+        }
+
+        public void SetResist(bool value)
+        {
+            IsResist = value;
         }
 
     }

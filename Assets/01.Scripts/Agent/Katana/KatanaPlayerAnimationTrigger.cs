@@ -13,6 +13,7 @@ namespace Agents.Animate
         public UnityEvent OnAirAttack1Event;
         public UnityEvent OnAirAttack2Event;
         protected Player _player;
+        [SerializeField] private Caster _swingAttackCaster;
 
 
         public override void Initialize(Agent agent)
@@ -38,6 +39,11 @@ namespace Agents.Animate
         {
             _airAttackShooter.SetDirection(_aimController.AimDirection);
             _airAttackShooter.FireProjectile();
+        }
+
+        public void CastSwingCaster()
+        {
+            _swingAttackCaster.Cast();
         }
 
         
