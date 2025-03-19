@@ -8,7 +8,7 @@ namespace Dialog
     {
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
-        internal bool isFirstNode;
+        public bool isFirstNode;
 
         public abstract List<TagAnimation> GetAllAnimations();
     }

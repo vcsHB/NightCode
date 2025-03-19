@@ -9,196 +9,200 @@ using UnityEngine.Events;
 using UnityEditor;
 #endif
 
-public class SkillTree : MonoBehaviour, IUIPanel
+namespace Basement
 {
-    public SkillTreeSO treeSO;
-    public Dictionary<NodeSO, Node> nodeDic;
-    //public WarningPanel warningPanel;
-    //public TechTreeTooltipPanel tooltipPanel;
-    [SerializeField] private Node nodePf;
-
-    public Transform edgeParent;
-    public Transform edgeFillParent;
-    private string _path;
-
-    [SerializeField] private Vector2 _nodeOriginPos;
-    [SerializeField] private DirectionEnum _nodeDirection;
-
-    public UnityEvent<int, int> selectNodeEvent;
-
-    private void Awake()
+    public class SkillTree : MonoBehaviour, IUIPanel
     {
-        nodeDic = new Dictionary<NodeSO, Node>();
-        _path = Path.Combine(Application.dataPath, "TechTree.json");
-    }
+        public SkillTreeSO treeSO;
+        public Dictionary<NodeSO, Node> nodeDic;
+        //public WarningPanel warningPanel;
+        //public TechTreeTooltipPanel tooltipPanel;
+        [SerializeField] private Node nodePf;
 
-    private void Start()
-    {
-        int childCnt = transform.childCount;
+        public Transform edgeParent;
+        public Transform edgeFillParent;
+        private string _path;
 
-        for (int i = 0; i < treeSO.nodes.Count; i++)
+        [SerializeField] private Vector2 _nodeOriginPos;
+        [SerializeField] private DirectionEnum _nodeDirection;
+
+        public UnityEvent<int, int> selectNodeEvent;
+
+        private void Awake()
         {
-            for (int j = 0; j < childCnt; j++)
-            {
-                if (transform.GetChild(j).TryGetComponent(out Node node))
-                {
-                    if (treeSO.nodes[i].id != node.NodeType.id) continue;
+            nodeDic = new Dictionary<NodeSO, Node>();
+            _path = Path.Combine(Application.dataPath, "TechTree.json");
+        }
 
-                    nodeDic.Add(node.NodeType, node);
+        private void Start()
+        {
+            int childCnt = transform.childCount;
+
+            for (int i = 0; i < treeSO.nodes.Count; i++)
+            {
+                for (int j = 0; j < childCnt; j++)
+                {
+                    if (transform.GetChild(j).TryGetComponent(out Node node))
+                    {
+                        if (treeSO.nodes[i].id != node.NodeType.id) continue;
+
+                        nodeDic.Add(node.NodeType, node);
+                    }
                 }
             }
+
+            for (int i = 0; i < treeSO.nodes.Count; i++)
+            {
+                NodeSO nodeSO = treeSO.nodes[i];
+
+                if (nodeDic.TryGetValue(nodeSO, out Node node))
+                    node.Init(node.NodeType.id == 0);
+            }
+
+            for (int i = 0; i < treeSO.nodes.Count; i++)
+            {
+                NodeSO nodeSO = treeSO.nodes[i];
+
+                if (nodeDic.TryGetValue(nodeSO, out Node node))
+                    node.SetEdge();
+            }
+
+            Load();
         }
-
-        for (int i = 0; i < treeSO.nodes.Count; i++)
-        {
-            NodeSO nodeSO = treeSO.nodes[i];
-
-            if (nodeDic.TryGetValue(nodeSO, out Node node))
-                node.Init(node.NodeType.id == 0);
-        }
-
-        for (int i = 0; i < treeSO.nodes.Count; i++)
-        {
-            NodeSO nodeSO = treeSO.nodes[i];
-
-            if (nodeDic.TryGetValue(nodeSO, out Node node))
-                node.SetEdge();
-        }
-
-        Load();
-    }
 
 #if UNITY_EDITOR
 
-    [ContextMenu("CreateNodes")]
-    private void CreateNodes()
-    {
-        var children = transform.GetComponentsInChildren<Node>().ToList();
-
-        foreach(var child in children)
+        [ContextMenu("CreateNodes")]
+        private void CreateNodes()
         {
-            DestroyImmediate(child.gameObject);
-        }
+            var children = transform.GetComponentsInChildren<Node>().ToList();
 
-        Queue<(Vector2 position, NodeSO nodeSO)> nodeQueue = new Queue<(Vector2 position, NodeSO nodeSO)>();
-        nodeQueue.Enqueue((_nodeOriginPos, treeSO.nodes[0]));
-
-        while (nodeQueue.TryDequeue(out var node))
-        {
-            Vector2 nodeSize = nodePf.RectTrm.sizeDelta;
-            
-            Node nodeInstance = PrefabUtility.InstantiatePrefab(nodePf) as Node;
-            nodeInstance.transform.SetParent(transform);
-
-            nodeInstance.RectTrm.anchoredPosition = node.position;
-            nodeInstance.SetNode(node.nodeSO);
-
-            int nodeCnt = node.nodeSO.nextNodes.Count;
-
-            for (int i = 0; i < nodeCnt; i++)
+            foreach (var child in children)
             {
-                Vector2 nextPos = node.position;
+                DestroyImmediate(child.gameObject);
+            }
 
-                if ((int)_nodeDirection < 2)
-                {
-                    nextPos.y += (_nodeDirection == DirectionEnum.Up ? 2 : -2) * nodeSize.y;
-                    nextPos.x = (node.position.x - (nodeCnt - 1) * nodeSize.x) + (2 * i * nodeSize.x);
-                }
-                else
-                {
-                    nextPos.x += (_nodeDirection == DirectionEnum.Up ? 2 : -2) * nodeSize.y;
-                    nextPos.y = (node.position.y - (nodeCnt - 1) * nodeSize.y) + (2 * i * nodeSize.y);
-                }
+            Queue<(Vector2 position, NodeSO nodeSO)> nodeQueue = new Queue<(Vector2 position, NodeSO nodeSO)>();
+            nodeQueue.Enqueue((_nodeOriginPos, treeSO.nodes[0]));
 
-                var posAndNode = (nextPos, node.nodeSO.nextNodes[i]);
-                nodeQueue.Enqueue(posAndNode);
+            while (nodeQueue.TryDequeue(out var node))
+            {
+                Vector2 nodeSize = nodePf.RectTrm.sizeDelta;
+
+                Node nodeInstance = PrefabUtility.InstantiatePrefab(nodePf) as Node;
+                nodeInstance.transform.SetParent(transform);
+
+                nodeInstance.RectTrm.anchoredPosition = node.position;
+                nodeInstance.SetNode(node.nodeSO);
+
+                int nodeCnt = node.nodeSO.nextNodes.Count;
+
+                for (int i = 0; i < nodeCnt; i++)
+                {
+                    Vector2 nextPos = node.position;
+
+                    if ((int)_nodeDirection < 2)
+                    {
+                        nextPos.y += (_nodeDirection == DirectionEnum.Up ? 2 : -2) * nodeSize.y;
+                        nextPos.x = (node.position.x - (nodeCnt - 1) * nodeSize.x) + (2 * i * nodeSize.x);
+                    }
+                    else
+                    {
+                        nextPos.x += (_nodeDirection == DirectionEnum.Up ? 2 : -2) * nodeSize.y;
+                        nextPos.y = (node.position.y - (nodeCnt - 1) * nodeSize.y) + (2 * i * nodeSize.y);
+                    }
+
+                    var posAndNode = (nextPos, node.nodeSO.nextNodes[i]);
+                    nodeQueue.Enqueue(posAndNode);
+                }
             }
         }
-    }
 
 #endif
 
-    public bool TryGetNode(NodeSO nodeSO, out Node node)
-    {
-        if (nodeSO == null)
+        public bool TryGetNode(NodeSO nodeSO, out Node node)
         {
-            node = null;
-            return false;
-        }
-
-        return nodeDic.TryGetValue(nodeSO, out node);
-    }
-
-    public Node GetNode(int id)
-    {
-        for (int i = 0; i < treeSO.nodes.Count; i++)
-        {
-            if (treeSO.nodes[i].id == id)
+            if (nodeSO == null)
             {
-                NodeSO nodeSO = treeSO.nodes[i];
-                return nodeDic[nodeSO];
+                node = null;
+                return false;
             }
+
+            return nodeDic.TryGetValue(nodeSO, out node);
         }
-        return null;
-    }
 
-    public void Save()
-    {
-        List<Node> parts = new List<Node>();
-        List<Node> weapons = new List<Node>();
-        treeSO.nodes.ForEach(n =>
+        public Node GetNode(int id)
         {
-            //if (n is PartNodeSO)
-            //{
-            //    if (TryGetNode(n, out Node node))
-            //    {
-            //        parts.Add(node);
-            //    }
-            //}
+            for (int i = 0; i < treeSO.nodes.Count; i++)
+            {
+                if (treeSO.nodes[i].id == id)
+                {
+                    NodeSO nodeSO = treeSO.nodes[i];
+                    return nodeDic[nodeSO];
+                }
+            }
+            return null;
+        }
 
-            //if (n is WeaponNodeSO)
-            //{
-            //    if (TryGetNode(n, out Node node))
-            //    {
-            //        weapons.Add(node);
-            //    }
-            //}
-        });
-
-
-    }
-
-    public void Load()
-    {
-        treeSO.nodes.ForEach(n =>
+        public void Save()
         {
+            List<Node> parts = new List<Node>();
+            List<Node> weapons = new List<Node>();
+            treeSO.nodes.ForEach(n =>
+            {
+                //if (n is PartNodeSO)
+                //{
+                //    if (TryGetNode(n, out Node node))
+                //    {
+                //        parts.Add(node);
+                //    }
+                //}
 
-        });
+                //if (n is WeaponNodeSO)
+                //{
+                //    if (TryGetNode(n, out Node node))
+                //    {
+                //        weapons.Add(node);
+                //    }
+                //}
+            });
+
+
+        }
+
+        public void Load()
+        {
+            treeSO.nodes.ForEach(n =>
+            {
+
+            });
+        }
+
+        public void Open(Vector2 position)
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Close()
+        {
+            gameObject.SetActive(false);
+        }
     }
 
-    public void Open(Vector2 position)
+
+    [Serializable]
+    public class TechTreeSave
     {
-        gameObject.SetActive(true);
+        public List<bool> nodeEnable = new List<bool>();
     }
 
-    public void Close()
+    public enum DirectionEnum
     {
-        gameObject.SetActive(false);
+        Up,
+        Down,
+        Left,
+        Right
     }
+
+
 }
-
-
-[Serializable]
-public class TechTreeSave
-{
-    public List<bool> nodeEnable = new List<bool>();
-}
-
-public enum DirectionEnum
-{
-    Up,
-    Down,
-    Left,
-    Right
-}
-
