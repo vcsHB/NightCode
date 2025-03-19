@@ -1,5 +1,6 @@
 using Basement.CameraController;
 using Basement.Training;
+using Office;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Basement
         public bool IsFocusRoom { get; private set; }
 
         [SerializeField] private LayerMask _whatIsBasementObject;
-        [SerializeField] private BasementInput _input;
+        [SerializeField] private OfficeInput _input;
         [SerializeField] private GameObject _buildModeObj;
         [SerializeField] private Office _office;
         [SerializeField] private float _dragSkipDist = 2;
