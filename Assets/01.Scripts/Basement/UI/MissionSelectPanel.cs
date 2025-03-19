@@ -11,6 +11,7 @@ namespace Basement.Mission
     {
         public List<MissionSO> missions;
         public MissionSelectButton button;
+        public MissionSlot missionSlotPf;
         public RectTransform bottomBarTrm;
 
         private float _easingDuration = 0.3f;
@@ -28,6 +29,9 @@ namespace Basement.Mission
             missions.ForEach(mission =>
             {
                 MissionSelectButton missionButton = Instantiate(button, transform);
+                MissionSlot missionSlot = Instantiate(missionSlotPf, bottomBarTrm);
+                missionSlot.SetMission(this, mission);
+
                 missionButton.RectTrm.anchoredPosition = new Vector2(-1250, position.y);
                 missionButton.RectTrm.SetAsFirstSibling();
                 missionButton.Init(mission);
