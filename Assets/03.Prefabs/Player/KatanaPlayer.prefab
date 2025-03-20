@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 6631406932214230030}
   - component: {fileID: 5664495780694541100}
   - component: {fileID: 8139130523788739418}
+  - component: {fileID: 844699680862141614}
   m_Layer: 6
   m_Name: SwingGuardCaster
   m_TagString: Untagged
@@ -217,6 +218,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 4
   _attackType: 1
+--- !u!114 &844699680862141614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478053729390255149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b94cde2da04874c83bf0fbec23ec86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &526915845203266580
 GameObject:
   m_ObjectHideFlags: 0
@@ -36140,7 +36153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e80ccfb7da80d6643b64c1d5e4f0b15e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swingGaurdCaster: {fileID: 5664495780694541100}
   OnGroundPullAttackEvent:
     m_PersistentCalls:
       m_Calls:

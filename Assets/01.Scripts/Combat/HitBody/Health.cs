@@ -31,15 +31,16 @@ namespace Combat
             HandleHealthChanged();
         }
 
-        public void ApplyDamage(CombatData data)
+        public bool ApplyDamage(CombatData data)
         {
-            if (!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return;
-            if (IsResist) return;
+            if (!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return false;
+            if (IsResist) return false;
             _currentHealth -= data.damage;
             _lastHitTime = Time.time;
             OnHitCombatDataEvent?.Invoke(data);
             CheckDie();
             HandleHealthChanged();
+            return true;
         }
 
         public void Restore(float amount)

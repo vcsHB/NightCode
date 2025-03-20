@@ -13,12 +13,13 @@ namespace Combat
         public AttackType type;
         public float damage;
         public Vector2 originPosition;
+        public Vector2 damageDirection;
         public bool invalidityResistance;
 
 
     }
     public interface IDamageable
     {
-        public void ApplyDamage(CombatData data);
+        public bool ApplyDamage(CombatData data);
     }
 }
