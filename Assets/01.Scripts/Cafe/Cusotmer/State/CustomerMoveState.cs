@@ -24,9 +24,7 @@ namespace Cafe
             }
 
             float direction = Mathf.Sign(_entity.MoveTarget.position.x - _entity.transform.position.x);
-            if (direction != _entity.MoveDir) _entity.Flip();
-
-            _entity.Move();
+            _entity.Move(direction);
         }
     }
 }

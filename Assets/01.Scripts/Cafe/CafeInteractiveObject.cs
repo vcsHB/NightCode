@@ -3,23 +3,29 @@ using UnityEngine;
 
 namespace Cafe
 {
-    public abstract class CafeInteractiveObject : MonoBehaviour
+    public class CafeInteractiveObject : MonoBehaviour
     {
-        public abstract void OnInteract();
+        public CafePlayerInputObject interactObject;
+        protected CafePlayer _player;
 
-        private void OnTriggerEnter2D(Collider2D collision)
+
+        protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
-            if(collision.TryGetComponent(out CafePlayer player))
+            if (interactObject == null) return;
+
+            if (collision.TryGetComponent(out _player))
             {
-                player.AddInteract(OnInteract);
+                _player.AddInteract(interactObject);
             }
         }
 
-        private void OnTriggerExit2D(Collider2D collision)
+        protected virtual void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out CafePlayer player))
+            if (interactObject == null) return;
+
+            if (collision.TryGetComponent(out _player))
             {
-                player.RemoveInteract();
+                _player.RemoveInteract();
             }
         }
     }

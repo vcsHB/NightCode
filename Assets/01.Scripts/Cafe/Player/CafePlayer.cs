@@ -1,3 +1,4 @@
+using Basement;
 using System;
 using UnityEngine;
 
@@ -8,7 +9,12 @@ namespace Cafe
         public event Action onInteract;
 
         public CafeInput input;
-        public GameObject interactMark;
+        public TalkBubble talkBubble;
+        private CafePlayerInputObject _inputObject;
+
+        public bool isGetFood { get => food != null; }
+        public FoodSO food { get; private set; }
+
 
         private void OnEnable()
         {
@@ -21,6 +27,24 @@ namespace Cafe
         }
 
 
+        #region Food
+
+        public void SetFood(FoodSO food)
+        {
+            this.food = food;
+            talkBubble.Open();
+            talkBubble.SetIcon(food.icon);
+            //뭔가 음식을 들고 있다는 표현?
+        }
+
+        public void ServeFood()
+        {
+            food = null;
+            talkBubble.Close();
+        }
+
+        #endregion
+
 
         #region Interact
 
@@ -28,19 +52,19 @@ namespace Cafe
         {
             onInteract?.Invoke();
             onInteract = null;
-            interactMark.SetActive(false);
+            //interactMark.SetActive(false);
         }
 
-        public void AddInteract(Action action)
+        public void AddInteract(CafePlayerInputObject inputObject)
         {
-            onInteract += action;
-            interactMark.SetActive(true);
+            _inputObject = Instantiate(inputObject, transform);
+            _inputObject.Open();
+            //interactMark.SetActive(true);
         }
 
         public void RemoveInteract()
         {
-            onInteract = null;
-            interactMark.SetActive(false);
+            _inputObject.Close();
         }
 
 

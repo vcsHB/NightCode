@@ -17,13 +17,15 @@ namespace Cafe
 
         public override void UpdateState()
         {
-            float direction = _input.moveDir.x;
+            float direction = _input.MoveDir.x;
 
-            if (Mathf.Abs(direction) <= 0f)
+            if (Mathf.Abs(direction) <= 0.2f)
+            {
                 stateMachine.ChangeState("Idle");
+                return;
+            }
 
-            if (direction != _player.MoveDir) _player.Flip();
-            _player.Move();
+            _player.Move(direction);
         }
     }
 }

@@ -20,10 +20,10 @@ public class TreePath : MonoBehaviour
         Vector2[] uv = new Vector2[4];
         int[] triangels = new int[6];
 
-        vertices[0] = new Vector3(-1,1);
-        vertices[1] = new Vector3(-1,-1);
-        vertices[2] = new Vector3(1, -1);
-        vertices[3] = new Vector3(1, 1);
+        vertices[0] = new Vector3(-100,100);
+        vertices[1] = new Vector3(-100,-100);
+        vertices[2] = new Vector3(100, -100);
+        vertices[3] = new Vector3(100, 100);
 
         triangels[0] = 0;
         triangels[1] = 3;
@@ -39,7 +39,6 @@ public class TreePath : MonoBehaviour
 
 
         mesh = Instantiate(mesh);
-        Debug.Log(mesh.vertices[0]);
         _canvasRenderer.SetMesh(null);
         _canvasRenderer.SetMesh(mesh);
     }

@@ -14,9 +14,15 @@ namespace Cafe
             _input = _player.input;
         }
 
+        public override void EnterState()
+        {
+            base.EnterState();
+            _player.StopImmediatly();
+        }
+
         public override void UpdateState()
         {
-            if (Mathf.Abs(_input.moveDir.x) > 0.5f)
+            if (Mathf.Abs(_input.MoveDir.x) > 0.5f)
                 stateMachine.ChangeState("Move");
         }
     }

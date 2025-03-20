@@ -9,7 +9,10 @@ namespace Cafe
     public class CafeInput : ScriptableObject, Controls.ICafeActions
     {
         public event Action onInteract;
-        public Vector2 moveDir { get; private set; }
+        public event Action onLeftClick;
+        public event Action onRightClick;
+
+        public Vector2 MoveDir { get; private set; }
 
         private Controls _controls;
 
@@ -25,7 +28,7 @@ namespace Cafe
 
         private void OnDisable()
         {
-            _controls.Basement.Disable();
+            _controls.Cafe.Disable();
         }
 
         public void OnInteract(InputAction.CallbackContext context)
@@ -36,7 +39,19 @@ namespace Cafe
 
         public void OnMove(InputAction.CallbackContext context)
         {
-            moveDir = context.ReadValue<Vector2>();
+            MoveDir = context.ReadValue<Vector2>();
+        }
+
+        public void OnMouseLeftClick(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                onLeftClick?.Invoke();
+        }
+
+        public void OnMouseRightClick(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                onRightClick?.Invoke();
         }
     }
 }

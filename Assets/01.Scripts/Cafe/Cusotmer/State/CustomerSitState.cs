@@ -5,13 +5,18 @@ namespace Cafe
 {
     public class CustomerSitState : CafeEntityState
     {
-        private CafeCustomer customer;
+        private CafeCustomer _customer;
 
         public CustomerSitState(CafeEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
-            customer = npc as CafeCustomer;
+            _customer = npc as CafeCustomer;
         }
 
+        public override void EnterState()
+        {
+            base.EnterState();
+            _customer.StopImmediatly();
+        }
 
     }
 }

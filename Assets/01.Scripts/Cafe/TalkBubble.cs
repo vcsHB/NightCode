@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Basement
+namespace Cafe
 {
     public class TalkBubble : MonoBehaviour
     {

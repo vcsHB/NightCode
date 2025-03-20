@@ -12,7 +12,7 @@ namespace Cafe
         public CafeEntitySO npcSO;
 
         public Action onCompleteMove;
-        public float MoveDir { get; protected set; } = 1;
+        public float LookDir { get; protected set; } = 1;
         public Transform MoveTarget { get; protected set; }
 
 
@@ -36,22 +36,23 @@ namespace Cafe
         public void SetMoveTarget(Transform target)
             => MoveTarget = target;
 
-        public virtual void Move()
+        public virtual void Move(float dir)
         {
-            _rigid.linearVelocityX = MoveDir * npcSO.moveSpeed;
-            //transform.position += Vector3.right * (MoveDir * npcSO.moveSpeed * Time.deltaTime);
+            if (Mathf.Sign(dir) != Mathf.Sign(LookDir))
+                Flip();
+
+            _rigid.linearVelocityX = dir * npcSO.moveSpeed;
         }
 
         public void StopImmediatly()
         {
-            MoveDir = 0;
             _rigid.linearVelocityX = 0;
         }
 
         public void Flip()
         {
             npcRenderer.Flip();
-            MoveDir *= -1;
+            LookDir *= -1;
         }
     }
 }

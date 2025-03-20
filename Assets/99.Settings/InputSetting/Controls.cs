@@ -431,6 +431,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""48ad94c6-18b4-4e4c-80ef-c7d6b49e5a9f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseRightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""f9d87881-d2c4-457c-8a73-e47dfd140fea"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -499,6 +517,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c50fb4ec-c7bb-4776-920e-d00ab915196b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""85b19cfd-1bb4-43ef-8b8f-fe81b4afa94c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseRightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -543,6 +583,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Cafe = asset.FindActionMap("Cafe", throwIfNotFound: true);
         m_Cafe_Move = m_Cafe.FindAction("Move", throwIfNotFound: true);
         m_Cafe_Interact = m_Cafe.FindAction("Interact", throwIfNotFound: true);
+        m_Cafe_MouseLeftClick = m_Cafe.FindAction("MouseLeftClick", throwIfNotFound: true);
+        m_Cafe_MouseRightClick = m_Cafe.FindAction("MouseRightClick", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -816,12 +858,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private List<ICafeActions> m_CafeActionsCallbackInterfaces = new List<ICafeActions>();
     private readonly InputAction m_Cafe_Move;
     private readonly InputAction m_Cafe_Interact;
+    private readonly InputAction m_Cafe_MouseLeftClick;
+    private readonly InputAction m_Cafe_MouseRightClick;
     public struct CafeActions
     {
         private @Controls m_Wrapper;
         public CafeActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Cafe_Move;
         public InputAction @Interact => m_Wrapper.m_Cafe_Interact;
+        public InputAction @MouseLeftClick => m_Wrapper.m_Cafe_MouseLeftClick;
+        public InputAction @MouseRightClick => m_Wrapper.m_Cafe_MouseRightClick;
         public InputActionMap Get() { return m_Wrapper.m_Cafe; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -837,6 +883,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @MouseLeftClick.started += instance.OnMouseLeftClick;
+            @MouseLeftClick.performed += instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled += instance.OnMouseLeftClick;
+            @MouseRightClick.started += instance.OnMouseRightClick;
+            @MouseRightClick.performed += instance.OnMouseRightClick;
+            @MouseRightClick.canceled += instance.OnMouseRightClick;
         }
 
         private void UnregisterCallbacks(ICafeActions instance)
@@ -847,6 +899,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @MouseLeftClick.started -= instance.OnMouseLeftClick;
+            @MouseLeftClick.performed -= instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled -= instance.OnMouseLeftClick;
+            @MouseRightClick.started -= instance.OnMouseRightClick;
+            @MouseRightClick.performed -= instance.OnMouseRightClick;
+            @MouseRightClick.canceled -= instance.OnMouseRightClick;
         }
 
         public void RemoveCallbacks(ICafeActions instance)
@@ -897,5 +955,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnMouseLeftClick(InputAction.CallbackContext context);
+        void OnMouseRightClick(InputAction.CallbackContext context);
     }
 }
