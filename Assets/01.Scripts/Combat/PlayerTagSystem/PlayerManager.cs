@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Agents;
 using Agents.Players;
+using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
 using UI.InGame.GameUI.CharacterSelector;
@@ -125,6 +126,7 @@ namespace Combat.PlayerTagSystem
         {
             newCharacter.EnterCharacter();
             newCharacter.SetActive(true);
+            HUDController.Instance.SetFollowTarget(newCharacter.transform);
             CameraControllers.CameraManager.Instance.SetFollow(newCharacter.transform);
             _aimGroup.SetAnchorOwner(newCharacter.RigidCompo, newCharacter.RopeHolder);
         }

@@ -3,15 +3,16 @@ using UnityEngine;
 namespace HUDSystem
 {
 
-    public class HUDController : MonoBehaviour
+    public class HUDController : MonoSingleton<HUDController>
     {
         [SerializeField] private Transform _followTarget;
         private HUDObject[] _hudList;
 
-        private bool _isFollow;
+        private bool _isFollow = true;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _hudList = GetComponentsInChildren<HUDObject>();
         }
 

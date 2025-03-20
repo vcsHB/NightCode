@@ -18,8 +18,16 @@ namespace Combat
 
 
     }
+
+    public struct HitData
+    {
+        public bool isHit;
+        public bool isKilled; // Is Target Dead
+    }
     public interface IDamageable
     {
+        // 나중에 HitData를 리턴하게 해야함
+        
         public bool ApplyDamage(CombatData data);
     }
 }

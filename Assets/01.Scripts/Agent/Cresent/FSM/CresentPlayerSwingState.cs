@@ -8,9 +8,11 @@ namespace Agents.Players.FSM
     {
         private CresentPlayerAnimationTrigger _cresentPlayerAnimationTrigger;
         private CresentPlayer _cresentPlayer;
+        private StaminaController _staminaController;
         public CresentPlayerSwingState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
             _cresentPlayer = player as CresentPlayer;
+            _staminaController = player.GetCompo<StaminaController>();
             _cresentPlayerAnimationTrigger = player.GetCompo<CresentPlayerAnimationTrigger>();
             _duration = 0.2f;
         }
@@ -29,8 +31,10 @@ namespace Agents.Players.FSM
             _currentRollingTime = 0f;
             _stateEnterTime = Time.time;
             Vector2 velocity = _mover.Velocity;
-            if (velocity.magnitude > _cresentPlayer.DashAttackStandardVelocity)
+            if (velocity.magnitude > _cresentPlayer.DashAttackStandardVelocity
+                && _staminaController.CheckEnough(1))
             {
+                _staminaController.ReduceStamina();
                 Vector2 newDirection = VectorCalculator.ClampTo8Directions(_mover.Velocity) * velocity.magnitude;
                 _mover.SetVelocity(newDirection * 15f);
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("SwingDash"));

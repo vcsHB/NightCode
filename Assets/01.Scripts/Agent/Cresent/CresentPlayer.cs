@@ -12,5 +12,16 @@ namespace Agents.Players
             _stateMachine = _cresentPlayerStateMachine;
             _cresentPlayerStateMachine.Initialize("Idle");
         }
+
+        public override void EnterCharacter()
+        {
+            base.EnterCharacter();
+        }
+
+        public override void ExitCharacter()
+        {
+            base.ExitCharacter();
+
+        }
     }
 }
