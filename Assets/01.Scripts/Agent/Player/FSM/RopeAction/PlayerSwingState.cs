@@ -6,12 +6,12 @@ namespace Agents.Players.FSM
 
     public class PlayerSwingState : PlayerState
     {
-        private float _duration = 0.45f;
+        protected float _duration = 0.45f;
         //private Stat _playerDashPower;
         //private Stat _playerJumpPower;
-        private float _currentRollingTime;
-        private float _floatingDuration = 0.2f;
-        private float _stateEnterTime;
+        protected float _currentRollingTime;
+        protected float _floatingDuration = 0.2f;
+        protected float _stateEnterTime;
 
         public PlayerSwingState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
