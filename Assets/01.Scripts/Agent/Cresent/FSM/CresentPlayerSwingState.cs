@@ -1,4 +1,5 @@
 using Agents.Animate;
+using Core;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
@@ -17,6 +18,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             _renderer.SetParam(_stateAnimParam, true);
+            _mover.SetGravityMultiplier(0f);
             _isTriggered = false;
             _animationTrigger.OnAnimationEnd += AnimationEndTrigger;
             if (_canUseRope)
@@ -29,7 +31,8 @@ namespace Agents.Players.FSM
             Vector2 velocity = _mover.Velocity;
             if (velocity.magnitude > _cresentPlayer.DashAttackStandardVelocity)
             {
-                _mover.SetVelocity(velocity * 15f);
+                Vector2 newDirection = VectorCalculator.ClampTo8Directions(_mover.Velocity) * velocity.magnitude;
+                _mover.SetVelocity(newDirection * 15f);
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("SwingDash"));
             }
             else
@@ -50,6 +53,7 @@ namespace Agents.Players.FSM
         public override void Exit()
         {
             base.Exit();
+            _mover.ResetGravityMultiplier();
             //Time.timeScale = 1f;
             _mover.SetMovementMultiplier(1f);
         }

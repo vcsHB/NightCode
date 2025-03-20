@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using Core;
 namespace Agents.Players
 {
 
@@ -46,7 +47,8 @@ namespace Agents.Players
         }
         public void SetDirection(Vector2 direction)
         {
-            _visualTrm.right = direction;
+            Vector2 clampedDirection = VectorCalculator.ClampTo8Directions(direction);
+            _visualTrm.right = clampedDirection;
 
         }
 
