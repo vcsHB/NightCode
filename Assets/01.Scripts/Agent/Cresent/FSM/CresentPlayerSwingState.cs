@@ -20,7 +20,6 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             _renderer.SetParam(_stateAnimParam, true);
-            _mover.SetGravityMultiplier(0f);
             _isTriggered = false;
             _animationTrigger.OnAnimationEnd += AnimationEndTrigger;
             if (_canUseRope)
@@ -34,6 +33,7 @@ namespace Agents.Players.FSM
             if (velocity.magnitude > _cresentPlayer.DashAttackStandardVelocity
                 && _staminaController.CheckEnough(1))
             {
+                _mover.SetGravityMultiplier(0f);
                 _staminaController.ReduceStamina();
                 Vector2 newDirection = VectorCalculator.ClampTo8Directions(_mover.Velocity) * velocity.magnitude;
                 _mover.SetVelocity(newDirection * 15f);
