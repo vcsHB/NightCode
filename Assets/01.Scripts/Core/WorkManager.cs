@@ -8,7 +8,7 @@ namespace Basement
 {
     public class WorkManager : MonoSingleton<WorkManager>
     {
-        public Cafe cafe;
+       // public Cafe cafe;
 
         public BasementTime startTime;
         public BasementTime endTime;
@@ -49,7 +49,7 @@ namespace Basement
                 }
             }
 
-            cafe.PassTime(minute);
+            //cafe.PassTime(minute);
         }
 
         public void AddRoomAction(CharacterEnum character, int requireTime, string displayAction, Action<CharacterEnum> completeAction = null)
@@ -74,10 +74,10 @@ namespace Basement
 
         public bool CheckWorking(CharacterEnum character)
         {
-            bool isWorking = (cafe.isCafeOpen == true && cafe.PositionedCharacter == character)
-                || TryGetTrainingInfo(character, out RoomActionInfo info);
+            //bool isWorking = (cafe.isCafeOpen == true && cafe.PositionedCharacter == character)
+                //|| TryGetTrainingInfo(character, out RoomActionInfo info);
 
-            return isWorking;
+            return true;
         }
 
     }

@@ -46,12 +46,12 @@ namespace Basement
             _timer = UIManager.Instance.timer;
 
             Office office = FindAnyObjectByType<Office>();
-            Cafe cafe = FindAnyObjectByType<Cafe>();
+            //Cafe cafe = FindAnyObjectByType<Cafe>();
             _basementRooms[0, 0] = office;
-            _basementRooms[0, 1] = _basementRooms[0, 2] = cafe;
+            //_basementRooms[0, 1] = _basementRooms[0, 2] = cafe;
 
             office.Init(this);
-            cafe.Init(this);
+            //cafe.Init(this);
         }
 
         private void OnDisable()
@@ -187,7 +187,7 @@ namespace Basement
                         bool canGoLeft = (_currentRoomNumber > 0 && _basementRooms[i, j] != null);
                         bool canGoRight = (_currentRoomNumber < 2 && _basementRooms[i, j] != null);
                         //카페는 2칸을 차지해서 오른쪽으로는 못감
-                        if (_currentRoom is Cafe) canGoRight = false;
+                        //if (_currentRoom is Cafe) canGoRight = false;
 
                         UIManager.Instance.basementUI.OnChangeRoom(canGoLeft, canGoRight);
 

@@ -29,12 +29,12 @@ namespace Basement
 
             BasementUI trainingUI = FindFirstObjectByType<TrainingUI>();
             BasementUI lodgingUI = FindFirstObjectByType<LodgingUI>();
-            BasementUI cafeUI = FindFirstObjectByType<CafeUI>();
+            //BasementUI cafeUI = FindFirstObjectByType<CafeUI>();
             BasementUI officeUI = FindFirstObjectByType<OfficeUI>();
 
             basementRoomUI.Add(BasementRoomType.TrainingRoom, trainingUI);
             basementRoomUI.Add(BasementRoomType.Lodging, lodgingUI);
-            basementRoomUI.Add(BasementRoomType.Cafe, cafeUI);
+            //basementRoomUI.Add(BasementRoomType.Cafe, cafeUI);
             basementRoomUI.Add(BasementRoomType.Office, officeUI);
         }
 

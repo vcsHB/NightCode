@@ -42,6 +42,27 @@ namespace Office
             });
         }
 
+        public override void OpenAnimation()
+        {
+            if (_seq != null && _seq.active)
+                _seq.Kill();
+
+            _seq = DOTween.Sequence();
+
+            _seq.Append(bottomBarTrm.DOAnchorPosY(50f, _easingDuration))
+                .OnComplete(OnCompleteOpen);
+
+            float insertTime = 0f;
+            for (int i = _selectButtons.Count - 1; i >= 0; i--)
+            {
+                _selectButtons[i].UnSelectButton();
+
+                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x, _easingDuration))
+                    .Join(_selectButtons[i].RectTrm.DORotate(new Vector3(0, 0, 5), _easingDuration));
+                insertTime += 0.1f;
+            }
+        }
+
         public override void CloseAnimation()
         {
             if (_seq != null && _seq.active)
@@ -59,24 +80,8 @@ namespace Office
             }
         }
 
-        public override void OpenAnimation()
-        {
-            if (_seq != null && _seq.active)
-                _seq.Kill();
 
-            _seq = DOTween.Sequence();
-
-            _seq.Append(bottomBarTrm.DOAnchorPosY(50f, _easingDuration))
-                .OnComplete(OnCompleteOpen);
-
-            float insertTime = 0f;
-            for (int i = _selectButtons.Count - 1; i >= 0; i--)
-            {
-                _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x, _easingDuration));
-                insertTime += 0.1f;
-            }
-        }
-
+        //-720, 0
         public void SelectPanel(MissionSO mission)
         {
             MissionSelectButton panel = _selectButtons.Find(btn => btn.Mission == mission);
@@ -89,6 +94,10 @@ namespace Office
                 _seq.Kill();
 
             _seq = DOTween.Sequence();
+            _seq.OnComplete(formation.Open);
+            formation.onCloseUI -= Open;
+            formation.onCloseUI += Open;
+
             float insertTime = 0.1f;
 
             for (int i = _selectButtons.Count - 1; i >= 0; i--)
@@ -101,14 +110,19 @@ namespace Office
                 }
                 else
                 {
-
-                    _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(_position[i].x + 500f, _easingDuration))
+                    _seq.Insert(insertTime, _selectButtons[i].RectTrm.DOAnchorPosX(1250f, _easingDuration))
                         .Join(_selectButtons[i].RectTrm.DORotate(new Vector3(0, 0, 5), _easingDuration));
                     _selectButtons[i].UnSelectButton();
 
                     insertTime += 0.1f;
                 }
             }
+        }
+
+        public override void CloseAllUI()
+        {
+            formation.onCloseUI -= Open;
+            base.CloseAllUI();
         }
     }
 }

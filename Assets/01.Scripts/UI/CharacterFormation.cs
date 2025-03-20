@@ -10,7 +10,10 @@ namespace Office
         public List<RectTransform> formationTrm;
         public List<CharacterFormationSlot> slots;
 
-        [SerializeField] private float _duration;
+        [SerializeField] private MissionSelectPanel _missionSelectPanel;
+        [SerializeField] private float _openCloseDuration;
+        [SerializeField] private float _formationSetDuration;
+        private Tween _openCloseTween;
         private Tween _changeTween;
         private Sequence _slotPositionSetSeq;
 
@@ -60,7 +63,7 @@ namespace Office
                 _slotPositionSetSeq.Complete();
 
             CharacterFormationSlot slot = slots[toChangeIndex];
-            _changeTween = slot.RectTransform.DOAnchorPosX(formationTrm[changingIndex].anchoredPosition.x, _duration)
+            _changeTween = slot.RectTransform.DOAnchorPosX(formationTrm[changingIndex].anchoredPosition.x, _formationSetDuration)
                 .OnComplete(() =>
                 {
                     slots[changingIndex].index = toChangeIndex;
@@ -85,19 +88,33 @@ namespace Office
             for (int i = 0; i < 3; i++)
             {
                 _slotPositionSetSeq.Join(slots[i].RectTransform
-                    .DOAnchorPos(formationTrm[i].anchoredPosition, _duration));
+                    .DOAnchorPos(formationTrm[i].anchoredPosition, _formationSetDuration));
             }
         }
 
 
         public override void OpenAnimation()
         {
+            if (_openCloseTween != null && _openCloseTween.active) _openCloseTween.Kill();
 
+            if (_changeTween != null && _changeTween.active) _changeTween.Complete();
+            if (_slotPositionSetSeq != null && _slotPositionSetSeq.active) _slotPositionSetSeq.Complete();
+
+
+            _openCloseTween = RectTrm.DOAnchorPosY(0f, _openCloseDuration)
+                .OnComplete(OnCompleteOpen);
         }
 
         public override void CloseAnimation()
         {
+            if (_openCloseTween != null && _openCloseTween.active) _openCloseTween.Kill();
 
+            if (_changeTween != null && _changeTween.active) _changeTween.Complete();
+            if (_slotPositionSetSeq != null && _slotPositionSetSeq.active) _slotPositionSetSeq.Complete();
+
+
+            _openCloseTween = RectTrm.DOAnchorPosY(-720f, _openCloseDuration)
+                .OnComplete(OnCompleteClose);
         }
     }
 }

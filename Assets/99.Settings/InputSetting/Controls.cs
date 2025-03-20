@@ -409,6 +409,98 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Cafe"",
+            ""id"": ""a450912a-3feb-4723-b24d-25d03f904dd9"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""367ab306-1bb8-4a9e-9b35-14be3b598ec9"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""b70089ff-d1aa-4159-a66c-b486da4f3d19"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""32289d04-6436-4c70-8a73-68d09bc052a5"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""8ae42056-2f41-4043-8c42-295dbba1be0d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""1f951afd-3b23-4c8e-83d9-9ef65720f651"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7c4251d1-61a7-4d85-b315-1f3b9d8f0fd4"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""2bb9c0da-ca10-45a9-9a1c-830427695ca8"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""586e2705-569f-4f08-b186-989dfe85265a"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -447,6 +539,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Basement_Move = m_Basement.FindAction("Move", throwIfNotFound: true);
         m_Basement_MouseDown = m_Basement.FindAction("MouseDown", throwIfNotFound: true);
         m_Basement_MouseMove = m_Basement.FindAction("MouseMove", throwIfNotFound: true);
+        // Cafe
+        m_Cafe = asset.FindActionMap("Cafe", throwIfNotFound: true);
+        m_Cafe_Move = m_Cafe.FindAction("Move", throwIfNotFound: true);
+        m_Cafe_Interact = m_Cafe.FindAction("Interact", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -454,6 +550,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, Controls.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, Controls.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Basement.enabled, "This will cause a leak and performance issues, Controls.Basement.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Cafe.enabled, "This will cause a leak and performance issues, Controls.Cafe.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -713,6 +810,60 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public BasementActions @Basement => new BasementActions(this);
+
+    // Cafe
+    private readonly InputActionMap m_Cafe;
+    private List<ICafeActions> m_CafeActionsCallbackInterfaces = new List<ICafeActions>();
+    private readonly InputAction m_Cafe_Move;
+    private readonly InputAction m_Cafe_Interact;
+    public struct CafeActions
+    {
+        private @Controls m_Wrapper;
+        public CafeActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Cafe_Move;
+        public InputAction @Interact => m_Wrapper.m_Cafe_Interact;
+        public InputActionMap Get() { return m_Wrapper.m_Cafe; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CafeActions set) { return set.Get(); }
+        public void AddCallbacks(ICafeActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CafeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CafeActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+        }
+
+        private void UnregisterCallbacks(ICafeActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+        }
+
+        public void RemoveCallbacks(ICafeActions instance)
+        {
+            if (m_Wrapper.m_CafeActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICafeActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CafeActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CafeActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CafeActions @Cafe => new CafeActions(this);
     private int m_KeyMouseSchemeIndex = -1;
     public InputControlScheme KeyMouseScheme
     {
@@ -741,5 +892,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnMouseDown(InputAction.CallbackContext context);
         void OnMouseMove(InputAction.CallbackContext context);
+    }
+    public interface ICafeActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
