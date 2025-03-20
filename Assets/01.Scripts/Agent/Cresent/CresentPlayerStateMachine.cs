@@ -14,7 +14,7 @@ namespace Agents.Players.FSM
         public override void Initialize(string firstState)
         {
 
-            AddState("Hang", "PlayerHang", playerRenderer.HangParam);
+            AddState("Hang", "CresentPlayerHang", playerRenderer.HangParam);
             AddState("Swing", "CresentPlayerSwing", playerRenderer.SwingParam);
 
 
