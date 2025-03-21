@@ -8,5 +8,9 @@ namespace Agents.Players.FSM
         public CrossPlayerHangState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
+        public override void UpdateState()
+        {
+            base.UpdateState();
+        }
     }
 }

@@ -39,7 +39,6 @@ namespace InputManage
         {
             if(context.performed)
             {
-                Debug.Log("Space Input");
                 OnSpaceEvent?.Invoke();
             }
         }
