@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UI;
-using UnityEditor.Compilation;
 using UnityEngine;
 
 namespace Basement
@@ -11,11 +10,11 @@ namespace Basement
         public Action onCompleteOpen;
         public Action onCompleteClose;
 
-        // °°ÀÌ ÄÑÁö°í, °°ÀÌ ²¨Áú UI
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ UI
         public List<BasementUI> connectedUIList = new List<BasementUI>();
-        // ¿¬°áµÈ UIÀÓ: linkedUI°¡ ÄÑÁ®ÀÖÀ¸¸é ÀÌ UI¸¦ ²¨µµ linkedUI¸¸ ²¨Áü
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ UIï¿½ï¿½: linkedUIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ linkedUIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         public BasementUI linkedUI;
-        // ¹Ý´ë UI: ÀÌ UI²ô¸é Àú°Ô ÄÑÁü
+        // ï¿½Ý´ï¿½ UI: ï¿½ï¿½ UIï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         public BasementUI oppositeUI;
 
         private bool _isOpenCloseByOpposite = false;
@@ -55,12 +54,12 @@ namespace Basement
 
         public virtual void Open()
         {
-            // ÀÌ¹Ì ¿­·Á ÀÖÀ¸¸é RETURN
+            // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RETURN
             if (isOpend) return;
 
             isOpend = true;
 
-            // ¿¬µ¿µÈ UI ÇÔ²² ¿­±â
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI ï¿½Ô²ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (connectedUIList != null)
             {
                 connectedUIList.ForEach(ui =>
@@ -71,10 +70,10 @@ namespace Basement
             }
 
 
-            //¹Ý´ëÂÊ UI ²ô±â
+            //ï¿½Ý´ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½
             if (oppositeUI != null)
             {
-                //¹Ý´ëÂÊ¿¡¼­ ½ÅÈ£¸¦ ¹Þ¾Æ¼­ ²ô´Â°Å¸é ¾ÈÇØ
+                //ï¿½Ý´ï¿½ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½Þ¾Æ¼ï¿½ ï¿½ï¿½ï¿½Â°Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½
                 if (_isOpenCloseByOpposite) _isOpenCloseByOpposite = false;
                 else
                 {
@@ -85,16 +84,16 @@ namespace Basement
                 }
             }
 
-            //¿©´Â ¾Ö´Ï¸ÞÀÌ¼Ç
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
             OpenAnimation();
         }
 
         public virtual void Close()
         {
-            // ´ÝÇôÀÖÀ¸¸é RETURN
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RETURN
             if (isOpend == false) return;
 
-            // ¿¬°áµÇÀÖ´Â UI¸¦ ¸ÕÀú È®ÀÎÇØ¼­ ¿¬°áµÈ UI¸¸ ²¨Áà
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (linkedUI != null && linkedUI.isOpend)
             {
                 linkedUI.Close();
@@ -103,7 +102,7 @@ namespace Basement
 
             isOpend = false;
 
-            // ¿¬µ¿µÈ UI ÇÔ²² ²¨Áà
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI ï¿½Ô²ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (connectedUIList != null)
             {
                 connectedUIList.ForEach(ui =>
@@ -114,7 +113,7 @@ namespace Basement
             }
 
 
-            // ¹Ý´ëÂÊÀº ÄÑÁà
+            // ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (oppositeUI != null)
             {
                 if (_isOpenCloseByOpposite) _isOpenCloseByOpposite = false;

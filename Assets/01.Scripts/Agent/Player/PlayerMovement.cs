@@ -1,6 +1,4 @@
 using System;
-using Unity.VisualScripting;
-using UnityEditor.VersionControl;
 using UnityEngine;
 namespace Agents.Players
 {
