@@ -85,7 +85,7 @@ namespace Agents.Players
 
             Vector2 result = rotatedDirection * Vector2.Dot(inputDirection, rotatedDirection);
             result.Normalize();
-//            Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)result, Color.magenta, 2f);
+            //Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)result, Color.magenta, 2f);
 
             SetVelocity(result * _turboPower);
         }
