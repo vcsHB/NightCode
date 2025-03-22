@@ -22,6 +22,8 @@ namespace Agents.Players.FSM
         public override void Exit()
         {
             base.Exit();
+            Time.timeScale = 1f;
+
             _cresentPlayerRenderer.SetSwingAttackDirectionVisualEnable(false);
 
         }

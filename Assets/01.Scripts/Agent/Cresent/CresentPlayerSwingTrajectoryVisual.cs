@@ -32,7 +32,7 @@ namespace Agents.Players
                     SetDirection(velocity.normalized);
                     return;
                 }
-                    Time.timeScale = 1f;
+                Time.timeScale = 1f;
                 _visualTrm.DOScaleY(0f, 0.1f);
                 //_spriteRenderer.enabled = false;
 

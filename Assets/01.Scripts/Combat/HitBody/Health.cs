@@ -18,6 +18,7 @@ namespace Combat
         [SerializeField] private float _hitResistanceCooltime = 0.15f;
         private float _lastHitTime;
         public bool IsResist { get; private set; }
+        private bool _isDie;
 
         public void Initialize(float health)
         {
@@ -52,13 +53,16 @@ namespace Combat
 
         public void Revive()
         {
+            _isDie = false;
             OnReviveEvent?.Invoke();
         }
 
         private void CheckDie()
         {
+            if(_isDie) return;
             if (_currentHealth <= 0)
             {
+                _isDie = true;
                 OnDieEvent?.Invoke();
             }
         }
