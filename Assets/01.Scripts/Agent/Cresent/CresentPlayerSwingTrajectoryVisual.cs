@@ -25,11 +25,14 @@ namespace Agents.Players
                 Vector2 velocity = _rigid.linearVelocity;
                 if (velocity.magnitude > _owner.DashAttackStandardVelocity)
                 {
+                    Time.timeScale = 0.5f;
+
                     _visualTrm.DOScaleY(1f, 0.1f);
                     //_spriteRenderer.enabled = true;
                     SetDirection(velocity.normalized);
                     return;
                 }
+                    Time.timeScale = 1f;
                 _visualTrm.DOScaleY(0f, 0.1f);
                 //_spriteRenderer.enabled = false;
 
@@ -43,7 +46,7 @@ namespace Agents.Players
             if (!value)
                 _visualTrm.DOScaleY(0f, 0.1f);
 
- //               _spriteRenderer.enabled = false;
+            //               _spriteRenderer.enabled = false;
         }
         public void SetDirection(Vector2 direction)
         {
