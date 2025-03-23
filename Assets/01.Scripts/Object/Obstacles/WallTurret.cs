@@ -107,6 +107,7 @@ namespace ObjectManage.Obstacles
         {
             _headVisualRenderer.sprite = value ? _enabledSprite : _disabledSprite;
             _turretAim.SetActive(value);
+            _aimDirectionRenderer.enabled = value;
         }
 
         private void OnDrawGizmos()
