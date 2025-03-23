@@ -119,7 +119,6 @@ namespace Agents.Players
             _aimGroupController.SetActiveWire(true);
             _anchorPosition = _currentAimData.targetPosition; // _currentAimData.targetPosition;
             _aimGroupController.SetAnchorPosition(TargetPoint);
-            print("TargetPoint : " + TargetPoint);
             if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));

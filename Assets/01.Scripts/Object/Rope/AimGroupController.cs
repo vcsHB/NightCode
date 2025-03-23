@@ -33,7 +33,6 @@ namespace ObjectManage.Rope
 
         public void SetAnchorPosition(Vector2 position)
         {
-            print("앵커위치는 지금부터 " + position + "입니다");
             _anchorTrm.position = position;
         }
         public void SetAnchorParent(Transform parent = null)
