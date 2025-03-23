@@ -106,30 +106,19 @@ namespace Dialog
 
         private IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
         {
-            if (_curCharacter.personalTalkBubble == null)
-                Debug.Log("_curCharacter.personalTalkBubble  가 널이에요");
-            if (_curCharacter.ContentText == null)
-                Debug.Log("_curCharacter.ContentText가 널이에요");
-            if (node == null)
-                Debug.Log("node가 널이에요");
             TextMeshProUGUI tmp = _curCharacter.ContentText;
 
             tmp.SetText(node.GetContents());
             tmp.maxVisibleCharacters = 0;
             InitNodeAnim(node);
             _isReadingDialog = true;
-            Debug.Log("이까진 와요1");
             while (tmp.maxVisibleCharacters < tmp.text.Length)
             {
-                //������ �ٷ� �Ѱ�
                 if (tmp.text[tmp.maxVisibleCharacters++] == ' ') continue;
 
                 yield return new WaitForSeconds(_textOutDelay);
-                //�ؽ�Ʈ ����� ����Ѱ���
                 yield return new WaitUntil(() => stopReading == false);
             }
-            Debug.Log("이까진 와요2");
-
             _nextNode = node.nextNode;
             StartCoroutine(WaitNodeRoutine(
                 () => GetInput(),
@@ -219,9 +208,11 @@ namespace Dialog
         public virtual void SetCharacters(List<Actor> actors)
         {
             this.characters = actors;
+            
             foreach (Actor actor in characters)
             {
                 TalkBubble bubble = GetTalkBubble();
+                bubble.SetDisabled();
                 actor.personalTalkBubble = bubble;
                 switch (actor.actorType)
                 {

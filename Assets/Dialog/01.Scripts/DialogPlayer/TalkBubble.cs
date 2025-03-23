@@ -18,7 +18,7 @@ namespace Dialog
         public void SetEnable(bool value)
         {
             IsEnable = value;
-
+            gameObject.SetActive(value);
         }
 
         public void SetDisabled()

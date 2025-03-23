@@ -53,7 +53,6 @@ namespace Dialog
         {
             if (_isInputDetected)
             {
-                Debug.Log("asdasd");
                 _isInputDetected = false;
                 return true;
             }
