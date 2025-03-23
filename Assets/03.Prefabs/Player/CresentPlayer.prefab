@@ -4965,6 +4965,7 @@ Transform:
   - {fileID: 4908967664822056405}
   - {fileID: 881151522364592409}
   - {fileID: 1252322318857742200}
+  - {fileID: 1708272424447306483}
   m_Father: {fileID: 8532306760916538326}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5267232171682043350
@@ -15552,7 +15553,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnGroundPullAttackEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 257073687534293826}
+        m_TargetAssemblyTypeName: FeedbackSystem.FeedbackPlayer, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _swingSlashCaster: {fileID: 1882108811778245536}
 --- !u!1 &4845820133016273648
 GameObject:
@@ -16105,6 +16118,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147ce2630122aa744ac2456a52431487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6154472835116279856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1708272424447306483}
+  - component: {fileID: 257073687534293826}
+  - component: {fileID: 2097454117472651082}
+  m_Layer: 6
+  m_Name: GroundPullFeedback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1708272424447306483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154472835116279856}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5701034189670018704}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &257073687534293826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154472835116279856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 818033d49ec6ced4ab4eb138e6721dc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2097454117472651082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154472835116279856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f522abc9cdffc1747b4beadf12c36434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundData: {fileID: 11400000, guid: a2630261ec16be1448a322f33e96b73b, type: 2}
 --- !u!1 &6160952812764381337
 GameObject:
   m_ObjectHideFlags: 0
@@ -31395,7 +31466,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _throwDirectionMark: {fileID: 1517582071490728264}
-  _pullDuration: 0.008
+  _pullDuration: 0.004
   _strongThrowImpact: {fileID: 3033199420212295245}
   _throwPower: 15
   _throwSuccessDamage: 10
