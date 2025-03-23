@@ -37,7 +37,7 @@ namespace ObjectManage.Obstacles
         {
             _healthCompo = GetComponent<Health>();
             _healthCompo.OnDieEvent.AddListener(HandleDie);
-            SetSprite(_isActive);
+            //SetSprite(_isActive);
         }
 
         private void HandleDie()

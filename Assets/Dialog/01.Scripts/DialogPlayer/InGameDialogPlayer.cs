@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Combat.PlayerTagSystem;
 using TMPro;
 using UnityEngine;
 
@@ -9,11 +10,12 @@ namespace Dialog
     [RequireComponent(typeof(AnimationPlayer))]
     public class InGameDialogPlayer : DialogPlayer
     {
+        [SerializeField] private PlayerManager _playerManager;
         private AnimationPlayer _animPlayer;
 
         [SerializeField] private RectTransform _optionParent;
-        [SerializeField] private List<IngameCharacterStruct> characters;
-        private IngameCharacterStruct _curCharacter;
+        [SerializeField] private List<Actor> characters;
+        private Actor _curCharacter;
 
         private TMP_TextInfo _txtInfo;
         private bool _optionSelected = false;
@@ -40,7 +42,7 @@ namespace Dialog
             //�ִϸ��̼� ����
             if (_curReadingNode is NormalNodeSO node && _isReadingDialog)
             {
-                _animPlayer.PlayAnimation(_curCharacter.contentTxt, node.contentTagAnimations);
+                _animPlayer.PlayAnimation(_curCharacter.ContentText, node.contentTagAnimations);
             }
         }
 
@@ -59,7 +61,7 @@ namespace Dialog
 
         public override void EndDialog()
         {
-            characters.ForEach((c) => c.talkBubbleObj.SetActive(false));
+            characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
             _isReadingDialog = false;
         }
 
@@ -81,7 +83,7 @@ namespace Dialog
                     if (c.name == node.GetReaderName())
                     {
                         _curCharacter = c;
-                        _curCharacter.talkBubbleObj.SetActive(true);
+                        _curCharacter.personalTalkBubble.SetEnabled();
                     }
                 });
 
@@ -104,13 +106,19 @@ namespace Dialog
 
         private IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
         {
-            TextMeshProUGUI tmp = _curCharacter.contentTxt;
+            if (_curCharacter.personalTalkBubble == null)
+                Debug.Log("_curCharacter.personalTalkBubble  가 널이에요");
+            if (_curCharacter.ContentText == null)
+                Debug.Log("_curCharacter.ContentText가 널이에요");
+            if (node == null)
+                Debug.Log("node가 널이에요");
+            TextMeshProUGUI tmp = _curCharacter.ContentText;
 
             tmp.SetText(node.GetContents());
             tmp.maxVisibleCharacters = 0;
             InitNodeAnim(node);
             _isReadingDialog = true;
-
+            Debug.Log("이까진 와요1");
             while (tmp.maxVisibleCharacters < tmp.text.Length)
             {
                 //������ �ٷ� �Ѱ�
@@ -120,11 +128,12 @@ namespace Dialog
                 //�ؽ�Ʈ ����� ����Ѱ���
                 yield return new WaitUntil(() => stopReading == false);
             }
+            Debug.Log("이까진 와요2");
 
             _nextNode = node.nextNode;
             StartCoroutine(WaitNodeRoutine(
                 () => GetInput(),
-                () => _curCharacter.talkBubbleObj.SetActive(false)));
+                () => _curCharacter.personalTalkBubble.SetDisabled()));
         }
 
 
@@ -207,14 +216,43 @@ namespace Dialog
             List<TagAnimation> anims = node.GetAllAnimations();
             anims.ForEach((anim) => anim.Complete());
         }
+        public virtual void SetCharacters(List<Actor> actors)
+        {
+            this.characters = actors;
+            foreach (Actor actor in characters)
+            {
+                TalkBubble bubble = GetTalkBubble();
+                actor.personalTalkBubble = bubble;
+                switch (actor.actorType)
+                {
+                    case ActorType.Player:
+                        bubble.SetOwner(_playerManager.CurrentPlayerTrm, actor.bubbleOffset);
+
+                        break;
+                    case ActorType.Object:
+                        bubble.SetOwner(actor.target, actor.bubbleOffset);
+                        break;
+                }
+
+
+            }
+        }
+    }
+    public enum ActorType
+    {
+        Player,
+        Object
     }
 
     [Serializable]
-    public struct IngameCharacterStruct
+    public class Actor
     {
         public string name;
-        public GameObject talkBubbleObj;
-        public TextMeshProUGUI contentTxt;
+        public Vector2 bubbleOffset;
+        public ActorType actorType;
+        public Transform target; // owner character of this conversation
+        public TalkBubble personalTalkBubble;
+        public TextMeshProUGUI ContentText => personalTalkBubble.ContentTextMeshPro;
         public SpriteRenderer spriteRenderer;
     }
 }

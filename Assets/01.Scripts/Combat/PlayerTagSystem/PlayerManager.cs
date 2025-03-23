@@ -24,6 +24,7 @@ namespace Combat.PlayerTagSystem
         [SerializeField] private int _currentPlayerIndex = 0;
         [SerializeField] private CharacterSelectWindow _characterSelectWindow;
         public Player CurrentPlayer => _playerList[_currentPlayerIndex];
+        public Transform CurrentPlayerTrm => CurrentPlayer.transform;
         public PlayerSO CurrentPlayerData => _playerDatas[_currentPlayerIndex];
         public bool IsAllRetire => _playerList.All(x => x.IsDead);
 
