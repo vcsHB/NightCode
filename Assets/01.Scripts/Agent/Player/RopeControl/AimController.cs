@@ -184,7 +184,6 @@ namespace Agents.Players
 
         private Vector2 GetLerpTargetPositionByRatio(float ratio)
         {
-            print(_aimGroupController.AnchorPos);
             return Vector2.Lerp(_currentAimData.originPlayerPosition, _aimGroupController.AnchorPos, ratio);
         }
 
