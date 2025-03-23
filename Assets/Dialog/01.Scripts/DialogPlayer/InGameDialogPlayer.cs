@@ -16,6 +16,7 @@ namespace Dialog
         [SerializeField] private RectTransform _optionParent;
         [SerializeField] private List<Actor> characters;
         private Actor _curCharacter;
+        public event Action OnDialogueEnd;
 
         private TMP_TextInfo _txtInfo;
         private bool _optionSelected = false;
@@ -63,6 +64,7 @@ namespace Dialog
         {
             characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
             _isReadingDialog = false;
+            OnDialogueEnd?.Invoke();
         }
 
         public override void ReadSingleLine()
