@@ -4,14 +4,8 @@ namespace Basement.NPC
 {
     public class NPCRenderer : MonoBehaviour
     {
-        private Animator _animator;
-        private SpriteRenderer _spriteRenderer;
-
-        private void Awake()
-        {
-            _animator = GetComponent<Animator>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
-        }
+        [SerializeField] private Animator _animator;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
 
         public void SetAnimParam(int hash, bool value)
         {

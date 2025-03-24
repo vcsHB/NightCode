@@ -44,14 +44,15 @@ namespace ObjectManage.Rope
             for (int i = 0; i < constraintLoop; i++)
             {
                 ApplyConstraint();
-                AdjustCollision(); // 로프 물리엔진 적용`
+                //AdjustCollision(); // 로프 물리엔진 적용`
 
             }
+            DrawRope();
         }
+
 
         private void LateUpdate()
         {
-            DrawRope();
         }
 
         private void DrawRope()
@@ -87,11 +88,12 @@ namespace ObjectManage.Rope
             segments[segments.Count - 1].position = endTransform.position;
             for (int i = 0; i < segments.Count - 1; i++)
             {
-                float distance = (segments[i].position - segments[i + 1].position).magnitude;
-                float difference = segmentLength - distance;
-                Vector2 dir = (segments[i + 1].position - segments[i].position).normalized;
+                Vector2 currentPos = segments[i].position;
+                Vector2 nextPos = segments[i + 1].position;
+                Vector2 direction = (nextPos - currentPos).normalized;
+                float difference = segmentLength - Vector2.Distance(currentPos, nextPos);
+                Vector2 movement = direction * difference;
 
-                Vector2 movement = dir * difference;
                 if (i == 0)
                 {
                     segments[i + 1].position += movement;
@@ -106,6 +108,8 @@ namespace ObjectManage.Rope
                     segments[i + 1].position += movement * 0.5f;
                 }
             }
+            segments[0].position = startTransform.position;
+            segments[segments.Count - 1].position = endTransform.position;
         }
 
         private void AdjustCollision()

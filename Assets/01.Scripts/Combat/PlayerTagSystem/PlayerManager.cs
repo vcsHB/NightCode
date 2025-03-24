@@ -131,10 +131,13 @@ namespace Combat.PlayerTagSystem
 
         private void HandlePlayerDie()
         {
-
             Change();
         }
 
+        public void SetCurrentPlayerPosition(Vector2 position)
+        {
+            CurrentPlayer.transform.position = position;
+        }
 
     }
 

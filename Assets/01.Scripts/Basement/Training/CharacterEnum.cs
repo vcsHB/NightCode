@@ -1,11 +1,8 @@
 using UnityEngine;
 
-namespace Basement.Training
+public enum CharacterEnum
 {
-    public enum CharacterEnum
-    {
-        Katana,
-        CrecentBlade,
-        Cross
-    }
+    Katana,
+    CrecentBlade,
+    Cross,
 }

@@ -8,8 +8,6 @@ namespace Basement
 {
     public class BasementManager : MonoSingleton<BasementManager>
     {
-        //얘는 그냥 초기 설정인거임
-        public BasementSO basementInfo;
         public BasementRoomSetSO roomSet;
         public BasementController basement;
 
@@ -25,15 +23,16 @@ namespace Basement
             => money -= amount;
 
         public Transform GetRoomPosition(int floor, int roomNumber)
-            => roomPositions[floor].roomPositions[roomNumber];
+        {
+            if (floor < 0 || floor > 2 || roomNumber < 0 || roomNumber > 2) return null;
+            return roomPositions[floor].roomPositions[roomNumber];
+        }
 
         public BasementRoom CreateRoom(BasementRoomType roomType, int floor, int roomNumber)
         {
             Transform roomTrm = GetRoomPosition(floor, roomNumber);
             BasementRoom room = Instantiate(roomSet.GetRoomSO(roomType).roomPf, roomTrm);
             room.Init(basement);
-
-            basementInfo.floorInfos[floor].rooms[roomNumber].roomType = roomType;
 
             return room;
         }
@@ -43,17 +42,10 @@ namespace Basement
             Transform roomTrm = GetRoomPosition(floor, roomNumber);
             BasementRoom room = Instantiate(roomSO.roomPf, roomTrm); 
             room.Init(basement);
+            basement.SetRoom(room, floor, roomNumber);
 
-            basementInfo.floorInfos[floor].rooms[roomNumber].roomType = room.roomType;
             return room;
         }
-    }
-
-    [Serializable]
-    public class FloorInfo
-    {
-        public int floor;
-        public List<RoomInfo> rooms = new List<RoomInfo>(4);
     }
 
     [Serializable]

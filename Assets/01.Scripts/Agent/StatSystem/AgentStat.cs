@@ -1,10 +1,13 @@
-using GGM.Core.StatSystem;
+using System;
 using System.Linq;
+using StatSystem;
 using UnityEngine;
 
 namespace Agents
 {
-    public class AgentStat : MonoBehaviour//, IEntityComponent
+
+    [Obsolete("Don't use this class in project, use \'AgentStatus\' class", true)]
+    public class AgentStat : MonoBehaviour, IAgentComponent
     {
         [SerializeField] private StatOverride[] _statOverrides;
         private StatSO[] _stats;
@@ -52,6 +55,14 @@ namespace Agents
             {
                 stat.ClearModifiers();
             }
+        }
+
+        public void AfterInit()
+        {
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5428f57e6e1463b4b8d0636e183f2213, type: 3}
+  m_Name: qwer
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 5559389207879747461}
+  - {fileID: 423755193842861455}
+--- !u!114 &423755193842861455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf12593a4a5d8247bdea87308ca2eb6, type: 3}
+  m_Name: OptionNodeSO
+  m_EditorClassIdentifier: 
+  guid: 084c4b20667ac87478898309ba8656da
+  position: {x: 858, y: 401}
+  options:
+  - option: "\uC57C\uC774 \uBE61\uBE61\uC544"
+    optionTxt: 
+    nextNode: {fileID: 0}
+  - option: "\u3141\u3134\u3147\u3139"
+    optionTxt: 
+    nextNode: {fileID: 0}
+  optionPf: {fileID: 0}
+--- !u!114 &5559389207879747461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
+  m_Name: NormalNodeSO
+  m_EditorClassIdentifier: 
+  guid: b262da21fe7d9494f9258153c4d261d0
+  position: {x: 600, y: 401}
+  reader: "\u3142\u3148\u3137\u3131"
+  contents: </Wobble=1> </Wobble>
+  nextNode: {fileID: 423755193842861455}

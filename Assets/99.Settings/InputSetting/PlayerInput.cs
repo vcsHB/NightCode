@@ -11,6 +11,7 @@ namespace InputManage
         public event Action<bool> OnShootEvent;
         public event Action OnShootRopeEvent;
         public event Action OnRemoveRopeEvent;
+        public event Action<Vector2> MovementEvent;
         public event Action JumpEvent;
         public event Action PullEvent;
         public event Action TurboEvent;
@@ -19,7 +20,13 @@ namespace InputManage
         public Vector2 InputDirection { get; private set; }
 
         public Vector2 MousePosition { get; private set; }
-        public Vector2 MouseWorldPosition {get; private set; }
+        public Vector2 MouseWorldPosition { get; private set; }
+        public bool IsShootRelease { get; private set;}
+
+        #region InputSwitchs
+
+
+        #endregion
 
         private void OnEnable()
         {
@@ -39,11 +46,12 @@ namespace InputManage
         public void OnMove(InputAction.CallbackContext context)
         {
             InputDirection = context.ReadValue<Vector2>();
+            MovementEvent?.Invoke(InputDirection);
         }
 
         public void OnAttack(InputAction.CallbackContext context)
         {
-            if(context.performed)
+            if (context.performed)
             {
                 OnAttackEvent?.Invoke();
             }
@@ -53,11 +61,13 @@ namespace InputManage
         {
             if (context.performed)
             {
+                IsShootRelease = false;
                 OnShootEvent?.Invoke(true);
                 OnShootRopeEvent?.Invoke();
             }
             else if (context.canceled)
             {
+                IsShootRelease = true;
                 OnShootEvent?.Invoke(false);
                 OnRemoveRopeEvent?.Invoke();
             }
@@ -90,7 +100,7 @@ namespace InputManage
 
         public void OnChangeTag(InputAction.CallbackContext context)
         {
-            if(context.performed)
+            if (context.performed)
             {
                 OnCharacterChangeEvent?.Invoke();
             }

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace InputManage
 {
-    [CreateAssetMenu(menuName ="SO/Input/UIInputReader")]
+    [CreateAssetMenu(menuName = "SO/Input/UIInputReader")]
     public class UIInputReader : ScriptableObject, Controls.IUIActions
     {
         public event Action OnEscEvent;
@@ -29,7 +29,9 @@ namespace InputManage
         public void OnOnEsc(InputAction.CallbackContext context)
         {
             if (context.performed)
+            {
                 OnEscEvent?.Invoke();
+            }
         }
 
 

@@ -1,95 +1,152 @@
 using Basement.CameraController;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.TextCore.Text;
 
 namespace Basement
 {
-    public abstract class BasementRoom : MonoBehaviour
+    public abstract class BasementRoom : IngameInteractiveObject
     {
         public BasementRoomType roomType;
         public List<Furniture> furnitureList;
         public BasementRoomSO roomSO;
 
-        [SerializeField] protected List<CharacterType> _selectedCharacters;
-        protected bool _isFurnitureSetting = false;
-        protected bool _isBasementMode = false;
+        [SerializeField] protected Collider2D _collider;
+        protected bool _isCharacterSelected = false;
+        protected CharacterEnum _selectedCharacter;
+        protected bool _isFocusMode = false;
+        protected BasementUI _connectedUI;
+
+        #region 
 
         [SerializeField] private Transform _cameraFocusTarget;
         [SerializeField] private float _zoomInValue = 1.5f;
-        [SerializeField] private BasementController _basement;
-        private float _originZoomValue;
+        private BasementController _basement;
         private Transform _originFollow;
-        private Collider2D _collider;
+        private FurnitureUI _furnitureUI;
+        private RoomUI _roomUI;
 
-        public bool IsFurnitureSettingMode => _isFurnitureSetting;
-        public bool IsBasementMode => _isBasementMode;
+        #endregion
+
+        protected FurnitureUI FurnitureUI
+        {
+            get
+            {
+                if (_furnitureUI == null)
+                    _furnitureUI = UIManager.Instance.furnitureUI;
+                return _furnitureUI;
+            }
+        }
+        protected RoomUI RoomUI
+        {
+            get
+            {
+                if (_roomUI == null)
+                    _roomUI = UIManager.Instance.roomUI;
+                return _roomUI;
+            }
+        }
         public BasementController BasementController => _basement;
+        public bool IsUIOpend
+        {
+            get
+            {
+                if (_connectedUI == null) return false;
+                return _connectedUI.isOpend;
+            }
+        }
+
 
         protected virtual void Awake()
         {
-            _collider = GetComponent<Collider2D>();
             furnitureList = new List<Furniture>();
-            _selectedCharacters = new List<CharacterType>();
+        }
 
-            for (int i = 0; i < roomSO.maxSeatingCapacity; i++)
-                _selectedCharacters.Add(CharacterType.Null);
+        protected void BasmentModeChangeOnFocusMode(BasementMode mode)
+        {
+            if (_isFocusMode == false) return;
+
+            if (mode == BasementMode.Basement)
+            {
+                FurnitureUI.Close();
+                OpenRoomUI();
+            }
+            else if (mode == BasementMode.Build)
+            {
+                RoomUI.Close();
+                CloseUI();
+                FurnitureSetting();
+            }
+            _isFocusMode = true;
+        }
+
+        public abstract void CloseUI();
+
+        public void ReturnButtonCloseAllUI()
+        {
+            //UIManager.Instance.returnButton.ChangeReturnAction(RoomUI.Close);
         }
 
         public void FocusCamera()
         {
-            _originFollow = BasementCameraManager.Instance.GetCameraFollow();
-            _originZoomValue = BasementCameraManager.Instance.CameraSize;
-            BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(_zoomInValue, 0.4f);
-            _collider.enabled = false;
+            Transform targetTrm = BasementCameraManager.Instance.GetCameraFollow();
+            if (targetTrm != _cameraFocusTarget) _originFollow = targetTrm;
+
+            _basement.OnFocusRoom(this);
+            BasementCameraManager.Instance.ChangeFollow(_cameraFocusTarget, 0.2f, null);
+            BasementCameraManager.Instance.Zoom(_zoomInValue, 0.3f);
+            _isFocusMode = true;
         }
 
-        public void ReturnFocus()
+        public virtual void ReturnFocus()
         {
-            BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.3f, null);
-            BasementCameraManager.Instance.Zoom(_originZoomValue, 0.4f);
-            _collider.enabled = true;
-            _isFurnitureSetting = false;
-            _isBasementMode = false;
+            BasementCameraManager.Instance.ChangeFollow(_originFollow, 0.2f, null);
+            BasementCameraManager.Instance.ZoomOut(0.3f);
+            _isFocusMode = false;
+            CloseUI();
+        }
+
+        public virtual void PlaceCharacter(CharacterEnum charcter)
+        {
+            _selectedCharacter = charcter;
+            _isCharacterSelected = true;
+        }
+
+        public virtual void RemoveCharacter()
+        {
+            _isCharacterSelected = false;
         }
 
         public void FurnitureSetting()
         {
-            FocusCamera();
-            _isFurnitureSetting = true;
+            if (_isFocusMode == false)
+                FocusCamera();
 
-            FurnitureUI furnitureUI = UIManager.Instance.GetUIPanel(UIType.FurnitureUI) as FurnitureUI;
-            furnitureUI.Init(this);
-            furnitureUI.Open(Vector2.zero);
+            FurnitureUI.Init(this);
+            FurnitureUI.Open(Vector2.zero);
         }
 
         public virtual void FocusRoom()
         {
-            FocusCamera();
-            _isBasementMode = true;
-
-            UIManager.Instance.roomUI.SetRoom(this);
-            UIManager.Instance.roomUI.Open();
+            if (_isFocusMode == false)
+                FocusCamera();
+            OpenRoomUI();
         }
 
-        public virtual void ChangeMode(BasementMode mode)
+        public void OpenRoomUI()
         {
-            if (mode == BasementMode.Basement)
-            {
-                _isFurnitureSetting = false;
-                _isBasementMode = true;
-            }
-
-            if (mode == BasementMode.Build)
-            {
-                _isFurnitureSetting = true;
-                _isBasementMode = false;
-            }
+            RoomUI.SetRoom(this);
+            RoomUI.Open();
         }
 
-        public void OnMouseUp()
+        protected override void OnMouseLeftButtonUp()
         {
-            if (_basement.GetCurrentMode() == BasementMode.Basement) FocusRoom();
+            base.OnMouseLeftButtonUp();
+            
+            if (_basement.GetCurrentBasementMode() == BasementMode.Basement) FocusRoom();
             else FurnitureSetting();
         }
 
@@ -104,14 +161,10 @@ namespace Basement
         public virtual void Init(BasementController basement)
         {
             _basement = basement;
+            _basement.OnChangeBasmentMode += BasmentModeChangeOnFocusMode;
         }
-    }
 
-    public enum CharacterType
-    {
-        Null,
-        Katana,
-        CrecentBlade,
-        Cross
+        public void SetColliderEnable(bool isEnable) 
+            => _collider.enabled = isEnable;
     }
 }

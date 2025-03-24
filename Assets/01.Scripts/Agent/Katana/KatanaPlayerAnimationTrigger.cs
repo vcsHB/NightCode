@@ -2,6 +2,7 @@ using Agents.Players;
 using UnityEngine.Events;
 using UnityEngine;
 using Combat.CombatObjects.ProjectileManage;
+using Combat.Casters;
 
 namespace Agents.Animate
 {
@@ -39,6 +40,7 @@ namespace Agents.Animate
             _airAttackShooter.FireProjectile();
         }
 
+        
     }
 
 

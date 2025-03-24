@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Dialog/Editor/DialogGraph.uss?fileID=7433441132597879392&amp;guid=4eda69b78abad994c96b940d01f97680&amp;type=3#DialogGraph" />
+    <Dialog.SplitView name="SplitView" fixed-pane-initial-dimension="200">
+        <ui:VisualElement name="InspectorView" style="flex-shrink: 0; background-color: rgb(32, 32, 32);">
+            <Dialog.SplitView orientation="Vertical" fixed-pane-initial-dimension="300" name="inner-split-view">
+                <Dialog.InspectorView name="inspector-view" focusable="true" />
+                <Dialog.InspectorView name="condition-view" />
+            </Dialog.SplitView>
+        </ui:VisualElement>
+        <ui:VisualElement name="GraphView" style="flex-shrink: 0; background-color: rgb(32, 32, 32);">
+            <Dialog.DialogView name="dialog-view" focusable="true" style="flex-grow: 1; flex-shrink: 0;" />
+        </ui:VisualElement>
+    </Dialog.SplitView>
+</ui:UXML>

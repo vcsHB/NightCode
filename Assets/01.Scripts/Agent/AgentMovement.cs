@@ -1,4 +1,5 @@
 using System;
+using StatSystem;
 using UnityEngine;
 namespace Agents
 {
@@ -22,6 +23,8 @@ namespace Agents
 
         protected Agent _owner;
         protected AgentRenderer _renderer;
+        protected AgentStatus _agentStatus;
+        protected StatSO _speedStat;
         protected float _movementX;
         protected float _moveSpeedMultiplier = 1f;
 
@@ -31,11 +34,13 @@ namespace Agents
 
             _rigidCompo = agent.GetComponent<Rigidbody2D>();
             _renderer = agent.GetCompo<AgentRenderer>();
+            _agentStatus = agent.GetCompo<AgentStatus>();
             _originalgravity = _rigidCompo.gravityScale;
         }
 
         public virtual void AfterInit()
         {
+            _speedStat = _agentStatus.GetStat(StatusEnumType.Speed);
         }
 
         public virtual void Dispose()
