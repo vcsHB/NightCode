@@ -30,12 +30,6 @@ namespace UI.InGame.SystemUI.AlertSystem
             _audioSource = GetComponent<AudioSource>();
         }
 
-        [ContextMenu("DebugAlert")]
-        private void DebugAlert()
-        {
-            ShowAlert("목표물을 제거했습니다.");
-        }
-
 
         public void ShowAlert(string content, AlertType type = AlertType.Normal)
         {
