@@ -31,6 +31,7 @@ namespace Office
         public void OnPointerDown(PointerEventData eventData)
         {
             _offset = (input.MousePosition - screenOffset) - RectTransform.anchoredPosition;
+            transform.SetAsLastSibling();
         }
 
         public void OnPointerUp(PointerEventData eventData)

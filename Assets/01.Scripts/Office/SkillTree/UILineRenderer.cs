@@ -27,13 +27,6 @@ namespace GGM.UI
 
         private List<(Vector2 vert, float dist)> _vertices;
 
-        protected override void OnEnable()
-        {
-            //if (material != null)
-            //    material = Instantiate(material);
-
-        }
-
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();

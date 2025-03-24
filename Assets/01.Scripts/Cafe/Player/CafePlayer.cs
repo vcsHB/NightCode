@@ -57,14 +57,14 @@ namespace Cafe
 
         public void AddInteract(CafePlayerInputObject inputObject)
         {
-            _inputObject = Instantiate(inputObject, transform);
+            _inputObject = inputObject;
             _inputObject.Open();
             //interactMark.SetActive(true);
         }
 
         public void RemoveInteract()
         {
-            _inputObject.Close();
+            _inputObject?.Close();
         }
 
 

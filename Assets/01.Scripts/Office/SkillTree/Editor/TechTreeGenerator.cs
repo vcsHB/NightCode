@@ -36,7 +36,7 @@ public class TechTreeGenerator : EditorWindow
 
         m_VisualTreeAsset.CloneTree(root);
 
-        StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/01.Scripts/UI/SkillTree/Editor/TechTreeGenerator.uss");
+        StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/01.Scripts/Office/SkillTree/Editor/TechTreeGenerator.uss");
         root.styleSheets.Add(styleSheet);
 
         graphView = root.Q<TechTreeGraphView>();

@@ -22,22 +22,16 @@ namespace Cafe
             }
         }
 
-        //µð¹ö±ë
-        private void Update()
-        {
-            if (Keyboard.current.pKey.wasPressedThisFrame)
-                EnterCustomer();
-        }
 
-        public void EnterCustomer()
+        public bool EnterCustomer(CafeCustomerSO customerSO)
         {
             if (TryGetValiadeTable(out CafeTable table))
             {
-                CafeCustomer customer =
-                    Instantiate(customerList[Random.Range(0, customerList.Count)], customerInitPosition);
-
+                CafeCustomer customer = Instantiate(customerSO.customerPf, customerInitPosition);
                 customer.Init(table);
+                return true;
             }
+            return false;
         }
 
         public bool TryGetValiadeTable(out CafeTable table)

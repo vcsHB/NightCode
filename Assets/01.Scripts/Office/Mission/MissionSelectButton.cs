@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,9 +12,10 @@ namespace Office
     {
         [SerializeField] private TextMeshProUGUI _missionTypeText;
         [SerializeField] private TextMeshProUGUI _missionNameText;
+        [SerializeField] private List<GameObject> _difficultyObjects;
+        [SerializeField] private TextMeshProUGUI _rewardText;
         [SerializeField] private TextMeshProUGUI _explainText;
         [SerializeField] private Image _icon;
-        [SerializeField] private Button _selectMissionButton;
 
         public RectTransform RectTrm => transform as RectTransform;
         public RectTransform childRect => transform.GetChild(0) as RectTransform;
@@ -25,10 +27,6 @@ namespace Office
         private Tween _tween;
 
 
-        private void OnDisable()
-        {
-            _selectMissionButton.onClick.RemoveListener(OnClickButton);
-        }
 
         public void Init(MissionSO mission)
         {
@@ -36,7 +34,12 @@ namespace Office
             _missionTypeText.SetText(_mission.missionType.ToString());
             _missionNameText.SetText(_mission.missionName);
             _explainText.SetText(_mission.missionExplain);
+            _rewardText.SetText($"기본보상: {_mission.missionDefaultReward}");
             _icon.sprite = _mission.icon;
+
+            for(int i = 0; i < _difficultyObjects.Count; i++)
+                _difficultyObjects[i].SetActive(i < _mission.missionDifficulty);
+
             _selectPanel = GetComponentInParent<MissionSelectPanel>();
         }
 
@@ -45,14 +48,7 @@ namespace Office
             _isSelected = true;
 
             if (_tween != null && _tween.active) _tween.Kill();
-            _tween = childRect.DOAnchorPosY(0, 0.2f)
-                .OnComplete(() => _selectMissionButton.onClick.AddListener(OnClickButton));
-        }
-
-        public void UnSelectButton()
-        {
-            _isSelected = false;
-            _selectMissionButton.onClick.RemoveListener(OnClickButton);
+            _tween = childRect.DOAnchorPosY(0, 0.2f);
         }
 
         public void OnClickButton()
@@ -81,7 +77,7 @@ namespace Office
             if (_tween != null && _tween.active)
                 _tween.Kill();
 
-            _tween = childRect.DOAnchorPosY(150, 0.2f);
+            _tween = childRect.DOAnchorPosY(30, 0.2f);
         }
     }
 }

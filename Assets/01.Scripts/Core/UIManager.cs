@@ -17,7 +17,7 @@ namespace Basement
         public BuildConfirmPanel buildConfirmPanel;
         public BasementTimerUI timer;
         public FurnitureUI furnitureUI;
-        public MSGText msgText;
+        //public MSGText msgText;
         public RoomUI roomUI;
         public BasementRoomChangeUI basementUI;
 

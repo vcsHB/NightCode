@@ -11,14 +11,13 @@ public class SkillTreeSO : ScriptableObject
 {
     public List<NodeSO> nodes = new List<NodeSO>();
 
-
 #if UNITY_EDITOR
     public NodeSO CreateNode(System.Type type)
     {
         NodeSO node = ScriptableObject.CreateInstance(type) as NodeSO;
 
         node.id = nodes.Count;
-        node.name = $"{type.Name}-{node.id}";
+        node.nodeName = $"{type.Name}-{node.id}";
         node.guid = GUID.Generate().ToString();
         node.nextNodes = new List<NodeSO>();
         nodes.Add(node);

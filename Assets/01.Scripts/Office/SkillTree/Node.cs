@@ -59,6 +59,18 @@ namespace Office
             _edgeFill.SetMaterial(edgeFillmat);
         }
 
+        private void OnEnable()
+        {
+            _edge.gameObject.SetActive(true);
+            _edgeFill.gameObject.SetActive(true);
+        }
+
+        private void OnDisable()
+        {
+            _edge.gameObject.SetActive(false);
+            _edgeFill.gameObject.SetActive(false);
+        }
+
         #region EnableNode
 
         //선택된 노드들을 전부 활성화시켜주는 코루틴

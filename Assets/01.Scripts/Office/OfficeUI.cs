@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,7 @@ namespace Office
         public MissionSelectPanel missionSelectPanel;
         public SkillTreePanel skillTreePanel;
 
+        private OfficeUIParent _initialUI;
         [SerializeField] private RectTransform _returnBtnRect;
         [SerializeField] private GameObject _leftBtn, _rightBtn;
         [SerializeField] private float _duration;
@@ -19,16 +21,27 @@ namespace Office
         private bool _isCharacterPanel;
         private Sequence _openCloseSeq;
 
+        private void Awake()
+        {
+            ChangeInitUI(true);
+        }
+
         private void Update()
         {
             if (Keyboard.current.oKey.wasPressedThisFrame)
                 Open();
         }
 
+        public void ChangeInitUI(bool isCharacterPanel)
+        {
+            _isCharacterPanel = isCharacterPanel;
+
+            if (_isCharacterPanel) _initialUI = characterSelectPanel;
+            else _initialUI = missionSelectPanel;
+        }
+
         public override void OpenAnimation()
         {
-            _isCharacterPanel = true;
-
             if (_openCloseSeq != null && _openCloseSeq.active)
                 _openCloseSeq.Kill();
 
@@ -37,7 +50,7 @@ namespace Office
                 .Join(_returnBtnRect.DOAnchorPosX(-900, _duration))
                 .OnComplete(() =>
                 {
-                    characterSelectPanel.Open();
+                    _initialUI.Open();
                     OnCompleteOpen();
                 });
 

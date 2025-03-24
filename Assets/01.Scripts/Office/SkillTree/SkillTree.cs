@@ -67,7 +67,7 @@ namespace Office
                     node.SetEdge();
             }
 
-            Load();
+            //Load();
         }
 
 

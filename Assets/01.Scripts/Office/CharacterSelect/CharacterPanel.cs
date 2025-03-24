@@ -5,19 +5,19 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Office
 {
     public class CharacterPanel : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        public bool isSelected = false;
         [SerializeField] private CharacterEnum _characterType;
-        [SerializeField] private TextMeshProUGUI _strText;
-        [SerializeField] private TextMeshProUGUI _intText;
-        [SerializeField] private TextMeshProUGUI _dexText;
+        [SerializeField]private Image _disableMask;
 
         private CharacterSelectPanel _selectPanel;
         private int _index;
+        private Sequence _enableDisableSeq;
+        private float _duration = 0.2f;
 
         public RectTransform RectTrm => transform as RectTransform;
         public CharacterEnum CharacterType => _characterType;
@@ -27,20 +27,31 @@ namespace Office
             _selectPanel = GetComponentInParent<CharacterSelectPanel>();
         }
 
-        public void Init(int i)
+        public void SetIndex(int i)
         {
             _index = i;
         }
 
-        public void UpdateStat()
-        {
-            //int str = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Health);
-            //int intel = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Intelligence);
-            //int dex = CharacterManager.Instance.GetSkillPoint(_characterType, SkillPointEnum.Dexdexterity);
 
-            //_strText.SetText($"str pt: {str}");
-            //_intText.SetText($"int pt: {intel}");
-            //_dexText.SetText($"dex pt: {dex}");
+        public void EnablePanel()
+        {
+            if (_enableDisableSeq != null && _enableDisableSeq.active) _enableDisableSeq.Kill();
+
+            _enableDisableSeq = DOTween.Sequence();
+
+            _enableDisableSeq.Append(_disableMask.DOFade(0f, _duration))
+                .Join(transform.DOScale(1f, _duration));
+        }
+
+        
+        public void DisablePanel()
+        {
+            if (_enableDisableSeq != null && _enableDisableSeq.active) _enableDisableSeq.Kill();
+
+            _enableDisableSeq = DOTween.Sequence();
+
+            _enableDisableSeq.Append(_disableMask.DOFade(0.85f, _duration))
+                .Join(transform.DOScale(0.9f, _duration));
         }
 
 
@@ -48,13 +59,13 @@ namespace Office
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (isSelected) return;
+            if (_index == 1) return;
             RectTrm.localScale = Vector3.one * 1f;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (isSelected) return;
+            if (_index == 1) return;
             RectTrm.localScale = Vector3.one * 1.02f;
         }
 
@@ -65,7 +76,6 @@ namespace Office
 
         private void SelectCharacter()
         {
-            isSelected = true;
             _selectPanel.SelectCharacter(_index);
         }
 

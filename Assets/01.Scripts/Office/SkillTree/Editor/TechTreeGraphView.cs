@@ -6,10 +6,11 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class TechTreeGraphView : GraphView
+[UxmlElement]
+public partial class TechTreeGraphView : GraphView
 {
     public Action<NodeView> OnNodeSelected;
-    public new class UxmlFactory : UxmlFactory<TechTreeGraphView, GraphView.UxmlTraits> { }
+    //public new class UxmlFactory : UxmlFactory<TechTreeGraphView, GraphView.UxmlTraits> { }
 
     private SkillTreeSO _tree;
 
@@ -17,7 +18,7 @@ public class TechTreeGraphView : GraphView
     {
         Insert(0, new GridBackground());
 
-        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/01.Scripts/UI/SkillTree/Editor/TechTreeGenerator.uss");
+        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/01.Scripts/Office/SkillTree/Editor/TechTreeGenerator.uss");
         styleSheets.Add(styleSheet);
 
         this.AddManipulator(new ContentZoomer());
@@ -44,7 +45,7 @@ public class TechTreeGraphView : GraphView
         {
             StartNodeSO node = _tree.CreateNode(typeof(StartNodeSO)) as StartNodeSO;
             node.id = 0;
-            node.name = "StartNode";
+            node.nodeName = "StartNode";
             node.guid = GUID.Generate().ToString();
             node.nextNodes = new List<NodeSO>();
 
@@ -94,7 +95,6 @@ public class TechTreeGraphView : GraphView
 
     private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
     {
-        Debug.Log("¹Ö¤±¤·");
         if (graphViewChange.elementsToRemove != null)
         {
             graphViewChange.elementsToRemove.ForEach(elem =>

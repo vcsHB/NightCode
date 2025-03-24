@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7992713270995573097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507cd666ab7f43a4b9c7daa6390ee07c, type: 3}
+  m_Name: Mission-1
+  m_EditorClassIdentifier: 
+  id: 1
+  guid: 71594dbd9fd9e864796755fba2dbcbf9
+  position: {x: -398.27505, y: -29.074978}
+  prevMission: {fileID: 0}
+  nextMissions: []
+  missionType: 1
+  missionName: "\uC7A5\uD6C8 \uD559\uC0B4"
+  icon: {fileID: 6051461806625355020, guid: b7918b290b6f9c744ad059720edf27a1, type: 3}
+  missionExplain: "\uBAA8\uB4E0 \uC7A5\uD6C8\uC744 \uC81C\uAC70 \uD558\uC2ED\uC2DC\uC624"
+  missionDefaultReward: 69$
+  missionDifficulty: 5
+  sceneName: 
+--- !u!114 &-4705274634952244482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507cd666ab7f43a4b9c7daa6390ee07c, type: 3}
+  m_Name: Mission-3
+  m_EditorClassIdentifier: 
+  id: 3
+  guid: 3229eec7e40c015449302f5ecf4582c7
+  position: {x: -128.02502, y: 58.375004}
+  prevMission: {fileID: 0}
+  nextMissions: []
+  missionType: 0
+  missionName: 
+  icon: {fileID: 0}
+  missionExplain: 
+  missionDefaultReward: 
+  missionDifficulty: 1
+  sceneName: 
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59defd6a3ddbc544bbe2547115298412, type: 3}
+  m_Name: Missions
+  m_EditorClassIdentifier: 
+  missionList:
+  - {fileID: 7195922940444230371}
+  - {fileID: -7992713270995573097}
+  - {fileID: 1525865537970773314}
+  - {fileID: -4705274634952244482}
+--- !u!114 &1525865537970773314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507cd666ab7f43a4b9c7daa6390ee07c, type: 3}
+  m_Name: Mission-2
+  m_EditorClassIdentifier: 
+  id: 2
+  guid: 2569f63b2f74ed74e811e0939783b991
+  position: {x: -126.875015, y: -131.125}
+  prevMission: {fileID: 0}
+  nextMissions: []
+  missionType: 0
+  missionName: 
+  icon: {fileID: 0}
+  missionExplain: 
+  missionDefaultReward: 
+  missionDifficulty: 1
+  sceneName: 
+--- !u!114 &7195922940444230371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507cd666ab7f43a4b9c7daa6390ee07c, type: 3}
+  m_Name: Mission-0
+  m_EditorClassIdentifier: 
+  id: 0
+  guid: 5d605b8b5e741c14daa28e05bafce4db
+  position: {x: -570.44995, y: -29.22501}
+  prevMission: {fileID: 0}
+  nextMissions: []
+  missionType: 1
+  missionName: "\uC7A5\uD6C8 \uC554\uC0B4"
+  icon: {fileID: 4744546574663652252, guid: 21c15aacd53ffd743a929882c243efb7, type: 3}
+  missionExplain: "\uC2EC\uC7A5\uD6C8\uC744 \uCC3E\uC544\uC11C \uC554\uC0B4 \uD558\uC2ED\uC2DC\uC624"
+  missionDefaultReward: "\uBC0D\uBC0D\uC774"
+  missionDifficulty: 3
+  sceneName: SCENE

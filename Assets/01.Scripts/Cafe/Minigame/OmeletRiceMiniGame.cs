@@ -1,5 +1,8 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,65 +10,252 @@ namespace Cafe
 {
     public class OmeletRiceMiniGame : MonoBehaviour
     {
-        public RectTransform ketchupBottleRect;
-        public RectTransform tipRect;
+        public event Action<bool> onCompleteMiniGame;
+        public CafeInput input;
 
-        public Transform pixelParent;
+        public PaintTexture paintTexture;
+        public PaintTexture guideLineTexture;
 
+        public RectTransform goodResult, badResult;
+
+        #region PrivateVariables
+
+        [SerializeField] private string _fileName;
+        private float _duration = 0.3f;
+        private bool _isOpened;
         private bool _isPressed;
-        private Vector2 screenSize = new Vector2(Screen.width / 2, Screen.height / 2);
+        private string _directoryPath = Path.Combine(Application.dataPath, "Save/MinigameInfo");
+        private string _path;
 
+        private Tween _openCloseTween, _resultTween;
+        private List<Vector2> _pixelPositions = new List<Vector2>();
+        private List<Vector2> _guidLinePositions = new List<Vector2>();
         private bool _checkPrevPosition = false;
+        private bool _isEndDrawing = false;
+        private bool _isGood = false;
         private Vector2 _prevPosition;
 
-        private void Awake()
+        #endregion
+
+        public RectTransform RectTrm => transform as RectTransform;
+
+
+
+        private void Start()
         {
+            SetGuideLine();
+            input.onLeftClick += OnLeftClick;
         }
+
+        private void OnDisable()
+        {
+            input.onLeftClick -= OnLeftClick;
+        }
+
 
         private void Update()
         {
-            if (Mouse.current.leftButton.wasPressedThisFrame)
+            if (_isPressed)
+            {
+                DrawLine(3);
+            }
+        }
+
+
+        private void OnLeftClick(bool isPressed)
+        {
+            if (_isOpened == false) return;
+
+            if (_isEndDrawing && isPressed)
+            {
+                Close();
+                return;
+            }
+
+            _isPressed = isPressed;
+
+            if (isPressed)
             {
                 _checkPrevPosition = false;
-                _isPressed = true;
             }
-            if (Mouse.current.leftButton.wasReleasedThisFrame) _isPressed = false;
-
-            if (_isPressed) DrawLine(3);
+            else
+            {
+                CompareCompletion();
+                _isEndDrawing = true;
+            }
         }
+
 
         private void DrawLine(int width)
         {
-            Vector2 pixelPosition = (Mouse.current.position.value - screenSize);
+            if (width % 2 == 0) width++;
 
-            pixelPosition.x = (float)Mathf.Round(pixelPosition.x / 10) * 10f;
-            pixelPosition.y = (float)Mathf.Round(pixelPosition.y / 10) * 10f;
+            Vector2 pixelPosition = Mouse.current.position.value;
+            ConvertPositionTo10(ref pixelPosition);
 
             if (_checkPrevPosition)
             {
                 //위치에 2칸이상 차이가 나고 있다면
-                if (Vector2.Distance(_prevPosition, pixelPosition) < 20) return; //* width) return;
 
-                Vector2 correctionDir = (pixelPosition - _prevPosition).normalized;
-                Vector2 correctionPosition = _prevPosition;
+                int xDiff = Mathf.RoundToInt((pixelPosition.x - _prevPosition.x) / 10f);
+                int yDiff = Mathf.RoundToInt((pixelPosition.y - _prevPosition.y) / 10f);
 
-                while(Vector2.Distance(correctionPosition, pixelPosition) > 10)
+                float xProgress = 0;
+                float yProgress = 0;
+                int trial = Mathf.Max(Mathf.Abs(xDiff), Mathf.Abs(yDiff));
+
+                for (int i = 0; i < trial; i++)
                 {
-                    correctionPosition += correctionDir * 10;
-                    correctionPosition.x = (float)Mathf.Round(correctionPosition.x / 10) * 10f;
-                    correctionPosition.y = (float)Mathf.Round(correctionPosition.y / 10) * 10f;
+                    xProgress += xDiff / (float)trial;
+                    yProgress += yDiff / (float)trial;
 
-                    SetPixel(correctionPosition);
+                    Vector2 correction = new Vector2(Mathf.Round(xProgress), Mathf.Round(yProgress)) * 10;
+                    SetPixel(_prevPosition + correction, width);
                 }
             }
 
-            SetPixel(pixelPosition);
+            _checkPrevPosition = true;
+            _prevPosition = pixelPosition;
+            SetPixel(pixelPosition, width);
         }
 
-        private void SetPixel(Vector2 pixelPosition)
+
+        private void ConvertPositionTo10(ref Vector2 position)
         {
-
+            position.x = (float)Mathf.Round(position.x / 10) * 10f;
+            position.y = (float)Mathf.Round(position.y / 10) * 10f;
         }
 
+
+        private void SetPixel(Vector2 pixelPosition, int width)
+        {
+            int half = width / 2;
+            for (int i = -half; i <= half; i++)
+            {
+                for (int j = -half; j <= half; j++)
+                {
+                    if (Mathf.Abs(i) + Mathf.Abs(j) > half) continue;
+
+                    Vector2 correctionPosition = pixelPosition + new Vector2(i, j) * 10;
+                    correctionPosition = paintTexture.ConvertPosition(correctionPosition);
+                    if (_pixelPositions.Exists(p => correctionPosition == p)) continue;
+
+                    _pixelPositions.Add(correctionPosition);
+                    paintTexture.DrawTexture(correctionPosition);
+                }
+            }
+        }
+
+
+        private void SetGuideLine()
+        {
+            string path = Path.Combine(_directoryPath, _fileName);
+            string json = File.ReadAllText(path);
+            TexturePixelInfo info = JsonUtility.FromJson<TexturePixelInfo>(json);
+
+            _guidLinePositions = info.positions;
+            _guidLinePositions.ForEach(position => guideLineTexture.DrawTexture(position));
+        }
+
+
+
+        public void Open()
+        {
+            _isOpened = true;
+            _isEndDrawing = false;
+
+            if (_openCloseTween != null && _openCloseTween.active)
+                _openCloseTween.Kill();
+
+            _openCloseTween = RectTrm.DOAnchorPosY(0f, _duration);
+            input.DisableInput();
+        }
+
+        private void Close()
+        {
+            _isOpened = false;
+
+            if (_openCloseTween != null && _openCloseTween.active)
+                _openCloseTween.Kill();
+
+            _openCloseTween = RectTrm.DOAnchorPosY(1080f, _duration);
+            paintTexture.ResetTexture();
+            _pixelPositions.Clear();
+            input.EnableInput();
+
+            if (_isGood)
+            {
+                if (_resultTween != null && _resultTween.active)
+                    _resultTween.Kill();
+
+                _resultTween = goodResult.DOScale(0f, _duration).SetEase(Ease.InSine);
+            }
+            else
+            {
+                if (_resultTween != null && _resultTween.active)
+                    _resultTween.Kill();
+
+                _resultTween = badResult.DOScale(0f, _duration).SetEase(Ease.InSine);
+            }
+        }
+
+        public void CompareCompletion()
+        {
+            int missed = 0;
+            int overflowed = 0;
+
+            _pixelPositions.ForEach(pos =>
+            {
+                if (_guidLinePositions.Exists(p => p == pos) == false)
+                    overflowed++;
+            });
+
+            _guidLinePositions.ForEach(pos =>
+            {
+                if (_pixelPositions.Exists(p => p == pos) == false)
+                    missed++;
+            });
+
+
+            if (_resultTween != null && _resultTween.active)
+                _resultTween.Kill();
+
+            //못함
+            if (_guidLinePositions.Count / 2 < missed || _guidLinePositions.Count / 2 < overflowed)
+            {
+                _resultTween = badResult.DOScale(1f, _duration).SetEase(Ease.InSine);
+                _isGood = false;
+            }
+            //잘함
+            else
+            {
+                _resultTween = goodResult.DOScale(1f, _duration).SetEase(Ease.InSine);
+                _isGood = true;
+            }
+
+            onCompleteMiniGame?.Invoke(_isGood);
+        }
+
+
+#if UNITY_EDITOR
+
+        [ContextMenu("SaveTexture")]
+        public void SaveTexture()
+        {
+            _path = Path.Combine(_directoryPath, _fileName);
+            TexturePixelInfo info = new TexturePixelInfo();
+            info.positions = _pixelPositions;
+
+            string json = JsonUtility.ToJson(info);
+            File.WriteAllText(_path, json);
+        }
+
+#endif
+    }
+
+    [Serializable]
+    public class TexturePixelInfo
+    {
+        public List<Vector2> positions;
     }
 }

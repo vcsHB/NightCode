@@ -15,7 +15,7 @@ public abstract class NodeSO : ScriptableObject
     public int requireCoin;
 
 
-    public string name;
+    public string nodeName;
     [TextArea]
     public string explain;
 }

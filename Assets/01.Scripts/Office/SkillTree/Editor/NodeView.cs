@@ -72,6 +72,5 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     {
         base.OnSelected();
         OnNodeSelected?.Invoke(this);
-        Debug.Log("¹Ö¹Ö");
     }
 }

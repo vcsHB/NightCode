@@ -1,9 +1,10 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Basement
+namespace Cafe
 {
 
     public class MSGTextBox : MonoBehaviour
@@ -16,6 +17,10 @@ namespace Basement
         [SerializeField] private float _fadeStartDelay = 0.3f;
         [SerializeField] private float _fadeDuration = 0.5f;
         [SerializeField] private float _upSpeed = 100;
+
+        [Space]
+        [SerializeField] private GameObject _ratingParent;
+        [SerializeField] private List<GameObject> _ratingObjects;
 
         private MSGText _msgText;
         private MSGTextBox _prevTextBox;
@@ -49,13 +54,15 @@ namespace Basement
             }
         }
 
-        public void Init(Sprite icon, string text, MSGText msgText, MSGTextBox prevTextBox)
+        public void Init(Sprite icon, string text, MSGText msgText, MSGTextBox prevTextBox, int rating)
         {
             _isStartFade = false;
             _timerStart = false;
 
             if (icon == null)
+            {
                 _icon.gameObject.SetActive(false);
+            }
             else
             {
                 _icon.gameObject.SetActive(true);
@@ -90,6 +97,12 @@ namespace Basement
                     _timerStart = true;
                     _timer = Time.time;
                 });
+
+            _ratingParent.SetActive(rating > 0);
+            for (int i = 0; i < _ratingObjects.Count; i++)
+            {
+                _ratingObjects[i].SetActive(i >= rating);
+            }
         }
 
         public void MoveUp(float height)
@@ -107,7 +120,6 @@ namespace Basement
                 if (_prevTextBox.rectTrm.anchoredPosition.y < height)
                 {
                     _prevTextBox.MoveUp(height);
-                    Debug.Log("¾ßÈ£");
                 }
             }
         }

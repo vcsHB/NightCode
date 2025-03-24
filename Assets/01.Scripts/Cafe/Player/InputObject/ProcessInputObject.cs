@@ -1,5 +1,6 @@
 using CameraControllers;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +9,6 @@ namespace Cafe
 {
     public class ProcessInputObject : CafePlayerInputObject
     {
-        public event Action onComplete;
-
         private CafeTable _table;
         [SerializeField] private Image _frame;
         [SerializeField] private Image _icon;
@@ -37,11 +36,12 @@ namespace Cafe
 
         public void Init(CafeTable table)
         {
+            if (_table != null) return;
             _table = table;
             Open();
         }
 
-        private void OnLeftClick()
+        private void OnLeftClick(bool isPress)
         {
             if (_wasClickedLeft) return;
 
@@ -68,11 +68,11 @@ namespace Cafe
             _process += _processPerClick;
             _frame.fillAmount = _process / _targetProcess;
             CameraManager.Instance.GetCompo<CameraShakeController>().Shake(4, 0.03f);
-
-
-            if (_process > _targetProcess)
+            
+            if (_process >= _targetProcess)
             {
-                onComplete?.Invoke();
+                _process = 0;
+                _table.CleanTable();
                 Close();
             }
         }
@@ -82,12 +82,14 @@ namespace Cafe
         {
             gameObject.SetActive(true);
             _wasClickedLeft = false;
+            _frame.fillAmount = 0;
             _process = 0; 
         }
 
         public override void Close()
         {
             gameObject.SetActive(false);
+            _table = null;
         }
     }
 }
