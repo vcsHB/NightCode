@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 namespace Combat.Casters
 {
@@ -9,6 +10,7 @@ namespace Combat.Casters
 
     public class DamageCaster : MonoBehaviour, ICastable
     {
+        public event Action<CombatData> OnCastCombatDataEvent;
         [SerializeField] protected float _damage;
         [SerializeField] protected AttackType _attackType;
 
@@ -20,9 +22,12 @@ namespace Combat.Casters
                 {
                     type = _attackType,
                     damage = _damage,
+                    damageDirection = target.transform.position - transform.position, 
                     originPosition = transform.position
+                    
                 };
-                hit.ApplyDamage(data);
+                if(hit.ApplyDamage(data))
+                    OnCastCombatDataEvent?.Invoke(data);
             }
         }
 

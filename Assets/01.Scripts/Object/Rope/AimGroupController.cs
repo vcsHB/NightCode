@@ -1,10 +1,12 @@
 using Agents.Players;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ObjectManage.Rope
 {
     public class AimGroupController : MonoBehaviour
     {
+        public UnityEvent OnAnchorLocatedEvent;
         [SerializeField] private Transform _virtualAimTrm;
         [SerializeField] private Transform _aimMarkTrm;
         [SerializeField] private Transform _anchorTrm;
@@ -37,12 +39,15 @@ namespace ObjectManage.Rope
         }
         public void SetAnchorParent(Transform parent = null)
         {
-            if(parent == null)
+            if (parent == null)
                 parent = transform;
             _anchorTrm.SetParent(parent);
         }
         public void SetActiveWire(bool value)
         {
+            if (value)
+                OnAnchorLocatedEvent?.Invoke();
+
             Wire.gameObject.SetActive(value);
         }
 

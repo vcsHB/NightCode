@@ -152,7 +152,7 @@ namespace Combat.CombatObjects.ProjectileManage
             //Destroy(gameObject);
         }
 
-        public void ApplyDamage(CombatData data)
+        public bool ApplyDamage(CombatData data)
         {
             if (_canDamagedReflect && !_isReflected)
             {
@@ -161,11 +161,12 @@ namespace Combat.CombatObjects.ProjectileManage
                 _caster.SetTargetLayer(_reflectTargetLayer);
                 _currentLifeTime = 0f;
                 Shoot(-_projectileData.direction + UnityEngine.Random.insideUnitCircle);
-                return;
+                return false;
             }
-            if (!_projectileData.canDestroy) return;
+            if (!_projectileData.canDestroy) return false;
             OnDamagedEvent?.Invoke();
             HandleDestroy();
+            return true;
         }
 
         private void OnTriggerEnter2D(Collider2D other)

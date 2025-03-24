@@ -10,7 +10,7 @@
                     "type": "Value",
                     "id": "88571ba4-fc77-4502-ba95-fe559607c8a7",
                     "expectedControlType": "Vector2",
-                    "processors": "NormalizeVector2",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -73,7 +73,7 @@
                 {
                     "name": "2D Vector",
                     "id": "3a0005ef-8125-4318-80f9-7fc1cb8e1e0b",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -128,7 +128,7 @@
                 {
                     "name": "",
                     "id": "ece51998-2e92-4455-9ef3-f52e76520c31",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/numLock",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyMouse",
@@ -183,7 +183,7 @@
                 {
                     "name": "",
                     "id": "f1b35ca1-a7d0-429f-84ff-eb34c52ec94f",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -198,9 +198,18 @@
             "id": "d68dd5b8-112c-48ee-affd-35397f313689",
             "actions": [
                 {
-                    "name": "OnEsc",
+                    "name": "Esc",
                     "type": "Button",
                     "id": "eb87c389-83d8-4429-ac37-ffa9608f009b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Space",
+                    "type": "Button",
+                    "id": "75737f8c-aa99-406b-87f8-e598ba3bf259",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -215,7 +224,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyMouse",
-                    "action": "OnEsc",
+                    "action": "Esc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d19ac1b5-a35c-464c-8b69-4b8f07c3c8b8",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyMouse",
+                    "action": "Space",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

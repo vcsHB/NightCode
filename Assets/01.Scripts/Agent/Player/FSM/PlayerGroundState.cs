@@ -1,4 +1,5 @@
 using Agents.Animate;
+using UnityEngine;
 namespace Agents.Players.FSM
 {
 
@@ -14,7 +15,8 @@ namespace Agents.Players.FSM
         {
             base.Enter();
             _renderer.SetLockRotation(true);
-            _aimController.RemoveWire();
+            if(_aimController.IsShoot)
+                _aimController.RemoveWire();
             _player.PlayerInput.JumpEvent += HandleJump;
             _player.PlayerInput.TurboEvent += HandleDash;
             

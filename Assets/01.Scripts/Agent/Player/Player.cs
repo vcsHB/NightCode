@@ -1,3 +1,4 @@
+using System;
 using Agents.Players.FSM;
 using Combat;
 using Core.EventSystem;
@@ -17,6 +18,8 @@ namespace Agents.Players
         [field: SerializeField] public Transform RopeHolder { get; private set; }
         public bool CanCharacterChange { get; set; } = true;
         [field: SerializeField] public bool IsActive { get; private set; }
+        public event Action OnEnterEvent;
+        public event Action OnExitEvent;
         private bool _startDisable;
 
         protected override void Awake()
@@ -53,14 +56,16 @@ namespace Agents.Players
             IsActive = value;
         }
 
-        public void EnterCharacter()
+        public virtual void EnterCharacter()
         {
             _stateMachine.ChangeState("Enter");
+            OnEnterEvent?.Invoke();
 
         }
-        public void ExitCharacter()
+        public virtual void ExitCharacter()
         {
             _stateMachine.ChangeState("Exit");
+            OnExitEvent?.Invoke();
         }
 
         protected override void HandleAgentDie()

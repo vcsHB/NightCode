@@ -20,6 +20,7 @@ namespace Dialog
 
         public override void Play()
         {
+            base.Play();
             var charInfo = _txtInfo.characterInfo[animStartPos - 1];
 
             if(charInfo.isVisible && animStartFlag)

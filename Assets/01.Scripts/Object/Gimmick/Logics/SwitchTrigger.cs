@@ -16,12 +16,13 @@ namespace ObjectManage.GimmickObjects.Logics
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 
-        public void ApplyDamage(CombatData data)
+        public bool ApplyDamage(CombatData data)
         {
-            if (_isTriggered) return;
+            if (_isTriggered) return false;
             _isTriggered = true;
             HandleTrigger();
             SetStateSprite();
+            return true;
         }
 
         private void SetStateSprite()

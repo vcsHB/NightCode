@@ -13,7 +13,8 @@ namespace Dialog
         Shake,      //Parameter: (float power)
         Rainbow,    //None - (May add speed)
         Fromup,     //None - (May add speed)
-        Todown      //None - (May add speed)
+        Todown,      //None - (May add speed)
+        Speed,       //Parameter: (float speed)
     }
 
     public enum TMPTag 
