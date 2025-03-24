@@ -13,6 +13,7 @@ namespace Cafe
     public class CafeManager : MonoSingleton<CafeManager>
     {
         public CafeSO cafeSO;
+        public CafeInput input;
         public MSGText msgText;
         public ResultPanel resultPanel;
         public OmeletRiceMiniGame omeletRiceMiniGame;
@@ -33,12 +34,13 @@ namespace Cafe
         public bool IsCafeOpen { get; private set; }
         public float CurrentTime { get; private set; }
 
+        protected override void Awake()
+        {
+            input.DisableInput();
+        }
 
         private void Update()
         {
-            if (Keyboard.current.mKey.wasPressedThisFrame)
-                StartCafe();
-
             if (IsCafeOpen)
             {
                 CurrentTime += Time.deltaTime;
@@ -54,6 +56,7 @@ namespace Cafe
         public void StartCafe()
         {
             IsCafeOpen = true;
+            input.EnableInput();
             _currentWave = cafeSO.waveData[_waveIndex];
             _customerToSpawn = _currentWave.spawnValue;
         }

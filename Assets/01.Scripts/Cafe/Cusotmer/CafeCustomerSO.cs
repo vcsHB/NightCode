@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Cafe
@@ -12,10 +13,13 @@ namespace Cafe
 
         [Tooltip("오므라이스 그림 요구할 확률 100분률")]
         public int minigameRequireChance;
-        [Tooltip("오므라이스 그림에서 요구하는 점수")]
-        public int requireMinigamePoint;
+        [Tooltip("오므라이스 그림")]
+        public List<string> miniGamePainting;
 
         public string reviewOnGood;
         public string reviewOnBad;
+
+        public string GetRandomPainingName()
+            => miniGamePainting[Random.Range(0, miniGamePainting.Count)];
     }
 }

@@ -12,9 +12,8 @@ namespace Office
 
         public MissionSetSO missionSet;
         public MissionSelectPanel missionSelectPanel;
-        [HideInInspector] public List<MissionSO> _currentMission;
+        [HideInInspector] public List<MissionSO> _currentMission = new List<MissionSO>();
 
-        private List<MissionSO> _clearedMission;
         private string _path = Path.Combine(Application.dataPath, "Save/OfficeSave.json");
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
 
@@ -73,10 +72,11 @@ namespace Office
 
         public void ClearMission(MissionSO mission)
         {
+            //DO NOT CHANGE ORDER
             RemoveMission(mission);
-            mission.nextMissions.ForEach(m => AddMission(m));
+            mission.nextMissions.ForEach(m =>  AddMission(m));
 
-            _clearedMission.Add(mission);
+            Save();
         }
 
         public void ClearMission(int missionId)
@@ -97,13 +97,10 @@ namespace Office
             if (di.Exists == false)
                 di.Create();
 
-            _currentMission = new List<MissionSO>();
-            _clearedMission = new List<MissionSO>();
-
-            if (_clearedMission.Count == 0 && _currentMission.Count == 0)
+            if (_currentMission.Count == 0)
                 AddMission(0);
 
-            OfficeSave save = new OfficeSave(Money, _clearedMission);
+            OfficeSave save = new OfficeSave(Money, _currentMission);
             string json = JsonUtility.ToJson(save);
 
             File.WriteAllText(_path, json);
@@ -118,12 +115,12 @@ namespace Office
             OfficeSave save = JsonUtility.FromJson<OfficeSave>(json);
 
             Money = save.money;
-            _clearedMission = save.GetClearedMission(missionSet);
-            _clearedMission.ForEach(mission => ClearMission(mission));
+            _currentMission = save.GetCurrentMissions(missionSet);
+            _currentMission.ForEach(mission =>  missionSelectPanel.AddMission(mission));
+            //_currentMission.ForEach(mission => ClearMission(mission));
 
-            if(_clearedMission.Count == 0)
+            if (_currentMission.Count == 0)
                 AddMission(0);
-
         }
 
         #endregion
@@ -142,7 +139,7 @@ namespace Office
             clearedMissions.ForEach(mission => this.clearedMissions.Add(mission.id));
         }
 
-        public List<MissionSO> GetClearedMission(MissionSetSO missionSet)
+        public List<MissionSO> GetCurrentMissions(MissionSetSO missionSet)
         {
             List<MissionSO> missionList = new List<MissionSO>();
 

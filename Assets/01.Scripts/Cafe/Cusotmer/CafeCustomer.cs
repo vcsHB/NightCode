@@ -44,6 +44,7 @@ namespace Cafe
             {
                 _miniGame = CafeManager.Instance.omeletRiceMiniGame;
                 _miniGame.Open();
+                _miniGame.SetGuideLine(customerSO.GetRandomPainingName());
                 _miniGame.onCompleteMiniGame += OnCompleteMiniGame;
 
                 return;

@@ -16,6 +16,8 @@ namespace Cafe
         public PaintTexture paintTexture;
         public PaintTexture guideLineTexture;
 
+        public RectTransform ketchupTip;
+        public ParticleSystem ketchupParticle;
         public RectTransform goodResult, badResult;
 
         #region PrivateVariables
@@ -37,13 +39,13 @@ namespace Cafe
 
         #endregion
 
-        public RectTransform RectTrm => transform as RectTransform;
 
+        public RectTransform RectTrm => transform as RectTransform;
+        private Vector2 screenPosition = new Vector2(Screen.width / 2, Screen.height / 2);
 
 
         private void Start()
         {
-            SetGuideLine();
             input.onLeftClick += OnLeftClick;
         }
 
@@ -58,6 +60,7 @@ namespace Cafe
             if (_isPressed)
             {
                 DrawLine(3);
+                ketchupTip.anchoredPosition = Mouse.current.position.value - screenPosition;
             }
         }
 
@@ -77,6 +80,9 @@ namespace Cafe
             if (isPressed)
             {
                 _checkPrevPosition = false;
+
+                ketchupTip.anchoredPosition = Mouse.current.position.value - screenPosition;
+                ketchupParticle.Play();
             }
             else
             {
@@ -147,12 +153,13 @@ namespace Cafe
         }
 
 
-        private void SetGuideLine()
+        public void SetGuideLine(string fileName)
         {
-            string path = Path.Combine(_directoryPath, _fileName);
+            string path = Path.Combine(_directoryPath, fileName);
             string json = File.ReadAllText(path);
             TexturePixelInfo info = JsonUtility.FromJson<TexturePixelInfo>(json);
 
+            guideLineTexture.ResetTexture();
             _guidLinePositions = info.positions;
             _guidLinePositions.ForEach(position => guideLineTexture.DrawTexture(position));
         }
@@ -221,7 +228,7 @@ namespace Cafe
                 _resultTween.Kill();
 
             //ธ๘วิ
-            if (_guidLinePositions.Count / 2 < missed || _guidLinePositions.Count / 2 < overflowed)
+            if (150 < missed + overflowed)
             {
                 _resultTween = badResult.DOScale(1f, _duration).SetEase(Ease.InSine);
                 _isGood = false;

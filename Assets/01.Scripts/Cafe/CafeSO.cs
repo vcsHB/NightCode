@@ -1,3 +1,4 @@
+using Office;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,5 +10,6 @@ namespace Cafe
     {
         public float openTime;
         public List<CustomerWaveSO> waveData;
+        public MissionSO mission;
     }
 }

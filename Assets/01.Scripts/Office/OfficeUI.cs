@@ -26,12 +26,6 @@ namespace Office
             ChangeInitUI(true);
         }
 
-        private void Update()
-        {
-            if (Keyboard.current.oKey.wasPressedThisFrame)
-                Open();
-        }
-
         public void ChangeInitUI(bool isCharacterPanel)
         {
             _isCharacterPanel = isCharacterPanel;

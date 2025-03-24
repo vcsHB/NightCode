@@ -22,6 +22,9 @@ namespace Cafe
         [SerializeField] private GameObject _ratingParent;
         [SerializeField] private List<GameObject> _ratingObjects;
 
+
+        private RectTransform _raingParnetTrm => _ratingParent.transform as RectTransform;
+
         private MSGText _msgText;
         private MSGTextBox _prevTextBox;
         private CanvasGroup _canvasGroup;
@@ -72,7 +75,6 @@ namespace Cafe
             _msgText = msgText;
             _text.SetText(text);
             if (prevTextBox != this) _prevTextBox = prevTextBox;
-            LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
 
             rectTrm.anchoredPosition = new Vector2(-childRect.rect.width, 0);
             _canvasGroup.alpha = 1;
@@ -101,8 +103,10 @@ namespace Cafe
             _ratingParent.SetActive(rating > 0);
             for (int i = 0; i < _ratingObjects.Count; i++)
             {
-                _ratingObjects[i].SetActive(i >= rating);
+                _ratingObjects[i].SetActive(i < rating);
             }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(_raingParnetTrm);
         }
 
         public void MoveUp(float height)

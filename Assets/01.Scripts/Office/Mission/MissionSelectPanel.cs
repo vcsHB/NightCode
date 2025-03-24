@@ -38,7 +38,10 @@ namespace Office
         private void Update()
         {
             if (Keyboard.current.lKey.wasPressedThisFrame)
+            {
+                Debug.Log("¤²¤¸¤§¤¡");
                 OfficeManager.Instance.ClearMission(missions[0]);
+            }
         }
 
         public override void OpenAnimation()
@@ -163,8 +166,7 @@ namespace Office
                 Debug.Log(characterFormation[i]);
             }
 
-            Debug.Log(_selectedButton.Mission.sceneName);
-            //SceneManager.LoadScene(_selectedButton.Mission.sceneName);
+            SceneManager.LoadScene(_selectedButton.Mission.sceneName);
         }
     }
 }
