@@ -7,9 +7,9 @@ namespace Agents.Players.FSM
 {
     public class PlayerHangState : PlayerRopeState
     {
-        private bool _canUseTurbo = true;
+        protected bool _canUseTurbo = true;
 
-        private bool _isGroundCheck = true;
+        protected bool _isGroundCheck = true;
 
         public PlayerHangState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
@@ -67,25 +67,31 @@ namespace Agents.Players.FSM
 
         }
 
-        private void HandleUseTurbo()
+        protected virtual void HandleUseTurbo()
         {
             if (!_player.IsActive) return;
             if (!_canUseTurbo) return;
 
+            ForceUseTurbo();
+
+        }
+
+        protected virtual void ForceUseTurbo()
+        {
             _aimController.RefreshHangingDirection();
             _mover.UseTurbo(_aimController.HangingDirection);
             _canUseTurbo = false;
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));
         }
 
-        private void HandlePull()
+        protected void HandlePull()
         {
             if (!_player.IsActive) return;
             _isGroundCheck = false;
             _aimController.HandlePull(HandleArriveAttack);
         }
 
-        private void HandleArriveAttack()
+        protected void HandleArriveAttack()
         {
             Vector2 bounceDirection = -_aimController.HangingDirection.normalized;
             bounceDirection.y += 1;

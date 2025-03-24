@@ -34,10 +34,8 @@ namespace Agents.Players.FSM
             AddState("Move", "PlayerMove", playerRenderer.MoveParam);
             AddState("Jump", "PlayerJump", playerRenderer.JumpParam);
             AddState("Fall", "PlayerFall", playerRenderer.FallParam);
-            AddState("Hang", "PlayerHang", playerRenderer.HangParam);
-            AddState("Grab", "PlayerGrab", playerRenderer.GrabParam);
-            AddState("Pull", "PlayerPull", playerRenderer.PullParam);
-            AddState("Swing", "PlayerSwing", playerRenderer.SwingParam);
+            //AddState("Grab", "PlayerGrab", playerRenderer.GrabParam);
+            //AddState("Pull", "PlayerPull", playerRenderer.PullParam);
             AddState("Enter", "PlayerTagEnter", playerRenderer.EnterParam);
             AddState("Exit", "PlayerTagExit", playerRenderer.ExitParam);
 

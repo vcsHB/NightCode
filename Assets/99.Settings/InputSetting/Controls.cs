@@ -32,7 +32,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""88571ba4-fc77-4502-ba95-fe559607c8a7"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""NormalizeVector2"",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
@@ -95,7 +95,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""3a0005ef-8125-4318-80f9-7fc1cb8e1e0b"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=1)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -150,7 +150,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ece51998-2e92-4455-9ef3-f52e76520c31"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/numLock"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
@@ -205,7 +205,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f1b35ca1-a7d0-429f-84ff-eb34c52ec94f"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -220,9 +220,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             ""id"": ""d68dd5b8-112c-48ee-affd-35397f313689"",
             ""actions"": [
                 {
-                    ""name"": ""OnEsc"",
+                    ""name"": ""Esc"",
                     ""type"": ""Button"",
                     ""id"": ""eb87c389-83d8-4429-ac37-ffa9608f009b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Space"",
+                    ""type"": ""Button"",
+                    ""id"": ""75737f8c-aa99-406b-87f8-e598ba3bf259"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -237,7 +246,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
-                    ""action"": ""OnEsc"",
+                    ""action"": ""Esc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d19ac1b5-a35c-464c-8b69-4b8f07c3c8b8"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyMouse"",
+                    ""action"": ""Space"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -441,7 +461,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_ChangeTag = m_Player.FindAction("ChangeTag", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_OnEsc = m_UI.FindAction("OnEsc", throwIfNotFound: true);
+        m_UI_Esc = m_UI.FindAction("Esc", throwIfNotFound: true);
+        m_UI_Space = m_UI.FindAction("Space", throwIfNotFound: true);
         // Basement
         m_Basement = asset.FindActionMap("Basement", throwIfNotFound: true);
         m_Basement_Move = m_Basement.FindAction("Move", throwIfNotFound: true);
@@ -609,12 +630,14 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_OnEsc;
+    private readonly InputAction m_UI_Esc;
+    private readonly InputAction m_UI_Space;
     public struct UIActions
     {
         private @Controls m_Wrapper;
         public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OnEsc => m_Wrapper.m_UI_OnEsc;
+        public InputAction @Esc => m_Wrapper.m_UI_Esc;
+        public InputAction @Space => m_Wrapper.m_UI_Space;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -624,16 +647,22 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @OnEsc.started += instance.OnOnEsc;
-            @OnEsc.performed += instance.OnOnEsc;
-            @OnEsc.canceled += instance.OnOnEsc;
+            @Esc.started += instance.OnEsc;
+            @Esc.performed += instance.OnEsc;
+            @Esc.canceled += instance.OnEsc;
+            @Space.started += instance.OnSpace;
+            @Space.performed += instance.OnSpace;
+            @Space.canceled += instance.OnSpace;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
         {
-            @OnEsc.started -= instance.OnOnEsc;
-            @OnEsc.performed -= instance.OnOnEsc;
-            @OnEsc.canceled -= instance.OnOnEsc;
+            @Esc.started -= instance.OnEsc;
+            @Esc.performed -= instance.OnEsc;
+            @Esc.canceled -= instance.OnEsc;
+            @Space.started -= instance.OnSpace;
+            @Space.performed -= instance.OnSpace;
+            @Space.canceled -= instance.OnSpace;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -734,7 +763,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     }
     public interface IUIActions
     {
-        void OnOnEsc(InputAction.CallbackContext context);
+        void OnEsc(InputAction.CallbackContext context);
+        void OnSpace(InputAction.CallbackContext context);
     }
     public interface IBasementActions
     {

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Combat.PlayerTagSystem;
 using TMPro;
+using UI.InGame.SystemUI;
 using UnityEngine;
 
 namespace Dialog
@@ -9,25 +11,30 @@ namespace Dialog
     [RequireComponent(typeof(AnimationPlayer))]
     public class InGameDialogPlayer : DialogPlayer
     {
+        [SerializeField] private PlayerManager _playerManager;
+        [SerializeField] private DialogueTipUIPanel _tipPanel;
+
         private AnimationPlayer _animPlayer;
 
         [SerializeField] private RectTransform _optionParent;
-        [SerializeField] private List<IngameCharacterStruct> characters;
-        private IngameCharacterStruct _curCharacter;
+        [SerializeField] private List<Actor> characters;
+        private Actor _curCharacter;
+        public event Action OnDialogueEnd;
 
         private TMP_TextInfo _txtInfo;
         private bool _optionSelected = false;
         private NodeSO _nextNode;
         private List<OptionButton> _optionBtns;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _animPlayer = GetComponent<AnimationPlayer>();
         }
 
         private void Update()
         {
-            //µð¹ö±×¿ë
+            //ï¿½ï¿½ï¿½ï¿½×¿ï¿½
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 StartDialog();
@@ -36,10 +43,10 @@ namespace Dialog
 
         private void LateUpdate()
         {
-            //¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà
+            //ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (_curReadingNode is NormalNodeSO node && _isReadingDialog)
             {
-                _animPlayer.PlayAnimation(_curCharacter.contentTxt, node.contentTagAnimations);
+                _animPlayer.PlayAnimation(_curCharacter.ContentText, node.contentTagAnimations);
             }
         }
 
@@ -49,17 +56,20 @@ namespace Dialog
         public override void StartDialog()
         {
             if (_isReadingDialog)
-                Debug.Log("ÀÌ¹Ì ½ÇÇàÁßÀÎµ¥~\nÇã~Á¢ ¢¾");
+                Debug.Log("ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½~\nï¿½ï¿½~ï¿½ï¿½ ï¿½ï¿½");
 
             _isReadingDialog = true;
+            _tipPanel.Open();
             _curReadingNode = dialog.nodes[0];
             ReadSingleLine();
         }
 
         public override void EndDialog()
         {
-            characters.ForEach((c) => c.talkBubbleObj.SetActive(false));
+            characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
             _isReadingDialog = false;
+            _tipPanel.Close();
+            OnDialogueEnd?.Invoke();
         }
 
         public override void ReadSingleLine()
@@ -70,7 +80,7 @@ namespace Dialog
                 return;
             }
 
-            //ÇØ´ç ³ëµå¸¦ ¹æ¹®Çß´Ù°í È®ÀÎÇØÁÜ
+            //ï¿½Ø´ï¿½ ï¿½ï¿½å¸¦ ï¿½æ¹®ï¿½ß´Ù°ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
 
             if (_curReadingNode is NormalNodeSO node)
@@ -80,7 +90,7 @@ namespace Dialog
                     if (c.name == node.GetReaderName())
                     {
                         _curCharacter = c;
-                        _curCharacter.talkBubbleObj.SetActive(true);
+                        _curCharacter.personalTalkBubble.SetEnabled();
                     }
                 });
 
@@ -103,27 +113,23 @@ namespace Dialog
 
         private IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
         {
-            TextMeshProUGUI tmp = _curCharacter.contentTxt;
+            TextMeshProUGUI tmp = _curCharacter.ContentText;
 
             tmp.SetText(node.GetContents());
             tmp.maxVisibleCharacters = 0;
             InitNodeAnim(node);
             _isReadingDialog = true;
-
             while (tmp.maxVisibleCharacters < tmp.text.Length)
             {
-                //°ø¹éÀº ¹Ù·Î ³Ñ°Ü
                 if (tmp.text[tmp.maxVisibleCharacters++] == ' ') continue;
 
                 yield return new WaitForSeconds(_textOutDelay);
-                //ÅØ½ºÆ® Ãâ·ÂÀ» ¸ØÃçµÑ°ÇÁö
                 yield return new WaitUntil(() => stopReading == false);
             }
-
             _nextNode = node.nextNode;
             StartCoroutine(WaitNodeRoutine(
                 () => GetInput(),
-                () => _curCharacter.talkBubbleObj.SetActive(false)));
+                () => _curCharacter.personalTalkBubble.SetDisabled()));
         }
 
 
@@ -172,7 +178,7 @@ namespace Dialog
             _curReadingNode = _nextNode;
             _isReadingDialog = false;
 
-            yield return new WaitForSeconds(_nextNodeDealy);
+            yield return new WaitForSeconds(_nextNodeDelay);
             ReadSingleLine();
         }
 
@@ -184,7 +190,6 @@ namespace Dialog
         }
 
         #endregion
-
 
         private void InitNodeAnim(NodeSO node)
         {
@@ -207,14 +212,45 @@ namespace Dialog
             List<TagAnimation> anims = node.GetAllAnimations();
             anims.ForEach((anim) => anim.Complete());
         }
+        public virtual void SetCharacters(List<Actor> actors)
+        {
+            this.characters = actors;
+            
+            foreach (Actor actor in characters)
+            {
+                TalkBubble bubble = GetTalkBubble();
+                bubble.SetDisabled();
+                actor.personalTalkBubble = bubble;
+                switch (actor.actorType)
+                {
+                    case ActorType.Player:
+                        bubble.SetOwner(_playerManager.CurrentPlayerTrm, actor.bubbleOffset);
+
+                        break;
+                    case ActorType.Object:
+                        bubble.SetOwner(actor.target, actor.bubbleOffset);
+                        break;
+                }
+
+
+            }
+        }
+    }
+    public enum ActorType
+    {
+        Player,
+        Object
     }
 
     [Serializable]
-    public struct IngameCharacterStruct
+    public class Actor
     {
         public string name;
-        public GameObject talkBubbleObj;
-        public TextMeshProUGUI contentTxt;
+        public Vector2 bubbleOffset;
+        public ActorType actorType;
+        public Transform target; // owner character of this conversation
+        public TalkBubble personalTalkBubble;
+        public TextMeshProUGUI ContentText => personalTalkBubble.ContentTextMeshPro;
         public SpriteRenderer spriteRenderer;
     }
 }

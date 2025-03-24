@@ -21,11 +21,11 @@ namespace Agents.Players
         [field: SerializeField] public AnimParamSO ExitParam { get; private set; }
 
 
-        [field: SerializeField] public AnimParamSO AttackParam { get; private set; }
-        [field: SerializeField] public AnimParamSO GrabParam { get; private set; }
-        [field: SerializeField] public AnimParamSO PullParam { get; private set; }
-        [field: SerializeField] public AnimParamSO AirAttackParam { get; private set; }
-        [field: SerializeField] public AnimParamSO SkillParam { get; private set; }
+        //[field: SerializeField] public AnimParamSO AttackParam { get; private set; }
+        //[field: SerializeField] public AnimParamSO GrabParam { get; private set; }
+        //[field: SerializeField] public AnimParamSO PullParam { get; private set; }
+        //[field: SerializeField] public AnimParamSO AirAttackParam { get; private set; }
+        //[field: SerializeField] public AnimParamSO SkillParam { get; private set; }
 
         protected bool _isLockRotation = true;
         private readonly int _dissolveHash = Shader.PropertyToID("_Dissolve");

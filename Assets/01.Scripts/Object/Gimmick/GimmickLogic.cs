@@ -23,18 +23,19 @@ namespace ObjectManage.GimmickObjects
 
         public void ResetGimmick()
         {
-            if(IsSolved == _defaultSolveState) return;
+            if (IsSolved == _defaultSolveState) return;
             IsSolved = _defaultSolveState;
             OnLogicResetEvent?.Invoke();
         }
 
         public virtual void Solve()
         {
+            if (IsSolved) return;
             IsSolved = true;
             OnLogicCompleteEvent?.Invoke();
         }
 
-        
+
 
 
     }

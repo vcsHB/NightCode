@@ -78,7 +78,8 @@ namespace Agents.Players
                     _grabTarget = grabTarget;
                 }
             }
-            InvokeGrabDataEvent();
+            
+            //InvokeGrabDataEvent();
             InvokeAimDataEvent();
 
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Agents;
 using Agents.Players;
+using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
 using UI.InGame.GameUI.CharacterSelector;
@@ -12,7 +13,7 @@ using UnityEngine.Events;
 namespace Combat.PlayerTagSystem
 {
 
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : MonoSingleton<PlayerManager>
     {
         public UnityEvent OnAllPlayerDieEvent;
         [Header("Essential Settings")]
@@ -23,6 +24,7 @@ namespace Combat.PlayerTagSystem
         [SerializeField] private int _currentPlayerIndex = 0;
         [SerializeField] private CharacterSelectWindow _characterSelectWindow;
         public Player CurrentPlayer => _playerList[_currentPlayerIndex];
+        public Transform CurrentPlayerTrm => CurrentPlayer.transform;
         public PlayerSO CurrentPlayerData => _playerDatas[_currentPlayerIndex];
         public bool IsAllRetire => _playerList.All(x => x.IsDead);
 
@@ -125,6 +127,7 @@ namespace Combat.PlayerTagSystem
         {
             newCharacter.EnterCharacter();
             newCharacter.SetActive(true);
+            HUDController.Instance.SetFollowTarget(newCharacter.transform);
             CameraControllers.CameraManager.Instance.SetFollow(newCharacter.transform);
             _aimGroup.SetAnchorOwner(newCharacter.RigidCompo, newCharacter.RopeHolder);
         }
@@ -137,6 +140,18 @@ namespace Combat.PlayerTagSystem
         public void SetCurrentPlayerPosition(Vector2 position)
         {
             CurrentPlayer.transform.position = position;
+        }
+
+
+        public void StopPlayer()
+        {
+            AimController aimController = CurrentPlayer.GetCompo<AimController>();
+            aimController.RemoveWire();
+            PlayerMovement movement = CurrentPlayer.GetCompo<PlayerMovement>();
+            movement.StopImmediately(false);
+            movement.SetVelocity(Vector2.zero);
+            movement.SetMovement(0f);
+
         }
 
     }
