@@ -13,7 +13,7 @@ using UnityEngine.Events;
 namespace Combat.PlayerTagSystem
 {
 
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : MonoSingleton<PlayerManager>
     {
         public UnityEvent OnAllPlayerDieEvent;
         [Header("Essential Settings")]
@@ -140,6 +140,18 @@ namespace Combat.PlayerTagSystem
         public void SetCurrentPlayerPosition(Vector2 position)
         {
             CurrentPlayer.transform.position = position;
+        }
+
+
+        public void StopPlayer()
+        {
+            AimController aimController = CurrentPlayer.GetCompo<AimController>();
+            aimController.RemoveWire();
+            PlayerMovement movement = CurrentPlayer.GetCompo<PlayerMovement>();
+            movement.StopImmediately(false);
+            movement.SetVelocity(Vector2.zero);
+            movement.SetMovement(0f);
+
         }
 
     }
