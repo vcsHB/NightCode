@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Combat.PlayerTagSystem;
 using TMPro;
+using UI.InGame.SystemUI;
 using UnityEngine;
 
 namespace Dialog
@@ -11,6 +12,8 @@ namespace Dialog
     public class InGameDialogPlayer : DialogPlayer
     {
         [SerializeField] private PlayerManager _playerManager;
+        [SerializeField] private DialogueTipUIPanel _tipPanel;
+
         private AnimationPlayer _animPlayer;
 
         [SerializeField] private RectTransform _optionParent;
@@ -56,6 +59,7 @@ namespace Dialog
                 Debug.Log("�̹� �������ε�~\n��~�� ��");
 
             _isReadingDialog = true;
+            _tipPanel.Open();
             _curReadingNode = dialog.nodes[0];
             ReadSingleLine();
         }
@@ -64,6 +68,7 @@ namespace Dialog
         {
             characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
             _isReadingDialog = false;
+            _tipPanel.Close();
             OnDialogueEnd?.Invoke();
         }
 
