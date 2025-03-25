@@ -1,7 +1,5 @@
 using DG.Tweening;
-using InputManage;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -73,10 +71,7 @@ namespace UI.InGame.SystemUI
 
         private void Update()
         {
-            if (Keyboard.current.nKey.wasPressedThisFrame)
-            {
-                SceneManager.LoadScene("SpeedRunScene");
-            }
+           
             if (_isActive)
             {
                 _topLine.material.SetFloat(_lineUnscaledTimeHash, Time.unscaledTime);
