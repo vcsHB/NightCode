@@ -41,12 +41,13 @@ namespace Cafe
 
 
         public RectTransform RectTrm => transform as RectTransform;
-        private Vector2 screenPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+        private Vector2 screenPosition = new Vector2(Screen.width , Screen.height);
 
 
         private void Start()
         {
             input.onLeftClick += OnLeftClick;
+            RectTrm.anchoredPosition = new Vector2(0, screenPosition.y);
         }
 
         private void OnDisable()
@@ -60,7 +61,7 @@ namespace Cafe
             if (_isPressed)
             {
                 DrawLine(3);
-                ketchupTip.anchoredPosition = Mouse.current.position.value - screenPosition;
+                ketchupTip.anchoredPosition = Mouse.current.position.value - screenPosition / 2;
             }
         }
 
@@ -81,7 +82,7 @@ namespace Cafe
             {
                 _checkPrevPosition = false;
 
-                ketchupTip.anchoredPosition = Mouse.current.position.value - screenPosition;
+                ketchupTip.anchoredPosition = Mouse.current.position.value - screenPosition / 2;
                 ketchupParticle.Play();
             }
             else
@@ -185,7 +186,7 @@ namespace Cafe
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(1080f, _duration);
+            _openCloseTween = RectTrm.DOAnchorPosY(Screen.height, _duration);
             paintTexture.ResetTexture();
             _pixelPositions.Clear();
             input.EnableInput();

@@ -20,6 +20,11 @@ namespace Cafe
 
         public RectTransform RectTrm => transform as RectTransform;
 
+        private void Awake()
+        {
+            RectTrm.anchoredPosition = new Vector2(0, Screen.height);
+        }
+
         public void Init(MissionSO mission, int customer, int rating)
         {
             rating = Mathf.Clamp(rating, 1, 5);
@@ -69,7 +74,7 @@ namespace Cafe
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(1080, _duration);
+            _openCloseTween = RectTrm.DOAnchorPosY(Screen.height, _duration);
         }
 
         public void Open()
