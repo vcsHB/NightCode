@@ -38,7 +38,7 @@ namespace Cafe
 
                 if(_currentWaitingTime >= _customerPatientTime)
                 {
-                    Debug.Log("나는 화가난!!");
+                    Debug.Log("주문한지가 언젠데 안나와");
                 }
             }
         }

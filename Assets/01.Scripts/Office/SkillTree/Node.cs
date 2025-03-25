@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Office
 {
-    public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
+    public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] private NodeSO _nodeType;
 
@@ -45,18 +45,14 @@ namespace Office
 
         #endregion
 
+
         private void Awake()
         {
             _prevNodes = new Stack<Node>();
+            InitEdge();
 
-            _edge.transform.SetParent(_techTree.edgeParent);
-            _edgeFill.transform.SetParent(_techTree.edgeFillParent);
-
-            Material edgeMat = new Material(_lineMaterial);
-            Material edgeFillmat = new Material(_lineMaterial);
-
-            _edge.SetMaterial(edgeMat);
-            _edgeFill.SetMaterial(edgeFillmat);
+            _icon.gameObject.SetActive(NodeType.icon != null);
+            _icon.sprite = NodeType.icon;
         }
 
         private void OnEnable()
@@ -154,6 +150,7 @@ namespace Office
 
         #endregion
 
+
         #region CancelEnableNode
 
         public IEnumerator CancelEnableNode()
@@ -195,6 +192,7 @@ namespace Office
 
         #endregion
 
+
         private void GetPrevNodes()
         {
             _prevNodes = new Stack<Node>();
@@ -219,6 +217,47 @@ namespace Office
         public void ActiveNode()
         {
             _isNodeActive = true;
+        }
+
+
+        public void Init(bool isEnable)
+        {
+            if (isEnable)
+            {
+                _isNodeEnable = true;
+
+                _vertexFill.fillAmount = 1;
+                _edgeFill.SetFillAmount(1);
+
+                for (int i = 0; i < NodeType.nextNodes.Count; i++)
+                {
+                    if (_techTree.TryGetNode(NodeType.nextNodes[i], out Node prevNode))
+                    {
+                        prevNode.ActiveNode();
+                    }
+                }
+
+                //파츠 혹은 무기 활성화시켜주기
+                //if (NodeType is PartNodeSO part)
+                //    GameDataManager.Instance.EnablePart(part.openPart);
+                //if (NodeType is WeaponNodeSO weapon)
+                //    GameDataManager.Instance.EnableWeapon(weapon.weapon);
+            }
+        }
+
+
+        #region Edge
+
+        private void InitEdge()
+        {
+            _edge.transform.SetParent(_techTree.edgeParent);
+            _edgeFill.transform.SetParent(_techTree.edgeFillParent);
+
+            Material edgeMat = new Material(_lineMaterial);
+            Material edgeFillmat = new Material(_lineMaterial);
+
+            _edge.SetMaterial(edgeMat);
+            _edgeFill.SetMaterial(edgeFillmat);
         }
 
         public void SetEdge()
@@ -303,49 +342,24 @@ namespace Office
             _icon.sprite = node.icon;
         }
 
-        public void Init(bool isEnable)
-        {
-            if (isEnable)
-            {
-                _isNodeEnable = true;
+        #endregion
 
-                _vertexFill.fillAmount = 1;
-                _edgeFill.SetFillAmount(1);
-
-                for (int i = 0; i < NodeType.nextNodes.Count; i++)
-                {
-                    if (_techTree.TryGetNode(NodeType.nextNodes[i], out Node prevNode))
-                    {
-                        prevNode.ActiveNode();
-                    }
-                }
-
-                //파츠 혹은 무기 활성화시켜주기
-                //if (NodeType is PartNodeSO part)
-                //    GameDataManager.Instance.EnablePart(part.openPart);
-                //if (NodeType is WeaponNodeSO weapon)
-                //    GameDataManager.Instance.EnableWeapon(weapon.weapon);
-            }
-        }
 
         #region InputRegion
 
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if (eventData.button != PointerEventData.InputButton.Right) return;
-
-            //_techTree.tooltipPanel.SetNodeInformation(_nodeType);
-            //_techTree.tooltipPanel.Open();
-        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (eventData.button != PointerEventData.InputButton.Right) return;
 
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             _prevNodes = new Stack<Node>();
+
+            if (eventData.button != PointerEventData.InputButton.Right) return;
+
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -362,11 +376,6 @@ namespace Office
             //if (_requireCoin > GameDataManager.Instance.Coin) return;
 
             _cancelCoroutine = StartCoroutine(CancelEnableNode());
-        }
-
-        internal void DestroyEdge()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
