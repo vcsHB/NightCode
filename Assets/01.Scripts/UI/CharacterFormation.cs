@@ -17,8 +17,11 @@ namespace Office
         private Tween _changeTween;
         private Sequence _slotPositionSetSeq;
 
+        private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
+
         private void Awake()
         {
+            RectTrm.anchoredPosition = new Vector2(RectTrm.anchoredPosition.x, -screenPosition.y);
             for (int i = 0; i < 3; i++)
             {
                 slots[i].Init(this);
@@ -113,7 +116,7 @@ namespace Office
             if (_slotPositionSetSeq != null && _slotPositionSetSeq.active) _slotPositionSetSeq.Complete();
 
 
-            _openCloseTween = RectTrm.DOAnchorPosY(-720f, _openCloseDuration)
+            _openCloseTween = RectTrm.DOAnchorPosY(-screenPosition.y / 2, _openCloseDuration)
                 .OnComplete(OnCompleteClose);
         }
     }
