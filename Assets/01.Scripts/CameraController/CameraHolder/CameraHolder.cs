@@ -36,6 +36,14 @@ namespace CameraControllers.CameraHolders
 
             }
         }
+        public void Initialize(Agent agent)
+        {
+            _player = agent as Player;
+        }
+
+        public void AfterInit() { }
+
+        public void Dispose() { }
 
 #if UNITY_EDITOR
 
@@ -47,14 +55,6 @@ namespace CameraControllers.CameraHolders
 
 
 #endif
-        public void Initialize(Agent agent)
-        {
-            _player = agent as Player;
-        }
-
-        public void AfterInit() { }
-
-        public void Dispose() { }
     }
 
 }
