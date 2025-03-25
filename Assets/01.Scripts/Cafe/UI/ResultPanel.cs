@@ -22,6 +22,7 @@ namespace Cafe
 
         public void Init(MissionSO mission, int customer, int rating)
         {
+            rating = Mathf.Clamp(rating, 1, 5);
             _missionSelect.Init(mission);
 
             int reward = mission.missionDefaultReward;
