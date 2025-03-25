@@ -22,6 +22,7 @@ namespace Cafe
         //ForDebuging
         [SerializeField] private MissionSO missionSO;
 
+        private int _totalCustomer;
         private int _waveIndex = 0;
         private float _prevWaveTime = 0;
         private float _nextSpawnTime = 0;
@@ -65,13 +66,17 @@ namespace Cafe
         {
             IsCafeOpen = false;
 
-            int customerCount = _visitedCustomer.Count;
+            int customerCount = _totalCustomer;
             int rating = 0;
 
             _visitedCustomer.ForEach(customer => rating += customer.rating);
-            rating = Mathf.RoundToInt((float)rating / (float)customerCount);
+            float ratingAvg = Mathf.RoundToInt((float)rating / (float)customerCount);
+            rating += (int)(ratingAvg - 1) * (_totalCustomer - _visitedCustomer.Count);
 
-            resultPanel.Init(missionSO, customerCount, rating);
+            rating = Mathf.RoundToInt((float)rating / (float)customerCount);
+            Debug.Log(rating);
+
+            resultPanel.Init(missionSO, _visitedCustomer.Count, rating);
             resultPanel.Open();
             //정산 같은거를 해야겠지
         }
@@ -115,8 +120,10 @@ namespace Cafe
         {
             CafeCustomerSO customerSO = _currentWave.customerToSpawn[Random.Range(0, _currentWave.customerToSpawn.Count)];
             bool isMissCustomer = cafe.EnterCustomer(customerSO);
+
             _nextSpawnTime = CurrentTime + _currentWave.spawnDelay;
             _customerToSpawn--;
+            _totalCustomer++;
         }
 
         #endregion

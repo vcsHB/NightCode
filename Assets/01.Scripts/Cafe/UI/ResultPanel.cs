@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Cafe
 {
@@ -55,6 +56,11 @@ namespace Cafe
             customerNumber.SetText(customer);
             yield return new WaitForSeconds(customerNumber.Duration);
             rewardNumber.SetText(reward);
+        }
+
+        public void ReturnToOffice()
+        {
+            SceneManager.LoadScene("Office_Scene");
         }
 
         public void Close()

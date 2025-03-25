@@ -28,6 +28,7 @@ namespace Cafe
                 .AppendInterval(0.5f)
                 .Append(_readyText.DOScale(0, 0.2f))
                 .Append(_startText.DOScale(1, 0.2f))
+                .AppendInterval(1f)
                 .Append(_startText.DOScale(0, 0.3f))
                 .OnComplete(CafeManager.Instance.StartCafe);
         }
