@@ -33,6 +33,7 @@ namespace UI.InGame.SystemUI
         [ContextMenu("Open")]
         public void Open()
         {
+            _canvasGroup.DOFade(1f, 0.2f).SetUpdate(_useUnscaledTime);
             Sequence seq = DOTween.Sequence();
             seq.SetUpdate(_useUnscaledTime);
             seq.AppendCallback(() =>
