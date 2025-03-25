@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GGM.Core.StatSystem
+namespace StatSystem
 {
     [CreateAssetMenu(fileName = "StatSO", menuName = "SO/StatSO")]
     public class StatSO : ScriptableObject, ICloneable
@@ -10,7 +10,7 @@ namespace GGM.Core.StatSystem
         public delegate void ValuechangeHandler(StatSO stat, float currentValue, float prevValue);
 
         public event ValuechangeHandler OnValuechange;
-
+        public StatusEnumType statType;
         public string statName;
         public string description;
         public string displayName;

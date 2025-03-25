@@ -1,11 +1,14 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 namespace UI
 {
 
     public class UIPanel : MonoBehaviour, IWindowPanel
     {
         protected CanvasGroup _canvasGroup;
+        public UnityEvent OnOpenEvent;
+        public UnityEvent OnCloseEvent;
         [SerializeField] protected bool _useUnscaledTime;
         [SerializeField] protected float _activeDuration = 1f;
         [SerializeField] protected bool _isActive;
@@ -18,11 +21,13 @@ namespace UI
         public virtual void Open()
         {
             SetCanvasActive(true);
+            OnOpenEvent?.Invoke();
         }
 
         public virtual void Close()
         {
             SetCanvasActive(false);
+            OnCloseEvent?.Invoke();
         }
 
         public void SetCanvasActive(bool value)

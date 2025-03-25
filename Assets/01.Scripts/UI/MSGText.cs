@@ -1,16 +1,14 @@
-using Basement.Training;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UIElements.Experimental;
 
-namespace Basement
+namespace Cafe
 {
     public class MSGText : MonoBehaviour
     {
         [SerializeField] private MSGTextBox _textBox;
         [SerializeField] private int _maxTextBoxNum;
-
-        [SerializeField] private List<Sprite> icon;
+        [SerializeField] private CharacterIconSO icon;
 
         private MSGTextBox prevTextBox;
         private Stack<MSGTextBox> _textBoxPool;
@@ -37,33 +35,35 @@ namespace Basement
             //    PopMSGText(testIcon, "심장훈 매우 섹시함");
         }
 
-        public void PopMSGText(CharacterEnum character, string text)
+        public void PopMSGText(CharacterEnum character, string text, int rating)
         {
-            PopMSGText(icon[(int)character],text);
+            PopMSGText(icon.GetIcon(character), text, rating);
         }
 
-        public void PopMSGText(Sprite icon, string text)
+        public void PopMSGText(Sprite icon, string text, int rating)
         {
-            if (_textBoxPool.TryPop(out MSGTextBox textBox))
+            if (_textBoxPool.TryPeek(out MSGTextBox textBox))
             {
                 textBox.gameObject.SetActive(true);
-                textBox.Init(icon, text, this, prevTextBox);
+                textBox.Init(icon, text, this, prevTextBox, rating);
 
                 prevTextBox = textBox;
-                _exsistBox.Enqueue(textBox);
             }
             else
             {
                 Push();
-                PopMSGText(icon, text);
+                PopMSGText(icon, text, rating);
             }
         }
 
         public void Push()
         {
-            MSGTextBox textBox = _exsistBox.Dequeue();
-            textBox.gameObject.SetActive(false);
-            _textBoxPool.Push(textBox);
+            if (_exsistBox.TryDequeue(out MSGTextBox textBox))
+            {
+                textBox.Init(null, "", this, null, 0);
+                textBox.gameObject.SetActive(false);
+                _textBoxPool.Push(textBox);
+            }
         }
     }
 }

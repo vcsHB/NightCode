@@ -59,7 +59,7 @@ namespace Basement.Training
 
         public TrainingResult GetResult(CharacterEnum characterType)
         {
-            float fatigueCorrection = (100 - TrainingManager.Instance.GetFatigue(characterType)) / 100;
+            float fatigueCorrection = (100 - CharacterManager.Instance.GetFatigue(characterType)) / 100;
 
             TrainingResult result = Random.Range(0, 101) > successValue * fatigueCorrection ? TrainingResult.Fail :
                 Random.Range(0, 101) > greatSuccessValue * fatigueCorrection ? TrainingResult.Success : TrainingResult.GreatSuccess;

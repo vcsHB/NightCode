@@ -1,11 +1,12 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Layouts;
 using UnityEngine.UI;
 
-namespace Basement
+namespace Cafe
 {
+
     public class MSGTextBox : MonoBehaviour
     {
         public RectTransform rectTrm => transform as RectTransform;
@@ -16,6 +17,13 @@ namespace Basement
         [SerializeField] private float _fadeStartDelay = 0.3f;
         [SerializeField] private float _fadeDuration = 0.5f;
         [SerializeField] private float _upSpeed = 100;
+
+        [Space]
+        [SerializeField] private GameObject _ratingParent;
+        [SerializeField] private List<GameObject> _ratingObjects;
+
+
+        private RectTransform _raingParnetTrm => _ratingParent.transform as RectTransform;
 
         private MSGText _msgText;
         private MSGTextBox _prevTextBox;
@@ -49,13 +57,15 @@ namespace Basement
             }
         }
 
-        public void Init(Sprite icon, string text, MSGText msgText, MSGTextBox prevTextBox)
+        public void Init(Sprite icon, string text, MSGText msgText, MSGTextBox prevTextBox, int rating)
         {
             _isStartFade = false;
             _timerStart = false;
 
             if (icon == null)
+            {
                 _icon.gameObject.SetActive(false);
+            }
             else
             {
                 _icon.gameObject.SetActive(true);
@@ -64,8 +74,7 @@ namespace Basement
 
             _msgText = msgText;
             _text.SetText(text);
-            if(prevTextBox != this) _prevTextBox = prevTextBox;
-            LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
+            if (prevTextBox != this) _prevTextBox = prevTextBox;
 
             rectTrm.anchoredPosition = new Vector2(-childRect.rect.width, 0);
             _canvasGroup.alpha = 1;
@@ -89,8 +98,15 @@ namespace Basement
                 {
                     _timerStart = true;
                     _timer = Time.time;
-                    Debug.Log("야호");
                 });
+
+            _ratingParent.SetActive(rating > 0);
+            for (int i = 0; i < _ratingObjects.Count; i++)
+            {
+                _ratingObjects[i].SetActive(i < rating);
+            }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(_raingParnetTrm);
         }
 
         public void MoveUp(float height)
@@ -108,7 +124,6 @@ namespace Basement
                 if (_prevTextBox.rectTrm.anchoredPosition.y < height)
                 {
                     _prevTextBox.MoveUp(height);
-                    Debug.Log("야호");
                 }
             }
         }

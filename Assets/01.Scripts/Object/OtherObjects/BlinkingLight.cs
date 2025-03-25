@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-namespace ObjectManage
+namespace ObjectManage.OtherObjects
 {
     public struct BlinkData
     {

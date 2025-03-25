@@ -11,7 +11,7 @@ namespace CameraControllers
     {
         [SerializeField] private CinemachineCamera _camera;
         private Dictionary<Type, ICameraControlable> _controllers = new Dictionary<Type, ICameraControlable>();
-
+        public Transform CurrentFollowTarget => _camera.Follow;
 
         protected override void Awake()
         {

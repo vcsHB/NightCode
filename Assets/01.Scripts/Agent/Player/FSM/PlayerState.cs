@@ -84,6 +84,7 @@ namespace Agents.Players.FSM
         {
             if(!_canRemoveRope) return;
             if (!_player.IsActive) return;
+            if(!_aimController.IsShoot) return;
             _aimController.RemoveWire();
             _player.StateMachine.ChangeState("Swing");
         }
@@ -94,12 +95,14 @@ namespace Agents.Players.FSM
             _stateMachine.ChangeState("Attack");
         }
 
-        protected void CheckWallAndHold()
+        protected bool CheckWallAndHold()
         {
             if(_mover.IsWallDetected())
             {
                 _stateMachine.ChangeState("HoldingWall");
+                return true;
             }
+            return false;
         }
 
 

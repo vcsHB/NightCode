@@ -1,20 +1,24 @@
 using Agents.Animate;
+using StatSystem;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
 
     public class PlayerJumpState : PlayerGroundState
     {
+        private StatSO _jumpPower;
         public PlayerJumpState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
             _canUseRope = true;
+            AgentStatus statusCompo = _player.GetCompo<AgentStatus>();
+            _jumpPower = statusCompo.GetStat(StatusEnumType.JumpPower);
         }
 
         public override void Enter()
         {
             base.Enter();
             _mover.jumpCount --;
-            Vector2 jumpPower = new Vector2(0, 17f);
+            Vector2 jumpPower = new Vector2(0, _jumpPower.Value);
             _mover.StopYVelocity();
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Jump"));
             _mover.AddForceToEntity(jumpPower);

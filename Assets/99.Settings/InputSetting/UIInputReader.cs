@@ -4,10 +4,11 @@ using UnityEngine.InputSystem;
 
 namespace InputManage
 {
-    [CreateAssetMenu(menuName ="SO/Input/UIInputReader")]
+    [CreateAssetMenu(menuName = "SO/Input/UIInputReader")]
     public class UIInputReader : ScriptableObject, Controls.IUIActions
     {
         public event Action OnEscEvent;
+        public event Action OnSpaceEvent;
 
         private Controls _controls;
 
@@ -26,13 +27,21 @@ namespace InputManage
             _controls.UI.Disable();
         }
 
-        public void OnOnEsc(InputAction.CallbackContext context)
+        public void OnEsc(InputAction.CallbackContext context)
         {
             if (context.performed)
+            {
                 OnEscEvent?.Invoke();
+            }
         }
 
-
+        public void OnSpace(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+            {
+                OnSpaceEvent?.Invoke();
+            }
+        }
     }
 
 }

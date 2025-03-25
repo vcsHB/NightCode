@@ -29,7 +29,8 @@ namespace Basement
             _addFurnitureUI.Close();
             _furnitureIndicator.Close();
             _closeBtn.gameObject.SetActive(false);
-            _room?.ReturnFocus();
+            UIManager.Instance.basementUI.Open();
+            //_room?.ReturnFocus();
         }
     }
 }

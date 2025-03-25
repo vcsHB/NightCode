@@ -1,15 +1,17 @@
 using DG.Tweening;
-using InputManage;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI.InGame.SystemUI
 {
 
-    public class PausePanel : UIPanel
+    public class PausePanel : UIPanel, IWindowTogglable
     {
-        [SerializeField] private UIInputReader _uiInput;
+        [SerializeField] private PauseButtonGroup _buttonGroup;
         [SerializeField] private RectTransform _panelRectTrm;
+        private RectTransform _rectTrm;
+        [SerializeField] private float _activeHeight;
         [SerializeField] private Image _topLine;
         [SerializeField] private Image _bottomLine;
         private int _lineUnscaledTimeHash = Shader.PropertyToID("_CurrentUnscaledTime");
@@ -17,31 +19,48 @@ namespace UI.InGame.SystemUI
         protected override void Awake()
         {
             base.Awake();
-            _uiInput.OnEscEvent += HandleTogglePausePanel;
+            _rectTrm = transform as RectTransform;
 
         }
 
+
+
         private void OnDestroy()
         {
-            _uiInput.OnEscEvent -= HandleTogglePausePanel;
 
         }
         public override void Open()
         {
             base.Open();
             _isActive = true;
-            _panelRectTrm.DOScaleY(1f, _activeDuration).SetUpdate(_useUnscaledTime);
+            Time.timeScale = 0f;
+            _buttonGroup.Open();
+            _rectTrm.DOSizeDelta(new Vector2(_rectTrm.sizeDelta.x, _activeHeight), _activeDuration).SetUpdate(_useUnscaledTime);
             SetTweenLinesFillAmount(1f);
         }
 
         public override void Close()
         {
             base.Close();
-            _panelRectTrm.DOScaleY(0f, _activeDuration).SetUpdate(_useUnscaledTime);
+            _isActive = false;
+            Time.timeScale = 1f;
+            _buttonGroup.Close();
+            _rectTrm.DOSizeDelta(new Vector2(_rectTrm.sizeDelta.x, 0f), _activeDuration).SetUpdate(_useUnscaledTime);
             SetTweenLinesFillAmount(0f);
         }
 
-        private void HandleTogglePausePanel()
+        public void CloseVisual()
+        {
+            SetCanvasActive(false);
+            _isActive = false;
+
+            _buttonGroup.Close();
+            _rectTrm.DOSizeDelta(new Vector2(_rectTrm.sizeDelta.x, 0f), _activeDuration).SetUpdate(_useUnscaledTime);
+            SetTweenLinesFillAmount(0f);
+            OnCloseEvent?.Invoke();
+        }
+
+        public void Toggle()
         {
             if (_isActive)
                 Close();
@@ -52,6 +71,7 @@ namespace UI.InGame.SystemUI
 
         private void Update()
         {
+           
             if (_isActive)
             {
                 _topLine.material.SetFloat(_lineUnscaledTimeHash, Time.unscaledTime);
@@ -63,6 +83,11 @@ namespace UI.InGame.SystemUI
         {
             _topLine.DOFillAmount(value, _activeDuration).SetUpdate(_useUnscaledTime);
             _bottomLine.DOFillAmount(value, _activeDuration).SetUpdate(_useUnscaledTime);
+        }
+
+        public void HandleMoveExit()
+        {
+            SceneManager.LoadScene("BasementScene_V2");
         }
 
     }

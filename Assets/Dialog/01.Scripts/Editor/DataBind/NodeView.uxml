@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/Dialog/Editor/DataBind/NodeView.uss?fileID=7433441132597879392&amp;guid=7e361f839004edf4db07544818ee0e79&amp;type=3#NodeView" />
+    <ui:VisualElement name="node-state-back" style="flex-grow: 1;" />
+    <ui:VisualElement name="node-border">
+        <ui:VisualElement name="contents">
+            <ui:VisualElement name="divider" class="horizontal" />
+            <ui:VisualElement name="top" style="flex-direction: row;">
+                <ui:VisualElement name="input" style="justify-content: center;" />
+                <ui:VisualElement name="divider" class="vertical" />
+                <ui:VisualElement name="desc" style="flex-grow: 1;">
+                    <ui:VisualElement name="title">
+                        <ui:Label name="title-label" text="RootNode" class="unity-text-element unity-label" />
+                        <ui:VisualElement name="title-button-container">
+                            <ui:VisualElement name="collapse-button">
+                                <ui:VisualElement name="icon" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:Label tabindex="-1" text="This is desc" parse-escape-sequences="true" display-tooltip-when-elided="true" name="desc" />
+                </ui:VisualElement>
+                <ui:VisualElement name="divider" class="vertical sec-divider" />
+                <ui:VisualElement name="output" style="justify-content: center;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="selection-border" picking-mode="Ignore" />
+</ui:UXML>

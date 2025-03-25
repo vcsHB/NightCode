@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using ObjectManage;
 using ObjectManage.Rope;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Agents.Players
         [SerializeField] private float _wireClampedDistance = 12f;
         [SerializeField] private float _clampDuration = 0.2f;
         [SerializeField] private float _pullClampDuration = 0.01f;
+        [SerializeField] private SlashVFXPlayer _slashVFXPlayer;
         // Properties
         public bool canShoot = true;
         public bool IsShoot => _isShoot;
@@ -45,6 +47,7 @@ namespace Agents.Players
         {
             _player = agent as Player;
             _playerMovement = _player.GetCompo<PlayerMovement>();
+
         }
         public void SetAimGroup(AimGroupController aimGroup)
         {
@@ -64,6 +67,7 @@ namespace Agents.Players
         {
             _aimGroupController.SetAimMarkPosition(data.mousePosition);
             _aimGroupController.SetVirtualAim(data.isTargeted);
+            _aimGroupController.SetVirtualAimPosition(data.targetPosition);
 
             _currentAimData = data;
         }
@@ -78,7 +82,12 @@ namespace Agents.Players
         {
             _currentShootTime += Time.deltaTime;
             if (_isShoot)
-                HangingDirection = _aimGroupController.AnchorPos - OriginPosition;
+                RefreshHangingDirection();
+        }
+        public void RefreshHangingDirection()
+        {
+            HangingDirection = _aimGroupController.AnchorPos - (Vector2)_player.transform.position;
+
         }
 
 
@@ -92,38 +101,25 @@ namespace Agents.Players
 
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
 
-            if (_currentGrabData.isTargeted)
-            { // Grab
-                HandleGrab();
-                return new ShootData
-                {
-                    isHanged = true,
-                    isGrabbed = true
-                };
-
-            }
-            else
-            {
-                HandleHang();
-            }
-
+            HandleHang();
             _isShoot = true;
             return new ShootData { isHanged = true };
         }
 
-        private void HandleGrab()
-        {
-            _aimGroupController.SetAnchorParent(_currentGrabData.grabTarget.GetTransform);
-            _aimGroupController.SetAnchorPosition(TargetPoint);
-            _aimGroupController.SetActiveWire(true);
-            _aimGroupController.Wire.SetWireEnable(true);
-        }
+        // private void HandleGrab()
+        // {
+        //     _aimGroupController.SetAnchorParent(_currentGrabData.grabTarget.GetTransform);
+        //     _aimGroupController.SetAnchorPosition(TargetPoint);
+        //     _aimGroupController.SetActiveWire(true);
+        //     _aimGroupController.Wire.SetWireEnable(true);
+        // }
 
         private void HandleHang()
         {
             _aimGroupController.SetActiveWire(true);
-            _anchorPosition = TargetPoint;
-            if (_currentAimData.distance > _wireClampedDistance)
+            _anchorPosition = _currentAimData.targetPosition; // _currentAimData.targetPosition;
+            _aimGroupController.SetAnchorPosition(TargetPoint);
+            if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 _clampCoroutine = StartCoroutine(
@@ -131,7 +127,20 @@ namespace Agents.Players
                         GetLerpTargetPosition(_wireClampedDistance), _clampDuration));
             }
             else
-                _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _currentAimData.distance);
+                _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
+
+        }
+        public void RemoveWire()
+        {
+            if (IsClamping)
+                StopCoroutine(_clampCoroutine);
+            Vector2 velocity = _playerMovement.Velocity;
+            _aimGroupController.SetActiveWire(false);
+            _aimGroupController.SetAnchorPosition(transform.position);
+            _aimGroupController.Wire.SetWireEnable(false);
+            _isShoot = false;
+
+            _playerMovement.SetVelocity(velocity);
 
         }
 
@@ -149,32 +158,19 @@ namespace Agents.Players
             _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
             OnComplete?.Invoke();
+
             _clampCoroutine = null;
         }
 
-        public void RemoveWire()
+
+        public void HandlePull(Action OnComplete = null)
         {
-            if (IsClamping)
-                StopCoroutine(_clampCoroutine);
-            _aimGroupController.SetAnchorParent();
-            Vector2 velocity = _playerMovement.Velocity;
-            _aimGroupController.SetActiveWire(false);
-            _aimGroupController.SetAnchorPosition(transform.position);
-            _aimGroupController.Wire.SetWireEnable(false);
-            _isShoot = false;
-
-            _playerMovement.SetVelocity(velocity);
-
-        }
-
-        public void HandlePull()
-        {
-            if (IsClamping) return;
+            if (IsClamping || _currentAimData.distanceToPoint < 2f) return;
             _playerMovement.StopImmediately(true);
             _clampCoroutine = StartCoroutine(DistanceClampCoroutine(
                 GetLerpTargetPositionByRatio(0.9f),
-                _currentAimData.distance * _pullClampDuration
-                ));
+                _currentAimData.distanceToPoint * _pullClampDuration,
+                OnComplete));
 
         }
 
@@ -182,13 +178,12 @@ namespace Agents.Players
 
         private Vector2 GetLerpTargetPosition(float clampDistance)
         {
-            float distance = _currentAimData.distance;
+            float distance = _currentAimData.distanceToPoint;
             return Vector2.Lerp(_currentAimData.originPlayerPosition, TargetPoint, (distance - clampDistance) / distance);
         }
 
         private Vector2 GetLerpTargetPositionByRatio(float ratio)
         {
-
             return Vector2.Lerp(_currentAimData.originPlayerPosition, _aimGroupController.AnchorPos, ratio);
         }
 

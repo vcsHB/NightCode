@@ -32,7 +32,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""88571ba4-fc77-4502-ba95-fe559607c8a7"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""NormalizeVector2"",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
@@ -58,7 +58,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""Turbo"",
                     ""type"": ""Button"",
                     ""id"": ""1135caa6-a774-4694-a608-aa5c4bdb3c85"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -67,7 +67,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""3d1e1eef-684e-4778-903a-d5ceccbaf645"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -95,7 +95,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""3a0005ef-8125-4318-80f9-7fc1cb8e1e0b"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=1)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -150,7 +150,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ece51998-2e92-4455-9ef3-f52e76520c31"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/numLock"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
@@ -205,7 +205,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f1b35ca1-a7d0-429f-84ff-eb34c52ec94f"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -220,9 +220,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             ""id"": ""d68dd5b8-112c-48ee-affd-35397f313689"",
             ""actions"": [
                 {
-                    ""name"": ""OnEsc"",
+                    ""name"": ""Esc"",
                     ""type"": ""Button"",
                     ""id"": ""eb87c389-83d8-4429-ac37-ffa9608f009b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Space"",
+                    ""type"": ""Button"",
+                    ""id"": ""75737f8c-aa99-406b-87f8-e598ba3bf259"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -237,7 +246,317 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
-                    ""action"": ""OnEsc"",
+                    ""action"": ""Esc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d19ac1b5-a35c-464c-8b69-4b8f07c3c8b8"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyMouse"",
+                    ""action"": ""Space"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Basement"",
+            ""id"": ""0ee7d667-10e2-4f47-b32f-9fe91c21a681"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""37e751b5-9b30-4b3f-9fef-6b063e1c212f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""82001aab-6e19-4b30-8015-6be44076ee38"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""d636f5e9-902f-44d1-b142-88d691081211"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""b848ed86-e007-4c65-9658-07be19c7d5e2"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""879eb157-a1f4-4367-9337-7759ed8126fb"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b2e88f43-ef2a-47d5-99e9-09bdfc4bb571"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b2c347b8-7fdf-4ea1-9a9b-61df194d31a2"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ae32e22f-49cf-4340-8c2e-770a147827b6"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""dde29885-0186-4a4f-8748-3e30a407db82"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""b535bb9a-c8e5-4500-847a-3ac3947e3975"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""91181d73-6025-48a4-9990-e129028ade17"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""9c0d64d8-38a1-442b-a0e1-46955334d7ad"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""9e2afa45-2aa4-48b2-83fc-3aff334084cd"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5362322e-9aa0-43bb-9081-ce2817426638"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7169df0-0c15-4647-82c1-198adb243cc1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Cafe"",
+            ""id"": ""a450912a-3feb-4723-b24d-25d03f904dd9"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""367ab306-1bb8-4a9e-9b35-14be3b598ec9"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""b70089ff-d1aa-4159-a66c-b486da4f3d19"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""48ad94c6-18b4-4e4c-80ef-c7d6b49e5a9f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseRightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""f9d87881-d2c4-457c-8a73-e47dfd140fea"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""32289d04-6436-4c70-8a73-68d09bc052a5"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""8ae42056-2f41-4043-8c42-295dbba1be0d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""1f951afd-3b23-4c8e-83d9-9ef65720f651"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7c4251d1-61a7-4d85-b315-1f3b9d8f0fd4"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""2bb9c0da-ca10-45a9-9a1c-830427695ca8"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""586e2705-569f-4f08-b186-989dfe85265a"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c50fb4ec-c7bb-4776-920e-d00ab915196b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""85b19cfd-1bb4-43ef-8b8f-fe81b4afa94c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseRightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -274,13 +593,27 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_ChangeTag = m_Player.FindAction("ChangeTag", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_OnEsc = m_UI.FindAction("OnEsc", throwIfNotFound: true);
+        m_UI_Esc = m_UI.FindAction("Esc", throwIfNotFound: true);
+        m_UI_Space = m_UI.FindAction("Space", throwIfNotFound: true);
+        // Basement
+        m_Basement = asset.FindActionMap("Basement", throwIfNotFound: true);
+        m_Basement_Move = m_Basement.FindAction("Move", throwIfNotFound: true);
+        m_Basement_MouseDown = m_Basement.FindAction("MouseDown", throwIfNotFound: true);
+        m_Basement_MouseMove = m_Basement.FindAction("MouseMove", throwIfNotFound: true);
+        // Cafe
+        m_Cafe = asset.FindActionMap("Cafe", throwIfNotFound: true);
+        m_Cafe_Move = m_Cafe.FindAction("Move", throwIfNotFound: true);
+        m_Cafe_Interact = m_Cafe.FindAction("Interact", throwIfNotFound: true);
+        m_Cafe_MouseLeftClick = m_Cafe.FindAction("MouseLeftClick", throwIfNotFound: true);
+        m_Cafe_MouseRightClick = m_Cafe.FindAction("MouseRightClick", throwIfNotFound: true);
     }
 
     ~@Controls()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, Controls.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, Controls.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Basement.enabled, "This will cause a leak and performance issues, Controls.Basement.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Cafe.enabled, "This will cause a leak and performance issues, Controls.Cafe.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -436,12 +769,14 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_OnEsc;
+    private readonly InputAction m_UI_Esc;
+    private readonly InputAction m_UI_Space;
     public struct UIActions
     {
         private @Controls m_Wrapper;
         public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OnEsc => m_Wrapper.m_UI_OnEsc;
+        public InputAction @Esc => m_Wrapper.m_UI_Esc;
+        public InputAction @Space => m_Wrapper.m_UI_Space;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -451,16 +786,22 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @OnEsc.started += instance.OnOnEsc;
-            @OnEsc.performed += instance.OnOnEsc;
-            @OnEsc.canceled += instance.OnOnEsc;
+            @Esc.started += instance.OnEsc;
+            @Esc.performed += instance.OnEsc;
+            @Esc.canceled += instance.OnEsc;
+            @Space.started += instance.OnSpace;
+            @Space.performed += instance.OnSpace;
+            @Space.canceled += instance.OnSpace;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
         {
-            @OnEsc.started -= instance.OnOnEsc;
-            @OnEsc.performed -= instance.OnOnEsc;
-            @OnEsc.canceled -= instance.OnOnEsc;
+            @Esc.started -= instance.OnEsc;
+            @Esc.performed -= instance.OnEsc;
+            @Esc.canceled -= instance.OnEsc;
+            @Space.started -= instance.OnSpace;
+            @Space.performed -= instance.OnSpace;
+            @Space.canceled -= instance.OnSpace;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -478,6 +819,138 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Basement
+    private readonly InputActionMap m_Basement;
+    private List<IBasementActions> m_BasementActionsCallbackInterfaces = new List<IBasementActions>();
+    private readonly InputAction m_Basement_Move;
+    private readonly InputAction m_Basement_MouseDown;
+    private readonly InputAction m_Basement_MouseMove;
+    public struct BasementActions
+    {
+        private @Controls m_Wrapper;
+        public BasementActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Basement_Move;
+        public InputAction @MouseDown => m_Wrapper.m_Basement_MouseDown;
+        public InputAction @MouseMove => m_Wrapper.m_Basement_MouseMove;
+        public InputActionMap Get() { return m_Wrapper.m_Basement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BasementActions set) { return set.Get(); }
+        public void AddCallbacks(IBasementActions instance)
+        {
+            if (instance == null || m_Wrapper.m_BasementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_BasementActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @MouseDown.started += instance.OnMouseDown;
+            @MouseDown.performed += instance.OnMouseDown;
+            @MouseDown.canceled += instance.OnMouseDown;
+            @MouseMove.started += instance.OnMouseMove;
+            @MouseMove.performed += instance.OnMouseMove;
+            @MouseMove.canceled += instance.OnMouseMove;
+        }
+
+        private void UnregisterCallbacks(IBasementActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @MouseDown.started -= instance.OnMouseDown;
+            @MouseDown.performed -= instance.OnMouseDown;
+            @MouseDown.canceled -= instance.OnMouseDown;
+            @MouseMove.started -= instance.OnMouseMove;
+            @MouseMove.performed -= instance.OnMouseMove;
+            @MouseMove.canceled -= instance.OnMouseMove;
+        }
+
+        public void RemoveCallbacks(IBasementActions instance)
+        {
+            if (m_Wrapper.m_BasementActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IBasementActions instance)
+        {
+            foreach (var item in m_Wrapper.m_BasementActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_BasementActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public BasementActions @Basement => new BasementActions(this);
+
+    // Cafe
+    private readonly InputActionMap m_Cafe;
+    private List<ICafeActions> m_CafeActionsCallbackInterfaces = new List<ICafeActions>();
+    private readonly InputAction m_Cafe_Move;
+    private readonly InputAction m_Cafe_Interact;
+    private readonly InputAction m_Cafe_MouseLeftClick;
+    private readonly InputAction m_Cafe_MouseRightClick;
+    public struct CafeActions
+    {
+        private @Controls m_Wrapper;
+        public CafeActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Cafe_Move;
+        public InputAction @Interact => m_Wrapper.m_Cafe_Interact;
+        public InputAction @MouseLeftClick => m_Wrapper.m_Cafe_MouseLeftClick;
+        public InputAction @MouseRightClick => m_Wrapper.m_Cafe_MouseRightClick;
+        public InputActionMap Get() { return m_Wrapper.m_Cafe; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CafeActions set) { return set.Get(); }
+        public void AddCallbacks(ICafeActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CafeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CafeActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @MouseLeftClick.started += instance.OnMouseLeftClick;
+            @MouseLeftClick.performed += instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled += instance.OnMouseLeftClick;
+            @MouseRightClick.started += instance.OnMouseRightClick;
+            @MouseRightClick.performed += instance.OnMouseRightClick;
+            @MouseRightClick.canceled += instance.OnMouseRightClick;
+        }
+
+        private void UnregisterCallbacks(ICafeActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @MouseLeftClick.started -= instance.OnMouseLeftClick;
+            @MouseLeftClick.performed -= instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled -= instance.OnMouseLeftClick;
+            @MouseRightClick.started -= instance.OnMouseRightClick;
+            @MouseRightClick.performed -= instance.OnMouseRightClick;
+            @MouseRightClick.canceled -= instance.OnMouseRightClick;
+        }
+
+        public void RemoveCallbacks(ICafeActions instance)
+        {
+            if (m_Wrapper.m_CafeActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICafeActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CafeActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CafeActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CafeActions @Cafe => new CafeActions(this);
     private int m_KeyMouseSchemeIndex = -1;
     public InputControlScheme KeyMouseScheme
     {
@@ -499,6 +972,20 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     }
     public interface IUIActions
     {
-        void OnOnEsc(InputAction.CallbackContext context);
+        void OnEsc(InputAction.CallbackContext context);
+        void OnSpace(InputAction.CallbackContext context);
+    }
+    public interface IBasementActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnMouseDown(InputAction.CallbackContext context);
+        void OnMouseMove(InputAction.CallbackContext context);
+    }
+    public interface ICafeActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnMouseLeftClick(InputAction.CallbackContext context);
+        void OnMouseRightClick(InputAction.CallbackContext context);
     }
 }

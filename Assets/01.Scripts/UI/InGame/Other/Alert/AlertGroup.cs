@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.XR.OpenVR;
 using UnityEngine;
 namespace UI.InGame.SystemUI.AlertSystem
 {
@@ -20,6 +22,7 @@ namespace UI.InGame.SystemUI.AlertSystem
         [SerializeField] private AudioClip _dangerAlertSound;
 
         private Queue<AlertBox> _boxPool = new();
+        private List<AlertBox> _alertList = new();
         private AudioSource _audioSource;
 
         private void Awake()
@@ -36,8 +39,20 @@ namespace UI.InGame.SystemUI.AlertSystem
             else
                 alertBox = _boxPool.Dequeue();
 
+            alertBox.gameObject.SetActive(true);
             alertBox.SetPos(_generatePositionTrm.anchoredPosition);
             alertBox.SetAlert(content);
+            _alertList.Add(alertBox);
+            alertBox.OnDisableEvent += HandleAlertBoxDisable;
+        }
+
+        private void HandleAlertBoxDisable(AlertBox box)
+        {
+            box.OnDisableEvent -= HandleAlertBoxDisable;
+            _alertList.Remove(box);
+            _boxPool.Enqueue(box);
+            box.gameObject.SetActive(false);
+
         }
 
         private void PlayAlertSound(AlertType type)

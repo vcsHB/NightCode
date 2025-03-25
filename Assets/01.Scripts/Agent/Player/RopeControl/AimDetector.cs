@@ -11,6 +11,7 @@ namespace Agents.Players
         public Vector2 targetPosition;
         public Vector2 originPlayerPosition;
         public float distance;
+        public float distanceToPoint;
         public Vector2 aimDirection;
 
     }
@@ -77,7 +78,8 @@ namespace Agents.Players
                     _grabTarget = grabTarget;
                 }
             }
-            InvokeGrabDataEvent();
+            
+            //InvokeGrabDataEvent();
             InvokeAimDataEvent();
 
         }
@@ -91,7 +93,8 @@ namespace Agents.Players
                 originPlayerPosition = _playerPos,
                 targetPosition = _targetPos,
                 aimDirection = _direction,
-                distance = _direction.magnitude
+                distance = _direction.magnitude,
+                distanceToPoint = (_targetPos - _playerPos).magnitude
             });
         }
 
