@@ -26,7 +26,7 @@ namespace Cafe
         private float _duration = 0.3f;
         private bool _isOpened;
         private bool _isPressed;
-        private string _directoryPath = Path.Combine(Application.dataPath, "Save/MinigameInfo");
+        private string _directoryPath = "MinigameInfo";
         private string _path;
 
         private Tween _openCloseTween, _resultTween;
@@ -156,7 +156,7 @@ namespace Cafe
         public void SetGuideLine(string fileName)
         {
             string path = Path.Combine(_directoryPath, fileName);
-            string json = File.ReadAllText(path);
+            string json = Resources.Load<TextAsset>(path).ToString();
             TexturePixelInfo info = JsonUtility.FromJson<TexturePixelInfo>(json);
 
             guideLineTexture.ResetTexture();
