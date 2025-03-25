@@ -168,6 +168,7 @@ namespace Combat.PlayerTagSystem
             _playerDatas.Add(playerSO);
             _playerList.Add(playerCharacter);
             _characterSelectWindow.AddCharacterSlot(playerSO, playerCharacter);
+            playerCharacter.ExitCharacter();
             playerCharacter.SetActive(false);
             playerCharacter.SetStartDisable(false);
             playerCharacter.OnDieEvent += HandlePlayerDie;
