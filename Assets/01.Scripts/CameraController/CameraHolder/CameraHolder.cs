@@ -1,6 +1,5 @@
 using Agents;
 using Agents.Players;
-using UnityEditor.Build;
 using UnityEngine;
 
 namespace CameraControllers.CameraHolders
@@ -37,6 +36,14 @@ namespace CameraControllers.CameraHolders
 
             }
         }
+        public void Initialize(Agent agent)
+        {
+            _player = agent as Player;
+        }
+
+        public void AfterInit() { }
+
+        public void Dispose() { }
 
 #if UNITY_EDITOR
 
@@ -46,14 +53,6 @@ namespace CameraControllers.CameraHolders
             Gizmos.DrawWireSphere(transform.position, _holderRange);
         }
 
-        public void Initialize(Agent agent)
-        {
-            _player = agent as Player;
-        }
-
-        public void AfterInit() { }
-
-        public void Dispose() { }
 
 #endif
     }
