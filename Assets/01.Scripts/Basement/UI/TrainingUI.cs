@@ -91,7 +91,7 @@ namespace Basement.Training
             CharacterManager.Instance.AddSkillPoint(character, _training.statType, increaseValue);
 
             string trainingCompleteText = $"{_training.trainingVisibleName} Complete\n««∑Œµµ +{increaseFatigue}    {_training.statType.ToString()} pt +{increaseValue}";
-            UIManager.Instance.msgText.PopMSGText(character, trainingCompleteText);
+            //UIManager.Instance.msgText.PopMSGText(character, trainingCompleteText);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Basement
         public BuildConfirmPanel buildConfirmPanel;
         public BasementTimerUI timer;
         public FurnitureUI furnitureUI;
-        public MSGText msgText;
+        //public MSGText msgText;
         public RoomUI roomUI;
         public BasementRoomChangeUI basementUI;
 
@@ -29,12 +29,12 @@ namespace Basement
 
             BasementUI trainingUI = FindFirstObjectByType<TrainingUI>();
             BasementUI lodgingUI = FindFirstObjectByType<LodgingUI>();
-            BasementUI cafeUI = FindFirstObjectByType<CafeUI>();
+            //BasementUI cafeUI = FindFirstObjectByType<CafeUI>();
             BasementUI officeUI = FindFirstObjectByType<OfficeUI>();
 
             basementRoomUI.Add(BasementRoomType.TrainingRoom, trainingUI);
             basementRoomUI.Add(BasementRoomType.Lodging, lodgingUI);
-            basementRoomUI.Add(BasementRoomType.Cafe, cafeUI);
+            //basementRoomUI.Add(BasementRoomType.Cafe, cafeUI);
             basementRoomUI.Add(BasementRoomType.Office, officeUI);
         }
 

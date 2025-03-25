@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Combat.PlayerTagSystem;
 using TMPro;
+using UI.InGame.GameUI.CallTalk;
 using UI.InGame.SystemUI;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace Dialog
     public class InGameDialogPlayer : DialogPlayer
     {
         [SerializeField] private PlayerManager _playerManager;
+        [SerializeField] private CallTalkUI _callTalkUI;
+
         [SerializeField] private DialogueTipUIPanel _tipPanel;
 
         private AnimationPlayer _animPlayer;
@@ -48,6 +51,15 @@ namespace Dialog
             {
                 _animPlayer.PlayAnimation(_curCharacter.ContentText, node.contentTagAnimations);
             }
+        }
+
+        public void SendTalkMessage(string sender, string content)
+        {
+            _callTalkUI.SetNewTalk(new TalkData()
+            {
+                sender = sender,
+                content = content
+            });
         }
 
 
@@ -215,7 +227,7 @@ namespace Dialog
         public virtual void SetCharacters(List<Actor> actors)
         {
             this.characters = actors;
-            
+
             foreach (Actor actor in characters)
             {
                 TalkBubble bubble = GetTalkBubble();

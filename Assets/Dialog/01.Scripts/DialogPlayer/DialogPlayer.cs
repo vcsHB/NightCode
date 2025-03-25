@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using InputManage;
-using UI.InGame.SystemUI;
 using UnityEngine;
 
 namespace Dialog

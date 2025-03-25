@@ -7,6 +7,7 @@ using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
 using UI.InGame.GameUI.CharacterSelector;
+using UI.InGame.SystemUI.AlertSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,9 +19,10 @@ namespace Combat.PlayerTagSystem
         public UnityEvent OnAllPlayerDieEvent;
         [Header("Essential Settings")]
         [SerializeField] private PlayerInput _playerInput;
-        [SerializeField] private PlayerSO[] _playerDatas;
+        [SerializeField] private List<PlayerSO> _playerDatas;
         [SerializeField] private List<Player> _playerList;
         [SerializeField] private AimGroupController _aimGroup;
+        [SerializeField] private AlertGroup _alertGroup;
         [SerializeField] private int _currentPlayerIndex = 0;
         [SerializeField] private CharacterSelectWindow _characterSelectWindow;
         public Player CurrentPlayer => _playerList[_currentPlayerIndex];
@@ -31,7 +33,6 @@ namespace Combat.PlayerTagSystem
         [Header("Change Setting")]
         [SerializeField] private float _changeCooltime = 1f;
         private float _currentCooltime = 0f;
-
 
         private void Start()
         {
@@ -54,7 +55,7 @@ namespace Combat.PlayerTagSystem
 
         private void Initialize()
         {
-            for (int i = 0; i < _playerDatas.Length; i++)
+            for (int i = 0; i < _playerDatas.Count; i++)
             {
                 Player playerCharacter = Instantiate(_playerDatas[i].playerPrefab, transform);
                 playerCharacter.GetComponentInChildren<AimController>().SetAimGroup(_aimGroup);
@@ -152,6 +153,25 @@ namespace Combat.PlayerTagSystem
             movement.SetVelocity(Vector2.zero);
             movement.SetMovement(0f);
 
+        }
+
+        public void AddPlayer(PlayerSO playerSO)
+        {
+            if (_playerDatas.Contains(playerSO))
+            {
+                Debug.LogWarning($"Add duplicated character. name:{playerSO.characterName}");
+                return;
+            }
+            _alertGroup.ShowAlert($"AGENT [{playerSO.characterName}]님이 합류하였습니다.");
+            Player playerCharacter = Instantiate(playerSO.playerPrefab, transform);
+            playerCharacter.GetComponentInChildren<AimController>().SetAimGroup(_aimGroup);
+            _playerDatas.Add(playerSO);
+            _playerList.Add(playerCharacter);
+            _characterSelectWindow.AddCharacterSlot(playerSO, playerCharacter);
+            playerCharacter.ExitCharacter();
+            playerCharacter.SetActive(false);
+            playerCharacter.SetStartDisable(false);
+            playerCharacter.OnDieEvent += HandlePlayerDie;
         }
 
     }

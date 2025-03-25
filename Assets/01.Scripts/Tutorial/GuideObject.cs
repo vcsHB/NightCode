@@ -8,7 +8,7 @@ namespace Tutorial
     {
         [SerializeField] private GoalObject _goal;
         [SerializeField] private ShowPointArea _showPoint;
-        [SerializeField] private GameObject _description;
+        [SerializeField] private DescriptionBox _description;
         private void Awake()
         {
             _goal.OnGoalArrivedEvent.AddListener(HandleArriveGoal);
@@ -17,12 +17,12 @@ namespace Tutorial
 
         private void HandleShowPoint()
         {
-            _description.SetActive(true);
+            _description.Open();
         }
 
         private void HandleArriveGoal()
         {
-            _description.SetActive(false);
+            _description.Close();
 
         }
     }
