@@ -12,10 +12,13 @@ namespace Agents.Players
         private SpriteRenderer _spriteRenderer;
         private bool _isActive;
         private CresentPlayer _owner;
+        private AimController _aimController;
+        
 
         private void Awake()
         {
             _spriteRenderer = _visualTrm.GetComponent<SpriteRenderer>();
+            _aimController = _owner.GetCompo<AimController>();
         }
 
         private void FixedUpdate()
@@ -25,11 +28,11 @@ namespace Agents.Players
                 Vector2 velocity = _rigid.linearVelocity;
                 if (velocity.magnitude > _owner.DashAttackStandardVelocity)
                 {
-                    Time.timeScale = 0.5f;
+                    Time.timeScale = 0.7f;
 
                     _visualTrm.DOScaleY(1f, 0.1f);
                     //_spriteRenderer.enabled = true;
-                    SetDirection(velocity.normalized);
+                    SetDirection(_aimController.AimDirection);
                     return;
                 }
                 Time.timeScale = 1f;
@@ -45,13 +48,11 @@ namespace Agents.Players
             _isActive = value;
             if (!value)
                 _visualTrm.DOScaleY(0f, 0.1f);
-
-            //               _spriteRenderer.enabled = false;
         }
         public void SetDirection(Vector2 direction)
         {
-            Vector2 clampedDirection = VectorCalculator.ClampTo8Directions(direction);
-            _visualTrm.right = clampedDirection;
+            //Vector2 clampedDirection = VectorCalculator.ClampTo8Directions(direction);
+            _visualTrm.right = direction;
 
         }
 
