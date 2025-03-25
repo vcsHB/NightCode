@@ -64,9 +64,9 @@ namespace Dialog
                 if (index <= 0) break;
             }
 
-            Debug.Log(_txtInfo.textComponent.text.Length);
-            Debug.Log(index);
-            Debug.Log("_txtInfo.characterInfo.Len : " + _txtInfo.characterInfo.Length);
+            //Debug.Log(_txtInfo.textComponent.text.Length);
+            //Debug.Log(index);
+            //Debug.Log("_txtInfo.characterInfo.Len : " + _txtInfo.characterInfo.Length);
             return _txtInfo.characterInfo[index].isVisible;
         }
 

@@ -28,6 +28,8 @@ namespace Office
         private void Awake()
         {
             _originPositions = new Vector2[3];
+            _skillTreePanel.InitSkillTree(_characterPanels[1].CharacterType);
+
             for (int i = 0; i < 3; i++)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(_panelRect);

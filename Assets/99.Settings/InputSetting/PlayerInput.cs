@@ -38,7 +38,16 @@ namespace InputManage
         public event Action TurboEvent;
         public event Action OnCharacterChangeEvent;
         private Controls _controls;
-        [field: SerializeField] public Vector2 InputDirection { get; private set; }
+        [SerializeField] private Vector2 _inputDirection;
+        public Vector2 InputDirection
+        {
+            get
+            {
+                if(!playerInputStatus.move) return Vector2.zero;
+                return _inputDirection;
+            }
+            private set { }
+        }
 
         public Vector2 MousePosition { get; private set; }
         public Vector2 MouseWorldPosition { get; private set; }
@@ -69,11 +78,11 @@ namespace InputManage
         {
             if (!playerInputStatus.move)
             {
-                InputDirection = Vector2.zero;
+                _inputDirection = Vector2.zero;
                 return;
             }
-            InputDirection = context.ReadValue<Vector2>();
-            MovementEvent?.Invoke(InputDirection);
+            _inputDirection = context.ReadValue<Vector2>();
+            MovementEvent?.Invoke(_inputDirection);
         }
 
         public void OnAttack(InputAction.CallbackContext context)
