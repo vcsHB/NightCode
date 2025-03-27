@@ -13,10 +13,18 @@ namespace Combat.SubWeaponSystem.WepaonObjects
             _visualTrm = transform.Find("Visual");
         }
 
+        private void Update()
+        {
+            if (IsActive)
+            {
+                _caster.Cast();
+            }
+        }
+
         public override void UseWeapon(SubWeaponControlData data)
         {
             _visualTrm.right = data.direction;
-            
+
         }
 
     }

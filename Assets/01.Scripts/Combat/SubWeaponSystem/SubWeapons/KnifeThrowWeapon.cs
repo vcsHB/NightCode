@@ -32,5 +32,11 @@ namespace Combat.SubWeaponSystem.Weapons
             }
 
         }
+
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            
+        }
     }
 }

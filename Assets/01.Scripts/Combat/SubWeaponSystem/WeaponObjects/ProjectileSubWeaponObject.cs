@@ -1,3 +1,4 @@
+using Combat.Casters;
 using Combat.SubWeaponSystem;
 using UnityEngine;
 namespace SubWeaponSystem
@@ -5,6 +6,7 @@ namespace SubWeaponSystem
 
     public abstract class ProjectileSubWeaponObject : PoolableWeaponObject
     {
+        [SerializeField] protected Caster _caster;
         protected Rigidbody2D _rigid;
 
         protected virtual void Awake()
