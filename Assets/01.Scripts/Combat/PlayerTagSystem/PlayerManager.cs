@@ -122,6 +122,7 @@ namespace Combat.PlayerTagSystem
             //CurrentPlayer.transform.rotation = prevRotation;
             CurrentPlayer.GetCompo<AgentRenderer>().FlipController(direction);
             SetPlayer(CurrentPlayer);
+            _aimGroup.SetAimColor(CurrentPlayerData.personalColor);
         }
 
         private void SetPlayer(Player newCharacter)

@@ -1,3 +1,4 @@
+using System;
 using Agents.Players;
 using UnityEngine;
 using UnityEngine.Events;
@@ -56,6 +57,11 @@ namespace ObjectManage.Rope
             _aimAnchor.SetOwnerPlayerRigidbody(ownerRigid);
             RopePhysics.startTransform = ropeHolder;
 
+        }
+
+        public void SetAimColor(Color personalColor)
+        {
+            _aimAnchor.SetColor(personalColor);
         }
     }
 }
