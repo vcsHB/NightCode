@@ -127,7 +127,7 @@ namespace Agents.Players
                         GetLerpTargetPosition(_wireClampedDistance), _clampDuration));
             }
             else
-                _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
+                _aimGroupController.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
 
         }
         public void RemoveWire()
@@ -137,7 +137,7 @@ namespace Agents.Players
             Vector2 velocity = _playerMovement.Velocity;
             _aimGroupController.SetActiveWire(false);
             _aimGroupController.SetAnchorPosition(transform.position);
-            _aimGroupController.Wire.SetWireEnable(false);
+            _aimGroupController.SetWireEnable(false);
             _isShoot = false;
 
             _playerMovement.SetVelocity(velocity);
@@ -155,11 +155,21 @@ namespace Agents.Players
                 _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / duration);
                 yield return null;
             }
-            _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _wireClampedDistance);
+            _aimGroupController.SetWireEnable(true, _anchorPosition, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
             OnComplete?.Invoke();
 
             _clampCoroutine = null;
+        }
+
+        public void RefreshOrbitVisual()
+        {
+            _aimGroupController.SetOrbitVisual(_player.transform.position);
+        }
+
+        public void SetOrbitVisual(bool value)
+        {
+            _aimGroupController.SetOrbitVisual(value);
         }
 
 
