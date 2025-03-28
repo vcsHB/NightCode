@@ -5,7 +5,12 @@ using UnityEngine;
 
 namespace Combat.SubWeaponSystem
 {
-    // SubWeaponController -> SubWepaon -> WeaponObject
+
+    /// <summary>
+    /// basic Weapon Manage Controller. (AgentComponent)
+    /// manage relationship order
+    /// [WeaponController] -> Weapon -> WeaponObject
+    /// </summary>
     public class SubWeaponController : MonoBehaviour, IAgentComponent
     {
         [Header("Controller Setting")]
@@ -64,6 +69,7 @@ namespace Combat.SubWeaponSystem
         public void UseWeapon()
         {
             if(!_player.IsActive) return;
+            if(!_weapon.CanUse) return;
             Vector2 targetDirection = _isTargetDetected ?
                 (_currentTarget.position - transform.position).normalized :
                 new Vector2(_ownerRenderer.FacingDirection, 0f);

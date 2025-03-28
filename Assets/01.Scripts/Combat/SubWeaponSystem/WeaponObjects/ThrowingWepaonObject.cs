@@ -1,0 +1,20 @@
+using UnityEngine;
+namespace Combat.SubWeaponSystem
+{
+    public class ThrowingWepaonObject : PoolableWeaponObject
+    {
+        protected Rigidbody2D _rigid;
+        [SerializeField] private float _gravityScale = -9.8f;
+
+        private void Awake()
+        {
+            _rigid = GetComponent<Rigidbody2D>();
+        }
+
+        public override void UseWeapon(SubWeaponControlData data)
+        {
+            _rigid.AddForce(data.direction * data.speed, ForceMode2D.Impulse);
+        }
+
+    }
+}
