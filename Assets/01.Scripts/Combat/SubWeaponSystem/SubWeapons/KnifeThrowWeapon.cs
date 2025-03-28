@@ -8,6 +8,7 @@ namespace Combat.SubWeaponSystem.Weapons
     {
         [SerializeField] private int _throwAmount;
         [SerializeField] private float _throwTerm;
+        [SerializeField] private float _throwSpeed = 30f;
 
         private WaitForSeconds _waitForTerm;
 
@@ -18,6 +19,7 @@ namespace Combat.SubWeaponSystem.Weapons
         }
         public override void UseWeapon(SubWeaponControlData data)
         {
+            data.speed = _throwSpeed;
             base.UseWeapon(data);
             StartCoroutine(ThrowCoroutine(data));
         }
@@ -27,16 +29,12 @@ namespace Combat.SubWeaponSystem.Weapons
             for (int i = 0; i < _throwAmount; i++)
             {
                 ThrowingKnife knife = GetNewWeaponObject() as ThrowingKnife;
+                knife.transform.position = transform.position;
                 knife.UseWeapon(data);
                 yield return _waitForTerm;
             }
 
         }
 
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            
-        }
     }
 }

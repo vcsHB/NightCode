@@ -1,3 +1,4 @@
+using System;
 using Agents;
 using Agents.Players;
 using UnityEngine;
@@ -11,28 +12,58 @@ namespace Combat.SubWeaponSystem
         [SerializeField] private AgentRenderer _ownerRenderer;
         [SerializeField] private float _targetAutoDetectRadius = 20f;
         [SerializeField] private LayerMask _autoTargetLayer;
+        [SerializeField] private SubWeaponSO _currentWeapon;
         private SubWeapon _weapon;
         private Transform _currentTarget;
         private bool _isTargetDetected;
         private Player _player;
+
+        private void Start()
+        {
+            DebugSetWeapon();
+        }
+
+        #region AgentCompo Functions
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
             _player.GetCompo<AgentRenderer>();
 
+            _player.OnEnterEvent += HandlePlayerEnter;
+            _player.OnExitEvent += HandlePlayerExit;
+
         }
         public void AfterInit() { }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            _player.OnEnterEvent -= HandlePlayerEnter;
+            _player.OnExitEvent -= HandlePlayerExit;
+        }
+
+        #endregion
+
+        private void HandlePlayerEnter()
+        {
+            _player.PlayerInput.OnUseEvent += UseWeapon;
+        }
+        private void HandlePlayerExit()
+        {
+            _player.PlayerInput.OnUseEvent -= UseWeapon;
+        }
+
+
+
 
         private void Update()
         {
+            
             DetectTarget();
         }
 
         public void UseWeapon()
         {
-
+            if(!_player.IsActive) return;
             Vector2 targetDirection = _isTargetDetected ?
                 (_currentTarget.position - transform.position).normalized :
                 new Vector2(_ownerRenderer.FacingDirection, 0f);
@@ -51,11 +82,14 @@ namespace Combat.SubWeaponSystem
             if (!_isTargetDetected) return;
             _currentTarget = target.transform;
         }
-
-
+        private void DebugSetWeapon()
+        {
+            SetSubWeaponData(_currentWeapon);
+        }
         public void SetSubWeaponData(SubWeaponSO data)
         {
-            if (_weapon == null) return;
+            if (data == null) return;
+            _currentWeapon = data;
             _weapon = Instantiate(data.subWeaponPrefab, transform);
 
         }
