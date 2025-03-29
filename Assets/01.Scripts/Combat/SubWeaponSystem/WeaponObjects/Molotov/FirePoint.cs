@@ -11,6 +11,13 @@ namespace Combat.SubWeaponSystem
         private float _fireStartTime;
         private bool _isActive;
 
+        [ContextMenu("DebugSetFire")]
+        private void DebugSetFireActive()
+        {
+            SetFire(true);
+        }
+
+
         public void SetFire(bool value)
         {
             _fireStartTime = Time.time;
@@ -25,7 +32,7 @@ namespace Combat.SubWeaponSystem
         private void Update()
         {
             if (!_isActive) return;
-            if (_fireStartTime + _lifeTime < Time.deltaTime)
+            if (_fireStartTime + _lifeTime < Time.time)
             {
                 SetFire(false);
             }

@@ -16,7 +16,7 @@ namespace Combat.SubWeaponSystem
         [SerializeField] protected float _explosionDelay = 4f;
         protected SpriteRenderer _visualRenderer;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
             _visualRenderer = transform.Find("Visual").GetComponent<SpriteRenderer>();
         }
@@ -31,7 +31,7 @@ namespace Combat.SubWeaponSystem
         {
             base.UseWeapon(data);
             StartCoroutine(ExplosionDelayCoroutine());
-            // _rigid.angularVelocity // Rotate?
+            _rigid.angularVelocity = data.direction.x * 4f;
         }
 
         protected virtual IEnumerator ExplosionDelayCoroutine()

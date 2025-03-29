@@ -4,12 +4,14 @@ namespace Combat.SubWeaponSystem
 {
     public class GrenadeBomb : Grenade
     {
+        private Transform _visualTrm;
         private Material _visualMaterial;
         private readonly int _heatLevelHash = Shader.PropertyToID("_HeatLevel");
 
         protected override void Awake()
         {
             base.Awake();
+            _visualTrm = _visualRenderer.transform;
             _visualMaterial = _visualRenderer.material;
             OnDelayTimeEvent += HandleSetGrenadeHeatLevel;
         }
