@@ -12,7 +12,7 @@ namespace Combat.SubWeaponSystem
 
         public override void UseWeapon(SubWeaponControlData data)
         {
-            _rigid.AddForce(data.direction * data.speed, ForceMode2D.Impulse);
+            _rigid.linearVelocity = data.direction * data.speed;
         }
 
     }

@@ -21,6 +21,12 @@ namespace Combat.SubWeaponSystem
             HandleSetGrenadeHeatLevel(0f);
         }
 
+        public override void UseWeapon(SubWeaponControlData data)
+        {
+            base.UseWeapon(data);
+            _rigid.linearVelocity = data.direction * data.speed;
+        }
+
 
 
         private void HandleSetGrenadeHeatLevel(float current, float max)

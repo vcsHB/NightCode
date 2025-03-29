@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7870241496116852336}
   - component: {fileID: 4135192743143700421}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Caster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1254993217998411401}
   - component: {fileID: 5189765434883713459}
-  m_Layer: 0
+  - component: {fileID: -889215415187489594}
+  - component: {fileID: -197853912753823292}
+  m_Layer: 11
   m_Name: GrenadeBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +109,7 @@ Transform:
   m_GameObject: {fileID: 1449269912496988273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 51.72, y: -37.23, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -135,6 +137,69 @@ MonoBehaviour:
   _caster: {fileID: 4135192743143700421}
   _disableDelay: 5
   _explosionDelay: 4
+--- !u!50 &-889215415187489594
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449269912496988273}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 2.4
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &-197853912753823292
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449269912496988273}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5
 --- !u!1 &2325170948268471939
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +211,7 @@ GameObject:
   - component: {fileID: 5225503289603486766}
   - component: {fileID: 5829775312543161587}
   - component: {fileID: 950241610341496890}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5036,7 +5101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7443412853626726398}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Feedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5070,7 +5135,7 @@ GameObject:
   - component: {fileID: 7861990324773806586}
   - component: {fileID: 3159738185192443734}
   - component: {fileID: 6465782681491412331}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5107,7 +5172,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -9960,7 +10025,7 @@ GameObject:
   m_Component:
   - component: {fileID: 813011061908262955}
   - component: {fileID: 5916857552727875728}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9975,13 +10040,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6483930535237971039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: 0.9440891, w: -0.32969046}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1254993217998411401}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 218.5}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5916857552727875728
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10048,7 +10113,7 @@ GameObject:
   - component: {fileID: 3481970520551399646}
   - component: {fileID: 3335457161976353968}
   - component: {fileID: 4926461289463761397}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CameraShakeFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}

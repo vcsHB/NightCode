@@ -18,6 +18,7 @@ namespace Combat.SubWeaponSystem
 
         protected override void Awake()
         {
+            base.Awake();
             _visualRenderer = transform.Find("Visual").GetComponent<SpriteRenderer>();
         }
 
@@ -31,7 +32,7 @@ namespace Combat.SubWeaponSystem
         {
             base.UseWeapon(data);
             StartCoroutine(ExplosionDelayCoroutine());
-            _rigid.angularVelocity = data.direction.x * 4f;
+            //_rigid.angularVelocity = data.direction.x * 4f;
         }
 
         protected virtual IEnumerator ExplosionDelayCoroutine()
