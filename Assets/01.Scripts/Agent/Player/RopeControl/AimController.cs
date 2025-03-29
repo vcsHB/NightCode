@@ -20,7 +20,6 @@ namespace Agents.Players
         [SerializeField] private float _wireClampedDistance = 12f;
         [SerializeField] private float _clampDuration = 0.2f;
         [SerializeField] private float _pullClampDuration = 0.01f;
-        [SerializeField] private SlashVFXPlayer _slashVFXPlayer;
         // Properties
         public bool canShoot = true;
         public bool IsShoot => _isShoot;
