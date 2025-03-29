@@ -37,6 +37,7 @@ namespace Agents.Players.FSM
             _aimController.RefreshOrbitVisual();
 
 
+            CheckExitToGround();
             if (_mover.Velocity.magnitude < 0.6f)
             {
                 if (CheckWallAndHold())
@@ -44,14 +45,19 @@ namespace Agents.Players.FSM
                     //HandleRemoveRope();
                     _aimController.RemoveWire();
                 }
-                if (_isGroundCheck)
-                {
 
-                    if (_mover.IsGroundDetected())
-                    {
-                        _aimController.RemoveWire();
-                        _stateMachine.ChangeState("Fall");
-                    }
+            }
+        }
+
+        protected void CheckExitToGround()
+        {
+            if (_isGroundCheck)
+            {
+
+                if (_mover.IsGroundDetected() && _aimController.HangingDirection.y < 0)
+                {
+                    _aimController.RemoveWire();
+                    _stateMachine.ChangeState("Fall");
                 }
             }
         }

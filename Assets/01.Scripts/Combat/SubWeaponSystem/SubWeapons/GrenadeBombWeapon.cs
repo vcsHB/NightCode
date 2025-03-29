@@ -13,7 +13,6 @@ namespace Combat.SubWeaponSystem
             data.direction.x = 10f * sign;
             data.direction.y = 10f;
             data.speed = _throwSpeed;
-            Debug.Log(data.direction);
             base.UseWeapon(data);
             GrenadeBomb grenadeBomb = GetNewWeaponObject() as GrenadeBomb;
             grenadeBomb.transform.position = transform.position;

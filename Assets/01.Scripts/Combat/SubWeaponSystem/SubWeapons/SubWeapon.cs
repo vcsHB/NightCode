@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 namespace Combat.SubWeaponSystem
 {
     /// <summary>
@@ -19,6 +20,7 @@ namespace Combat.SubWeaponSystem
     /// </summary>
     public abstract class SubWeapon : MonoBehaviour
     {
+        public UnityEvent OnUsedEvent;
         public event Action<float, float> OnCooltimeChangeEvent;
         [SerializeField] protected float _useCooltime;
         protected float _currentCoolTime;
@@ -34,6 +36,7 @@ namespace Combat.SubWeaponSystem
 
         public virtual void UseWeapon(SubWeaponControlData data)
         {
+            OnUsedEvent?.Invoke();
         }
     }
 }

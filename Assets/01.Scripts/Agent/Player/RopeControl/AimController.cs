@@ -134,6 +134,7 @@ namespace Agents.Players
         {
             if (IsClamping)
                 StopCoroutine(_clampCoroutine);
+            _clampCoroutine = null;
             Vector2 velocity = _playerMovement.Velocity;
             _aimGroupController.SetActiveWire(false);
             _aimGroupController.SetAnchorPosition(transform.position);
