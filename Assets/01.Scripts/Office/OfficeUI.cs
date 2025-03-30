@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Net.NetworkInformation;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,10 +21,12 @@ namespace Office
 
         private bool _isCharacterPanel;
         private Sequence _openCloseSeq;
+        private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
 
         private void Awake()
         {
             ChangeInitUI(true);
+            background.anchoredPosition = new Vector2(0, screenPosition.y);
         }
 
         public void ChangeInitUI(bool isCharacterPanel)
@@ -71,8 +74,8 @@ namespace Office
                 _openCloseSeq.Kill();
 
             _openCloseSeq = DOTween.Sequence();
-            _openCloseSeq.Append(background.DOAnchorPosY(1080, _duration))
-                .Join(_returnBtnRect.DOAnchorPosX(-1000, _duration))
+            _openCloseSeq.Append(background.DOAnchorPosY(screenPosition.y, _duration))
+                .Join(_returnBtnRect.DOAnchorPosX(-screenPosition.x, _duration))
                 .OnComplete(OnCompleteClose);
 
             _leftBtn.SetActive(false);

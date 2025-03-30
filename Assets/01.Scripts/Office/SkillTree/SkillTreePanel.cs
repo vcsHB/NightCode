@@ -10,6 +10,12 @@ namespace Office
         [SerializeField] private float _easingDuration;
 
         private Tween _openCloseTween;
+        private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
+
+        private void Awake()
+        {
+            RectTrm.anchoredPosition = new Vector2(0, -screenPosition.y);
+        }
 
         public void InitSkillTree(CharacterEnum characterType)
         {
@@ -40,7 +46,7 @@ namespace Office
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(-1080, _easingDuration)
+            _openCloseTween = RectTrm.DOAnchorPosY(-screenPosition.y, _easingDuration)
                 .OnComplete(OnCompleteClose);
         }
     }

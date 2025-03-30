@@ -23,12 +23,14 @@ namespace Office
         private Sequence _selectPanelSeq;
 
         private RectTransform _rectTrm => transform as RectTransform;
+        private Vector2 screenPos = new Vector2(Screen.width, Screen.height);
 
 
         private void Awake()
         {
             _originPositions = new Vector2[3];
             _skillTreePanel.InitSkillTree(_characterPanels[1].CharacterType);
+            _rectTrm.anchoredPosition = new Vector2(screenPos.x, 0);
 
             for (int i = 0; i < 3; i++)
             {
@@ -135,7 +137,7 @@ namespace Office
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = _rectTrm.DOAnchorPosX(1920f, _duration)
+            _openCloseTween = _rectTrm.DOAnchorPosX(screenPos.x, _duration)
                     .OnComplete(OnCompleteClose);
         }
 

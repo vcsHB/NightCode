@@ -34,12 +34,17 @@ namespace Office
         private MissionSelectButton _selectedButton;
 
         private Sequence _seq;
+        private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
+
+        private void Awake()
+        {
+            scrollViewRect.anchoredPosition = new Vector2(-screenPosition.x, 0);
+        }
 
         private void Update()
         {
             if (Keyboard.current.lKey.wasPressedThisFrame)
             {
-                Debug.Log("¤²¤¸¤§¤¡");
                 OfficeManager.Instance.ClearMission(missions[0]);
             }
         }
@@ -68,20 +73,6 @@ namespace Office
                 _seq.AppendCallback(() => _selectedButton.RectTrm.SetParent(contentRect));
                 _seq.Append(_selectedButton.RectTrm.DOAnchorPosX(position, _easingDuration));
             }
-
-            //for (int i = 0; i < _missionButtonList.Count; i++)
-            //{
-            //    RectTransform btnTrm = _missionButtonList[i].RectTrm;
-
-            //    if (btnTrm.parent == transform)
-            //    {
-            //        btnTrm.SetParent(contentRect);
-            //        float targetPosition = btnTrm.localPosition.x;
-            //        btnTrm.SetParent(transform);
-
-            //        _seq.Append(btnTrm.DOAnchorPosX(targetPosition, _easingDuration));
-            //    }
-            //}
         }
 
         public override void CloseAnimation()
@@ -91,7 +82,7 @@ namespace Office
 
             _seq = DOTween.Sequence();
 
-            _seq.Append(scrollViewRect.DOAnchorPosX(-1920, _easingDuration))
+            _seq.Append(scrollViewRect.DOAnchorPosX(-screenPosition.x, _easingDuration))
                 .OnComplete(OnCompleteOpen);
         }
 
@@ -112,7 +103,7 @@ namespace Office
             _selectedButton = missionSelectButton;
 
             _seq = DOTween.Sequence();
-            _seq.Append(scrollViewRect.DOAnchorPosX(-1920, _easingDuration))
+            _seq.Append(scrollViewRect.DOAnchorPosX(-screenPosition.x, _easingDuration))
                 .Join(missionSelectButton.RectTrm.DOAnchorPosX(-500, _easingDuration))
                 .OnComplete(formation.Open);
 

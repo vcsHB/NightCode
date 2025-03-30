@@ -35,8 +35,8 @@ namespace Agents.Players.FSM
             {
                 _mover.SetGravityMultiplier(0f);
                 _staminaController.ReduceStamina();
-                Vector2 newDirection = VectorCalculator.ClampTo8Directions(_mover.Velocity) * velocity.magnitude;
-                _mover.SetVelocity(newDirection * 15f);
+                //Vector2 newDirection = VectorCalculator.ClampTo8Directions(_mover.Velocity) * velocity.magnitude;
+                _mover.SetVelocity(_aimController.AimDirection.normalized * 120f);
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("SwingDash"));
             }
             else

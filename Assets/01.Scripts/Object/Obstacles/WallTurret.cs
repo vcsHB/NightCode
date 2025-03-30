@@ -1,12 +1,14 @@
 using Combat;
 using Combat.CombatObjects.ProjectileManage;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ObjectManage.Obstacles
 {
 
     public class WallTurret : MonoBehaviour
     {
+        public UnityEvent OnFireEvent;
         [SerializeField] private ProjectileShooter _shooter;
 
         [SerializeField] private LayerMask _targetLayer;
@@ -76,6 +78,7 @@ namespace ObjectManage.Obstacles
             if (hit.collider != null)
             {
                 _lastFireTime = Time.time;
+                OnFireEvent?.Invoke();
                 _shooter.FireProjectile(direction + (Random.insideUnitCircle * _bulletRandomize));
             }
 

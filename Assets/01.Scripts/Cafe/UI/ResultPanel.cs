@@ -5,6 +5,7 @@ using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Cafe
 {
@@ -52,6 +53,8 @@ namespace Cafe
                     reward = Mathf.CeilToInt(reward * 1.5f);
                     break;
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(RectTrm);
 
             StartCoroutine(InitRoutine(customer, reward));
         }
