@@ -15,7 +15,7 @@ namespace Cafe
 
             if (collision.TryGetComponent(out _player))
             {
-                _player.AddInteract(interactObject);
+                _player.AddInteract(null);
             }
         }
 
@@ -25,7 +25,7 @@ namespace Cafe
 
             if (collision.TryGetComponent(out _player))
             {
-                _player.RemoveInteract();
+                //_player.RemoveInteract();
             }
         }
     }
