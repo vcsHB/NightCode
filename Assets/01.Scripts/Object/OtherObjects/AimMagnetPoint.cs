@@ -44,6 +44,8 @@ namespace ObjectManage
         private void SetEnabled(bool value)
         {
             _collider.enabled = value;
+            if (!value)
+                Release();
         }
 
         public void OnAimEntered()
