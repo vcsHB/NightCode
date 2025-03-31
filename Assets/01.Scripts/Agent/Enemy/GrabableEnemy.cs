@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Agents.Enemies
 {
 
-    public class GrabableEnemy : Enemy, IGrabable
+    public class GrabableEnemy : Enemy
     {
         public Transform GetTransform => transform;
         protected float _defaultGravity;
@@ -14,14 +14,14 @@ namespace Agents.Enemies
             _defaultGravity = RigidCompo.gravityScale;
         }
 
-        public virtual void Grab()
-        {
-            RigidCompo.gravityScale = 0.1f;
-        }
+        // public virtual void Grab()
+        // {
+        //     RigidCompo.gravityScale = 0.1f;
+        // }
 
-        public virtual void Release()
-        {
-            RigidCompo.gravityScale = _defaultGravity;
-        }
+        // public virtual void Release()
+        // {
+        //     RigidCompo.gravityScale = _defaultGravity;
+        // }
     }
 }

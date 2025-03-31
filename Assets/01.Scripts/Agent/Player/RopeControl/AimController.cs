@@ -39,6 +39,7 @@ namespace Agents.Players
         public Vector2 TargetPoint => _currentAimData.targetPosition;
         public Vector2 OriginPosition => _currentAimData.originPlayerPosition;
         private float _currentShootTime = 0;
+        private float _anchorDistance;
         private Vector2 _anchorPosition;
 
 
@@ -117,13 +118,17 @@ namespace Agents.Players
         {
             _aimGroupController.SetActiveWire(true);
             _anchorPosition = _currentAimData.targetPosition; // _currentAimData.targetPosition;
+            _anchorDistance = _currentAimData.distanceToPoint;
             _aimGroupController.SetAnchorPosition(TargetPoint);
+            _aimGroupController.SetAnchorParent(_currentAimData.targetTrm);
             if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
+                Vector2 newPosition = GetLerpTargetPosition(_wireClampedDistance);
+                _anchorDistance = Vector2.Distance(newPosition, _anchorPosition);
                 _clampCoroutine = StartCoroutine(
                     DistanceClampCoroutine(
-                        GetLerpTargetPosition(_wireClampedDistance), _clampDuration));
+                        newPosition, _clampDuration));
             }
             else
                 _aimGroupController.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
@@ -136,6 +141,7 @@ namespace Agents.Players
             _clampCoroutine = null;
             Vector2 velocity = _playerMovement.Velocity;
             _aimGroupController.SetActiveWire(false);
+            _aimGroupController.SetAnchorParent();
             _aimGroupController.SetAnchorPosition(transform.position);
             _aimGroupController.SetWireEnable(false);
             _isShoot = false;
@@ -175,11 +181,11 @@ namespace Agents.Players
 
         public void HandlePull(Action OnComplete = null)
         {
-            if (IsClamping || _currentAimData.distanceToPoint < 2f) return;
+            if (IsClamping || _anchorDistance < 1f) return;
             _playerMovement.StopImmediately(true);
             _clampCoroutine = StartCoroutine(DistanceClampCoroutine(
                 GetLerpTargetPositionByRatio(0.9f),
-                _currentAimData.distanceToPoint * _pullClampDuration,
+                _anchorDistance * _pullClampDuration,
                 OnComplete));
 
         }
