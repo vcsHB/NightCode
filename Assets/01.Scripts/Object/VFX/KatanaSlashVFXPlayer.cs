@@ -23,6 +23,11 @@ namespace ObjectManage.VFX
             _trailRenderer.Clear();
         }
 
+        public void SetGradient(Gradient gradient)
+        {
+            _trailRenderer.colorGradient = gradient;
+        }
+
         public void Slash(Vector2 centerPos, Vector2 direction)
         {
             _trailRenderer.enabled = false;

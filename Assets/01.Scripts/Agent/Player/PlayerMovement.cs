@@ -74,8 +74,7 @@ namespace Agents.Players
             hangingDirection.Normalize();
             Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)hangingDirection * 10, Color.magenta, 2f);
 
-            float directionSign = -hangingDirection.x;
-            Vector2 rotatedDirection = new Vector2(-hangingDirection.y, hangingDirection.x) * directionSign;
+            Vector2 rotatedDirection = new Vector2(-hangingDirection.y, hangingDirection.x);
             rotatedDirection.Normalize();
 
             Vector2 inputDirection = _player.PlayerInput.InputDirection;

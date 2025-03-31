@@ -12,6 +12,7 @@ namespace Agents.Players
         public Vector2 originPlayerPosition;
         public float distance;
         public float distanceToPoint;
+        public Transform targetTrm;
         public Vector2 aimDirection;
 
     }
@@ -42,6 +43,7 @@ namespace Agents.Players
         private Vector2 _mousePos;
         private Vector2 _playerPos;
         private Vector2 _targetPos;
+        private Transform _targetTrm;
         private Vector2 _direction;
 
         // Grab Data
@@ -64,21 +66,32 @@ namespace Agents.Players
         private void FixedUpdate()
         {
             _playerPos = _player.transform.position;
-            _mousePos = _player.PlayerInput.MouseWorldPosition;
+            _mousePos = Camera.main.ScreenToWorldPoint(_player.PlayerInput.MousePosition);
             _direction = _mousePos - (Vector2)transform.position;
             RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, _shootRadius, _wallLayer | _targetLayer);
-            _isTargeted = boxHit.collider != null;
-            _grabTarget = null;
+            bool isTargetDetected = boxHit.collider != null;
+            if (!_isTargeted && isTargetDetected && _grabTarget != null)
+            {
+                _grabTarget.Release();
+                _grabTarget = null;
+            }
+            _isTargeted = isTargetDetected;
+            _targetTrm = null;
             if (_isTargeted)
             {
                 _targetPos = boxHit.point;
+                _targetTrm = boxHit.collider.transform;
                 if (boxHit.collider.TryGetComponent(out IGrabable grabTarget))
                 {
-                    _targetPos = boxHit.transform.position;
+                    _targetPos = grabTarget.GetTransform.position;
+                    if (_grabTarget != grabTarget)
+                    {
+                        grabTarget.Grab();
+                    }
                     _grabTarget = grabTarget;
                 }
             }
-            
+
             //InvokeGrabDataEvent();
             InvokeAimDataEvent();
 
@@ -92,6 +105,7 @@ namespace Agents.Players
                 isTargeted = _isTargeted,
                 originPlayerPosition = _playerPos,
                 targetPosition = _targetPos,
+                targetTrm = _targetTrm,
                 aimDirection = _direction,
                 distance = _direction.magnitude,
                 distanceToPoint = (_targetPos - _playerPos).magnitude

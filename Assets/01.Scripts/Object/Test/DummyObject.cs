@@ -3,7 +3,7 @@ using UnityEngine;
 namespace ObjectManage
 {
 
-    public class DummyObject : MonoBehaviour, IGrabable
+    public class DummyObject : MonoBehaviour
     {
         public Transform GetTransform => transform;
         private Rigidbody2D _rigid;
@@ -14,14 +14,14 @@ namespace ObjectManage
             _defaultGravity = _rigid.gravityScale;
         }
 
-        public void Grab()
-        {
-            _rigid.gravityScale = 0.1f;
-        }
+        // public void Grab()
+        // {
+        //     _rigid.gravityScale = 0.1f;
+        // }
 
-        public void Release()
-        {
-            _rigid.gravityScale = _defaultGravity;
-        }
+        // public void Release()
+        // {
+        //     _rigid.gravityScale = _defaultGravity;
+        // }
     }
 }
