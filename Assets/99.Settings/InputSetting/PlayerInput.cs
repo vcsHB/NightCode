@@ -13,6 +13,7 @@ namespace InputManage
         public bool jump;
         public bool change;
         public bool turbo;
+        public bool use;
 
         public void SetEnableAll()
         {
@@ -22,6 +23,7 @@ namespace InputManage
             jump = true;
             change = true;
             turbo = true;
+            use = false;
         }
     }
     [CreateAssetMenu(menuName = "SO/Input/PlayerInput")]
@@ -31,6 +33,7 @@ namespace InputManage
         public event Action OnAttackEvent;
         public event Action<bool> OnShootEvent;
         public event Action OnShootRopeEvent;
+        public event Action OnUseEvent;
         public event Action OnRemoveRopeEvent;
         public event Action<Vector2> MovementEvent;
         public event Action JumpEvent;
@@ -43,7 +46,7 @@ namespace InputManage
         {
             get
             {
-                if(!playerInputStatus.move) return Vector2.zero;
+                if (!playerInputStatus.move) return Vector2.zero;
                 return _inputDirection;
             }
             private set { }
@@ -85,14 +88,7 @@ namespace InputManage
             MovementEvent?.Invoke(_inputDirection);
         }
 
-        public void OnAttack(InputAction.CallbackContext context)
-        {
-            if (!playerInputStatus.attack) return;
-            if (context.performed)
-            {
-                OnAttackEvent?.Invoke();
-            }
-        }
+
 
         public void OnShoot(InputAction.CallbackContext context)
         {
@@ -108,6 +104,15 @@ namespace InputManage
                 IsShootRelease = true;
                 OnShootEvent?.Invoke(false);
                 OnRemoveRopeEvent?.Invoke();
+            }
+        }
+        public void OnUse(InputAction.CallbackContext context)
+        {
+            if (!playerInputStatus.use) return;
+
+            if (context.performed)
+            {
+                OnUseEvent?.Invoke();
             }
         }
 
@@ -159,6 +164,7 @@ namespace InputManage
                 InputDirection = Vector2.zero;
 
         }
+
     }
 
 }

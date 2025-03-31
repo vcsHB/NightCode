@@ -23,6 +23,7 @@ namespace Agents.Players.FSM
             _player.PlayerInput.TurboEvent += HandleUseTurbo;
             _player.PlayerInput.PullEvent += HandlePull;
             _renderer.SetLockRotation(false);
+            _aimController.SetOrbitVisual(true);
             CameraManager.Instance.GetCompo<CameraZoomController>().SetZoomLevel(30, 1f, true);
         }
 
@@ -33,8 +34,10 @@ namespace Agents.Players.FSM
 
             _renderer.FlipController(_mover.Velocity.normalized.x);
             _renderer.SetRotate(_aimController.HangingDirection);
+            _aimController.RefreshOrbitVisual();
 
 
+            CheckExitToGround();
             if (_mover.Velocity.magnitude < 0.6f)
             {
                 if (CheckWallAndHold())
@@ -42,14 +45,19 @@ namespace Agents.Players.FSM
                     //HandleRemoveRope();
                     _aimController.RemoveWire();
                 }
-                if (_isGroundCheck)
-                {
 
-                    if (_mover.IsGroundDetected())
-                    {
-                        _aimController.RemoveWire();
-                        _stateMachine.ChangeState("Fall");
-                    }
+            }
+        }
+
+        protected void CheckExitToGround()
+        {
+            if (_isGroundCheck)
+            {
+
+                if (_mover.IsGroundDetected() && _aimController.HangingDirection.y < 0)
+                {
+                    _aimController.RemoveWire();
+                    _stateMachine.ChangeState("Fall");
                 }
             }
         }
@@ -63,6 +71,8 @@ namespace Agents.Players.FSM
 
             _canUseTurbo = true;
             _mover.CanManualMove = true;
+            _aimController.SetOrbitVisual(false);
+
             _renderer.SetLockRotation(true);
 
         }
