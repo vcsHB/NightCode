@@ -11,9 +11,7 @@ namespace Cafe
         [SerializeField] private RectTransform _maskRect;
         [SerializeField] private TextMeshProUGUI _tmp1, _tmp2;
         [SerializeField] private Vector2 _textSize;
-        [SerializeField] private float _duration;
-
-        public float Duration => _duration;
+        public float duration;
 
         private float _speed;
         private string _format;
@@ -26,9 +24,6 @@ namespace Cafe
 
         private void Update()
         {
-            if (Keyboard.current.qKey.wasPressedThisFrame)
-                SetText(21);
-
             if (_isStartAnim)
             {
                 _tmp1.rectTransform.anchoredPosition += Vector2.up * _speed * Time.deltaTime;
@@ -78,10 +73,10 @@ namespace Cafe
         {
             _isStartAnim = true;
             _targetNumber = number;
-            _speed = (number * _textSize.y) / _duration;
+            _speed = (number * _textSize.y) / duration;
 
-            int digit = 0;
-            while (number > 0)
+            int digit = 1;
+            while (number > 10)
             {
                 number /= 10;
                 digit++;

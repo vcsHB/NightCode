@@ -13,8 +13,9 @@ namespace Cafe
     {
         [SerializeField] private MissionSelectButton _missionSelect;
         [SerializeField] private TextMeshProUGUI _ratingText;
-        [SerializeField] private NumberPassing customerNumber;
-        [SerializeField] private NumberPassing rewardNumber;
+        [SerializeField] private NumberPassing _customerNumber;
+        [SerializeField] private NumberPassing _rewardNumber;
+        [SerializeField] private GameObject _successObj;
 
         private float _duration = 0.5f;
         private Tween _openCloseTween;
@@ -55,16 +56,19 @@ namespace Cafe
             }
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(RectTrm);
-
             StartCoroutine(InitRoutine(customer, reward));
         }
 
         private IEnumerator InitRoutine(int customer, int reward)
         {
             yield return new WaitForSeconds(_duration);
-            customerNumber.SetText(customer);
-            yield return new WaitForSeconds(customerNumber.Duration);
-            rewardNumber.SetText(reward);
+            _customerNumber.duration = _duration;
+            _customerNumber.SetText(customer);
+            yield return new WaitForSeconds(_duration);
+            _rewardNumber.duration = _duration;
+            _rewardNumber.SetText(reward);
+            yield return new WaitForSeconds(_duration);
+            _successObj.SetActive(true);
         }
 
         public void ReturnToOffice()
@@ -85,7 +89,8 @@ namespace Cafe
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(0, _duration);
+            _openCloseTween = RectTrm.DOAnchorPosY(0, _duration)
+                .OnComplete(() => _ratingText.gameObject.SetActive(true));
         }
     }
 }
