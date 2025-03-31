@@ -67,7 +67,6 @@ namespace Cafe
         {
             _process += _processPerClick;
             _frame.fillAmount = _process / _targetProcess;
-            CameraManager.Instance.GetCompo<CameraShakeController>().Shake(4, 0.03f);
             
             if (_process >= _targetProcess)
             {

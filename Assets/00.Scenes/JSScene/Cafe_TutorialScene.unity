@@ -460,7 +460,7 @@ SpriteRenderer:
   m_SortingLayerID: -282882171
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3952629957254399176, guid: f3411d0b33ca4004bbd5855e703f3c1a, type: 3}
+  m_Sprite: {fileID: 6393332039065510606, guid: ffbcd444c33c362408b395ca05fe1f37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3204,7 +3204,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 42.39, y: -88}
-  m_SizeDelta: {x: 0, y: 36}
+  m_SizeDelta: {x: 84.78, y: 36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &445329295
 MonoBehaviour:
@@ -3669,6 +3669,7 @@ MonoBehaviour:
   curAnimParam: 0
   input: {fileID: 11400000, guid: 973858f44b7cdba4483cebea911dca31, type: 2}
   talkBubble: {fileID: 212757291}
+  _interactMark: {fileID: 1193048716}
 --- !u!70 &492258804
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -3703,8 +3704,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.03816247, y: -0.27007276}
-  m_Size: {x: 0.6585212, y: 1.5401455}
+  m_Offset: {x: -0.30481148, y: 0.08014655}
+  m_Size: {x: 0.93741703, y: 2.240584}
   m_Direction: 0
 --- !u!50 &492258805
 Rigidbody2D:
@@ -10248,7 +10249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 777802daf2a3e2e449a791176bd89757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactObject: {fileID: 1193048716}
   foodDelay: 3
   foodObjectIcon: {fileID: 687166494}
   progressBar: {fileID: 1659478124}
@@ -15045,7 +15045,7 @@ GameObject:
   - component: {fileID: 1193048715}
   - component: {fileID: 1193048716}
   m_Layer: 16
-  m_Name: GetFoodInput
+  m_Name: InteractMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15060,7 +15060,7 @@ Transform:
   m_GameObject: {fileID: 1193048714}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.324, y: 1.812, z: 0}
+  m_LocalPosition: {x: -0.324, y: 1.87, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15081,8 +15081,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 973858f44b7cdba4483cebea911dca31, type: 2}
-  player: {fileID: 492258803}
-  kitchen: {fileID: 656435233}
 --- !u!1 &1196609166
 GameObject:
   m_ObjectHideFlags: 0
@@ -15287,7 +15285,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1402}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1213799821
@@ -25690,7 +25688,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1334}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1741290495
@@ -30430,5 +30428,5 @@ SceneRoots:
   - {fileID: 1010171044}
   - {fileID: 1094395549}
   - {fileID: 492258802}
-  - {fileID: 676879573}
   - {fileID: 1006874696}
+  - {fileID: 676879573}
