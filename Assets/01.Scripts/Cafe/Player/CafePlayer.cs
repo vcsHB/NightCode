@@ -6,25 +6,12 @@ namespace Cafe
 {
     public class CafePlayer : CafeEntity
     {
-        public event Action onInteract;
-
         public CafeInput input;
         public TalkBubble talkBubble;
-        private CafePlayerInputObject _inputObject;
+        [SerializeField] private CafePlayerInteractMark _interactMark;
 
         public bool isGetFood { get => food != null; }
         public FoodSO food { get; private set; }
-
-
-        private void OnEnable()
-        {
-            input.onInteract += OnInteract;
-        }
-
-        private void OnDisable()
-        {
-            input.onInteract -= OnInteract;
-        }
 
 
         #region Food
@@ -48,23 +35,22 @@ namespace Cafe
 
         #region Interact
 
-        private void OnInteract()
+
+        public void AddInteract(Action interact)
         {
-            onInteract?.Invoke();
-            onInteract = null;
-            //interactMark.SetActive(false);
+            if (food != null) talkBubble.Close();
+
+            _interactMark.onInteract += interact;
+            _interactMark.gameObject.SetActive(true);
         }
 
-        public void AddInteract(CafePlayerInputObject inputObject)
+        public void RemoveInteract(Action interact)
         {
-            _inputObject = inputObject;
-            _inputObject.Open();
-            //interactMark.SetActive(true);
-        }
+            Debug.Log(food);
+            if (food != null) talkBubble.Open();
 
-        public void RemoveInteract()
-        {
-            _inputObject?.Close();
+            _interactMark.onInteract -= interact;
+            _interactMark.gameObject.SetActive(false);
         }
 
 

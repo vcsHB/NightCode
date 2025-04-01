@@ -47,7 +47,7 @@ namespace Cafe
         private void Start()
         {
             input.onLeftClick += OnLeftClick;
-            RectTrm.anchoredPosition = new Vector2(0, screenSize.y);
+            RectTrm.anchoredPosition = new Vector2(0, screenSize.y * 2);
         }
 
         private void OnDisable()

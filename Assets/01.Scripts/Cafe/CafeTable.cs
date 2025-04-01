@@ -15,6 +15,7 @@ namespace Cafe
         private CafePlayer _player;
         private Collider2D _collider;
         private bool _isCustomerWaitingMenu = false;
+        private bool _isAddInput = false;
         private float _currentWaitingTime;
         private float _customerPatientTime;
 
@@ -36,7 +37,7 @@ namespace Cafe
                 _currentWaitingTime += Time.deltaTime;
                 patientFill.fillAmount = _currentWaitingTime / _customerPatientTime;
 
-                if(_currentWaitingTime >= _customerPatientTime)
+                if (_currentWaitingTime >= _customerPatientTime)
                 {
                     //Debug.Log("주문한지가 언젠데 안나와");
                 }
@@ -69,6 +70,8 @@ namespace Cafe
             AssingedCustomer.GetFood();
             _isCustomerWaitingMenu = false;
             patientFill.fillAmount = 0;
+            _player.ServeFood();
+            _isAddInput = false;
         }
 
         //손님이 떠날때
@@ -102,20 +105,26 @@ namespace Cafe
             {
                 if (_player.isGetFood == false) return;
 
-                OnServingMenu();
-                _player.ServeFood();
+                _isAddInput = true;
+                _player.AddInteract(OnServingMenu);
                 return;
             }
 
             if (IsClean || _player.isGetFood) return;
-
             clickProcess.Init(this);
         }
 
+
         protected void OnTriggerExit2D(Collider2D collision)
         {
-            if (_isCustomerWaitingMenu || IsClean) return;
-            if (collision.TryGetComponent(out _player) == false) return;
+            if (!collision.TryGetComponent(out _player)) return;
+
+            Debug.Log(_isAddInput);
+            if (_isAddInput)
+            {
+                _player.RemoveInteract(OnServingMenu);
+                _isAddInput = false;
+            }
 
             clickProcess.Close();
         }
