@@ -97,6 +97,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7585586432826604449}
   - component: {fileID: 6587094707077987465}
+  - component: {fileID: 5971663993595585579}
+  - component: {fileID: 6135204309421656314}
   m_Layer: 0
   m_Name: SniperGimmick
   m_TagString: Untagged
@@ -168,7 +170,47 @@ MonoBehaviour:
   _disableColor: {r: 1, g: 0.8533139, b: 0, a: 1}
   _spriteRenderer: {fileID: 9077724685434436072}
   _explosionParticle: {fileID: 4237886686714141384}
+  _caster: {fileID: 6135204309421656314}
   _correction: 0.5
+--- !u!114 &5971663993595585579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5973333291455322505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85a0be73c02b55e42aa26e86ba184cd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 5
+  _attackType: 1
+--- !u!114 &6135204309421656314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5973333291455322505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c8df37b2355b64ca70555c9b0ded02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnCastEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCastSuccessEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _offset: {x: 0, y: 0}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _targetMaxAmount: 1
+  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
+  _detectRadius: 3
 --- !u!1001 &7199807177737551234
 PrefabInstance:
   m_ObjectHideFlags: 0

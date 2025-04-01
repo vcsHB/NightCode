@@ -21,6 +21,7 @@ namespace Gimmick
         [SerializeField] private Color _enableColor, _disableColor;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private ParticleSystem _explosionParticle;
+        [SerializeField] private CircleCaster _caster;
 
         [Header("몇초안에 방향을 따라잡을 것인지")]
         [SerializeField] private float _correction;
@@ -101,6 +102,7 @@ namespace Gimmick
             ParticleSystem explosion = Instantiate(_explosionParticle);
             explosion.transform.position = transform.position;
             explosion.Play();
+            _caster.Cast();
             Destroy(gameObject);
         }
 
