@@ -19737,6 +19737,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7815970587858334096}
+        m_TargetAssemblyTypeName: Agents.Players.AimController, Assembly-CSharp
+        m_MethodName: RemoveWire
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDieEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -50464,6 +50476,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5258192718874030832}
     m_Modifications:
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _pullClampDuration
+      value: 0.004
+      objectReference: {fileID: 0}
     - target: {fileID: 2864566138501554170, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
       propertyPath: m_Name
       value: AimController
@@ -50522,6 +50538,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7207847292406125900, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
   m_PrefabInstance: {fileID: 7043422557452988378}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7815970587858334096 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+  m_PrefabInstance: {fileID: 7043422557452988378}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be10c405370acd4385538a9e083dc51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7779158372361429248
 PrefabInstance:
   m_ObjectHideFlags: 0
