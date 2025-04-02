@@ -15,7 +15,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            _cresentPlayerRenderer.SetSwingAttackDirectionVisualEnable(true);
+            //_cresentPlayerRenderer.SetSwingAttackDirectionVisualEnable(true);
 
         }
 
@@ -24,7 +24,7 @@ namespace Agents.Players.FSM
             base.Exit();
             Time.timeScale = 1f;
 
-            _cresentPlayerRenderer.SetSwingAttackDirectionVisualEnable(false);
+            //_cresentPlayerRenderer.SetSwingAttackDirectionVisualEnable(false);
 
         }
     }

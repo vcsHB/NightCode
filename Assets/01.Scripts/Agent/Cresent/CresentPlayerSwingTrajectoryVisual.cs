@@ -1,9 +1,9 @@
 using UnityEngine;
 using DG.Tweening;
-using Core;
+using System;
 namespace Agents.Players
 {
-
+    [Obsolete("Discarded State Class")]
     public class CresentPlayerSwingTrajectoryVisual : MonoBehaviour, IAgentComponent
     {
 
