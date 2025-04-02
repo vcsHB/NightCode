@@ -19813,7 +19813,7 @@ GameObject:
   - component: {fileID: 5583332313061873022}
   - component: {fileID: 5524835194193659093}
   - component: {fileID: 5390059202700923595}
-  - component: {fileID: 5914119042791802516}
+  - component: {fileID: 2031260200693495167}
   m_Layer: 6
   m_Name: GroundPullAttackCaster
   m_TagString: Untagged
@@ -19886,8 +19886,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 7
-  _attackType: 1
---- !u!114 &5914119042791802516
+  _attackType: 0
+  _invalidityResistance: 0
+--- !u!114 &2031260200693495167
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19896,16 +19897,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4461894037661810726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26cb2505716a7a7408f37cc28f489813, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ae18207805142648a4edd5f70787cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _knockbackData:
     powerDirection: {x: 0, y: 0}
-    duration: 0.1
+    duration: 0
     isCrashed: 0
     crashDamage: 0
-  _renderer: {fileID: 0}
-  _power: 4
 --- !u!1 &4483755707438313547
 GameObject:
   m_ObjectHideFlags: 0

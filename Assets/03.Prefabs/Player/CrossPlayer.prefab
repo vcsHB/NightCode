@@ -24692,7 +24692,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5656778636365798667}
-  - component: {fileID: 6566443840774478412}
+  - component: {fileID: 695140754567836933}
   m_Layer: 6
   m_Name: AttackController
   m_TagString: Untagged
@@ -24714,9 +24714,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6397514893734891721}
+  - {fileID: 4212990991045187370}
   m_Father: {fileID: 5258192718874030832}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6566443840774478412
+--- !u!114 &695140754567836933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24725,16 +24726,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 3441798363566028558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9c1fb8d1da1bd149996c94cbdc70107, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ab883614b9d33146a539f91a18fc377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackDatas:
-  - movePower: 0.7
-    moveduration: 0.1
-  - movePower: 0.4
-    moveduration: 0.1
-  - movePower: 0.9
-    moveduration: 0.1
+  OnShootEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _shooter: {fileID: 8565425523949733451}
+  _targetDetectRange: 20
+  _bulletSpread: 0.1
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 384
+  _obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _bulletAmount: 7
+  _maxTargetAmount: 3
+  _fireTerm: 0.07
 --- !u!1 &3776162870005930718
 GameObject:
   m_ObjectHideFlags: 0
@@ -25023,6 +25032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 7
   _attackType: 1
+  _invalidityResistance: 0
 --- !u!114 &1981405913801834143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25193,6 +25203,7 @@ MonoBehaviour:
   OnGroundPullAttackEvent:
     m_PersistentCalls:
       m_Calls: []
+  _attackController: {fileID: 695140754567836933}
 --- !u!1 &4890871479812390615
 GameObject:
   m_ObjectHideFlags: 0
@@ -35286,6 +35297,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particle: {fileID: 8787845467784497333}
+--- !u!1 &6057542265421702895
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4212990991045187370}
+  - component: {fileID: 8565425523949733451}
+  m_Layer: 6
+  m_Name: BulletShooter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4212990991045187370
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6057542265421702895}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5656778636365798667}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8565425523949733451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6057542265421702895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f609b51f2672579429e8310c577406dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectilePoolType: 5
+  _projectileData:
+    direction: {x: 0, y: 0}
+    speed: 100
+    lifeTime: 30
+    canPenetrate: 0
+    canDestroy: 0
+    damage: 5
 --- !u!1 &6088482101051551806
 GameObject:
   m_ObjectHideFlags: 0
