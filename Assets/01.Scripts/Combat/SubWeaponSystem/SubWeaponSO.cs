@@ -9,6 +9,7 @@ namespace Combat.SubWeaponSystem
         public string weaponName;
         public string description;
         public Sprite subWeaponSprite;
+        public int defaultUseAmount = 1;
         public SubWeapon subWeaponPrefab;
         
 

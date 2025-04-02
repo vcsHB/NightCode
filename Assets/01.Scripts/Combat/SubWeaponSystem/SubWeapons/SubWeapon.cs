@@ -21,6 +21,7 @@ namespace Combat.SubWeaponSystem
     public abstract class SubWeapon : MonoBehaviour
     {
         public UnityEvent OnUsedEvent;
+        public UnityEvent OnUseCancelEvent;
         public event Action<float, float> OnCooltimeChangeEvent;
         [SerializeField] protected float _useCooltime;
         protected float _currentCoolTime;
@@ -37,6 +38,11 @@ namespace Combat.SubWeaponSystem
         public virtual void UseWeapon(SubWeaponControlData data)
         {
             OnUsedEvent?.Invoke();
+        }
+
+        public virtual void CancelWeapon()
+        {
+            OnUseCancelEvent?.Invoke();
         }
     }
 }

@@ -13,6 +13,8 @@ namespace Combat.SubWeaponSystem
     /// </summary>
     public class SubWeaponController : MonoBehaviour, IAgentComponent
     {
+        [SerializeField] private int _maxAttackAmount;
+        [SerializeField] private int _leftAttackCount; 
         [Header("Controller Setting")]
         [SerializeField] private AgentRenderer _ownerRenderer;
         [SerializeField] private float _targetAutoDetectRadius = 20f;
@@ -51,10 +53,12 @@ namespace Combat.SubWeaponSystem
         private void HandlePlayerEnter()
         {
             _player.PlayerInput.OnUseEvent += UseWeapon;
+            _player.PlayerInput.OnUseCancelEvent += CancelWeapon;
         }
         private void HandlePlayerExit()
         {
             _player.PlayerInput.OnUseEvent -= UseWeapon;
+            _player.PlayerInput.OnUseCancelEvent -= CancelWeapon;
         }
 
 
@@ -79,6 +83,14 @@ namespace Combat.SubWeaponSystem
                 damage = 1
             });
 
+        }
+
+        public void CancelWeapon()
+        {
+            if(!_player.IsActive) return;
+            if(!_weapon.CanUse) return;
+
+            _weapon.CancelWeapon();
         }
 
         private void DetectTarget()
