@@ -13,10 +13,12 @@ namespace Gimmick
         [SerializeField] private float _maxSpeed;
         [SerializeField] private float _acceleration;
         [Space]
+        [SerializeField] private float _shootDelay = 0.5f;
         [SerializeField] private float _lifeTime;
         [SerializeField] private float _blinkTime = 0.1f;
         [SerializeField] private AnimationCurve _blinkDelayCurve;
         [SerializeField] private float _originBlinkDelay;
+        [Space]
         [SerializeField] private Sprite _shootSprite;
         [SerializeField] private Color _enableColor, _disableColor;
         [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -98,7 +100,7 @@ namespace Gimmick
 
         private IEnumerator DelayShoot()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(_shootDelay);
             ParticleSystem explosion = Instantiate(_explosionParticle);
             explosion.transform.position = transform.position;
             explosion.Play();
