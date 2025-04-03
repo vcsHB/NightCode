@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 4
   _attackType: 1
+  _invalidityResistance: 0
 --- !u!114 &844699680862141614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30241,6 +30242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 5
   _attackType: 1
+  _invalidityResistance: 0
 --- !u!114 &3903301075616889378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35171,6 +35173,7 @@ GameObject:
   - component: {fileID: 4011903358778081006}
   - component: {fileID: 9059426704729428244}
   - component: {fileID: 1351273005243493787}
+  - component: {fileID: 2717240675882114952}
   m_Layer: 6
   m_Name: ShootFeedback
   m_TagString: Untagged
@@ -35219,6 +35222,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particle: {fileID: 144731939985859177}
+--- !u!114 &2717240675882114952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6015801426165534698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507b4b072045ea04ca38df5b090e538e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakePower: 2
+  _shakeDuration: 0.2
 --- !u!1 &6282808893754427873
 GameObject:
   m_ObjectHideFlags: 0
@@ -35886,8 +35903,64 @@ PrefabInstance:
     m_TransformParent: {fileID: 4264095113676399738}
     m_Modifications:
     - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.atime1
+      value: 24094
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.atime2
+      value: 64995
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.ctime1
+      value: 16384
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.ctime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key0.b
+      value: 0.8124628
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key0.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key1.a
+      value: 0.9818458
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key1.b
+      value: 0.8094719
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key1.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key2.a
+      value: 0.1254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key2.b
+      value: 0.6853483
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key2.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
       propertyPath: _pullClampDuration
       value: 0.007
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.m_NumAlphaKeys
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.m_NumColorKeys
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2864566138501554170, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
       propertyPath: m_Name

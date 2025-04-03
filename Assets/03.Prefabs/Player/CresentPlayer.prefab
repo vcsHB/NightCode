@@ -19830,7 +19830,7 @@ Transform:
   m_GameObject: {fileID: 4461894037661810726}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.9099998, y: -0.34999847, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40423,6 +40423,7 @@ GameObject:
   - component: {fileID: 5303461513986526491}
   - component: {fileID: 4575131602427123099}
   - component: {fileID: 5744730907518015787}
+  - component: {fileID: 2987238214201875392}
   m_Layer: 6
   m_Name: ShootFeedback
   m_TagString: Untagged
@@ -40471,6 +40472,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particle: {fileID: 5280011467990186176}
+--- !u!114 &2987238214201875392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271003874322592875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507b4b072045ea04ca38df5b090e538e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakePower: 2
+  _shakeDuration: 0.2
 --- !u!1 &7277081396233514188
 GameObject:
   m_ObjectHideFlags: 0
@@ -55605,6 +55620,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8532306760916538326}
     m_Modifications:
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key0.r
+      value: 0.17553473
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key1.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
+      propertyPath: _gradient.key1.r
+      value: 0.033215165
+      objectReference: {fileID: 0}
     - target: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
       propertyPath: _pullClampDuration
       value: 0.007
