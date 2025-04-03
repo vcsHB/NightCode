@@ -1,9 +1,10 @@
+using System;
 using Agents.Animate;
-using Core;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
 
+    [Obsolete("Discarded State Class")]
     public class CresentPlayerSwingState : PlayerSwingState
     {
         private CresentPlayerAnimationTrigger _cresentPlayerAnimationTrigger;

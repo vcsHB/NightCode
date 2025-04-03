@@ -34,6 +34,7 @@ namespace InputManage
         public event Action<bool> OnShootEvent;
         public event Action OnShootRopeEvent;
         public event Action OnUseEvent;
+        public event Action OnUseCancelEvent;
         public event Action OnRemoveRopeEvent;
         public event Action<Vector2> MovementEvent;
         public event Action JumpEvent;
@@ -88,8 +89,6 @@ namespace InputManage
             MovementEvent?.Invoke(_inputDirection);
         }
 
-
-
         public void OnShoot(InputAction.CallbackContext context)
         {
             if (!playerInputStatus.shoot) return;
@@ -113,6 +112,10 @@ namespace InputManage
             if (context.performed)
             {
                 OnUseEvent?.Invoke();
+            }
+            else if (context.canceled)
+            {
+                OnUseCancelEvent?.Invoke();
             }
         }
 

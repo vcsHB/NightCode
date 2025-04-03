@@ -1,5 +1,6 @@
 using System;
 using Combat.Casters;
+using ObjectManage;
 using ObjectPooling;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +18,7 @@ namespace Combat.CombatObjects.ProjectileManage
         private float _currentLifeTime = 0f;
         [SerializeField] private ProjectileData _projectileData;
         [field: SerializeField] public PoolingType type { get; set; }
+        [SerializeField] private PoolingType _destroyVFXType;
         [Header("Projectile Damage Reflect Setting")]
         [SerializeField] private bool _canDamagedReflect;
         [SerializeField] private LayerMask _defaultTargetLayer;
@@ -148,6 +150,9 @@ namespace Combat.CombatObjects.ProjectileManage
         {
             _isActive = false;
             OnDestroyEvent?.Invoke();
+            VFXPlayer vfx = PoolManager.Instance.Pop(_destroyVFXType) as VFXPlayer;
+            vfx.transform.position = transform.position;
+            vfx.Play();
             PoolManager.Instance.Push(this);
             //Destroy(gameObject);
         }

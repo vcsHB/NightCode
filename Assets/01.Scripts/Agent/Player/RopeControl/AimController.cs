@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using ObjectManage;
 using ObjectManage.Rope;
+using ObjectManage.VFX;
+using ObjectPooling;
 using UnityEngine;
 
 namespace Agents.Players
@@ -20,6 +22,7 @@ namespace Agents.Players
         [SerializeField] private float _wireClampedDistance = 12f;
         [SerializeField] private float _clampDuration = 0.2f;
         [SerializeField] private float _pullClampDuration = 0.01f;
+        [SerializeField] private Gradient _gradient;
         // Properties
         public bool canShoot = true;
         public bool IsShoot => _isShoot;
@@ -121,6 +124,7 @@ namespace Agents.Players
             _anchorDistance = _currentAimData.distanceToPoint;
             _aimGroupController.SetAnchorPosition(TargetPoint);
             _aimGroupController.SetAnchorParent(_currentAimData.targetTrm);
+            
             if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
                 _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
@@ -132,6 +136,10 @@ namespace Agents.Players
             }
             else
                 _aimGroupController.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
+            KatanaSlashVFXPlayer vfx = PoolManager.Instance.Pop(PoolingType.RopeAnchoredVFX) as KatanaSlashVFXPlayer;
+            vfx.SetGradient(_gradient);
+            vfx.SlashLerp(transform.position, _anchorPosition , _anchorDistance * 0.05f);
+
 
         }
         public void RemoveWire()

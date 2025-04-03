@@ -28,6 +28,7 @@ namespace Agents.Players
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
             HealthCompo = GetComponent<Health>();
+            HealthCompo.OnHealthChangedEvent.AddListener(HandlePlayerHit);
             HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             InitState();
@@ -73,6 +74,11 @@ namespace Agents.Players
             base.HandleAgentDie();
 
             _stateMachine.ChangeState("Dead");
+        }
+
+        protected void HandlePlayerHit()
+        {
+            _stateMachine.ChangeState("Swing");
         }
 
         public void SetStartDisable(bool value) => _startDisable = value;
