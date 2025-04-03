@@ -1,11 +1,13 @@
 using System.Collections;
 using SubWeaponSystem;
 using UnityEngine;
+using UnityEngine.Events;
 namespace Combat.SubWeaponSystem.WepaonObjects
 {
 
     public class ThrowingKnife : ProjectileSubWeaponObject
     {
+        public UnityEvent OnThrowEvent;
         private Transform _visualTrm;
         private Vector2 _direction;
         [SerializeField] private LayerMask _blockingTargetLayer;
@@ -15,11 +17,13 @@ namespace Combat.SubWeaponSystem.WepaonObjects
         [SerializeField] private float _boundDuration = 1f;
         [SerializeField] private float _blockedLifeTime = 5f;
         private bool _isBlocked;
+        private TrailRenderer _trailRenderer;
 
         protected override void Awake()
         {
             base.Awake();
             _visualTrm = transform.Find("Visual");
+            _trailRenderer = _visualTrm.Find("Trail").GetComponent<TrailRenderer>();
             _caster.OnCastSuccessEvent.AddListener(HandleHitDestroy);
         }
 
@@ -54,25 +58,40 @@ namespace Combat.SubWeaponSystem.WepaonObjects
         // }
         private void SetBlocked()
         {
-            _rigid.linearVelocity = Vector2.zero;
+            StopImmediately();
+            
             StartCoroutine(BlockedCoroutine());
         }
 
         private IEnumerator BlockedCoroutine()
         {
             yield return new WaitForSeconds(_blockedLifeTime);
+            _trailRenderer.Clear();
+            _trailRenderer.enabled = false;
+
             Destroy();
         }
         public override void UseWeapon(SubWeaponControlData data)
         {
             _direction = data.direction;
             _visualTrm.right = _direction;
+            OnThrowEvent?.Invoke();
+            _trailRenderer.enabled = true;
             SetVelocity(_direction * data.speed);
 
         }
         private void HandleHitDestroy()
         {
+            StopImmediately();
+            gameObject.SetActive(false);
             Destroy();
+        }
+
+        public override void ResetObject()
+        {
+            base.ResetObject();
+            gameObject.SetActive(true);
+
         }
 
 #if UNITY_EDITOR

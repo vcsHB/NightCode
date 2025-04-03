@@ -38,6 +38,7 @@ namespace Agents.Players.FSM
 
 
             CheckExitToGround();
+            
             if (_mover.Velocity.magnitude < 0.6f)
             {
                 if (CheckWallAndHold())

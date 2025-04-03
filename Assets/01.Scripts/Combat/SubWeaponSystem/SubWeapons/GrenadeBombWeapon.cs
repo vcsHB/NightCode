@@ -8,6 +8,8 @@ namespace Combat.SubWeaponSystem
         [SerializeField] private float _throwSpeed = 3f;
         public override void UseWeapon(SubWeaponControlData data)
         {
+            if(!CheckEnoughCount(_requireCount)) return;
+            ReduceCount(_requireCount);
             data.direction.Normalize();
             float sign = Mathf.Sign(data.direction.x);
             data.direction.x = 10f * sign;

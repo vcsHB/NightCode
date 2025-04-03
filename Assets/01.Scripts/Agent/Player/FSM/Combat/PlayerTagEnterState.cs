@@ -12,6 +12,8 @@ namespace Agents.Players.FSM
 
         public override void Enter()
         {
+            if(_player.HealthCompo != null)
+                _player.HealthCompo.SetResist(true);
             _player.CanCharacterChange = false;
             _player.gameObject.SetActive(true);
             base.Enter();
@@ -22,6 +24,9 @@ namespace Agents.Players.FSM
         {
             base.Exit();
             _player.CanCharacterChange = true;
+            if(_player.HealthCompo != null)
+                _player.HealthCompo.SetResist(false);
+            
 
         }
 

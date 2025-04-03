@@ -12,7 +12,7 @@ namespace Agents.Players.FSM
         public override void Initialize(string firstState)
         {
             AddState("Hang", "CrossPlayerHang", playerRenderer.HangParam);
-            AddState("Swing", "PlayerSwing", playerRenderer.SwingParam);
+            AddState("Swing", "CrossPlayerSwing", playerRenderer.SwingParam);
 
 
             base.Initialize(firstState);

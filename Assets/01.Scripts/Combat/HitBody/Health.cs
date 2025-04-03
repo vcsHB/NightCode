@@ -34,6 +34,7 @@ namespace Combat
 
         public bool ApplyDamage(CombatData data)
         {
+            //Debug.Log(data.invalidityResistance);
             if (!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return false;
             if (IsResist) return false;
             _currentHealth -= data.damage;

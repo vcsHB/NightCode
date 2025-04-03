@@ -37,7 +37,16 @@ namespace ObjectManage.VFX
             _trailTrm.localPosition = -movement;
             _trailRenderer.enabled = true;
             _trailTrm.DOLocalMove(movement, _slashDuration).OnComplete(() => StartCoroutine(SlashOverCoroutine()));
-            
+
+        }
+        public void SlashLerp(Vector2 startPos, Vector2 endPos, float speedMultiplier = 1)
+        {
+            _trailRenderer.enabled = false;
+            transform.position = startPos;
+            _trailTrm.position = startPos;
+            _trailRenderer.enabled = true;
+            _trailTrm.DOMove(endPos, _slashDuration * speedMultiplier).OnComplete(() => StartCoroutine(SlashOverCoroutine()));
+
         }
 
         private IEnumerator SlashOverCoroutine()

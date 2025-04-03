@@ -7,7 +7,7 @@ namespace Combat.CombatObjects.ProjectileManage
         [SerializeField] private int _reflectAmount = 1;
         [SerializeField] private LayerMask _wallLayer;
         [SerializeField] private float _wallDetectDistance = 1f;
-        [SerializeField, Range(0f, 1f)] private float _reflectSpeedMultipler = 1f;
+        [SerializeField, Range(0f, 3f)] private float _reflectSpeedMultipler = 1f;
 
 
         private int _currentReflectCount = 0;
@@ -34,8 +34,6 @@ namespace Combat.CombatObjects.ProjectileManage
             base.OnGenerated();
             _currentReflectCount = 0;
         }
-
-
 
 
 #if UNITY_EDITOR
