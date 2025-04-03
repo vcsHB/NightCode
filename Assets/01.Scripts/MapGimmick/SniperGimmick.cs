@@ -1,10 +1,9 @@
 using Combat.Casters;
 using Combat.PlayerTagSystem;
-using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Gimmick
+namespace Ingame.Gimmick
 {
     public class SniperGimmick : MonoBehaviour
     {
@@ -24,10 +23,13 @@ namespace Gimmick
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private ParticleSystem _explosionParticle;
         [SerializeField] private CircleCaster _caster;
+        [Space]
+        [SerializeField] private Vector2 _offsetRange;
 
         [Header("몇초안에 방향을 따라잡을 것인지")]
         [SerializeField] private float _correction;
 
+        private Vector2 _offset;
         private bool _isFollowingPlayer = true;
         private float _startTime;
         private float _currentSpeed;
@@ -44,6 +46,7 @@ namespace Gimmick
 
         private void Awake()
         {
+            CalcurateOffset();
             _currentBlinkDelay = _originBlinkDelay;
             _startTime = _prevBlink = Time.time;
             _isFollowingPlayer = true;
@@ -71,10 +74,15 @@ namespace Gimmick
                 StartCoroutine("Blink");
             }
 
+            if (Vector2.Distance(transform.position, PlayerTrm.position) < 0.1f)
+            {
+                CalcurateOffset();
+            }
+
             Vector2 directionTemp = PlayerTrm.position - transform.position;
             directionTemp.Normalize();
 
-            if (Vector2.Distance(_targetDirection, directionTemp) > 0.2f)
+            if (Vector2.Distance(_targetDirection, directionTemp) > 0.1f)
             {
                 _directionProgress = 0;
                 _currentSpeed = _minSpeed;
@@ -86,9 +94,10 @@ namespace Gimmick
 
             if (_correction <= 0) _correction = 0.1f;
             _directionProgress += 1 / _correction * Time.deltaTime;
+            _directionProgress = Mathf.Clamp(_directionProgress, 0, 1);
 
-            Vector2 direction = Vector2.Lerp(_currentDirection, _targetDirection, _directionProgress);
-            transform.position += (Vector3)direction * _currentSpeed * Time.deltaTime;
+            _currentDirection = Vector2.Lerp(_currentDirection, _targetDirection, _directionProgress).normalized;
+            transform.position += (Vector3)_currentDirection * _currentSpeed * Time.deltaTime;
         }
 
         private void Shoot()
@@ -96,6 +105,16 @@ namespace Gimmick
             _spriteRenderer.sprite = _shootSprite;
             StopCoroutine("Blink");
             StartCoroutine(DelayShoot());
+        }
+
+        private void CalcurateOffset()
+        {
+            float x = Random.Range(_offsetRange.x, _offsetRange.y);
+            float y = Random.Range(_offsetRange.x, _offsetRange.y);
+            if (Random.Range(0, 2) == 1) x *= -1;
+            if (Random.Range(0, 2) == 1) y *= -1;
+
+            _offset = new Vector2(x, y);
         }
 
         private IEnumerator DelayShoot()

@@ -1,7 +1,7 @@
 using Combat.Casters;
 using UnityEngine;
 
-namespace Gimmick
+namespace Ingame.Gimmick
 {
     public class DamageWall : Caster
     {
