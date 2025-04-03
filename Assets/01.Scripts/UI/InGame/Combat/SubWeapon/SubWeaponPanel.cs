@@ -32,7 +32,7 @@ namespace UI.InGame.GameUI.Combat.SubWeaponSystem
             SetEnableDetail(data.type);
 
         }
-        private WeaponDetailPanel GetDetailPanel(SubWeaponType type)
+        public WeaponDetailPanel GetDetailPanel(SubWeaponType type)
         {
             if (_weaponDetailPanelDictionary.TryGetValue(type, out WeaponDetailPanel panel))
                 return panel;

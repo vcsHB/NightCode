@@ -13,13 +13,14 @@ namespace Combat.SubWeaponSystem
     /// </summary>
     public class SubWeaponController : MonoBehaviour, IAgentComponent
     {
-        [SerializeField] private int _maxAttackAmount;
-        [SerializeField] private int _leftAttackCount; 
+        public event Action<int, int> OnWeaponCountChangedEvent;
+
         [Header("Controller Setting")]
         [SerializeField] private AgentRenderer _ownerRenderer;
         [SerializeField] private float _targetAutoDetectRadius = 20f;
         [SerializeField] private LayerMask _autoTargetLayer;
         [SerializeField] private SubWeaponSO _currentWeapon;
+        public SubWeaponSO SubWeaponSO => _currentWeapon;
         private SubWeapon _weapon;
         private Transform _currentTarget;
         private bool _isTargetDetected;
@@ -61,19 +62,16 @@ namespace Combat.SubWeaponSystem
             _player.PlayerInput.OnUseCancelEvent -= CancelWeapon;
         }
 
-
-
-
         private void Update()
         {
-            
+
             DetectTarget();
         }
 
         public void UseWeapon()
         {
-            if(!_player.IsActive) return;
-            if(!_weapon.CanUse) return;
+            if (!_player.IsActive) return;
+            if (!_weapon.CanUse) return;
             Vector2 targetDirection = _isTargetDetected ?
                 (_currentTarget.position - transform.position).normalized :
                 new Vector2(_ownerRenderer.FacingDirection, 0f);
@@ -87,8 +85,8 @@ namespace Combat.SubWeaponSystem
 
         public void CancelWeapon()
         {
-            if(!_player.IsActive) return;
-            if(!_weapon.CanUse) return;
+            if (!_player.IsActive) return;
+            if (!_weapon.CanUse) return;
 
             _weapon.CancelWeapon();
         }
@@ -109,9 +107,14 @@ namespace Combat.SubWeaponSystem
             if (data == null) return;
             _currentWeapon = data;
             _weapon = Instantiate(data.subWeaponPrefab, transform);
+            _weapon.OnWeaponCountChange += HandleWeaponChange;
 
         }
 
+        private void HandleWeaponChange(int count, int max)
+        {
+            OnWeaponCountChangedEvent?.Invoke(count, max);
+        }
 
     }
 

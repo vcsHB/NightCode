@@ -22,7 +22,12 @@ namespace Combat.SubWeaponSystem
     {
         public UnityEvent OnUsedEvent;
         public UnityEvent OnUseCancelEvent;
+        public event Action<int, int> OnWeaponCountChange;
         public event Action<float, float> OnCooltimeChangeEvent;
+        [SerializeField] protected int _maxAttackAmount;
+        [SerializeField] protected int _leftAttackCount;
+        [SerializeField] protected int _requireCount = 1;
+
         [SerializeField] protected float _useCooltime;
         protected float _currentCoolTime;
         public bool CanUse => _currentCoolTime >= _useCooltime;
@@ -37,6 +42,7 @@ namespace Combat.SubWeaponSystem
 
         public virtual void UseWeapon(SubWeaponControlData data)
         {
+            _currentCoolTime = 0f;
             OnUsedEvent?.Invoke();
         }
 
@@ -44,5 +50,13 @@ namespace Combat.SubWeaponSystem
         {
             OnUseCancelEvent?.Invoke();
         }
+
+        protected void ReduceCount(int amount)
+        {
+            _leftAttackCount -= amount;
+            OnWeaponCountChange?.Invoke(_leftAttackCount, _maxAttackAmount);
+        }
+        public bool CheckEnoughCount(int amount) => _leftAttackCount >= amount;
+
     }
 }

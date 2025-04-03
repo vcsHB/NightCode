@@ -18,7 +18,9 @@ namespace Combat.SubWeaponSystem
 
         public override void UseWeapon(SubWeaponControlData data)
         {
+            if(!CheckEnoughCount(_requireCount)) return;
             _isShooting = true;
+            ReduceCount(_requireCount);
             if (!_isContinueFire)
             {
                 _direction = data.direction;
