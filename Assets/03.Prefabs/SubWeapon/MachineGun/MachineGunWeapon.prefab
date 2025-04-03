@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1270540126810244872}
   - component: {fileID: 4233393952987256000}
   m_Layer: 0
-  m_Name: HandGunSubWeapon
+  m_Name: MachineGunWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,17 +51,17 @@ MonoBehaviour:
   OnUseCancelEvent:
     m_PersistentCalls:
       m_Calls: []
-  _maxAttackAmount: 15
-  _leftAttackCount: 15
+  _maxAttackAmount: 45
+  _leftAttackCount: 45
   _requireCount: 1
   _useCooltime: 0
-  _isContinueFire: 0
+  _isContinueFire: 1
   OnFireEvent:
     m_PersistentCalls:
       m_Calls: []
   _projectileSpread: 0.2
   _shooter: {fileID: 8927462933975969917}
-  _fireCooltime: 0.32
+  _fireCooltime: 0.1
 --- !u!1 &8450162218408183715
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,4 +113,4 @@ MonoBehaviour:
     lifeTime: 30
     canPenetrate: 0
     canDestroy: 1
-    damage: 5
+    damage: 1.3
