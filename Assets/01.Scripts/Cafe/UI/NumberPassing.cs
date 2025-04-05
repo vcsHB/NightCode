@@ -84,12 +84,12 @@ namespace Cafe
 
             _format = $"D{digit}";
 
-            _currentNumber = 1;
+            _currentNumber = 0;
             _numberText = _currentNumber.ToString(_format);
             _tmp1.SetText(_numberText);
             _tmp1.rectTransform.anchoredPosition = new Vector2(0, 0);
 
-            _currentNumber = 2;
+            _currentNumber = 1;
             _numberText = _currentNumber.ToString(_format);
             _tmp2.SetText(_numberText);
             _tmp2.rectTransform.anchoredPosition = new Vector2(0, -_textSize.y);
