@@ -10,6 +10,7 @@ namespace Office.InteractSystem
         [SerializeField] private float _detectRadius = 1f;
         private bool _canInteract = true;
         private IInteractable _interactTarget;
+        private Vector2 _detectCenterPos;
 
         private void Awake()
         {
@@ -31,8 +32,8 @@ namespace Office.InteractSystem
 
         private void Update()
         {
-            CheckInteract(Camera.main.ScreenToWorldPoint(_uiInputReader.MousePositionOnScreen));
-
+            _detectCenterPos = Camera.main.ScreenToWorldPoint(_uiInputReader.MousePositionOnScreen);
+            CheckInteract(_detectCenterPos);
         }
 
 
@@ -56,6 +57,15 @@ namespace Office.InteractSystem
             }
         }
 
+#if UNITY_EDITOR
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(_detectCenterPos, _detectRadius);
+        }
+
+#endif
 
     }
 
