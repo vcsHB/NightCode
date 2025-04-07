@@ -1,5 +1,6 @@
 using Agents.Enemies;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
 
@@ -7,7 +8,8 @@ namespace Ingame.Gimmick
 {
     public class Alram : MonoBehaviour
     {
-        [SerializeField] private EnemySpawnGroup _spawnGroup;
+        public UnityEvent OnRingArlam;
+        public UnityEvent OnStopArlam;
 
         [SerializeField] private float _rotateSpeed;
         [SerializeField] private float _maxIntencity;
@@ -52,7 +54,7 @@ namespace Ingame.Gimmick
             _isRinging = true;
             _timer = 0;
 
-            _spawnGroup.StartWave();
+            OnRingArlam?.Invoke();
             //적 스폰하기
         }
     }
