@@ -12,6 +12,7 @@ namespace CameraControllers
         [SerializeField] private CinemachineCamera _camera;
         private Dictionary<Type, ICameraControlable> _controllers = new Dictionary<Type, ICameraControlable>();
         public Transform CurrentFollowTarget => _camera.Follow;
+        [SerializeField] private Transform _defaultFollowTarget;
 
         protected override void Awake()
         {
@@ -20,7 +21,7 @@ namespace CameraControllers
             GetComponentsInChildren<ICameraControlable>(true)
                .ToList().ForEach(controller => _controllers.Add(controller.GetType(), controller));
 
-            foreach(ICameraControlable controller in _controllers.Values)
+            foreach (ICameraControlable controller in _controllers.Values)
             {
                 controller.Initialize(_camera);
             }
@@ -46,6 +47,12 @@ namespace CameraControllers
         public void SetFollow(Transform target)
         {
             _camera.Follow = target;
+        }
+
+        public void ResetFollow()
+        {
+            if (_defaultFollowTarget == null) return;
+            _camera.Follow = _defaultFollowTarget;
         }
 
 
