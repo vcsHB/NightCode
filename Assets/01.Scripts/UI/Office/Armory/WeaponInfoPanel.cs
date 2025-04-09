@@ -1,4 +1,5 @@
 using Combat.SubWeaponSystem;
+using DG.Tweening;
 using UnityEngine;
 
 namespace UI.OfficeScene.Armory
@@ -23,6 +24,14 @@ namespace UI.OfficeScene.Armory
         public override void Open()
         {
             base.Open();
+            _panelTrm.DOAnchorPosX(_activeXPos, _moveDuration);
+
+        }
+
+        public override void Close()
+        {
+            base.Close();
+            _panelTrm.DOAnchorPosX(_disableXPos, _moveDuration);
 
         }
 
