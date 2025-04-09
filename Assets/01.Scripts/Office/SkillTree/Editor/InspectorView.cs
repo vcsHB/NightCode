@@ -3,32 +3,34 @@ using UnityEditor;
 using System;
 using Dialog;
 
-
-public class InspectorView : VisualElement
+namespace Office.CharacterSkillTree
 {
-    public new class UxmlFactory : UxmlFactory<InspectorView, VisualElement.UxmlTraits> { }
-
-    Editor editor;
-
-    public InspectorView() { }
-
-    public void UpdateSelection(NodeView nodeView)
+    public class InspectorView : VisualElement
     {
-        Clear();
+        public new class UxmlFactory : UxmlFactory<InspectorView, VisualElement.UxmlTraits> { }
 
-        UnityEngine.Object.DestroyImmediate(editor);
-        editor = Editor.CreateEditor(nodeView.node);
-        IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
-        Add(container);
-    }
+        Editor editor;
 
-    public void UpdateSelection(MissionNodeView view)
-    {
-        Clear();
+        public InspectorView() { }
 
-        UnityEngine.Object.DestroyImmediate(editor);
-        editor = Editor.CreateEditor(view.mission);
-        IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
-        Add(container);
+        public void UpdateSelection(NodeView nodeView)
+        {
+            Clear();
+
+            UnityEngine.Object.DestroyImmediate(editor);
+            editor = Editor.CreateEditor(nodeView.node);
+            IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
+            Add(container);
+        }
+
+        public void UpdateSelection(MissionNodeView view)
+        {
+            Clear();
+
+            UnityEngine.Object.DestroyImmediate(editor);
+            editor = Editor.CreateEditor(view.mission);
+            IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
+            Add(container);
+        }
     }
 }
