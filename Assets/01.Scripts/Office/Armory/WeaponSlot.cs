@@ -1,11 +1,14 @@
 using System;
+using Combat.SubWeaponSystem;
 using Office.InteractSystem;
 using UnityEngine;
 namespace Office.Armory
 {
     public class WeaponSlot : MonoBehaviour
     {
-        public event Action OnSelectEvent;
+        [SerializeField] private SubWeaponSO _weaponSO;
+        public event Action<SubWeaponSO> OnSelectEvent;
+        
         private InteractionTarget _interactTarget;
         private SpriteRenderer[] _visualRenderers;
         [SerializeField] private Color _activeOutlineColor;
@@ -70,7 +73,7 @@ namespace Office.Armory
         private void HandleInteractEvent()
         {
             // TODO : Send Weapon Data Later
-            OnSelectEvent?.Invoke();
+            OnSelectEvent?.Invoke(_weaponSO);
             _weaponCameraHolder.HoldCamera();
         }
 

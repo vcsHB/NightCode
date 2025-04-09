@@ -1,4 +1,5 @@
-using System;
+using Combat.SubWeaponSystem;
+using UI.OfficeScene.Armory;
 using UnityEngine;
 
 namespace Office.Armory
@@ -7,7 +8,8 @@ namespace Office.Armory
     public class ArmoryPanel : MonoBehaviour
     {
         private WeaponSlot[] _slots;
-
+        [SerializeField] private WeaponInfoPanel _weaponInfoPanel;
+        [SerializeField] private SubWeaponData _debugData;
         private void Awake()
         {
             _slots = GetComponentsInChildren<WeaponSlot>();
@@ -17,9 +19,11 @@ namespace Office.Armory
             }
         }
 
-        private void HandleSlotSelected()
+        private void HandleSlotSelected(SubWeaponSO weaponSO)
         {
-            
+            if (weaponSO == null) return;
+            _weaponInfoPanel.SetWeaponData(weaponSO, _debugData);
+            _weaponInfoPanel.Open();
         }
     }
 

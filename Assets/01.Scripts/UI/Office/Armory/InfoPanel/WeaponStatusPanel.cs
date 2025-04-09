@@ -15,7 +15,7 @@ namespace UI.OfficeScene.Armory
 
         public override void SetWeaponData(SubWeaponSO weapon, SubWeaponData weaponData)
         {
-            _weaponLevelPreviewImage.sprite = _previewPanelSprites[weaponData.level];
+            _weaponLevelPreviewImage.sprite = _previewPanelSprites[weaponData.level-1];
             _weaponImage.sprite = weapon.subWeaponSprite;
             _weaponNameText.text = $"{weapon.weaponName}";
         }

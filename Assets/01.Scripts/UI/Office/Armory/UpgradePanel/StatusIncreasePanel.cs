@@ -22,16 +22,18 @@ namespace UI.OfficeScene.Armory
                 if (isMaxLevel)
                     slot.SetMaxStatus(datas[i].value, datas[i].statusType);
                 else
-                    slot.SetStatusIncrease(datas[i].value, datas[i + 1].value, datas[i].statusType);
+                    slot.SetStatusIncrease(datas[i].value, weapon.GetIncreaseData(weaponData.level)[i].value, datas[i].statusType);
             }
         }
 
         private void DisableAllSlots()
         {
-            for (int i = 0; i < _enabledSlots.Count; i++)
+            int amount = _enabledSlots.Count;
+            for (int i = 0; i < amount; i++)
             {
                 WeaponStatusSlot slot = _enabledSlots.Dequeue();
                 slot.SetActive(false);
+                print("Disable");
                 _slotPool.Enqueue(slot);
             }
         }
@@ -42,6 +44,8 @@ namespace UI.OfficeScene.Armory
                 Instantiate(_weaponStatusSlotPrefab, _contentTrm) :
                 _slotPool.Dequeue();
             newSlot.SetActive(true);
+                print("Enable");
+            _enabledSlots.Enqueue(newSlot);
             return newSlot;
         }
     }
