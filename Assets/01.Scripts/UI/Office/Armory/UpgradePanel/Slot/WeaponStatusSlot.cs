@@ -34,7 +34,7 @@ namespace UI.OfficeScene.Armory
         private void SetStatusInfo(WeaponStatusSO statusSO)
         {
             _statusImage.sprite = statusSO.statusIcon;
-            _statusDetailText.text = statusSO.description;
+            _statusDetailText.text = statusSO.statusName;
         }
 
 
