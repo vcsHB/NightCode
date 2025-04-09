@@ -20,5 +20,10 @@ namespace Office.CharacterSkillTree
         public string nodeName;
         [TextArea]
         public string explain;
+
+        private void OnValidate()
+        {
+            name = nodeName;
+        }
     }
 }

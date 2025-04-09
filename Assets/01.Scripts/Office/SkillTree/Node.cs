@@ -123,7 +123,7 @@ namespace Office.CharacterSkillTree
             }
         }
 
-        public void EnableNode()
+        public void EnableNode(bool isLoading = false)
         {
             //재화 사용
             _isNodeEnable = true;
@@ -156,12 +156,11 @@ namespace Office.CharacterSkillTree
                     }
                 }
             }
-            //if (NodeType is PartNodeSO part)
-            //    GameDataManager.Instance.EnablePart(part.openPart);
-            //if (NodeType is WeaponNodeSO weapon)
-            //    GameDataManager.Instance.EnableWeapon(weapon.weapon);
 
-            _techTree.Save();
+            if (isLoading == false)
+            {
+                CharacterStatManager.Instance.Save();
+            }
         }
 
         #endregion

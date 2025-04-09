@@ -20,60 +20,11 @@ namespace Office.CharacterSkillTree
 
         public Transform edgeParent;
         public Transform edgeFillParent;
-        private string _path;
-
-        [SerializeField] private Vector2 _nodeOriginPos;
-        [SerializeField] private DirectionEnum _nodeDirection;
-
-        public UnityEvent<int, int> selectNodeEvent;
-
-        private void Awake()
-        {
-            nodeDic = new Dictionary<NodeSO, Node>();
-            _path = Path.Combine(Application.dataPath, "TechTree.json");
-        }
-
-        private void Start()
-        {
-            int childCnt = transform.childCount;
-
-            for (int i = 0; i < treeSO.nodes.Count; i++)
-            {
-                for (int j = 0; j < childCnt; j++)
-                {
-                    if (transform.GetChild(j).TryGetComponent(out Node node))
-                    {
-                        if (treeSO.nodes[i].id != node.NodeType.id) continue;
-
-                        nodeDic.Add(node.NodeType, node);
-                    }
-                }
-            }
-
-            for (int i = 0; i < treeSO.nodes.Count; i++)
-            {
-                NodeSO nodeSO = treeSO.nodes[i];
-
-                if (nodeDic.TryGetValue(nodeSO, out Node node))
-                {
-                    if (node.NodeType.id == 0) node.EnableNode();
-                    node.Init(characterType);
-                }
-            }
-
-            for (int i = 0; i < treeSO.nodes.Count; i++)
-            {
-                NodeSO nodeSO = treeSO.nodes[i];
-
-                if (nodeDic.TryGetValue(nodeSO, out Node node))
-                    node.SetEdge();
-            }
-
-            //Load();
-        }
-
+        //public UnityEvent<int, int> selectNodeEvent;
 
 #if UNITY_EDITOR
+        [SerializeField] private Vector2 _nodeOriginPos;
+        [SerializeField] private DirectionEnum _nodeDirection;
 
         [ContextMenu("CreateNodes")]
         private void CreateNodes()
@@ -123,6 +74,45 @@ namespace Office.CharacterSkillTree
 
 #endif
 
+        public void Init()
+        {
+            nodeDic = new Dictionary<NodeSO, Node>();
+            int childCnt = transform.childCount;
+
+            for (int i = 0; i < treeSO.nodes.Count; i++)
+            {
+                for (int j = 0; j < childCnt; j++)
+                {
+                    if (transform.GetChild(j).TryGetComponent(out Node node))
+                    {
+                        if (treeSO.nodes[i].id != node.NodeType.id) continue;
+
+                        nodeDic.Add(node.NodeType, node);
+                    }
+                }
+            }
+
+            for (int i = 0; i < treeSO.nodes.Count; i++)
+            {
+                NodeSO nodeSO = treeSO.nodes[i];
+
+                if (nodeDic.TryGetValue(nodeSO, out Node node))
+                {
+                    if (node.NodeType.id == 0) node.EnableNode(true);
+                    node.Init(characterType);
+                }
+            }
+
+            for (int i = 0; i < treeSO.nodes.Count; i++)
+            {
+                NodeSO nodeSO = treeSO.nodes[i];
+
+                if (nodeDic.TryGetValue(nodeSO, out Node node))
+                    node.SetEdge();
+            }
+        }
+
+
         public bool TryGetNode(NodeSO nodeSO, out Node node)
         {
             if (nodeSO == null)
@@ -134,9 +124,9 @@ namespace Office.CharacterSkillTree
             return nodeDic.TryGetValue(nodeSO, out node);
         }
 
+
         public Node GetNode(int id)
         {
-            Debug.Log(id);
             for (int i = 0; i < treeSO.nodes.Count; i++)
             {
                 if (treeSO.nodes[i].id == id)
@@ -149,40 +139,45 @@ namespace Office.CharacterSkillTree
         }
 
 
-        public void Save()
-        {
-            List<Node> parts = new List<Node>();
-            List<Node> weapons = new List<Node>();
-            treeSO.nodes.ForEach(n =>
-            {
-                //if (n is PartNodeSO)
-                //{
-                //    if (TryGetNode(n, out Node node))
-                //    {
-                //        parts.Add(node);
-                //    }
-                //}
+        #region TreeSave&Load
 
-                //if (n is WeaponNodeSO)
-                //{
-                //    if (TryGetNode(n, out Node node))
-                //    {
-                //        weapons.Add(node);
-                //    }
-                //}
+        public TechTreeSave GetTreeSave()
+        {
+            TechTreeSave treeSave = new TechTreeSave();
+            treeSave.characterType = characterType;
+            treeSave.nodeList = new List<NodeSave>();
+
+            treeSO.nodes.ForEach(node =>
+            {
+                NodeSave nodeSave = new NodeSave();
+                nodeSave.guid = node.guid;
+                nodeSave.isEnable = nodeDic[node].IsNodeEnable;
+
+                treeSave.nodeList.Add(nodeSave);
             });
 
-
+            return treeSave;
         }
 
-        public void Load()
+        public void Load(TechTreeSave treeSave)
         {
-            treeSO.nodes.ForEach(n =>
+            treeSave.nodeList.ForEach(nodeSave =>
             {
+                Debug.Log(nodeSave.isEnable);
+                if (nodeSave.isEnable == false) return;
 
+                NodeSO node = treeSO.nodes.Find(node => node.guid == nodeSave.guid);
+
+                if (node != null)
+                    nodeDic[node].EnableNode(true);
             });
         }
 
+
+        #endregion
+
+
+        #region UI
 
         public override void OpenAnimation()
         {
@@ -193,6 +188,8 @@ namespace Office.CharacterSkillTree
         {
             gameObject.SetActive(false);
         }
+
+        #endregion
     }
 
 
@@ -204,5 +201,17 @@ namespace Office.CharacterSkillTree
         Right
     }
 
+    [Serializable]
+    public struct TechTreeSave
+    {
+        public CharacterEnum characterType;
+        public List<NodeSave> nodeList;
+    }
 
+    [Serializable]
+    public struct NodeSave
+    {
+        public string guid;
+        public bool isEnable;
+    }
 }
