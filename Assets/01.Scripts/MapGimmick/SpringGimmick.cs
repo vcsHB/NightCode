@@ -50,14 +50,14 @@ namespace ObjectManage.GimmickObjects.Logics
             {
                 _pivot.size = new Vector2(_pivot.size.x, y);
                 _edge.transform.localPosition = new Vector2(0, -y);
-            }, distance, _downDuration))
+            }, distance / transform.localScale.y, _downDuration))
                 .AppendCallback(() => _bottom.SetIsDown(false))
                 .AppendInterval(_upDelay)
                 .Append(DOTween.To(() => _pivot.size.y, y =>
                 {
                     _pivot.size = new Vector2(_pivot.size.x, y);
                     _edge.transform.localPosition = new Vector2(0, -y);
-                }, distance, _downDuration))
+                }, 1, _upDuration))
                 .OnUpdate(() => _bottom.transform.position = _edge.position)
                 .OnComplete(() =>
                 {
