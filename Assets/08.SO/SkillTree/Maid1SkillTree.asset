@@ -21,8 +21,14 @@ MonoBehaviour:
   prevNode: {fileID: -2715564689594029978}
   icon: {fileID: 21300000, guid: 144f926ad68215641a6ae5ac94923eb1, type: 3}
   requireCoin: 5
-  nodeName: "\uACF5up"
-  explain: "\uACF5\uACA9\uB825 +10"
+  nodeName: "\uC6B4\uB3D9"
+  explain: "\uB300\uCDA9 \uC6B4\uB3D9\uD574\uC11C \uCCB4\uB825 +10, \uACF5\uACA9\uB825
+    +15"
+  stat:
+  - statType: 2
+    increaseValue: 10
+  - statType: 3
+    increaseValue: 15
 --- !u!114 &-5472363808480134113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36,10 +42,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 9738721aa155423499e7344262fc38df
-  position: {x: 50.775, y: 200.275}
+  position: {x: 51.5, y: 200.5}
   id: 6
   nextNodes: []
-  prevNode: {fileID: 1818050105332701693}
+  prevNode: {fileID: 1735583127649999988}
   icon: {fileID: 0}
   requireCoin: 0
   nodeName: 
@@ -58,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 7dd29a074205f004099862bf23d9cfd9
-  position: {x: 54.09999, y: -36.200027}
+  position: {x: 55, y: -36}
   id: 4
   nextNodes: []
   prevNode: {fileID: -6153255460842589158}
@@ -84,7 +90,7 @@ MonoBehaviour:
   id: 0
   nextNodes:
   - {fileID: -6153255460842589158}
-  - {fileID: 1818050105332701693}
+  - {fileID: 1735583127649999988}
   prevNode: {fileID: 0}
   icon: {fileID: 0}
   requireCoin: 0
@@ -105,11 +111,11 @@ MonoBehaviour:
   nodes:
   - {fileID: -2715564689594029978}
   - {fileID: -6153255460842589158}
-  - {fileID: 1818050105332701693}
   - {fileID: 2474676885304783891}
   - {fileID: -5228310429788101617}
   - {fileID: -5472363808480134113}
---- !u!114 &1818050105332701693
+  - {fileID: 1735583127649999988}
+--- !u!114 &1735583127649999988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,20 +124,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ac815d82227f384ebfb1c79328f0baf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 7c37316cf711e4f468cf6395446c85b7
-  position: {x: -124, y: 202}
-  id: 2
+  guid: 9b0dba3f5796f004ab0662a999a25eb5
+  position: {x: -123, y: 200}
+  id: 5
   nextNodes:
   - {fileID: -5472363808480134113}
   prevNode: {fileID: -2715564689594029978}
-  icon: {fileID: 0}
-  requireCoin: 0
-  nodeName: 
-  explain: 
-  skillToOpen: 
+  icon: {fileID: 21300000, guid: 8dfe8de02e66d564eb8db1dc23ac98cf, type: 3}
+  requireCoin: 5
+  nodeName: "\uC7AC\uC0DD\uB825"
+  explain: "\uC7AC\uC0DD\uB825 +2"
+  stat:
+  - statType: 5
+    increaseValue: 2
 --- !u!114 &2474676885304783891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 5a8f54f5077a1c547ad77679261aa8b1
-  position: {x: 52.666626, y: -145.33337}
+  position: {x: 53, y: -145.5}
   id: 3
   nextNodes: []
   prevNode: {fileID: -6153255460842589158}

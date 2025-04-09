@@ -1,14 +1,20 @@
 using StatSystem;
+using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SO/StatIncreaseNode")]
-public class StatIncNodeSO : NodeSO
+namespace Office.CharacterSkillTree
 {
-    public StatIncrease[] stat;
-}
-public struct StatIncrease
-{
-    public StatSO statType;
-    public float increaseValue;
+    [CreateAssetMenu(menuName = "SO/StatIncreaseNode")]
+    public class StatIncNodeSO : NodeSO
+    {
+        public StatIncrease[] stat;
+    }
+
+    [Serializable]
+    public struct StatIncrease
+    {
+        public StatusEnumType statType;
+        public float increaseValue;
+    }
 }
 

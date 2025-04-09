@@ -9,14 +9,13 @@ using UnityEngine.Events;
 using UnityEditor;
 #endif
 
-namespace Office
+namespace Office.CharacterSkillTree
 {
     public class SkillTree : OfficeUIParent
     {
         public SkillTreeSO treeSO;
         public Dictionary<NodeSO, Node> nodeDic;
-        //public WarningPanel warningPanel;
-        //public TechTreeTooltipPanel tooltipPanel;
+        public CharacterEnum characterType;
         [SerializeField] private Node nodePf;
 
         public Transform edgeParent;
@@ -56,7 +55,10 @@ namespace Office
                 NodeSO nodeSO = treeSO.nodes[i];
 
                 if (nodeDic.TryGetValue(nodeSO, out Node node))
-                    node.Init(node.NodeType.id == 0);
+                {
+                    if (node.NodeType.id == 0) node.EnableNode();
+                    node.Init(characterType);
+                }
             }
 
             for (int i = 0; i < treeSO.nodes.Count; i++)
@@ -134,6 +136,7 @@ namespace Office
 
         public Node GetNode(int id)
         {
+            Debug.Log(id);
             for (int i = 0; i < treeSO.nodes.Count; i++)
             {
                 if (treeSO.nodes[i].id == id)

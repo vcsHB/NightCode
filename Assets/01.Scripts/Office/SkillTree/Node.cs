@@ -1,12 +1,14 @@
 using GGM.UI;
+using StatSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Office
+namespace Office.CharacterSkillTree
 {
     public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
@@ -34,6 +36,7 @@ namespace Office
         private Coroutine _currentCancelRoutine;
 
         private bool _tryNodeEnable = false;
+        private CharacterEnum _characterType;
         private readonly string CoinLackText = $"코인이 부족합니다ㅠㅠ";
 
         #region Property
@@ -139,7 +142,20 @@ namespace Office
                 }
             }
 
-            //파츠 혹은 무기 활성화시켜주기
+
+            //스탯 적용
+            if (NodeType is StatIncNodeSO statNode)
+            {
+                for (int i = 0; i < statNode.stat.Length; i++)
+                {
+                    StatIncrease statIncrease = statNode.stat[i];
+                    if (CharacterStatManager.Instance.TryGetStat(_characterType,
+                        statIncrease.statType, out StatSO stat))
+                    {
+                        stat.AddModifier(statIncrease.increaseValue);
+                    }
+                }
+            }
             //if (NodeType is PartNodeSO part)
             //    GameDataManager.Instance.EnablePart(part.openPart);
             //if (NodeType is WeaponNodeSO weapon)
@@ -220,29 +236,9 @@ namespace Office
         }
 
 
-        public void Init(bool isEnable)
+        public void Init(CharacterEnum characterType)
         {
-            if (isEnable)
-            {
-                _isNodeEnable = true;
-
-                _vertexFill.fillAmount = 1;
-                _edgeFill.SetFillAmount(1);
-
-                for (int i = 0; i < NodeType.nextNodes.Count; i++)
-                {
-                    if (_techTree.TryGetNode(NodeType.nextNodes[i], out Node prevNode))
-                    {
-                        prevNode.ActiveNode();
-                    }
-                }
-
-                //파츠 혹은 무기 활성화시켜주기
-                //if (NodeType is PartNodeSO part)
-                //    GameDataManager.Instance.EnablePart(part.openPart);
-                //if (NodeType is WeaponNodeSO weapon)
-                //    GameDataManager.Instance.EnableWeapon(weapon.weapon);
-            }
+            _characterType = characterType;
         }
 
 
