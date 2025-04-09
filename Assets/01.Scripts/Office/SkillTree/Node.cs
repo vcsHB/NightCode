@@ -149,17 +149,14 @@ namespace Office.CharacterSkillTree
                 for (int i = 0; i < statNode.stat.Length; i++)
                 {
                     StatIncrease statIncrease = statNode.stat[i];
-                    if (CharacterStatManager.Instance.TryGetStat(_characterType,
-                        statIncrease.statType, out StatSO stat))
-                    {
-                        stat.AddModifier(statIncrease.increaseValue);
-                    }
+                    CharacterStatManager.Instance.TryAddModifier(_characterType,
+                        statIncrease.statType, statIncrease.increaseValue);
                 }
             }
 
             if (isLoading == false)
             {
-                CharacterStatManager.Instance.Save();
+                SaveManager.Instance.AddSaveStat(_characterType, NodeType);
             }
         }
 

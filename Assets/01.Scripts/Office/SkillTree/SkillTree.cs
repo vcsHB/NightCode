@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using StatSystem;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -73,6 +74,11 @@ namespace Office.CharacterSkillTree
         }
 
 #endif
+
+        private void Start()
+        {
+            Load();
+        }
 
         public void Init()
         {
@@ -145,31 +151,26 @@ namespace Office.CharacterSkillTree
         {
             TechTreeSave treeSave = new TechTreeSave();
             treeSave.characterType = characterType;
-            treeSave.nodeList = new List<NodeSave>();
+            treeSave.openListGUID = new List<string>();
 
             treeSO.nodes.ForEach(node =>
             {
-                NodeSave nodeSave = new NodeSave();
-                nodeSave.guid = node.guid;
-                nodeSave.isEnable = nodeDic[node].IsNodeEnable;
-
-                treeSave.nodeList.Add(nodeSave);
+                if (nodeDic[node].IsNodeEnable)
+                {
+                    treeSave.openListGUID.Add(node.guid);
+                }
             });
 
             return treeSave;
         }
 
-        public void Load(TechTreeSave treeSave)
+        public void Load()
         {
-            treeSave.nodeList.ForEach(nodeSave =>
+            TechTreeSave treeSave = SaveManager.Instance.Load(characterType);
+            treeSave.openListGUID.ForEach(openGUI =>
             {
-                Debug.Log(nodeSave.isEnable);
-                if (nodeSave.isEnable == false) return;
-
-                NodeSO node = treeSO.nodes.Find(node => node.guid == nodeSave.guid);
-
-                if (node != null)
-                    nodeDic[node].EnableNode(true);
+                NodeSO node = treeSO.nodes.Find(node => node.guid == openGUI);
+                if (node != null) nodeDic[node].EnableNode(true);
             });
         }
 
@@ -199,19 +200,5 @@ namespace Office.CharacterSkillTree
         Down,
         Left,
         Right
-    }
-
-    [Serializable]
-    public struct TechTreeSave
-    {
-        public CharacterEnum characterType;
-        public List<NodeSave> nodeList;
-    }
-
-    [Serializable]
-    public struct NodeSave
-    {
-        public string guid;
-        public bool isEnable;
     }
 }

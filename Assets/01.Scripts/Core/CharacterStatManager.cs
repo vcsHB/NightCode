@@ -1,5 +1,7 @@
+using Office.CharacterSkillTree;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,7 +15,7 @@ namespace StatSystem
         public StatGroupSO katanaStat;
         public StatGroupSO cresentBladeStat;
         public StatGroupSO crossStat;
-        public UnityEvent OnSave;
+
 
         protected override void Awake()
         {
@@ -36,9 +38,29 @@ namespace StatSystem
         public bool TryGetStat(CharacterEnum character, StatusEnumType stat, out StatSO statSO)
             => statGroup[character].TryGetStat(stat, out statSO);
 
-        public void Save()
+        public bool TryAddModifier(CharacterEnum character, StatusEnumType stat, float value)
         {
-            OnSave?.Invoke();
+            if (TryGetStat(character, stat, out StatSO statSO))
+            {
+                statSO.AddModifier(value);
+                return true;
+            }
+            Debug.LogError($"You try to add value to not exsist stat [ Character:{character} ][ Stat:{stat}]");
+            return false;
         }
+    }
+
+
+    [Serializable]
+    public class StatSave
+    {
+        public List<TechTreeSave> treeSave = new List<TechTreeSave>();
+    }
+
+    [Serializable]
+    public class TechTreeSave
+    {
+        public CharacterEnum characterType;
+        public List<string> openListGUID;
     }
 }
