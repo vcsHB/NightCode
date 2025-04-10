@@ -3,6 +3,7 @@ using StatSystem;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,20 +24,43 @@ namespace Office.CharacterSkillTree
         private Tween _openCloseTween;
         private readonly float _closePos = 250, _openPos = -250;
 
-        public void SetCharacter(CharacterEnum characterType)
+        public void SetCharacter(SkillTree tree)
         {
             _slotParent.GetComponentsInChildren<StatSlot>().ToList()
                 .ForEach(prevSlot => Destroy(prevSlot.gameObject));
 
-
-            _characterName.SetText(_characterNameList[(int)characterType]);
-            StatGroupSO statGroup = CharacterStatManager.Instance.statGroup[characterType];
+            _characterName.SetText(_characterNameList[(int)tree.characterType]);
+            StatGroupSO statGroup = CharacterStatManager.Instance.StatGroup[tree.characterType];
 
             statGroup.statList.ForEach(stat =>
             {
                 StatSlot slot = Instantiate(_statSlotPf, _slotParent);
                 slot.SetStat(stat);
             });
+
+
+
+            //SaveManager.Instance.GetStatValue(tree.characterType).openListGUID.ForEach(guid =>
+            //{
+            //    statGroup.statList.ForEach(stat =>
+            //    {
+            //        //StatSO statInstance = ScriptableObject.Instantiate(stat);
+            //        //tree.treeSO.nodes.ForEach(node =>
+            //        //{
+            //        //    if (node is StatIncNodeSO increaseNode)
+            //        //    {
+            //        //        for (int i = 0; i < increaseNode.stat.Length; i++)
+            //        //        {
+
+            //        //            if (node.guid == guid) statInstance.AddModifier()
+            //        //        }
+            //        //    }
+            //        //});
+
+            //        StatSlot slot = Instantiate(_statSlotPf, _slotParent);
+            //        slot.SetStat(stat);
+            //    });
+            //});
         }
 
         public void InteractButton()

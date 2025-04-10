@@ -27,7 +27,7 @@ namespace Office
 
         public void UpdateSkillTree(CharacterEnum characterType)
         {
-            _statIndicator.SetCharacter(characterType);
+            _statIndicator.SetCharacter(skillTrees[(int)characterType]);
             for (int i = 0; i < skillTrees.Length; i++)
             {
                 if (i == (int)characterType)
@@ -43,6 +43,7 @@ namespace Office
 
         public void InitSkillTree(CharacterEnum characterType)
         {
+            _statIndicator.SetCharacter(skillTrees[(int)characterType]);
             for (int i = 0; i < skillTrees.Length; i++)
             {
                 skillTrees[i].Init();

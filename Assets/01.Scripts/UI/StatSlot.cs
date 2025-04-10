@@ -15,6 +15,7 @@ namespace Office.CharacterSkillTree
         {
             _icon.sprite = stat.Icon;
             _nameText.SetText(stat.displayName);
+
             _pointText.SetText($"   {stat.BaseValue}");
         }
     }
