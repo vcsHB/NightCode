@@ -7,8 +7,8 @@ namespace Office.Armory
     public class WeaponSlot : MonoBehaviour
     {
         [SerializeField] private SubWeaponSO _weaponSO;
-        public event Action<SubWeaponSO> OnSelectEvent;
-        
+        public event Action<SubWeaponSO, WeaponSlot> OnSelectEvent;
+
         private InteractionTarget _interactTarget;
         private SpriteRenderer[] _visualRenderers;
         [SerializeField] private Color _activeOutlineColor;
@@ -73,10 +73,10 @@ namespace Office.Armory
         private void HandleInteractEvent()
         {
             // TODO : Send Weapon Data Later
-            OnSelectEvent?.Invoke(_weaponSO);
+            OnSelectEvent?.Invoke(_weaponSO, this);
             _weaponCameraHolder.HoldCamera();
         }
 
-        
+
     }
 }

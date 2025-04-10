@@ -25,6 +25,7 @@ namespace Combat.SubWeaponSystem
         public Sprite subWeaponSprite;
         public SubWeapon subWeaponPrefab;
         [Header("Reinforce Setting")]
+        public int initialPrice;
         public WeaponLevelStatusData[] levelUpData;
 
         public WeaponStatusIncreaseData[] GetIncreaseData(int level)

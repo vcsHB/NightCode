@@ -57,6 +57,11 @@ namespace Office.InteractSystem
             }
         }
 
+        public void SetInteractable(bool value)
+        {
+            _canInteract = value;
+        }
+
 #if UNITY_EDITOR
 
         private void OnDrawGizmosSelected()
