@@ -70,7 +70,7 @@ namespace Office
             _characterPanels[1] = _characterPanels[2];
             _characterPanels[2] = temp;
 
-            _skillTreePanel.InitSkillTree(_characterPanels[1].CharacterType);
+            _skillTreePanel.UpdateSkillTree(_characterPanels[1].CharacterType);
         }
 
 
@@ -100,7 +100,7 @@ namespace Office
             _characterPanels[1] = _characterPanels[0];
             _characterPanels[0] = temp;
 
-            _skillTreePanel.InitSkillTree(_characterPanels[1].CharacterType);
+            _skillTreePanel.UpdateSkillTree(_characterPanels[1].CharacterType);
         }
 
 

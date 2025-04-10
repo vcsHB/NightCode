@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Agents.Enemies
 {
     public class EnemySpawnGroup : MonoBehaviour
     {
+        public UnityEvent OnCompleteWave;
         [SerializeField] private EnemySpawner _spawner;
         [SerializeField] private int _maxWave;
 
         private List<Enemy> _enemyList;
         private List<EnemySpawnPoint> _spawnPoints;
         private int _currentWave = 0;
-        
+
         public int MaxWave => _maxWave;
         public int CurrentWave => _currentWave;
 
@@ -47,7 +49,11 @@ namespace Agents.Enemies
                 {
                     _currentWave++;
 
-                    if (_currentWave > MaxWave) return;
+                    if (_currentWave >= MaxWave)
+                    {
+                        OnCompleteWave?.Invoke();
+                        return;
+                    }
                     _spawnPoints.ForEach(point => point.Spawn());
                 }
             };

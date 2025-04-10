@@ -71,10 +71,10 @@ namespace StatSystem
 
 
         public void AddModifier(StatusEnumType statType, object key, float value)
-            => GetStat(statType).AddModifier(key, value);
+            => GetStat(statType).AddBuffDebuff(key, value);
 
 
         public void RemoveModifier(StatusEnumType statType, object key)
-            => GetStat(statType).RemoveModifier(key);
+            => GetStat(statType).RemovedBuffDebuff(key);
     }
 }

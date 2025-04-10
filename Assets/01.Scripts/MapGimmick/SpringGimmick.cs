@@ -7,7 +7,7 @@ namespace ObjectManage.GimmickObjects.Logics
     {
         [SerializeField] private LayerMask _whatIsGround;
 
-        [SerializeField] private Transform _pivot;
+        [SerializeField] private SpriteRenderer _pivot;
         [SerializeField] private Transform _edge;
         [SerializeField] private SpringGimmickBottom _bottom;
 
@@ -29,7 +29,7 @@ namespace ObjectManage.GimmickObjects.Logics
 
         private void Update()
         {
-            if(!_isDown && _prevDown + _downDelay < Time.time)
+            if (!_isDown && _prevDown + _downDelay < Time.time)
             {
                 _isDown = true;
                 Down();
@@ -38,7 +38,7 @@ namespace ObjectManage.GimmickObjects.Logics
 
         private void Down()
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, _maxDistance, _whatIsGround);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, _maxDistance, _whatIsGround);
             float distance = hit.distance;
             _bottom.SetIsDown(true);
 
@@ -46,12 +46,20 @@ namespace ObjectManage.GimmickObjects.Logics
 
             _seq = DOTween.Sequence();
 
-            _seq.Append(_pivot.DOScaleY(distance, _downDuration))
+            _seq.Append(DOTween.To(() => _pivot.size.y, y =>
+            {
+                _pivot.size = new Vector2(_pivot.size.x, y);
+                _edge.transform.localPosition = new Vector2(0, -y);
+            }, distance, _downDuration))
                 .AppendCallback(() => _bottom.SetIsDown(false))
                 .AppendInterval(_upDelay)
-                .Append(_pivot.DOScaleY(1, _upDuration))
+                .Append(DOTween.To(() => _pivot.size.y, y =>
+                {
+                    _pivot.size = new Vector2(_pivot.size.x, y);
+                    _edge.transform.localPosition = new Vector2(0, -y);
+                }, distance, _downDuration))
                 .OnUpdate(() => _bottom.transform.position = _edge.position)
-                .OnComplete(() => 
+                .OnComplete(() =>
                 {
                     _prevDown = Time.time;
                     _isDown = false;

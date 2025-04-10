@@ -43,17 +43,17 @@ namespace Agents
 
 
         public void AddModifier(StatSO stat, object key, float value)
-            => GetStat(stat).AddModifier(key, value);
+            => GetStat(stat).AddBuffDebuff(key, value);
 
 
         public void RemoveModifier(StatSO stat, object key)
-            => GetStat(stat).RemoveModifier(key);
+            => GetStat(stat).RemovedBuffDebuff(key);
 
         public void ClearAllModifiers()
         {
             foreach (StatSO stat in _stats)
             {
-                stat.ClearModifiers();
+                stat.ClearBuffDebuff();
             }
         }
 

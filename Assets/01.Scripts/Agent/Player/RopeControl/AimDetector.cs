@@ -34,6 +34,7 @@ namespace Agents.Players
         [SerializeField] private float _shootRadius = 12f;
         [SerializeField] private LayerMask _wallLayer;
         [SerializeField] private LayerMask _targetLayer;
+        [SerializeField] private LayerMask _ignoreLayer;
 
         private Player _player;
 
@@ -68,6 +69,8 @@ namespace Agents.Players
             _playerPos = _player.transform.position;
             _mousePos = Camera.main.ScreenToWorldPoint(_player.PlayerInput.MousePosition);
             _direction = _mousePos - (Vector2)transform.position;
+
+
             RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, _shootRadius, _wallLayer | _targetLayer);
             bool isTargetDetected = boxHit.collider != null;
             if (!_isTargeted && isTargetDetected && _grabTarget != null)
@@ -75,10 +78,19 @@ namespace Agents.Players
                 _grabTarget.Release();
                 _grabTarget = null;
             }
+
             _isTargeted = isTargetDetected;
             _targetTrm = null;
             if (_isTargeted)
             {
+                RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, _shootRadius, _ignoreLayer);
+                if (ignoreHit.collider != null)
+                {
+                    _isTargeted = false;
+                    InvokeAimDataEvent();
+                    return;
+                }
+
                 _targetPos = boxHit.point;
                 _targetTrm = boxHit.collider.transform;
                 if (boxHit.collider.TryGetComponent(out IGrabable grabTarget))

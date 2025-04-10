@@ -1,21 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//[CreateAssetMenu(menuName = "SO/SkillTreeNode")]
-public abstract class NodeSO : ScriptableObject
+namespace Office.CharacterSkillTree
 {
-    [HideInInspector] public string guid;
-    [HideInInspector] public Vector2 position;
+    //[CreateAssetMenu(menuName = "SO/SkillTreeNode")]
+    public abstract class NodeSO : ScriptableObject
+    {
+        [HideInInspector] public string guid;
+        [HideInInspector] public Vector2 position;
 
-    [HideInInspector] public int id;
-    [HideInInspector] public List<NodeSO> nextNodes;
-    [HideInInspector] public NodeSO prevNode;
+        [HideInInspector] public int id;
+        [HideInInspector] public List<NodeSO> nextNodes;
+        [HideInInspector] public NodeSO prevNode;
 
-    public Sprite icon;
-    public int requireCoin;
+        public Sprite icon;
+        public int requireCoin;
 
 
-    public string nodeName;
-    [TextArea]
-    public string explain;
+        public string nodeName;
+        [TextArea]
+        public string explain;
+
+        private void OnValidate()
+        {
+            name = nodeName;
+        }
+    }
 }

@@ -4,58 +4,61 @@ using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class TechTreeGenerator : EditorWindow
+namespace Office.CharacterSkillTree
 {
-    private TechTreeGraphView graphView;
-    private InspectorView inspectorView;
-
-    [SerializeField]
-    private VisualTreeAsset m_VisualTreeAsset = default;
-
-    [MenuItem("Tools/TechTreeGenerator")]
-    public static void ShowExample()
+    public class TechTreeGenerator : EditorWindow
     {
-        TechTreeGenerator wnd = GetWindow<TechTreeGenerator>();
-        wnd.titleContent = new GUIContent("TechTreeGenerator");
-    }
+        private TechTreeGraphView graphView;
+        private InspectorView inspectorView;
 
-    [OnOpenAsset]
-    public static bool OnOpenAsset(int instanceID, int line)
-    {
-        if (Selection.activeObject is SkillTreeSO)
+        [SerializeField]
+        private VisualTreeAsset m_VisualTreeAsset = default;
+
+        [MenuItem("Tools/TechTreeGenerator")]
+        public static void ShowExample()
         {
-            ShowExample();
-            return true;
+            TechTreeGenerator wnd = GetWindow<TechTreeGenerator>();
+            wnd.titleContent = new GUIContent("TechTreeGenerator");
         }
-        return false;
-    }
 
-    public void CreateGUI()
-    {
-        VisualElement root = rootVisualElement;
+        [OnOpenAsset]
+        public static bool OnOpenAsset(int instanceID, int line)
+        {
+            if (Selection.activeObject is SkillTreeSO)
+            {
+                ShowExample();
+                return true;
+            }
+            return false;
+        }
 
-        m_VisualTreeAsset.CloneTree(root);
+        public void CreateGUI()
+        {
+            VisualElement root = rootVisualElement;
 
-        StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/01.Scripts/Office/SkillTree/Editor/TechTreeGenerator.uss");
-        root.styleSheets.Add(styleSheet);
+            m_VisualTreeAsset.CloneTree(root);
 
-        graphView = root.Q<TechTreeGraphView>();
-        inspectorView = root.Q<InspectorView>();
+            StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/01.Scripts/Office/SkillTree/Editor/TechTreeGenerator.uss");
+            root.styleSheets.Add(styleSheet);
 
-        graphView.OnNodeSelected = OnNodeSelectionChanged;
+            graphView = root.Q<TechTreeGraphView>();
+            inspectorView = root.Q<InspectorView>();
 
-        OnSelectionChange();
-    }
+            graphView.OnNodeSelected = OnNodeSelectionChanged;
 
-    private void OnSelectionChange()
-    {
-        SkillTreeSO dialog = Selection.activeObject as SkillTreeSO;
-        if (dialog)
-            graphView.ParpurateView(dialog);
-    }
+            OnSelectionChange();
+        }
 
-    private void OnNodeSelectionChanged(NodeView view)
-    {
-        inspectorView.UpdateSelection(view);
+        private void OnSelectionChange()
+        {
+            SkillTreeSO dialog = Selection.activeObject as SkillTreeSO;
+            if (dialog)
+                graphView.ParpurateView(dialog);
+        }
+
+        private void OnNodeSelectionChanged(NodeView view)
+        {
+            inspectorView.UpdateSelection(view);
+        }
     }
 }
