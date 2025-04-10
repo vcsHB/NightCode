@@ -15,14 +15,26 @@ namespace Office.Armory
         [SerializeField] private WeaponInfoPanel _weaponInfoPanel;
         [SerializeField] private SubWeaponData _debugData;
         private SubWeaponSO _currentSelectedWeaponSO;
+        private WeaponSlot _currentSelectedSlot;
 
         private void Awake()
         {
             _purchasePanel.OnPurchaseEvent += HandlePurchaseWeapon;
             _slots = GetComponentsInChildren<WeaponSlot>();
+
+        }
+
+        private void Start()
+        {
             for (int i = 0; i < _slots.Length; i++)
             {
                 _slots[i].OnSelectEvent += HandleSlotSelected;
+                if (_weaponInventory.IsUnlocked(_slots[i].WeaponSO.id))
+                {
+                    _slots[i].SetActive(true);
+                }
+                else
+                    _slots[i].SetActive(false);
             }
         }
         private void OnDestroy()
@@ -36,6 +48,7 @@ namespace Office.Armory
             if (!_creditStorage.UseCredit(_currentSelectedWeaponSO.initialPrice)) return;
 
             _weaponInventory.UnlockWeapon(_currentSelectedWeaponSO.id);
+            _currentSelectedSlot.SetActive(true);
             HandleSlotSelected(_currentSelectedWeaponSO, null); // debug
         }
 
@@ -43,6 +56,7 @@ namespace Office.Armory
         {
             if (weaponSO == null) return;
             _currentSelectedWeaponSO = weaponSO;
+            _currentSelectedSlot = slot;
             if (_weaponInventory.IsUnlocked(weaponSO.id))
             {
                 _weaponInfoPanel.SetWeaponData(weaponSO, _debugData);

@@ -7,6 +7,7 @@ namespace Office.Armory
     public class WeaponSlot : MonoBehaviour
     {
         [SerializeField] private SubWeaponSO _weaponSO;
+        public SubWeaponSO WeaponSO => _weaponSO;
         public event Action<SubWeaponSO, WeaponSlot> OnSelectEvent;
 
         private InteractionTarget _interactTarget;

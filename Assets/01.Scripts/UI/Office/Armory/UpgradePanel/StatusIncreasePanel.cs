@@ -33,7 +33,6 @@ namespace UI.OfficeScene.Armory
             {
                 WeaponStatusSlot slot = _enabledSlots.Dequeue();
                 slot.SetActive(false);
-                print("Disable");
                 _slotPool.Enqueue(slot);
             }
         }
@@ -44,7 +43,6 @@ namespace UI.OfficeScene.Armory
                 Instantiate(_weaponStatusSlotPrefab, _contentTrm) :
                 _slotPool.Dequeue();
             newSlot.SetActive(true);
-                print("Enable");
             _enabledSlots.Enqueue(newSlot);
             return newSlot;
         }
