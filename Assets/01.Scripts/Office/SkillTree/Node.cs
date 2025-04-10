@@ -143,20 +143,22 @@ namespace Office.CharacterSkillTree
             }
 
 
+            //스탯을 적용시킬 필요는 없다?
+            //어떤 노드가 열렸는지 저장만 해두면 필요한 애들이 그 정보를 바탕으로 스탯을 가져간다!
             //스탯 적용
-            if (NodeType is StatIncNodeSO statNode)
-            {
-                for (int i = 0; i < statNode.stat.Length; i++)
-                {
-                    StatIncrease statIncrease = statNode.stat[i];
-                    CharacterStatManager.Instance.TryAddModifier(_characterType,
-                        statIncrease.statType, statIncrease.increaseValue);
-                }
-            }
+            //if (NodeType is StatIncNodeSO statNode)
+            //{
+            //    for (int i = 0; i < statNode.stat.Length; i++)
+            //    {
+            //        StatIncrease statIncrease = statNode.stat[i];
+            //        CharacterStatManager.Instance.TryAddModifier(_characterType,
+            //            statIncrease.statType, statIncrease.increaseValue);
+            //    }
+            //}
 
             if (isLoading == false)
             {
-                SaveManager.Instance.AddSaveStat(_characterType, NodeType);
+                    SaveManager.Instance.AddSaveStat(_characterType, NodeType);
             }
         }
 

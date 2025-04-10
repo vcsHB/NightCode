@@ -12,6 +12,7 @@ namespace Office
     {
         [Space]
         public SkillTree[] skillTrees;
+        [SerializeField] private CharacterStatIndicator _statIndicator;
         [SerializeField] private float _easingDuration;
 
         private Tween _openCloseTween;
@@ -26,6 +27,7 @@ namespace Office
 
         public void UpdateSkillTree(CharacterEnum characterType)
         {
+            _statIndicator.SetCharacter(characterType);
             for (int i = 0; i < skillTrees.Length; i++)
             {
                 if (i == (int)characterType)

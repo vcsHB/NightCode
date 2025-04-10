@@ -1,6 +1,8 @@
 using Office.CharacterSkillTree;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 namespace StatSystem
@@ -10,24 +12,14 @@ namespace StatSystem
         private StatSave _statSave = new();
         private string _path => Path.Combine(Application.dataPath, "Save/TechTree.json");
 
-        public void Save(CharacterEnum characterType, SkillTree tree)
+
+        protected override void Awake()
         {
-            _statSave.treeSave[(int)characterType] = tree.GetTreeSave();
-            string json = JsonUtility.ToJson(_statSave);
-            File.WriteAllText(_path, json);
+            base.Awake();
+            Load();
         }
 
-        public void AddSaveStat(CharacterEnum characterType, NodeSO nodeToSave)
-        {
-            Debug.Log(_statSave.treeSave.Count);
-            if (_statSave.treeSave[(int)characterType].openListGUID.Contains(nodeToSave.guid)) return;
-            _statSave.treeSave[(int)characterType].openListGUID.Add(nodeToSave.guid);
-
-            string json = JsonUtility.ToJson(_statSave);
-            File.WriteAllText(_path, json);
-        }
-
-        public TechTreeSave Load(CharacterEnum characterType)
+        private void Load()
         {
             string json;
             if (File.Exists(_path) == false)
@@ -44,15 +36,32 @@ namespace StatSystem
                 json = JsonUtility.ToJson(_statSave);
                 File.WriteAllText(_path, json);
 
-                return _statSave.treeSave[(int)characterType];
+                return;
             }
 
             json = File.ReadAllText(_path);
             _statSave = JsonUtility.FromJson<StatSave>(json);
+        }
 
+        public void Save()
+        {
+            string json = JsonUtility.ToJson(_statSave);
+            File.WriteAllText(_path, json);
+        }
+
+
+        public void AddSaveStat(CharacterEnum characterType, NodeSO nodeToSave)
+        {
+            if (_statSave.treeSave[(int)characterType].openListGUID.Contains(nodeToSave.guid)) return;
+            _statSave.treeSave[(int)characterType].openListGUID.Add(nodeToSave.guid);
+
+            Save();
+        }
+
+        public TechTreeSave GetStatValue(CharacterEnum characterType)
+        {
             for (int i = 0; i < _statSave.treeSave.Count; i++)
             {
-                Debug.Log(_statSave.treeSave[i].characterType);
                 if (_statSave.treeSave[i].characterType == characterType)
                 {
                     return _statSave.treeSave[i];
