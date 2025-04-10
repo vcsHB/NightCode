@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4255ba19bfffc45b850d39624aa60a, type: 3}
+  m_Name: 5_SubWeapon_GrenadeShooter
+  m_EditorClassIdentifier: 
+  id: 5
+  type: 1
+  weaponName: "\uC720\uD0C4 \uBC1C\uC0AC\uAE30"
+  description: 
+  subWeaponSprite: {fileID: -2792815904885609456, guid: e9329b5b0513c684c8838ad21f82826d, type: 3}
+  subWeaponPrefab: {fileID: 1377305322212990659, guid: 1c79029da34aa014988424da99c9ac39, type: 3}
+  initialPrice: 100
+  levelUpData:
+  - increaseData:
+    - statusType: {fileID: 11400000, guid: a05745f9a052a3943b4b86e914008c75, type: 2}
+      value: 8
+    - statusType: {fileID: 11400000, guid: 706dc422a6ebaf1489ced14faddc3d2d, type: 2}
+      value: 5
+    cost: 100
+  - increaseData:
+    - statusType: {fileID: 11400000, guid: a05745f9a052a3943b4b86e914008c75, type: 2}
+      value: 10
+    - statusType: {fileID: 11400000, guid: 706dc422a6ebaf1489ced14faddc3d2d, type: 2}
+      value: 5
+    cost: 120

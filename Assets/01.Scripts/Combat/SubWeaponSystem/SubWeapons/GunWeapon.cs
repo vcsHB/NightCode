@@ -11,22 +11,31 @@ namespace Combat.SubWeaponSystem
         [SerializeField] private ProjectileShooter _shooter;
         [SerializeField] private float _fireCooltime;
         private float _lastFireTime;
-        public bool IsCooltimeOver => _lastFireTime + _fireCooltime > Time.time;
+        public bool IsCooltimeOver => _lastFireTime + _fireCooltime < Time.time;
 
         private bool _isShooting;
         private Vector2 _direction;
 
         public override void UseWeapon(SubWeaponControlData data)
         {
-            if(!CheckEnoughCount(_requireCount)) return;
+            if (!CheckEnoughCount(_requireCount)) return;
             _isShooting = true;
-            ReduceCount(_requireCount);
+            _direction = data.direction;
             if (!_isContinueFire)
             {
-                _direction = data.direction;
-                if (!IsCooltimeOver)
+                if (IsCooltimeOver)
+                {
+                    ReduceCount(_requireCount);
                     Shoot(data.direction);
+
+                }
             }
+        }
+
+        public override void CancelWeapon()
+        {
+            base.CancelWeapon();
+            _isShooting = false;
 
         }
 
@@ -36,8 +45,11 @@ namespace Combat.SubWeaponSystem
             //base.Update();
             if (_isContinueFire && _isShooting)
             {
+                if (!CheckEnoughCount(_requireCount)) return;
                 if (!IsCooltimeOver) return;
                 Shoot(_direction);
+                ReduceCount(_requireCount);
+                _lastFireTime = Time.time;
             }
         }
 
