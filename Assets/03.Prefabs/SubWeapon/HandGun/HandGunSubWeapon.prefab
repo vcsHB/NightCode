@@ -53,6 +53,7 @@ MonoBehaviour:
       m_Calls: []
   _maxAttackAmount: 15
   _leftAttackCount: 15
+  _requireCount: 1
   _useCooltime: 0
   _isContinueFire: 0
   OnFireEvent:
@@ -60,7 +61,7 @@ MonoBehaviour:
       m_Calls: []
   _projectileSpread: 0.2
   _shooter: {fileID: 8927462933975969917}
-  _fireCooltime: 0.2
+  _fireCooltime: 0.32
 --- !u!1 &8450162218408183715
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,4 +113,4 @@ MonoBehaviour:
     lifeTime: 30
     canPenetrate: 0
     canDestroy: 1
-    damage: 0
+    damage: 5
