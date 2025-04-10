@@ -1,5 +1,7 @@
+using Office.CharacterSkillTree;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,37 +10,68 @@ namespace StatSystem
 {
     public class CharacterStatManager : MonoSingleton<CharacterStatManager>
     {
-        public Dictionary<CharacterEnum, StatGroupSO> statGroup;
+        private Dictionary<CharacterEnum, StatGroupSO> statGroup;
+        public Dictionary<CharacterEnum, StatGroupSO> StatGroup
+        {
+            get
+            {
+                if (statGroup == null) InitDict();
+                return statGroup;
+            }
+            private set
+            {
+                statGroup = value;
+            }
+        }
 
         public StatGroupSO katanaStat;
         public StatGroupSO cresentBladeStat;
         public StatGroupSO crossStat;
-        public UnityEvent OnSave;
 
-        protected override void Awake()
+
+        private void InitDict()
         {
-            base.Awake();
-            statGroup = new Dictionary<CharacterEnum, StatGroupSO>();
+            StatGroup = new Dictionary<CharacterEnum, StatGroupSO>();
 
             katanaStat = ScriptableObject.Instantiate(katanaStat);
             for (int i = 0; i < katanaStat.statList.Count; i++) katanaStat.statList[i] = ScriptableObject.Instantiate(katanaStat.statList[i]);
-            statGroup.Add(CharacterEnum.Katana, katanaStat);
+            StatGroup.Add(CharacterEnum.Katana, katanaStat);
 
             cresentBladeStat = ScriptableObject.Instantiate(cresentBladeStat);
             for (int i = 0; i < cresentBladeStat.statList.Count; i++) cresentBladeStat.statList[i] = ScriptableObject.Instantiate(cresentBladeStat.statList[i]);
-            statGroup.Add(CharacterEnum.CrecentBlade, cresentBladeStat);
+            StatGroup.Add(CharacterEnum.CrecentBlade, cresentBladeStat);
 
             crossStat = ScriptableObject.Instantiate(crossStat);
             for (int i = 0; i < crossStat.statList.Count; i++) crossStat.statList[i] = ScriptableObject.Instantiate(crossStat.statList[i]);
-            statGroup.Add(CharacterEnum.Cross, crossStat);
+            StatGroup.Add(CharacterEnum.Cross, crossStat);
         }
 
         public bool TryGetStat(CharacterEnum character, StatusEnumType stat, out StatSO statSO)
-            => statGroup[character].TryGetStat(stat, out statSO);
+            => StatGroup[character].TryGetStat(stat, out statSO);
 
-        public void Save()
+        public bool TryAddModifier(CharacterEnum character, StatusEnumType stat, float value)
         {
-            OnSave?.Invoke();
+            if (TryGetStat(character, stat, out StatSO statSO))
+            {
+                statSO.AddModifier(value);
+                return true;
+            }
+            Debug.LogError($"You try to add value to not exsist stat [ Character:{character} ][ Stat:{stat}]");
+            return false;
         }
+    }
+
+
+    [Serializable]
+    public class StatSave
+    {
+        public List<TechTreeSave> treeSave = new List<TechTreeSave>();
+    }
+
+    [Serializable]
+    public class TechTreeSave
+    {
+        public CharacterEnum characterType;
+        public List<string> openListGUID;
     }
 }

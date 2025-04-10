@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using StatSystem;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -18,6 +19,7 @@ namespace Office.CharacterSkillTree
         public CharacterEnum characterType;
         [SerializeField] private Node nodePf;
 
+        public Transform nodeParent;
         public Transform edgeParent;
         public Transform edgeFillParent;
         //public UnityEvent<int, int> selectNodeEvent;
@@ -29,7 +31,7 @@ namespace Office.CharacterSkillTree
         [ContextMenu("CreateNodes")]
         private void CreateNodes()
         {
-            var children = transform.GetComponentsInChildren<Node>().ToList();
+            var children = nodeParent.GetComponentsInChildren<Node>().ToList();
 
             foreach (var child in children)
             {
@@ -44,7 +46,7 @@ namespace Office.CharacterSkillTree
                 Vector2 nodeSize = nodePf.RectTrm.sizeDelta;
 
                 Node nodeInstance = PrefabUtility.InstantiatePrefab(nodePf) as Node;
-                nodeInstance.transform.SetParent(transform);
+                nodeInstance.transform.SetParent(nodeParent);
 
                 nodeInstance.RectTrm.anchoredPosition = node.position;
                 nodeInstance.SetNode(node.nodeSO);
@@ -74,16 +76,21 @@ namespace Office.CharacterSkillTree
 
 #endif
 
+        private void Start()
+        {
+            Load();
+        }
+
         public void Init()
         {
             nodeDic = new Dictionary<NodeSO, Node>();
-            int childCnt = transform.childCount;
+            int childCnt = nodeParent.childCount;
 
             for (int i = 0; i < treeSO.nodes.Count; i++)
             {
                 for (int j = 0; j < childCnt; j++)
                 {
-                    if (transform.GetChild(j).TryGetComponent(out Node node))
+                    if (nodeParent.GetChild(j).TryGetComponent(out Node node))
                     {
                         if (treeSO.nodes[i].id != node.NodeType.id) continue;
 
@@ -145,31 +152,26 @@ namespace Office.CharacterSkillTree
         {
             TechTreeSave treeSave = new TechTreeSave();
             treeSave.characterType = characterType;
-            treeSave.nodeList = new List<NodeSave>();
+            treeSave.openListGUID = new List<string>();
 
             treeSO.nodes.ForEach(node =>
             {
-                NodeSave nodeSave = new NodeSave();
-                nodeSave.guid = node.guid;
-                nodeSave.isEnable = nodeDic[node].IsNodeEnable;
-
-                treeSave.nodeList.Add(nodeSave);
+                if (nodeDic[node].IsNodeEnable)
+                {
+                    treeSave.openListGUID.Add(node.guid);
+                }
             });
 
             return treeSave;
         }
 
-        public void Load(TechTreeSave treeSave)
+        public void Load()
         {
-            treeSave.nodeList.ForEach(nodeSave =>
+            TechTreeSave treeSave = SaveManager.Instance.GetStatValue(characterType);
+            treeSave.openListGUID.ForEach(openGUI =>
             {
-                Debug.Log(nodeSave.isEnable);
-                if (nodeSave.isEnable == false) return;
-
-                NodeSO node = treeSO.nodes.Find(node => node.guid == nodeSave.guid);
-
-                if (node != null)
-                    nodeDic[node].EnableNode(true);
+                NodeSO node = treeSO.nodes.Find(node => node.guid == openGUI);
+                if (node != null) nodeDic[node].EnableNode(true);
             });
         }
 
@@ -199,19 +201,5 @@ namespace Office.CharacterSkillTree
         Down,
         Left,
         Right
-    }
-
-    [Serializable]
-    public struct TechTreeSave
-    {
-        public CharacterEnum characterType;
-        public List<NodeSave> nodeList;
-    }
-
-    [Serializable]
-    public struct NodeSave
-    {
-        public string guid;
-        public bool isEnable;
     }
 }
