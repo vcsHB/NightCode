@@ -15,22 +15,24 @@ namespace Office
         [SerializeField] private CharacterPanel[] _characterPanels;
         [SerializeField] private RectTransform _panelRect;
         [SerializeField] private SkillTreePanel _skillTreePanel;
+        [SerializeField] private RectTransform _panelParent;
 
         private Vector2[] _originPositions;
         private float _duration = 0.3f;
 
-        private Tween _openCloseTween;
+        private Sequence _openCloseSeq;
         private Sequence _selectPanelSeq;
 
         private RectTransform _rectTrm => transform as RectTransform;
         private Vector2 screenPos = new Vector2(Screen.width, Screen.height);
 
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _originPositions = new Vector2[3];
             _skillTreePanel.InitSkillTree(_characterPanels[1].CharacterType);
-            _rectTrm.anchoredPosition = new Vector2(screenPos.x, 0);
+            _panelParent.anchoredPosition = new Vector2(screenPos.x, 0);
 
             for (int i = 0; i < 3; i++)
             {
@@ -107,7 +109,7 @@ namespace Office
 
         public void SelectCharacter(int index)
         {
-            switch(index)
+            switch (index)
             {
                 case 0:
                     MoveDown();
@@ -125,19 +127,25 @@ namespace Office
 
         public override void OpenAnimation()
         {
-            if (_openCloseTween != null && _openCloseTween.active)
-                _openCloseTween.Kill();
+            if (_openCloseSeq != null && _openCloseSeq.active)
+                _openCloseSeq.Kill();
 
-            _openCloseTween = _rectTrm.DOAnchorPosX(0, _duration)
+            SetInteractable(true);
+            _openCloseSeq = DOTween.Sequence();
+            _openCloseSeq.Append(_canvasGroup.DOFade(1, _duration / 2))
+                .Append(_panelParent.DOAnchorPosX(0, _duration / 2))
                     .OnComplete(OnCompleteOpen);
         }
 
         public override void CloseAnimation()
         {
-            if (_openCloseTween != null && _openCloseTween.active)
-                _openCloseTween.Kill();
+            if (_openCloseSeq != null && _openCloseSeq.active)
+                _openCloseSeq.Kill();
 
-            _openCloseTween = _rectTrm.DOAnchorPosX(screenPos.x, _duration)
+            SetInteractable(false);
+            _openCloseSeq = DOTween.Sequence();
+            _openCloseSeq.Append(_panelParent.DOAnchorPosX(screenPos.x, _duration))
+                .Append(_canvasGroup.DOFade(0, _duration / 2))
                     .OnComplete(OnCompleteClose);
         }
 

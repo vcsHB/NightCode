@@ -19,8 +19,9 @@ namespace Office
 
         private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             RectTrm.anchoredPosition = new Vector2(RectTrm.anchoredPosition.x, -screenPosition.y);
             for (int i = 0; i < 3; i++)
             {
@@ -116,7 +117,7 @@ namespace Office
             if (_slotPositionSetSeq != null && _slotPositionSetSeq.active) _slotPositionSetSeq.Complete();
 
 
-            _openCloseTween = RectTrm.DOAnchorPosY(-screenPosition.y / 2, _openCloseDuration)
+            _openCloseTween = RectTrm.DOAnchorPosY(-screenPosition.y, _openCloseDuration)
                 .OnComplete(OnCompleteClose);
         }
     }
