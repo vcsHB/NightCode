@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -28,7 +29,7 @@ namespace Office
         [SerializeField] private float _leftPedding;
         [SerializeField] private float _space;
 
-        private float _easingDuration = 0.4f;
+        private float _easingDuration = 0.2f;
         private List<float> _slotPositions = new List<float>();
         private List<MissionSelectButton> _missionButtonList = new List<MissionSelectButton>();
         private MissionSelectButton _selectedButton;
@@ -36,9 +37,10 @@ namespace Office
         private Sequence _seq;
         private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
 
-        private void Awake()
+        protected override void Awake()
         {
-            scrollViewRect.anchoredPosition = new Vector2(-screenPosition.x, 0);
+            base.Awake();
+            scrollViewRect.anchoredPosition = new Vector2(0, screenPosition.y);
         }
 
         private void Update()
@@ -54,9 +56,11 @@ namespace Office
             if (_seq != null && _seq.active)
                 _seq.Kill();
 
+            SetInteractable(true);
             _seq = DOTween.Sequence();
 
-            _seq.Append(scrollViewRect.DOAnchorPosX(0, _easingDuration).SetEase(Ease.OutCubic))
+            _seq.Append(_canvasGroup.DOFade(1, _easingDuration))
+                .Append(scrollViewRect.DOAnchorPosY(0, _easingDuration).SetEase(Ease.OutCubic))
                 .OnUpdate(() => contentRect.anchoredPosition = new Vector2(-contentRect.rect.width, 0))
                 .OnComplete(() =>
                 {
@@ -80,14 +84,14 @@ namespace Office
             if (_seq != null && _seq.active)
                 _seq.Kill();
 
+            SetInteractable(false);
             _seq = DOTween.Sequence();
 
-            _seq.Append(scrollViewRect.DOAnchorPosX(-screenPosition.x, _easingDuration))
+            _seq.Append(scrollViewRect.DOAnchorPosY(screenPosition.y, _easingDuration))
+                .Append(_canvasGroup.DOFade(0, _easingDuration))
                 .OnComplete(OnCompleteOpen);
         }
 
-
-        //-720, 0
         public void SelectPanel(MissionSO mission)
         {
             MissionSelectButton panel = _missionButtonList.Find(btn => btn.Mission == mission);
@@ -103,7 +107,7 @@ namespace Office
             _selectedButton = missionSelectButton;
 
             _seq = DOTween.Sequence();
-            _seq.Append(scrollViewRect.DOAnchorPosX(-screenPosition.x, _easingDuration))
+            _seq.Append(scrollViewRect.DOAnchorPosY(screenPosition.y, _easingDuration))
                 .Join(missionSelectButton.RectTrm.DOAnchorPosX(-500, _easingDuration))
                 .OnComplete(formation.Open);
 
@@ -117,7 +121,12 @@ namespace Office
             base.CloseAllUI();
         }
 
+        public void Toggle()
+        {
+            if (isOpened) Close();
+        }
 
+        #region Mission
 
         public void AddMission(MissionSO mission)
         {
@@ -147,7 +156,6 @@ namespace Office
             _missionButtonList.RemoveAt(index);
         }
 
-
         public void EnterMission()
         {
             CharacterEnum[] characterFormation = new CharacterEnum[3];
@@ -159,5 +167,8 @@ namespace Office
 
             SceneManager.LoadScene(_selectedButton.Mission.sceneName);
         }
+
+        #endregion
+
     }
 }

@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.Events;
 namespace UI
 {
-
+#if UNITY_EDITOR
+    [RequireComponent(typeof(CanvasGroup))]
+#endif
     public class UIPanel : MonoBehaviour, IWindowPanel
     {
         protected CanvasGroup _canvasGroup;

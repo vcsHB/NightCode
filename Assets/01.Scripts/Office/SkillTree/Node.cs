@@ -247,11 +247,8 @@ namespace Office.CharacterSkillTree
             _edge.transform.SetParent(_techTree.edgeParent);
             _edgeFill.transform.SetParent(_techTree.edgeFillParent);
 
-            Material edgeMat = new Material(_lineMaterial);
-            Material edgeFillmat = new Material(_lineMaterial);
-
-            _edge.SetMaterial(edgeMat);
-            _edgeFill.SetMaterial(edgeFillmat);
+            _edge.SetMaterial(_lineMaterial);
+            _edgeFill.SetMaterial(_lineMaterial);
         }
 
         public void SetEdge()
