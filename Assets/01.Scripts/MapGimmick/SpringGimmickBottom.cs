@@ -15,7 +15,7 @@ namespace ObjectManage.GimmickObjects.Logics
         private void OnCollisionEnter2D(Collision2D collision)
         {
             Vector2 direction = collision.collider.transform.position - transform.position;
-            if (direction.y >= 0 || !_isGoDown) return;
+            if (direction.y >= -transform.up.y || !_isGoDown) return;
 
             if(collision.collider.TryGetComponent(out IDamageable agent))
             {

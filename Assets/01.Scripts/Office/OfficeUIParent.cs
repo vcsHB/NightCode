@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Office
 {
-    public abstract class OfficeUIParent : MonoBehaviour, IWindowPanel
+    public abstract class OfficeUIParent : UIPanel
     {
         public event Action onOpenUI;
         public event Action onCloseUI;
@@ -30,7 +30,7 @@ namespace Office
         public abstract void OpenAnimation();
         public abstract void CloseAnimation();
 
-        public virtual void Open()
+        public override void Open()
         {
             isOpened = true;
             connectedUI.ForEach(ui =>
@@ -42,7 +42,7 @@ namespace Office
             OpenAnimation();
         }
 
-        public virtual void Close()
+        public override void Close()
         {
             if (linkedUI != null && linkedUI.isOpened)
             {
