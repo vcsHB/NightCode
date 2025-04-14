@@ -9,7 +9,7 @@ namespace ObjectManage.GimmickObjects.Logics
 
         [SerializeField] private SpriteRenderer _pivot;
         [SerializeField] private Transform _edge;
-        [SerializeField] private Transform _warning;
+        [SerializeField] private Warning _warning;
         [SerializeField] private SpringGimmickBottom _bottom;
 
         [Space]
@@ -19,7 +19,6 @@ namespace ObjectManage.GimmickObjects.Logics
         [SerializeField] private float _downDuration;
         [SerializeField] private float _upDelay;
         [SerializeField] private float _upDuration;
-
 
         private Sequence _seq;
         private float _prevDown;
@@ -51,12 +50,12 @@ namespace ObjectManage.GimmickObjects.Logics
             RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, _maxDistance, _whatIsGround);
             float distance = hit.distance;
 
-            _warning.localScale = new Vector3(1, distance, 1);
+            _warning.SetSize(distance);
         }
 
         private void Down()
         {
-            _warning.localScale = new Vector3(1, 0, 1);
+            _warning.Disable();
             RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, _maxDistance, _whatIsGround);
             float distance = hit.distance;
             _bottom.SetIsDown(true);
@@ -82,6 +81,7 @@ namespace ObjectManage.GimmickObjects.Logics
                 {
                     _prevDown = Time.time;
                     _isDown = false;
+                    _isWarninig = false; 
                 });
         }
     }
