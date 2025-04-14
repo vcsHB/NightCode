@@ -33,9 +33,11 @@ namespace CameraControllers
             _zoomCoroutine = StartCoroutine(ZoomCoroutine(zoomLevel, duration));
         }
 
+
+
         public void ResetZoomLevel(float duration)
         {
-            SetZoomLevel(_defaultZoomLevel, duration);
+            SetZoomLevel(_defaultZoomLevel, duration, true);
         }
 
         private IEnumerator ZoomCoroutine(float level, float duration)

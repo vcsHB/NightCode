@@ -11,15 +11,19 @@ namespace Office.CharacterControl
         public OfficePlayerState CurrentState => _currentState;
         private OfficePlayerState _currentState;
         private OfficePlayer _player;
+        private OfficePlayerRenderer _renderer;
 
         public OfficePlayerStateMachine(OfficePlayer player)
         {
             _player = player;
+            _renderer=  player.GetCompo<OfficePlayerRenderer>();
         }
 
 
         public void InitializeState()
         {
+            AddState("Idle", _renderer.IdleParam);
+            AddState("Move", _renderer.MoveParam);
 
         }
 
