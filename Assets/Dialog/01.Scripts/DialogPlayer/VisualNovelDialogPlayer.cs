@@ -1,21 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UI;
 using UnityEngine;
 
 namespace Dialog
 {
-    public class VisualNovelDialogPlayer : MonoBehaviour
+    public class VisualNovelDialogPlayer : DialogPlayer
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField] private TextMeshProUGUI _text;
+        [SerializeField] private IWindowPanel _bgPanel;
+
+        public override void StartDialog()
         {
-        
+            _isReadingDialog = true;
+            _curReadingNode = dialog.nodes[0];
+            ReadSingleLine();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void EndDialog()
         {
-        
+            _isReadingDialog = false;
+            _curReadingNode = null;
         }
+
+        public override void ReadSingleLine()
+        {
+            if(_curReadingNode is NormalNodeSO normal)
+            {
+
+            }
+            else if(_curReadingNode is OptionNodeSO option)
+            {
+
+            }
+            else if(_curReadingNode is BranchNodeSO branch)
+            {
+
+            }
+        }
+
     }
 }

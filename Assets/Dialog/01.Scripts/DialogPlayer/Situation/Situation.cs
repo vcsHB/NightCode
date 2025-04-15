@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace Dialog.SituationControl
 {
 
@@ -25,6 +26,7 @@ namespace Dialog.SituationControl
 
             _dialoguePlayer = DialogPlayer.Instance as InGameDialogPlayer;
         }
+
         [ContextMenu("PlayerSituation")]
         public void PlaySituation()
         {
@@ -34,6 +36,7 @@ namespace Dialog.SituationControl
             }
             StartCoroutine(SituationCoroutine());
         }
+        
         private IEnumerator SituationCoroutine()
         {
             yield return new WaitForSeconds(_dialogueStartDelay);
@@ -41,7 +44,6 @@ namespace Dialog.SituationControl
             _dialoguePlayer.StartDialog();
             OnDialogueStartEvent?.Invoke();
             _dialoguePlayer.OnDialogueEnd += HandleDialogueOver;
-
         }
 
         public void SetSituation()

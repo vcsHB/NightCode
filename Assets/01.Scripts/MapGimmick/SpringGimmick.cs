@@ -47,8 +47,8 @@ namespace ObjectManage.GimmickObjects.Logics
 
         private void Warning()
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, _maxDistance, _whatIsGround);
-            float distance = hit.distance;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position - (transform.up * transform.localScale.y), -transform.up, _maxDistance, _whatIsGround);
+            float distance = hit.distance / transform.localScale.y;
 
             _warning.SetSize(distance);
         }
@@ -81,7 +81,7 @@ namespace ObjectManage.GimmickObjects.Logics
                 {
                     _prevDown = Time.time;
                     _isDown = false;
-                    _isWarninig = false; 
+                    _isWarninig = false;
                 });
         }
     }
