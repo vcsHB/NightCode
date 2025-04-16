@@ -15,9 +15,10 @@ namespace ObjectManage.GimmickObjects.Logics
         private void OnCollisionEnter2D(Collision2D collision)
         {
             Vector2 direction = collision.collider.transform.position - transform.position;
-            if (direction.y >= -transform.up.y || !_isGoDown) return;
 
-            if(collision.collider.TryGetComponent(out IDamageable agent))
+            if (!_isGoDown) return;
+
+            if (collision.collider.TryGetComponent(out IDamageable agent))
             {
                 CombatData data = new CombatData();
                 data.type = AttackType.Blunt;
