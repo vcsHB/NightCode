@@ -76,8 +76,8 @@ namespace Cafe
             rating = Mathf.RoundToInt((float)rating / (float)customerCount);
             Debug.Log(rating);
 
-            resultPanel.Init(missionSO, _visitedCustomer.Count, rating);
             resultPanel.Open();
+            resultPanel.Init(missionSO, _visitedCustomer.Count, rating);
             //정산 같은거를 해야겠지
         }
 

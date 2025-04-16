@@ -12,6 +12,7 @@ namespace Tutorial
         [SerializeField] private float _removeTerm = 0.06f;
         private WaitForSeconds _waitForSec;
         private WaitForSeconds _removeWaitForSec;
+        private Coroutine _currentCoroutine;
 
         private void Awake()
         {
@@ -22,12 +23,16 @@ namespace Tutorial
 
         public void Open()
         {
-            StartCoroutine(OpenCoroutine());
+            if (_currentCoroutine != null)
+                StopCoroutine(_currentCoroutine);
+            _currentCoroutine = StartCoroutine(OpenCoroutine());
         }
 
         public void Close()
         {
-            StartCoroutine(CloseCoroutine());
+            if (_currentCoroutine != null)
+                StopCoroutine(_currentCoroutine);
+            _currentCoroutine = StartCoroutine(CloseCoroutine());
         }
         private IEnumerator OpenCoroutine()
         {
@@ -38,6 +43,7 @@ namespace Tutorial
                 _textCompo.maxVisibleCharacters++;
                 yield return _waitForSec;
             }
+            _currentCoroutine = null;
         }
 
         private IEnumerator CloseCoroutine()
@@ -49,6 +55,8 @@ namespace Tutorial
                 _textCompo.maxVisibleCharacters--;
                 yield return _removeWaitForSec;
             }
+            _currentCoroutine = null;
+
         }
 
         private void OnValidate()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace StatSystem
 {
-    [CreateAssetMenu(fileName = "StatSO", menuName = "SO/StatSO")]
+    [CreateAssetMenu(fileName = "StatSO", menuName = "SO/Stat/StatSO")]
     public class StatSO : ScriptableObject, ICloneable
     {
         public delegate void ValuechangeHandler(StatSO stat, float currentValue, float prevValue);
@@ -16,27 +16,19 @@ namespace StatSystem
         public string displayName;
         [SerializeField] private Sprite _icon;
         [SerializeField] private float _baseValue, _minValue, _maxValue;
-        public float modifyValue = 0;
+        public float buffDebuffValue = 0;       //UI 만들 때 구분할 수 있게
 
         private Dictionary<object, float> _modifyValueByKey = new Dictionary<object, float>();
+        private List<float> _modifyValue = new List<float>();
 
         //[field: SerializeField] public bool IsPercent { get; private set; }
 
         public Sprite Icon => _icon;
 
-        public float MaxValue
-        {
-            get => _maxValue;
-            set => _maxValue = value;
-        }
+        public float MaxValue => _maxValue;
+        public float MinValue => _minValue;
 
-        public float MinValue
-        {
-            get => _minValue;
-            set => _minValue = value;
-        }
-
-        public float Value => Mathf.Clamp(_baseValue + modifyValue, _minValue, _maxValue);
+        public float Value => Mathf.Clamp(_baseValue + buffDebuffValue, _minValue, _maxValue);
         public bool IsMax => Mathf.Approximately(Value, _maxValue);
         public bool IsMin => Mathf.Approximately(Value, _minValue);
 
@@ -51,10 +43,10 @@ namespace StatSystem
             }
         }
 
-        public void AddModifier(object key, float value)
+        public void AddBuffDebuff(object key, float value)
         {
             float prevValue = Value;
-            modifyValue += value;
+            buffDebuffValue += value;
 
             if (_modifyValueByKey.ContainsKey(key))
             {
@@ -68,22 +60,39 @@ namespace StatSystem
             TryInvokeValueChangeEvent(Value, prevValue);
         }
 
-        public void RemoveModifier(object key)
+        public void RemovedBuffDebuff(object key)
         {
             if (_modifyValueByKey.TryGetValue(key, out float value))
             {
                 float prevValue = Value;
-                modifyValue -= value;
+                buffDebuffValue -= value;
                 _modifyValueByKey.Remove(key);
                 TryInvokeValueChangeEvent(Value, prevValue);
             }
         }
 
-        public void ClearModifiers()
+        public void AddModifier(float value)
+        {
+            BaseValue += value;
+            _modifyValue.Add(value);
+        }
+
+        public void RemoveModifier(float value)
+        {
+            if (_modifyValue.Contains(value) == false)
+            {
+                Debug.LogWarning($"There is no modify but you try to remove it");
+                return;
+            }
+            BaseValue -= value;
+            _modifyValue.Remove(value);
+        }
+
+        public void ClearBuffDebuff()
         {
             float prevValue = Value;
             _modifyValueByKey.Clear();
-            modifyValue = 0;
+            buffDebuffValue = 0;
             TryInvokeValueChangeEvent(Value, prevValue);
         }
 

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Agents;
 using Agents.Players;
+using Combat.SubWeaponSystem;
 using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
 using UI.InGame.GameUI.CharacterSelector;
+using UI.InGame.GameUI.Combat.SubWeaponSystem;
 using UI.InGame.SystemUI.AlertSystem;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,6 +27,7 @@ namespace Combat.PlayerTagSystem
         [SerializeField] private AlertGroup _alertGroup;
         [SerializeField] private int _currentPlayerIndex = 0;
         [SerializeField] private CharacterSelectWindow _characterSelectWindow;
+        [SerializeField] private PlayerSubWeaponManager _playerSubWeaponManager;
         public Player CurrentPlayer => _playerList[_currentPlayerIndex];
         public Transform CurrentPlayerTrm => CurrentPlayer.transform;
         public PlayerSO CurrentPlayerData => _playerDatas[_currentPlayerIndex];
@@ -38,7 +41,7 @@ namespace Combat.PlayerTagSystem
         {
             Initialize();
             _playerInput.OnCharacterChangeEvent += Change;
-            SetPlayer(CurrentPlayer);
+            _playerSubWeaponManager.SetSubWeapon(null, CurrentPlayer);
         }
 
         private void Update()
@@ -115,13 +118,16 @@ namespace Combat.PlayerTagSystem
             float direction = prevPlayer.GetCompo<AgentRenderer>().FacingDirection;
             prevPlayer.ExitCharacter();
             prevPlayer.SetActive(false);
+            _playerSubWeaponManager.SetSubWeapon(prevPlayer, CurrentPlayer);
 
             yield return new WaitForSeconds(0.2f);
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
+            SetPlayerSubWeaponUI();
             CurrentPlayer.transform.position = changePosition;
             //CurrentPlayer.transform.rotation = prevRotation;
             CurrentPlayer.GetCompo<AgentRenderer>().FlipController(direction);
             SetPlayer(CurrentPlayer);
+            _aimGroup.SetAimColor(CurrentPlayerData.personalColor);
         }
 
         private void SetPlayer(Player newCharacter)
@@ -131,6 +137,15 @@ namespace Combat.PlayerTagSystem
             HUDController.Instance.SetFollowTarget(newCharacter.transform);
             CameraControllers.CameraManager.Instance.SetFollow(newCharacter.transform);
             _aimGroup.SetAnchorOwner(newCharacter.RigidCompo, newCharacter.RopeHolder);
+        }
+
+
+
+        private void SetPlayerSubWeaponUI(Player player = null)
+        {
+            if (player == null)
+                player = CurrentPlayer;
+
         }
 
         private void HandlePlayerDie()

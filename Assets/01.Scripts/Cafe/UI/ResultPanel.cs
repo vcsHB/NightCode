@@ -13,10 +13,19 @@ namespace Cafe
     {
         [SerializeField] private MissionSelectButton _missionSelect;
         [SerializeField] private TextMeshProUGUI _ratingText;
-        [SerializeField] private NumberPassing customerNumber;
-        [SerializeField] private NumberPassing rewardNumber;
+        [SerializeField] private NumberPassing _customerNumber;
+        [SerializeField] private NumberPassing _rewardNumber;
+
+        [Space]
+        [SerializeField] private GameObject _missionType;
+        [SerializeField] private GameObject _rating;
+        [SerializeField] private GameObject _customerCount;
+        [SerializeField] private GameObject _reward;
+        [SerializeField] private GameObject _successObj;
+        [SerializeField] private GameObject _returnButton;
 
         private float _duration = 0.5f;
+        private float _delay = 0.5f;
         private Tween _openCloseTween;
 
         public RectTransform RectTrm => transform as RectTransform;
@@ -55,16 +64,27 @@ namespace Cafe
             }
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(RectTrm);
-
             StartCoroutine(InitRoutine(customer, reward));
         }
 
         private IEnumerator InitRoutine(int customer, int reward)
         {
-            yield return new WaitForSeconds(_duration);
-            customerNumber.SetText(customer);
-            yield return new WaitForSeconds(customerNumber.Duration);
-            rewardNumber.SetText(reward);
+            yield return new WaitForSeconds(_duration + _delay);
+            _missionType.SetActive(true);
+            yield return new WaitForSeconds(_delay);
+            _rating.SetActive(true);
+            yield return new WaitForSeconds(_delay);
+            _customerCount.SetActive(true);
+            _customerNumber.duration = _duration;
+            _customerNumber.SetText(customer);
+            yield return new WaitForSeconds(_duration + _delay);
+            _reward.SetActive(true);
+            _rewardNumber.duration = _duration;
+            _rewardNumber.SetText(reward);
+            yield return new WaitForSeconds(_duration + _delay);
+            _successObj.SetActive(true);
+            yield return new WaitForSeconds(_delay);
+            _returnButton.SetActive(true);
         }
 
         public void ReturnToOffice()
@@ -85,7 +105,8 @@ namespace Cafe
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(0, _duration);
+            _openCloseTween = RectTrm.DOAnchorPosY(0, _duration)
+                .OnComplete(() => _ratingText.gameObject.SetActive(true));
         }
     }
 }

@@ -1,12 +1,14 @@
 using GGM.UI;
+using StatSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Office
+namespace Office.CharacterSkillTree
 {
     public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
@@ -34,6 +36,7 @@ namespace Office
         private Coroutine _currentCancelRoutine;
 
         private bool _tryNodeEnable = false;
+        private CharacterEnum _characterType;
         private readonly string CoinLackText = $"코인이 부족합니다ㅠㅠ";
 
         #region Property
@@ -120,7 +123,7 @@ namespace Office
             }
         }
 
-        public void EnableNode()
+        public void EnableNode(bool isLoading = false)
         {
             //재화 사용
             _isNodeEnable = true;
@@ -139,13 +142,24 @@ namespace Office
                 }
             }
 
-            //파츠 혹은 무기 활성화시켜주기
-            //if (NodeType is PartNodeSO part)
-            //    GameDataManager.Instance.EnablePart(part.openPart);
-            //if (NodeType is WeaponNodeSO weapon)
-            //    GameDataManager.Instance.EnableWeapon(weapon.weapon);
 
-            _techTree.Save();
+            //스탯을 적용시킬 필요는 없다?
+            //어떤 노드가 열렸는지 저장만 해두면 필요한 애들이 그 정보를 바탕으로 스탯을 가져간다!
+            //스탯 적용
+            //if (NodeType is StatIncNodeSO statNode)
+            //{
+            //    for (int i = 0; i < statNode.stat.Length; i++)
+            //    {
+            //        StatIncrease statIncrease = statNode.stat[i];
+            //        CharacterStatManager.Instance.TryAddModifier(_characterType,
+            //            statIncrease.statType, statIncrease.increaseValue);
+            //    }
+            //}
+
+            if (isLoading == false)
+            {
+                    SaveManager.Instance.AddSaveStat(_characterType, NodeType);
+            }
         }
 
         #endregion
@@ -220,29 +234,9 @@ namespace Office
         }
 
 
-        public void Init(bool isEnable)
+        public void Init(CharacterEnum characterType)
         {
-            if (isEnable)
-            {
-                _isNodeEnable = true;
-
-                _vertexFill.fillAmount = 1;
-                _edgeFill.SetFillAmount(1);
-
-                for (int i = 0; i < NodeType.nextNodes.Count; i++)
-                {
-                    if (_techTree.TryGetNode(NodeType.nextNodes[i], out Node prevNode))
-                    {
-                        prevNode.ActiveNode();
-                    }
-                }
-
-                //파츠 혹은 무기 활성화시켜주기
-                //if (NodeType is PartNodeSO part)
-                //    GameDataManager.Instance.EnablePart(part.openPart);
-                //if (NodeType is WeaponNodeSO weapon)
-                //    GameDataManager.Instance.EnableWeapon(weapon.weapon);
-            }
+            _characterType = characterType;
         }
 
 
@@ -253,11 +247,8 @@ namespace Office
             _edge.transform.SetParent(_techTree.edgeParent);
             _edgeFill.transform.SetParent(_techTree.edgeFillParent);
 
-            Material edgeMat = new Material(_lineMaterial);
-            Material edgeFillmat = new Material(_lineMaterial);
-
-            _edge.SetMaterial(edgeMat);
-            _edgeFill.SetMaterial(edgeFillmat);
+            _edge.SetMaterial(_lineMaterial);
+            _edgeFill.SetMaterial(_lineMaterial);
         }
 
         public void SetEdge()

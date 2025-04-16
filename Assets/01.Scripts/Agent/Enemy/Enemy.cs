@@ -1,15 +1,23 @@
 using Agents.Enemies.BT.Event;
 using Combat;
 using Core.EventSystem;
+using System;
 using Unity.Behavior;
 using UnityEngine;
+
+using Action = System.Action;
+
 namespace Agents.Enemies
 {
 
     public class Enemy : Agent
     {
+        public Action<Enemy, string> OnDisableBody;
         [SerializeField] protected LayerMask _whatIsTarget;
         protected BehaviorGraphAgent _btAgent;
+        protected string _enemyName;
+
+        public string EnemyName => _enemyName;
         public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
         [field: SerializeField] public GameEventChannelSO EventChannel { get; private set; }
@@ -24,6 +32,12 @@ namespace Agents.Enemies
 
             _btAgent = GetComponent<BehaviorGraphAgent>();
         }
+
+        public virtual void Init(string name)
+        {
+            _enemyName = name;
+        }
+
         protected override void HandleAgentDie()
         {
             base.HandleAgentDie();

@@ -15,7 +15,7 @@ namespace Agents.Players.FSM
         {
 
             AddState("Hang", "CresentPlayerHang", playerRenderer.HangParam);
-            AddState("Swing", "CresentPlayerSwing", playerRenderer.SwingParam);
+            AddState("Swing", "PlayerSwing", playerRenderer.SwingParam);
 
 
             base.Initialize(firstState);

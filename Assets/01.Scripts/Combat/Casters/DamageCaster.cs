@@ -13,6 +13,7 @@ namespace Combat.Casters
         public event Action<CombatData> OnCastCombatDataEvent;
         [SerializeField] protected float _damage;
         [SerializeField] protected AttackType _attackType;
+        [SerializeField] private bool _invalidityResistance;
 
         public virtual void Cast(Collider2D target)
         {
@@ -23,7 +24,8 @@ namespace Combat.Casters
                     type = _attackType,
                     damage = _damage,
                     damageDirection = target.transform.position - transform.position, 
-                    originPosition = transform.position
+                    originPosition = transform.position,
+                    invalidityResistance = _invalidityResistance
                     
                 };
                 if(hit.ApplyDamage(data))
