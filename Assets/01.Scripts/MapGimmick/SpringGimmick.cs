@@ -8,6 +8,7 @@ namespace ObjectManage.GimmickObjects.Logics
         [SerializeField] private LayerMask _whatIsGround;
 
         [SerializeField] private SpriteRenderer _pivot;
+        [SerializeField] private BoxCollider2D _pillarCollider;
         [SerializeField] private Transform _edge;
         [SerializeField] private Warning _warning;
         [SerializeField] private SpringGimmickBottom _bottom;
@@ -66,6 +67,8 @@ namespace ObjectManage.GimmickObjects.Logics
 
             _seq.Append(DOTween.To(() => _pivot.size.y, y =>
             {
+                _pillarCollider.offset = new Vector2(0, -y / 2);
+                _pillarCollider.size = new Vector2(_pillarCollider.size.x, y);
                 _pivot.size = new Vector2(_pivot.size.x, y);
                 _edge.transform.localPosition = new Vector2(0, -y);
             }, distance / transform.localScale.y, _downDuration))
@@ -73,6 +76,8 @@ namespace ObjectManage.GimmickObjects.Logics
                 .AppendInterval(_upDelay)
                 .Append(DOTween.To(() => _pivot.size.y, y =>
                 {
+                    _pillarCollider.offset = new Vector2(0, -y / 2);
+                    _pillarCollider.size = new Vector2(_pillarCollider.size.x, y);
                     _pivot.size = new Vector2(_pivot.size.x, y);
                     _edge.transform.localPosition = new Vector2(0, -y);
                 }, 1, _upDuration))
