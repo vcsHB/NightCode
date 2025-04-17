@@ -1,3 +1,4 @@
+using Dialog.Animation;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -95,7 +96,6 @@ namespace Dialog
             return animations;
         }
 
-
         private static TagStruct FindTag(string txt)
         {
             //뒤에서 부터 찾기
@@ -146,11 +146,149 @@ namespace Dialog
                         return tagStruct;
                     }
                 }
-
             }
 
             return null;
         }
+
+        public static List<TextAnimationInfo> ParseAnimation(ref string txt, List<TextAnimationSO> textAnimationList)
+        {
+            TextAnimationInfo animationInfo;
+            List<TextAnimationInfo> animations = new List<TextAnimationInfo>();
+
+            if (string.IsNullOrEmpty(txt)) return animations;
+
+            while (true)
+            {
+                animationInfo = FindTag(txt, textAnimationList);
+                if (animationInfo.animSO == null) break;
+
+                try
+                {
+                    //앞에서 문자열이 짧아졌으니 그만큼 뒤에서 줄여줘야함
+                    int startTagSize = animationInfo.end - animationInfo.start + 1;
+                    txt = txt.Remove(animationInfo.start, startTagSize);
+
+                    for (int i = 0; i < animations.Count; i++)
+                    {
+                        //뒤에서 부터 찾아서 무조건 더 큼
+                        TextAnimationInfo animInfo = animations[i];
+                        animInfo.start -= startTagSize;
+                        animations[i] = animInfo;
+                    }
+
+                    string tagEndText = $"</{animationInfo.animSO.TagID}>";
+                    int endPos = FindTagEndPos(txt, tagEndText, animationInfo.start);
+
+                    if (endPos == -1) endPos = txt.Length;
+                    else txt = txt.Remove(endPos, tagEndText.Length);
+
+                    for (int i = 0; i < animations.Count; i++)
+                    {
+                        //뒤에서 부터 찾아서 무조건 더 큼
+                        TextAnimationInfo animInfo = animations[i];
+                        if (animInfo.start >= endPos) animInfo.start -= tagEndText.Length;
+                        animations[i] = animInfo;
+                    }
+
+                    animationInfo.animSO.SetParameter(animationInfo.param);
+                    animations.Add(animationInfo);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    Debug.LogError($"애니메이션 이름도 제대로 확인 안하지 허~접 ♥");
+                }
+            }
+
+            List<ExcludeTag> excluding = FindTMPTag(txt);
+
+            animations.ForEach(anim =>
+            {
+                int lengthMinus = 0;
+                int startPosMinus = 0;
+
+                excluding.ForEach(ex =>
+                {
+                    int tagLength = ex.endPos - ex.startPos + 1;
+
+                    if (anim.start >= ex.endPos)
+                    {
+                        startPosMinus += tagLength;
+                    }
+
+                    if (ex.startPos >= anim.start && ex.endPos <= anim.end)
+                    {
+                        lengthMinus += tagLength;
+                    }
+                });
+
+                anim.start -= startPosMinus;
+            });
+
+            return animations;
+        }
+
+        private static TextAnimationInfo FindTag(string txt, List<TextAnimationSO> textAnimationList)
+        {
+            //뒤에서 부터 찾기
+            for (int i = txt.Length - 1; i >= 0; i--)
+            {
+                //< 문자를 찾아서
+                if (txt[i] == '<')
+                {
+                    //끝내는 테그 </ 인지 확인해주고
+                    if (i + 1 < txt.Length && txt[i + 1] == '/') continue;
+
+                    int endPos = -1;
+                    string enumTxt = "";
+                    string factor = "";
+
+                    //enum과 factor찾는 부분
+                    for (int j = i + 1; j < txt.Length; j++)
+                    {
+                        // = 은 인자를 받기 시작한다는 뜻
+                        if (txt[j] == '=')
+                        {
+                            //인자를 받아주고 ( =은 미포함 해야함 )
+                            for (int k = j + 1; k < txt.Length; k++)
+                            {
+                                //인자를 다 받은 다음 끝 위치 기억
+                                if (txt[k] == '>')
+                                {
+                                    endPos = k;
+                                    break;
+                                }
+                                factor += txt[k];
+                            }
+                            break;
+                        }
+                        else if (txt[j] == '>')     //끝이 나왔을 때 끝 위치 기억해주고 enum과 factor받는거 끝내
+                        {
+                            endPos = j;
+                            break;
+                        }
+
+                        enumTxt += txt[j];
+                    }
+
+                    TextAnimationSO animSO = textAnimationList.Find(animation => animation.TagID == enumTxt);
+                    if (animSO != null && endPos > -1)
+                    {
+                        TextAnimationInfo animInfo = new();
+                        animInfo.start = i;
+                        animInfo.end = endPos;
+                        animInfo.animSO = animSO;
+                        animInfo.param = factor;
+
+                        return animInfo;
+                    }
+                }
+            }
+
+            return new();
+        }
+
 
 
         private static List<ExcludeTag> FindTMPTag(string txt)

@@ -16,16 +16,24 @@ namespace Dialog.SituationControl
         private InGameDialogPlayer _dialoguePlayer;
         private SituationElement[] _elements;
 
+        [SerializeField] private InGameDialogPlayer debugDialog;
 
         private void Awake()
         {
+            Init(debugDialog);
             _elements = GetComponentsInChildren<SituationElement>();
         }
         private void Start()
         {
 
-            _dialoguePlayer = DialogPlayer.Instance as InGameDialogPlayer;
+            //_dialoguePlayer = DialogPlayer.Instance as InGameDialogPlayer;
         }
+
+        public void Init(InGameDialogPlayer dialogPlayer)
+        {
+            _dialoguePlayer = dialogPlayer;
+        }
+
 
         [ContextMenu("PlayerSituation")]
         public void PlaySituation()

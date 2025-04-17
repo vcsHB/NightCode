@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cafe;
 using Combat.PlayerTagSystem;
 using TMPro;
 using UI.InGame.GameUI.CallTalk;
@@ -12,18 +13,12 @@ namespace Dialog
     [RequireComponent(typeof(AnimationPlayer))]
     public class InGameDialogPlayer : DialogPlayer
     {
-        [SerializeField] private PlayerManager _playerManager;
-        [SerializeField] private CallTalkUI _callTalkUI;
-
-        [SerializeField] private DialogueTipUIPanel _tipPanel;
-
         private AnimationPlayer _animPlayer;
 
         [SerializeField] private RectTransform _optionParent;
-        [SerializeField] private List<Actor> characters;
-        private Actor _curCharacter;
-        public event Action OnDialogueEnd;
+        [SerializeField] private List<Actor> _characters;
 
+        private Actor _curCharacter;
         private TMP_TextInfo _txtInfo;
         private bool _optionSelected = false;
         private NodeSO _nextNode;
@@ -37,29 +32,18 @@ namespace Dialog
 
         private void Update()
         {
-            //����׿�
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 StartDialog();
-            }
+            } 
         }
 
         private void LateUpdate()
         {
-            //�ִϸ��̼� ����
             if (_curReadingNode is NormalNodeSO node && _isReadingDialog)
             {
                 _animPlayer.PlayAnimation(_curCharacter.ContentText, node.contentTagAnimations);
             }
-        }
-
-        public void SendTalkMessage(string sender, string content)
-        {
-            _callTalkUI.SetNewTalk(new TalkData()
-            {
-                sender = sender,
-                content = content
-            });
         }
 
 
@@ -71,16 +55,14 @@ namespace Dialog
                 Debug.Log("�̹� �������ε�~\n��~�� ��");
 
             _isReadingDialog = true;
-            _tipPanel.Open();
             _curReadingNode = dialog.nodes[0];
             ReadSingleLine();
         }
 
         public override void EndDialog()
         {
-            characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
+            _characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
             _isReadingDialog = false;
-            _tipPanel.Close();
             OnDialogueEnd?.Invoke();
         }
 
@@ -97,7 +79,7 @@ namespace Dialog
 
             if (_curReadingNode is NormalNodeSO node)
             {
-                characters.ForEach(c =>
+                _characters.ForEach(c =>
                 {
                     if (c.name == node.GetReaderName())
                     {
@@ -226,18 +208,18 @@ namespace Dialog
         }
         public virtual void SetCharacters(List<Actor> actors)
         {
-            this.characters = actors;
+            this._characters = actors;
 
-            foreach (Actor actor in characters)
+            foreach (Actor actor in _characters)
             {
                 TalkBubble bubble = GetTalkBubble();
                 bubble.SetDisabled();
                 actor.personalTalkBubble = bubble;
+
                 switch (actor.actorType)
                 {
                     case ActorType.Player:
-                        bubble.SetOwner(_playerManager.CurrentPlayerTrm, actor.bubbleOffset);
-
+                        bubble.SetOwner(CafePlayerManager.Instance.playerTrm, actor.bubbleOffset);
                         break;
                     case ActorType.Object:
                         bubble.SetOwner(actor.target, actor.bubbleOffset);
@@ -261,8 +243,9 @@ namespace Dialog
         public Vector2 bubbleOffset;
         public ActorType actorType;
         public Transform target; // owner character of this conversation
-        public TalkBubble personalTalkBubble;
-        public TextMeshProUGUI ContentText => personalTalkBubble.ContentTextMeshPro;
         public SpriteRenderer spriteRenderer;
+        public TalkBubble personalTalkBubble;
+
+        public TextMeshProUGUI ContentText => personalTalkBubble.ContentTextMeshPro;
     }
 }
