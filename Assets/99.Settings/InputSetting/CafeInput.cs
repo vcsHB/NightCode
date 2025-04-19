@@ -37,11 +37,13 @@ namespace Cafe
         public void EnableInput()
         {
             _isMoveEnable = true;
+            Debug.Log("asdf");
         }
 
         public void DisableInput()
         {
             _isMoveEnable = false;
+            Debug.Log("qwer");
         }
 
 

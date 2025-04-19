@@ -48,7 +48,6 @@ namespace Cafe
         public void SetCustomer(CafeCustomer customer)
         {
             AssingedCustomer = customer;
-            _customerPatientTime = customer.customerSO.menuWaitingTime;
         }
 
         //게임에서 손님 할당
@@ -119,7 +118,6 @@ namespace Cafe
         {
             if (!collision.TryGetComponent(out _player)) return;
 
-            Debug.Log(_isAddInput);
             if (_isAddInput)
             {
                 _player.RemoveInteract(OnServingMenu);

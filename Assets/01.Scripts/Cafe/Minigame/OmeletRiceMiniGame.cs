@@ -87,8 +87,8 @@ namespace Cafe
             }
             else
             {
-                CompareCompletion();
                 _isEndDrawing = true;
+                CompareCompletion();
             }
         }
 
@@ -186,7 +186,8 @@ namespace Cafe
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(Screen.height, _duration);
+            _openCloseTween = RectTrm.DOAnchorPosY(Screen.height, _duration)
+                .OnComplete(() => onCompleteMiniGame?.Invoke(_isGood));
             paintTexture.ResetTexture();
             _pixelPositions.Clear();
             input.EnableInput();
@@ -241,7 +242,7 @@ namespace Cafe
                 _isGood = true;
             }
 
-            onCompleteMiniGame?.Invoke(_isGood);
+            //onCompleteMiniGame?.Invoke(_isGood);
         }
 
 
