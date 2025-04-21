@@ -1,13 +1,25 @@
 using Agents.Players;
+using Combat.SubWeaponSystem;
 using UI.InGame.GameUI.Combat.SubWeaponSystem;
 using UnityEngine;
-namespace Combat.SubWeaponSystem
+namespace Combat.PlayerTagSystem
 {
 
-    public class PlayerSubWeaponManager : MonoBehaviour
+    public class PlayerSubWeaponManager : MonoBehaviour, IPlayerSubManager
     {
         [SerializeField] private SubWeaponPanel _subWeaponPanel;
+        private PlayerManager _playerManager;
 
+        public void Initialize(PlayerManager playerManager)
+        {
+            _playerManager = playerManager;
+            _playerManager.OnPlayerChangedEvent += SetSubWeapon;
+        }
+
+        private void OnDestroy()
+        {
+            _playerManager.OnPlayerChangedEvent -= SetSubWeapon;
+        }
 
         public void SetSubWeapon(Player prevPlayer, Player newPlayer)
         {

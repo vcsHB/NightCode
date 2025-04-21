@@ -9,7 +9,6 @@ namespace QuestSystem.LevelSystem
         public event Action OnArriveEndPoint;
         [SerializeField] private Transform _startPosTrm;
         [SerializeField] private EndPoint _endPoint;
-        [SerializeField] private QuestTargetGroup _questTargetGroup;
 
         public Vector2 StartPos => _startPosTrm.position;
 
@@ -35,11 +34,7 @@ namespace QuestSystem.LevelSystem
             Destroy(gameObject);
         }
 
-        internal void AddQuestHandler(Action<QuestTargetData> completeHandle)
-        {
-            _questTargetGroup.AddQuestHandler(completeHandle);
-        }
-
+        
 
 
     }

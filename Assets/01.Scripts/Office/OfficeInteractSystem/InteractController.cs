@@ -1,5 +1,6 @@
 using InputManage;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Office.InteractSystem
 {
@@ -32,6 +33,8 @@ namespace Office.InteractSystem
 
         private void Update()
         {
+            _canInteract = !EventSystem.current.IsPointerOverGameObject(); 
+            if (!_canInteract) return;
             _detectCenterPos = Camera.main.ScreenToWorldPoint(_uiInputReader.MousePositionOnScreen);
             CheckInteract(_detectCenterPos);
         }
