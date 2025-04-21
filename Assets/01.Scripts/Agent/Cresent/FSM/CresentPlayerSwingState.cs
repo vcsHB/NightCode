@@ -51,7 +51,6 @@ namespace Agents.Players.FSM
 
         public override void UpdateState()
         {
-            _cresentPlayerAnimationTrigger.CastSwingAttackCaster();
             base.UpdateState();
         }
 
