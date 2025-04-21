@@ -8,6 +8,7 @@ namespace Combat
         Blunt = 0,
         Sharp
     }
+    [System.Serializable]
     public struct CombatData
     {
         public AttackType type;

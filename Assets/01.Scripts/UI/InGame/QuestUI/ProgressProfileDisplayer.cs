@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Data.Common;
 using QuestSystem;
 using QuestSystem.QuestTarget;
 using UnityEngine;
