@@ -12,6 +12,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
+            HandleRemoveRope();
             _renderer.SetDissolve(false, () => 
             {
                 _player.gameObject.SetActive(false);
