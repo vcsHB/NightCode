@@ -104,7 +104,7 @@ namespace Agents.Players
                 }
             }
 
-            //InvokeGrabDataEvent();
+            InvokeGrabDataEvent();
             InvokeAimDataEvent();
 
         }

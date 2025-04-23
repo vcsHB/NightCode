@@ -37,6 +37,7 @@ namespace Agents.Players
 
         private AimData _currentAimData;
         private GrabData _currentGrabData;
+        public bool IsGrabTargeted => _currentGrabData.isTargeted;
         public bool IsTargeted => _currentAimData.isTargeted;
         public Vector2 AimDirection => _currentAimData.aimDirection;
         public Vector2 TargetPoint => _currentAimData.targetPosition;
