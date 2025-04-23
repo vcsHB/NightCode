@@ -35,7 +35,7 @@ namespace Dialog
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 StartDialog();
-            } 
+            }
         }
 
         private void LateUpdate()
@@ -52,7 +52,10 @@ namespace Dialog
         public override void StartDialog()
         {
             if (_isReadingDialog)
-                Debug.Log("�̹� �������ε�~\n��~�� ��");
+            {
+                Debug.LogWarning("A Dialog is already running in this player\nYou can not run multiple dialog in single player");
+                return;
+            }
 
             _isReadingDialog = true;
             _curReadingNode = dialog.nodes[0];
@@ -63,6 +66,7 @@ namespace Dialog
         {
             _characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
             _isReadingDialog = false;
+            _curReadingNode = null;
             OnDialogueEnd?.Invoke();
         }
 
@@ -74,21 +78,34 @@ namespace Dialog
                 return;
             }
 
-            //�ش� ��带 �湮�ߴٰ� Ȯ������
+            StartCoroutine(ReadingNodeRoutine());
             DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
+        }
 
-            if (_curReadingNode is NormalNodeSO node)
+        #endregion
+
+
+        #region ReadingRoutines
+
+        private IEnumerator ReadingNodeRoutine()
+        {
+            _isReadingDialog = false;
+            _curReadingNode.dialogEvents.ForEach(dialogEvent => dialogEvent.PlayEvent());
+
+            yield return new WaitUntil(() => !_curReadingNode.dialogEvents.Exists(dialogEvent => dialogEvent.isCompleteEvent == false));
+           
+            _isReadingDialog = true;
+            if (_curReadingNode is NormalNodeSO normal)
             {
                 _characters.ForEach(c =>
                 {
-                    if (c.name == node.GetReaderName())
+                    if (c.name == normal.GetReaderName())
                     {
                         _curCharacter = c;
                         _curCharacter.personalTalkBubble.SetEnabled();
                     }
                 });
-
-                _readingNodeRoutine = StartCoroutine(ReadingNormalNodeRoutine(node));
+                _readingNodeRoutine = StartCoroutine(ReadingNormalNodeRoutine(normal));
             }
             else if (_curReadingNode is OptionNodeSO option)
             {
@@ -99,11 +116,6 @@ namespace Dialog
                 JudgementCondition(branch);
             }
         }
-
-        #endregion
-
-
-        #region ReadingRoutines
 
         private IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
         {
@@ -225,8 +237,6 @@ namespace Dialog
                         bubble.SetOwner(actor.target, actor.bubbleOffset);
                         break;
                 }
-
-
             }
         }
     }

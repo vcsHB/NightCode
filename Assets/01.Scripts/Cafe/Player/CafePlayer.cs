@@ -9,6 +9,7 @@ namespace Cafe
         public CafeInput input;
         public TalkBubble talkBubble;
         [SerializeField] private CafePlayerInteractMark _interactMark;
+        [SerializeField] private ProcessInputObject _clickProcess;
 
         public bool isGetFood { get => food != null; }
         public FoodSO food { get; private set; }
@@ -27,7 +28,10 @@ namespace Cafe
         public void ServeFood()
         {
             food = null;
+
+            Flip();
             talkBubble.Close();
+            stateMachine.ChangeState("Idle");
         }
 
         #endregion
@@ -46,14 +50,30 @@ namespace Cafe
 
         public void RemoveInteract(Action interact)
         {
-            Debug.Log(food);
             if (food != null) talkBubble.Open();
 
             _interactMark.onInteract -= interact;
             _interactMark.gameObject.SetActive(false);
         }
 
+        public void AddClickProcessInteract(Action interact)
+        {
+            _clickProcess.Init();
+            _clickProcess.OnComplete += interact;
+        }
+
+        public void RemoveClickProcessInteract(Action interact)
+        {
+            _clickProcess.OnComplete -= interact;
+        }
 
         #endregion
+
+        public override void SetMoveTarget(Transform target)
+        {
+            input.DisableInput();
+            base.SetMoveTarget(target);
+            stateMachine.ChangeState("MoveToTarget");
+        }
     }
 }

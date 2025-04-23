@@ -10,15 +10,15 @@ namespace Cafe
         public Transform tableParent;
 
         private CafeSO _cafeInfo;
-        private List<CafeTable> _tableList;
+        private List<CafeSit> _tableList;
         private int _currentIndex = 0;
 
         private void Awake()
         {
-            _tableList = new List<CafeTable>();
+            _tableList = new List<CafeSit>();
             for (int i = 0; i < tableParent.childCount; i++)
             {
-                if (tableParent.GetChild(i).TryGetComponent(out CafeTable table))
+                if (tableParent.GetChild(i).TryGetComponent(out CafeSit table))
                     _tableList.Add(table);
             }
         }
@@ -39,7 +39,7 @@ namespace Cafe
 
         private bool SpawnCustomer(CafeCustomerSO customerSO)
         {
-            if (TryGetValiadeTable(out CafeTable table))
+            if (TryGetValiadeTable(out CafeSit table))
             {
                 CafeCustomer customer = Instantiate(customerSO.customerPf, customerInitPosition);
                 customer.onExitCafe += EnterNextCustomer;
@@ -49,7 +49,7 @@ namespace Cafe
             return false;
         }
 
-        public bool TryGetValiadeTable(out CafeTable table)
+        public bool TryGetValiadeTable(out CafeSit table)
         {
             int randomIndex = Random.Range(0, _tableList.Count);
             table = _tableList[randomIndex];

@@ -14,7 +14,7 @@ namespace Cafe
 
         private Situation _situation;
         private OmeletRiceMiniGame _miniGame;
-        private CafeTable _table;
+        private CafeSit _table;
         private float _foodGetTime;
         private bool _getFood = false;
         private bool _isExited = false;
@@ -101,7 +101,7 @@ namespace Cafe
         }
 
 
-        public void Init(CafeTable table, DialogSO talk)
+        public void Init(CafeSit table, DialogSO talk)
         {
             _table = table;
             SetMoveTarget(table.customerPosition);

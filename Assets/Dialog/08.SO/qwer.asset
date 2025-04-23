@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: da1438ee6f2b0704bb353c09476799ce
-  position: {x: 878, y: 358}
+  position: {x: 493, y: 408}
   isFirstNode: 0
+  dialogEventSO: []
+  dialogEvents: []
   reader: Player
   contents: "<Scale>\uC548\uB155 \uBABB\uD574!"
   nodeDelay: 0
   nextNode: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,9 +52,24 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: b262da21fe7d9494f9258153c4d261d0
-  position: {x: 577, y: 367.5}
+  position: {x: 214, y: 408}
   isFirstNode: 1
+  dialogEventSO:
+  - {fileID: 11400000, guid: 9f459284b3bbc9345ba54cd53550d13c, type: 2}
+  dialogEvents:
+  - rid: 413003476977844299
   reader: Mr.Jang
   contents: "\uC548\uB1FD\uD558\uC138\uC694"
   nodeDelay: 0
   nextNode: {fileID: -1368726312305940100}
+  references:
+    version: 2
+    RefIds:
+    - rid: 413003476977844299
+      type: {class: ZoomEvent, ns: Dialog, asm: Assembly-CSharp}
+      data:
+        stopUntilCompleteEvent: 1
+        isCompleteEvent: 1
+        zoomLevel: 4
+        duration: 0.5
+        returnZoomOnEndNode: 0
