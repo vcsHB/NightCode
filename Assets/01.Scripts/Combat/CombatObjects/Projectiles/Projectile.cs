@@ -159,14 +159,20 @@ namespace Combat.CombatObjects.ProjectileManage
 
         public bool ApplyDamage(CombatData data)
         {
-            if (_canDamagedReflect && !_isReflected)
+            if (_canDamagedReflect)
             {
-                Vector2 direction = (Vector2)transform.position - data.originPosition;
-                _isReflected = true;
-                _caster.SetTargetLayer(_reflectTargetLayer);
-                _currentLifeTime = 0f;
-                Shoot(-_projectileData.direction + UnityEngine.Random.insideUnitCircle);
-                return false;
+                if (!_isReflected)
+                {
+                    _isReflected = true;
+                    _caster.SetTargetLayer(_reflectTargetLayer);
+                    _currentLifeTime = 0f;
+                    Shoot(-_projectileData.direction + UnityEngine.Random.insideUnitCircle);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             if (!_projectileData.canDestroy) return false;
             OnDamagedEvent?.Invoke();
