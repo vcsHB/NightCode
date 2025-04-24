@@ -90,9 +90,6 @@ namespace Dialog
 
     public enum AnimTiming
     {
-        //Start�� Update�� �Ѵ� LateUpdate���� �������൵ ��
-        //�ٵ� End�� ���� �� while���ȿ� ��Ƶΰ� �ؾ���
-        //OnTextOut�� �ؽ�Ʈ ����� �� While���� ��Ƶΰ�
         Start,
         Update,
         OnTextOut,

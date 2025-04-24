@@ -7,6 +7,7 @@ namespace Dialog
 {
     public class TodownTagAnimation : TagAnimation
     {
+        private float _duration;
         private float _speed;
         private float _velocity;
 

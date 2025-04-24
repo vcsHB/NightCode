@@ -83,7 +83,7 @@ namespace Agents.Players
             _targetTrm = null;
             if (_isTargeted)
             {
-                RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, _shootRadius, _ignoreLayer);
+                RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, boxHit.distance, _ignoreLayer);
                 if (ignoreHit.collider != null)
                 {
                     _isTargeted = false;
@@ -102,6 +102,9 @@ namespace Agents.Players
                     }
                     _grabTarget = grabTarget;
                 }
+            }
+            else
+            {
             }
 
             InvokeGrabDataEvent();

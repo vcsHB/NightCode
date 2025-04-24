@@ -33,7 +33,7 @@ namespace Cafe
             stateMachine.currentState.UpdateState();
         }
 
-        public void SetMoveTarget(Transform target)
+        public virtual void  SetMoveTarget(Transform target)
             => MoveTarget = target;
 
         public virtual void Move(float dir)

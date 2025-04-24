@@ -9,7 +9,7 @@ namespace Cafe
 {
     public class ProcessInputObject : CafePlayerInputObject
     {
-        private CafeTable _table;
+        public Action OnComplete;
         [SerializeField] private Image _frame;
         [SerializeField] private Image _icon;
         [SerializeField] private float _processPerClick;
@@ -34,10 +34,8 @@ namespace Cafe
             input.onRightClick -= OnRightClick;
         }
 
-        public void Init(CafeTable table)
+        public void Init()
         {
-            if (_table != null) return;
-            _table = table;
             Open();
         }
 
@@ -70,8 +68,7 @@ namespace Cafe
             
             if (_process >= _targetProcess)
             {
-                _process = 0;
-                _table.CleanTable();
+                _process = 0; OnComplete?.Invoke();
                 Close();
             }
         }
@@ -88,7 +85,6 @@ namespace Cafe
         public override void Close()
         {
             gameObject.SetActive(false);
-            _table = null;
         }
     }
 }

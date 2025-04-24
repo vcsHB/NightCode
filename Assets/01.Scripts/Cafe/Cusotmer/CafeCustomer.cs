@@ -1,3 +1,7 @@
+using Dialog;
+using Dialog.SituationControl;
+using System;
+using UnityEditorInternal;
 using UnityEngine;
 
 
@@ -6,13 +10,24 @@ namespace Cafe
     public class CafeCustomer : CafeEntity
     {
         public CafeCustomerSO customerSO;
+        public event Action onExitCafe;
 
+        private Situation _situation;
         private OmeletRiceMiniGame _miniGame;
-        private CafeTable _table;
+        private CafeSit _table;
         private float _foodGetTime;
         private bool _getFood = false;
         private bool _isExited = false;
-        private int _rating = 3;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            _situation = GetComponent<Situation>();
+
+            var dialogPlayer = FindAnyObjectByType<InGameDialogPlayer>();
+            _situation.Init(dialogPlayer);
+        }
 
         protected override void Update()
         {
@@ -30,47 +45,43 @@ namespace Cafe
         public void RequireFood()
         {
             float direction = Mathf.Sign(_table.transform.position.x - transform.position.x);
+            onCompleteMove -= RequireFood;
             if (LookDir != direction) Flip();
 
             _getFood = false;
             _table.CustomerSit();
-            onCompleteMove -= RequireFood;
             stateMachine.ChangeState("Sit");
         }
 
+        //TODO Set Delay When Call This Funtion
         public void GetFood()
         {
-            if (Random.Range(0, 100) <= customerSO.minigameRequireChance)
-            {
-                _miniGame = CafeManager.Instance.omeletRiceMiniGame;
-                _miniGame.Open();
-                _miniGame.SetGuideLine(customerSO.GetRandomPainingName());
-                _miniGame.onCompleteMiniGame += OnCompleteMiniGame;
+            _miniGame = CafeManager.Instance.omeletRiceMiniGame;
+            _miniGame.SetGuideLine(customerSO.GetRandomPainingName());
+            _miniGame.onCompleteMiniGame += OnCompleteMiniGame;
+            _miniGame.Open();
+        }
 
-                return;
-            }
 
-            OnGetFood();
+
+        public void OnCompleteMiniGame(bool isGood)
+        {
+            _miniGame.onCompleteMiniGame -= OnCompleteMiniGame;
+
+            CafeManager.Instance.input.DisableInput();
+            _situation.OnDialogueEndEvent.AddListener(OnGetFood);
+            _situation.PlaySituation();
         }
 
         //음식을 받았을 때 => 먹기 시작?
         public void OnGetFood()
         {
             _getFood = true;
+            CafeManager.Instance.input.EnableInput();
             _foodGetTime = Time.time;
-
-            if (_table.WaitingTime > customerSO.menuWaitingTime) _rating--;
-            else if (_table.WaitingTime <= customerSO.menuWaitingTime / 3) _rating++;
+            _situation.OnDialogueEndEvent.RemoveListener(OnGetFood);
         }
 
-        
-        public void OnCompleteMiniGame(bool isGood)
-        {
-            _miniGame.onCompleteMiniGame -= OnCompleteMiniGame;
-            _rating += isGood ? 1 : -1;
-
-            OnGetFood();
-        }
 
 
         public void OnLeaveTable()
@@ -84,19 +95,19 @@ namespace Cafe
             if (_isExited) return;
 
             _isExited = true;
-            CafeManager.Instance.AddReview(customerSO, _rating);
+            onExitCafe?.Invoke();
             onCompleteMove -= OnExitCafe;
             Destroy(gameObject);
         }
 
 
-        public void Init(CafeTable table)
+        public void Init(CafeSit table, DialogSO talk)
         {
             _table = table;
             SetMoveTarget(table.customerPosition);
             table.SetCustomer(this);
             onCompleteMove += RequireFood;
-            _rating = 3;
+            _situation.SetDialogSO(talk);
         }
     }
 }
