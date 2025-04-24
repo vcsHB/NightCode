@@ -11,21 +11,22 @@ namespace Dialog.SituationControl
         public UnityEvent OnDialogueEndEvent;
         public UnityEvent OnDialogueStartEvent;
         [SerializeField] private List<Actor> _characters;
-        [SerializeField] private DialogSO _dialogScript;
         [SerializeField] private float _dialogueStartDelay = 3f;
+        [SerializeField] private DialogSO _dialogScript;
         private InGameDialogPlayer _dialoguePlayer;
         private SituationElement[] _elements;
-
 
         private void Awake()
         {
             _elements = GetComponentsInChildren<SituationElement>();
         }
-        private void Start()
-        {
 
-            _dialoguePlayer = DialogPlayer.Instance as InGameDialogPlayer;
-        }
+        public void Init(InGameDialogPlayer dialogPlayer)
+            => _dialoguePlayer = dialogPlayer;
+
+        public void SetDialogSO(DialogSO dialog)
+            => _dialogScript = dialog;
+
 
         [ContextMenu("PlayerSituation")]
         public void PlaySituation()

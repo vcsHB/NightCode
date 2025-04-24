@@ -95,13 +95,12 @@ GameObject:
   - component: {fileID: 5929204479323512970}
   - component: {fileID: 5724244604770489554}
   - component: {fileID: 6212249736986107268}
-  - component: {fileID: 502194819494469518}
+  - component: {fileID: 8132394017285181629}
   - component: {fileID: 8363521159000682261}
   - component: {fileID: 7940164709046414812}
   - component: {fileID: 1238545052150836573}
   - component: {fileID: 5233039724389583397}
   - component: {fileID: 6561208103208679544}
-  - component: {fileID: 8995680233968946520}
   m_Layer: 7
   m_Name: DummyShooter
   m_TagString: Untagged
@@ -204,7 +203,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 2.7}
   m_EdgeRadius: 0
---- !u!114 &502194819494469518
+--- !u!114 &8132394017285181629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,7 +212,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1820017262215715007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7a3ec5a7833ead459b2217624276249, type: 3}
+  m_Script: {fileID: 11500000, guid: 1582555846c98714fa8db1f6d53f7d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _whatIsTarget:
@@ -392,20 +391,6 @@ MonoBehaviour:
     m_Bits: 512
   <CanManualMove>k__BackingField: 1
   _moveSpeed: 4
---- !u!114 &8995680233968946520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1820017262215715007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b656d3f1d1ff2a941978ed6ebec16be1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetCode: Highbinder_1
-  _completeLevel: 1
 --- !u!1 &3573486213334796059
 GameObject:
   m_ObjectHideFlags: 0
@@ -5630,6 +5615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <FacingDirection>k__BackingField: 1
+  dissolveDuration: 0
 --- !u!1 &7401623195776476404
 GameObject:
   m_ObjectHideFlags: 0

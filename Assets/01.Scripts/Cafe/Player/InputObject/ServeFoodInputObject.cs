@@ -4,14 +4,14 @@ namespace Cafe
 {
     public class ServeFoodInputObject : CafePlayerInputObject
     {
-        private CafeTable _table;
+        private CafeSit _table;
 
-        public void Init(CafeTable table)
+        public void Init(CafeSit table)
             => _table = table;
 
         private void InteractObject()
         {
-            _table.OnServingMenu();
+            _table.ServeByPlayer();
             Close();
         }
 

@@ -55,7 +55,6 @@ namespace Cafe
         private void OnGetFood()
         {
             FoodSO food = GetFood();
-            Debug.Log(food);
             if (food == null) return;
 
             _player.SetFood(food);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cafe;
 using Combat.PlayerTagSystem;
 using TMPro;
 using UI.InGame.GameUI.CallTalk;
@@ -12,18 +13,12 @@ namespace Dialog
     [RequireComponent(typeof(AnimationPlayer))]
     public class InGameDialogPlayer : DialogPlayer
     {
-        [SerializeField] private PlayerManager _playerManager;
-        [SerializeField] private CallTalkUI _callTalkUI;
-
-        [SerializeField] private DialogueTipUIPanel _tipPanel;
-
         private AnimationPlayer _animPlayer;
 
         [SerializeField] private RectTransform _optionParent;
-        [SerializeField] private List<Actor> characters;
-        private Actor _curCharacter;
-        public event Action OnDialogueEnd;
+        [SerializeField] private List<Actor> _characters;
 
+        private Actor _curCharacter;
         private TMP_TextInfo _txtInfo;
         private bool _optionSelected = false;
         private NodeSO _nextNode;
@@ -37,7 +32,6 @@ namespace Dialog
 
         private void Update()
         {
-            //����׿�
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 StartDialog();
@@ -46,20 +40,10 @@ namespace Dialog
 
         private void LateUpdate()
         {
-            //�ִϸ��̼� ����
             if (_curReadingNode is NormalNodeSO node && _isReadingDialog)
             {
                 _animPlayer.PlayAnimation(_curCharacter.ContentText, node.contentTagAnimations);
             }
-        }
-
-        public void SendTalkMessage(string sender, string content)
-        {
-            _callTalkUI.SetNewTalk(new TalkData()
-            {
-                sender = sender,
-                content = content
-            });
         }
 
 
@@ -68,19 +52,21 @@ namespace Dialog
         public override void StartDialog()
         {
             if (_isReadingDialog)
-                Debug.Log("�̹� �������ε�~\n��~�� ��");
+            {
+                Debug.LogWarning("A Dialog is already running in this player\nYou can not run multiple dialog in single player");
+                return;
+            }
 
             _isReadingDialog = true;
-            _tipPanel.Open();
             _curReadingNode = dialog.nodes[0];
             ReadSingleLine();
         }
 
         public override void EndDialog()
         {
-            characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
+            _characters.ForEach((c) => RemoveTalkbubble(c.personalTalkBubble));
             _isReadingDialog = false;
-            _tipPanel.Close();
+            _curReadingNode = null;
             OnDialogueEnd?.Invoke();
         }
 
@@ -92,21 +78,34 @@ namespace Dialog
                 return;
             }
 
-            //�ش� ��带 �湮�ߴٰ� Ȯ������
+            StartCoroutine(ReadingNodeRoutine());
             DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
+        }
 
-            if (_curReadingNode is NormalNodeSO node)
+        #endregion
+
+
+        #region ReadingRoutines
+
+        private IEnumerator ReadingNodeRoutine()
+        {
+            _isReadingDialog = false;
+            _curReadingNode.dialogEvents.ForEach(dialogEvent => dialogEvent.PlayEvent());
+
+            yield return new WaitUntil(() => !_curReadingNode.dialogEvents.Exists(dialogEvent => dialogEvent.isCompleteEvent == false));
+           
+            _isReadingDialog = true;
+            if (_curReadingNode is NormalNodeSO normal)
             {
-                characters.ForEach(c =>
+                _characters.ForEach(c =>
                 {
-                    if (c.name == node.GetReaderName())
+                    if (c.name == normal.GetReaderName())
                     {
                         _curCharacter = c;
                         _curCharacter.personalTalkBubble.SetEnabled();
                     }
                 });
-
-                _readingNodeRoutine = StartCoroutine(ReadingNormalNodeRoutine(node));
+                _readingNodeRoutine = StartCoroutine(ReadingNormalNodeRoutine(normal));
             }
             else if (_curReadingNode is OptionNodeSO option)
             {
@@ -117,11 +116,6 @@ namespace Dialog
                 JudgementCondition(branch);
             }
         }
-
-        #endregion
-
-
-        #region ReadingRoutines
 
         private IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
         {
@@ -226,25 +220,23 @@ namespace Dialog
         }
         public virtual void SetCharacters(List<Actor> actors)
         {
-            this.characters = actors;
+            this._characters = actors;
 
-            foreach (Actor actor in characters)
+            foreach (Actor actor in _characters)
             {
                 TalkBubble bubble = GetTalkBubble();
                 bubble.SetDisabled();
                 actor.personalTalkBubble = bubble;
+
                 switch (actor.actorType)
                 {
                     case ActorType.Player:
-                        bubble.SetOwner(_playerManager.CurrentPlayerTrm, actor.bubbleOffset);
-
+                        bubble.SetOwner(CafePlayerManager.Instance.playerTrm, actor.bubbleOffset);
                         break;
                     case ActorType.Object:
                         bubble.SetOwner(actor.target, actor.bubbleOffset);
                         break;
                 }
-
-
             }
         }
     }
@@ -261,8 +253,9 @@ namespace Dialog
         public Vector2 bubbleOffset;
         public ActorType actorType;
         public Transform target; // owner character of this conversation
-        public TalkBubble personalTalkBubble;
-        public TextMeshProUGUI ContentText => personalTalkBubble.ContentTextMeshPro;
         public SpriteRenderer spriteRenderer;
+        public TalkBubble personalTalkBubble;
+
+        public TextMeshProUGUI ContentText => personalTalkBubble.ContentTextMeshPro;
     }
 }

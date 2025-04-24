@@ -7,48 +7,53 @@ namespace Cafe
     public class Cafe : MonoBehaviour
     {
         public Transform customerInitPosition;
-        public List<CafeCustomer> customerList;
         public Transform tableParent;
 
-        private List<CafeTable> tableList;
+        private CafeSO _cafeInfo;
+        private List<CafeSit> _tableList;
+        private int _currentIndex = 0;
 
         private void Awake()
         {
-            tableList = new List<CafeTable>();
+            _tableList = new List<CafeSit>();
             for (int i = 0; i < tableParent.childCount; i++)
             {
-                if (tableParent.GetChild(i).TryGetComponent(out CafeTable table))
-                    tableList.Add(table);
+                if (tableParent.GetChild(i).TryGetComponent(out CafeSit table))
+                    _tableList.Add(table);
             }
         }
 
-
-        public bool EnterCustomer(CafeCustomerSO customerSO)
+        public void Init(CafeSO cafeSO)
         {
-            if (TryGetValiadeTable(out CafeTable table))
+            _cafeInfo = cafeSO;
+        }
+
+        public void EnterNextCustomer()
+        {
+            if (_currentIndex >= _cafeInfo.customerToCome.Count) return;
+
+            CafeCustomerSO cafeCustomerSO = _cafeInfo.customerToCome[_currentIndex++];
+            SpawnCustomer(cafeCustomerSO);
+        }
+
+
+        private bool SpawnCustomer(CafeCustomerSO customerSO)
+        {
+            if (TryGetValiadeTable(out CafeSit table))
             {
                 CafeCustomer customer = Instantiate(customerSO.customerPf, customerInitPosition);
-                customer.Init(table);
+                customer.onExitCafe += EnterNextCustomer;
+                customer.Init(table, customerSO.talk);
                 return true;
             }
             return false;
         }
 
-        public bool TryGetValiadeTable(out CafeTable table)
+        public bool TryGetValiadeTable(out CafeSit table)
         {
-            CafeTable valiadeTable = null;
-
-            tableList.ForEach(t =>
-            {
-                if (t.CanCustomerSitdown())
-                {
-                    valiadeTable = t;
-                    return;
-                }
-            });
-
-            table = valiadeTable;
-            return (valiadeTable != null);
+            int randomIndex = Random.Range(0, _tableList.Count);
+            table = _tableList[randomIndex];
+            return true;
         }
     }
 }

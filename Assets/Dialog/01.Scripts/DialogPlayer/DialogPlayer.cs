@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using InputManage;
 using UnityEngine;
@@ -5,11 +6,16 @@ using UnityEngine;
 namespace Dialog
 {
     [RequireComponent(typeof(AnimationPlayer))]
-    public abstract class DialogPlayer : MonoSingleton<DialogPlayer>
+    public abstract class DialogPlayer : MonoBehaviour
     {
+        public Action OnDialogueStart;
+        public Action OnDialogueEnd;
+
         [SerializeField] protected UIInputReader _uiInputReader;
+
         public DialogSO dialog;
         [HideInInspector] public bool stopReading = false;
+
         protected NodeSO _curReadingNode;
         protected Coroutine _readingNodeRoutine;
         protected bool _playingEndAnimation = false;
@@ -17,6 +23,7 @@ namespace Dialog
 
         [SerializeField] protected float _textOutDelay;
         [SerializeField] protected float _nextNodeDelay;
+
         [Header("TalkBubble Pooling")]
         [SerializeField] private TalkBubble _talkBubblePrefab;
         private Queue<TalkBubble> _talkBubblePool = new();
@@ -32,9 +39,8 @@ namespace Dialog
         public virtual void CompleteEndAnimation() => _playingEndAnimation = false;
         public virtual void SetTextOutDelay(float delay) => _textOutDelay = delay;
         private bool _isInputDetected;
-        protected override void Awake()
+        protected virtual  void Awake()
         {
-            base.Awake();
             _uiInputReader.OnSpaceEvent += HandleMoveToNextDialogue;
         }
         void OnDestroy()
@@ -75,7 +81,7 @@ namespace Dialog
 
         public void RemoveTalkbubble(TalkBubble talkBubble)
         {
-            if(_enabledBubbles.Contains(talkBubble))
+            if (_enabledBubbles.Contains(talkBubble))
                 _enabledBubbles.Remove(talkBubble);
             _talkBubblePool.Enqueue(talkBubble);
         }

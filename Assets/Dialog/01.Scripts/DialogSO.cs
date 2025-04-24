@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Dialog
 {
-    [CreateAssetMenu(menuName = "SO/DialogSO")]
+    [CreateAssetMenu(menuName = "SO/Dialog/DialogSO")]
     public class DialogSO : ScriptableObject
     {
         public List<NodeSO> nodes;
