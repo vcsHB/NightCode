@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using InputManage;
 using UnityEngine;
 
@@ -8,13 +8,12 @@ namespace Dialog
     [RequireComponent(typeof(AnimationPlayer))]
     public abstract class DialogPlayer : MonoBehaviour
     {
-        public Action OnDialogueStart;
-        public Action OnDialogueEnd;
+        public Action OnDialogStart;
+        public Action OnDialogEnd;
+        [HideInInspector] public bool stopReading = false;
 
         [SerializeField] protected UIInputReader _uiInputReader;
-
-        public DialogSO dialog;
-        [HideInInspector] public bool stopReading = false;
+        [SerializeField] protected DialogSO _dialog;
 
         protected NodeSO _curReadingNode;
         protected Coroutine _readingNodeRoutine;
@@ -23,22 +22,51 @@ namespace Dialog
 
         [SerializeField] protected float _textOutDelay;
         [SerializeField] protected float _nextNodeDelay;
-
-        [Header("TalkBubble Pooling")]
-        [SerializeField] private TalkBubble _talkBubblePrefab;
-        private Queue<TalkBubble> _talkBubblePool = new();
-        private List<TalkBubble> _enabledBubbles = new();
+        private bool _isInputDetected;
 
         public float TextOutDelay => _textOutDelay;
         public bool PlayingEndAnimation => _playingEndAnimation;
+        public DialogSO Dialog => _dialog;
 
-        public abstract void StartDialog();
-        public abstract void EndDialog();
-        public abstract void ReadSingleLine();
+        public virtual void StartDialog()
+        {
+            if (_isReadingDialog)
+            {
+                Debug.LogWarning("A Dialog is already running in this player\nYou can not run multiple dialog in single player");
+                return;
+            }
+
+            _isReadingDialog = true;
+            _curReadingNode = _dialog.nodes[0];
+            ReadSingleLine();
+        }
+
+        public virtual void EndDialog()
+        {
+            _isReadingDialog = false;
+            _curReadingNode = null;
+            OnDialogEnd?.Invoke();
+        }
+
+        public virtual void ReadSingleLine()
+        {
+            if (_curReadingNode == null)
+            {
+                EndDialog();
+                return;
+            }
+
+            StartCoroutine(ReadingNodeRoutine());
+            DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
+        }
+
+        protected abstract IEnumerator ReadingNodeRoutine();
+
 
         public virtual void CompleteEndAnimation() => _playingEndAnimation = false;
+
         public virtual void SetTextOutDelay(float delay) => _textOutDelay = delay;
-        private bool _isInputDetected;
+
         protected virtual  void Awake()
         {
             _uiInputReader.OnSpaceEvent += HandleMoveToNextDialogue;
@@ -64,27 +92,9 @@ namespace Dialog
             return false;
         }
 
-        public virtual void SetDialogueData(DialogSO data)
+        public virtual void SetDialog(DialogSO data)
         {
-            dialog = data;
+            _dialog = data;
         }
-
-        public TalkBubble GetTalkBubble()
-        {
-            TalkBubble newBubble = _talkBubblePool.Count > 0
-                    ? _talkBubblePool.Dequeue()
-                    : Instantiate(_talkBubblePrefab, transform);
-
-            _enabledBubbles.Add(newBubble);
-            return newBubble;
-        }
-
-        public void RemoveTalkbubble(TalkBubble talkBubble)
-        {
-            if (_enabledBubbles.Contains(talkBubble))
-                _enabledBubbles.Remove(talkBubble);
-            _talkBubblePool.Enqueue(talkBubble);
-        }
-
     }
 }

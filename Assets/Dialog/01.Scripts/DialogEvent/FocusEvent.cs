@@ -8,7 +8,7 @@ namespace Dialog
         public string focusCharacterName;
         public float easingDuration;
 
-        public override void PlayEvent()
+        public override void PlayEvent(DialogPlayer dialogPlayer, Actor actor)
         {
             //CameraManager.Instance.SetFollow();
         }

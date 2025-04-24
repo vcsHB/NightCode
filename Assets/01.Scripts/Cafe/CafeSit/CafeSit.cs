@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Cafe
 {
@@ -64,10 +65,7 @@ namespace Cafe
 
         public void ServeByPlayer()
         {
-            float direction = Mathf.Sign(_player.transform.position.x - transform.position.x);
-
-            _playerPosition.position = transform.position + new Vector3(_playerStandingOffset * direction, 0, 0);
-            _player.SetMoveTarget(_playerPosition);
+            _player.SetMoveTarget(CalculatePlayerPosition(_player.transform));
             _player.onCompleteMove += OnCompleteServeByPlayer;
         }
 
@@ -80,10 +78,12 @@ namespace Cafe
             _player.onCompleteMove -= OnCompleteServeByPlayer;
         }
 
-        public void ServeByNPC(CafeMaid maid)
+        [Obsolete]
+        public void ServeByNPC()
         {
-            _iconRenderer.gameObject.SetActive(false);
-            AssingedCustomer.GetFood();
+            Debug.LogWarning("Serving by npc is not valid");
+            //SetInteractIcon(ECafeSitIcon.OrderIcon, false);
+            //AssingedCustomer.GetFood();
             //_isCustomerWaitingMenu = false;
         }
 
@@ -103,6 +103,14 @@ namespace Cafe
 
 
         #endregion
+
+
+        public Transform CalculatePlayerPosition(Transform playerTrm)
+        {
+            float direction = Mathf.Sign(playerTrm.position.x - transform.position.x);
+            _playerPosition.position = transform.position + new Vector3(_playerStandingOffset * direction, 0, 0);
+            return _playerPosition;
+        }
 
 
         public void SetInteractIcon(ECafeSitIcon iconType, bool isEnable)

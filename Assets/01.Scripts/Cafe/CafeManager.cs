@@ -24,7 +24,7 @@ namespace Cafe
         public void StartCafe()
         {
             IsCafeOpen = true;
-            cafe.EnterNextCustomer();
+            cafe.StartCustomerWave();
             input.EnableInput();
         }
 

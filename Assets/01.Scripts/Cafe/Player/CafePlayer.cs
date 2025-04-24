@@ -64,10 +64,12 @@ namespace Cafe
 
         public void RemoveClickProcessInteract(Action interact)
         {
+            _clickProcess.Close();
             _clickProcess.OnComplete -= interact;
         }
 
         #endregion
+
 
         public override void SetMoveTarget(Transform target)
         {

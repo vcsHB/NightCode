@@ -9,7 +9,7 @@ namespace Dialog
         public CafeInput cafeInput;
         public bool isEnable;
 
-        public override void PlayEvent()
+        public override void PlayEvent(DialogPlayer dialogPlayer, Actor actor)
         {
             isCompleteEvent = true;
             if (isEnable) cafeInput.EnableInput();

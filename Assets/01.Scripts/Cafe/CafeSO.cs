@@ -9,7 +9,7 @@ namespace Cafe
     public class CafeSO : ScriptableObject
     {
         public float openTime;
-        public List<CafeCustomerSO> customerToCome;
+        public List<CafeCustomerWaveSO> customerWave;
         public MissionSO mission;
     }
 }

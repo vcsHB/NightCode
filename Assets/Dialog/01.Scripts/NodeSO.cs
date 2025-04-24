@@ -11,31 +11,55 @@ namespace Dialog
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
         public bool isFirstNode;
-        public List<DialogEventSO> dialogEventSO;
 
-        [SerializeReference] public List<DialogEvent> dialogEvents = new();
+        public List<DialogEventSO> startDialogEventSO;
+        [SerializeReference] public List<DialogEvent> startDialogEvent = new();
+
+        [Space]
+        public List<DialogEventSO> endDialogEventSO;
+        [SerializeReference] public List<DialogEvent> endDialogEvent = new();
 
         private void OnValidate()
         {
-            dialogEventSO.ForEach(eventSO =>
+            startDialogEventSO.ForEach(eventSO =>
             {
                 if (eventSO == null) return;
 
-                bool hasDialogEvent = dialogEvents.Any(dialogEvent => dialogEvent.GetType() == eventSO.Type);
+                bool hasDialogEvent = startDialogEvent.Any(dialogEvent => dialogEvent.GetType() == eventSO.Type);
                 if (hasDialogEvent) return;
 
                 if (eventSO.GetDialogEvent(out DialogEvent dialogEvent))
-                    this.dialogEvents.Add(dialogEvent);
+                    this.startDialogEvent.Add(dialogEvent);
             });
 
-            for(int i = 0; i < dialogEvents.Count; i++)
+            for(int i = 0; i < startDialogEvent.Count; i++)
             {
-                DialogEventSO eventSO = dialogEventSO.Find(so => so.Type == dialogEvents[i].GetType());
+                DialogEventSO eventSO = startDialogEventSO.Find(so => so.Type == startDialogEvent[i].GetType());
 
                 if (eventSO == null)
                 {
-                    dialogEvents.RemoveAt(i--);
-                    Debug.Log("zxcv");
+                    startDialogEvent.RemoveAt(i--);
+                }
+            }
+
+            endDialogEventSO.ForEach(eventSO =>
+            {
+                if (eventSO == null) return;
+
+                bool hasDialogEvent = endDialogEvent.Any(dialogEvent => dialogEvent.GetType() == eventSO.Type);
+                if (hasDialogEvent) return;
+
+                if (eventSO.GetDialogEvent(out DialogEvent dialogEvent))
+                    this.endDialogEvent.Add(dialogEvent);
+            });
+
+            for (int i = 0; i < endDialogEvent.Count; i++)
+            {
+                DialogEventSO eventSO = endDialogEventSO.Find(so => so.Type == endDialogEvent[i].GetType());
+
+                if (eventSO == null)
+                {
+                    endDialogEvent.RemoveAt(i--);
                 }
             }
         }
@@ -45,9 +69,6 @@ namespace Dialog
         public bool IsCompleteEvent()
         {
             bool isComplete = true;
-
-
-
             return isComplete;
         }
     }

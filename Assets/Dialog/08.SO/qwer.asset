@@ -13,17 +13,29 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: da1438ee6f2b0704bb353c09476799ce
-  position: {x: 493, y: 408}
+  position: {x: 450, y: 407}
   isFirstNode: 0
-  dialogEventSO: []
-  dialogEvents: []
+  startDialogEventSO: []
+  startDialogEvent: []
+  endDialogEventSO:
+  - {fileID: 11400000, guid: 9f459284b3bbc9345ba54cd53550d13c, type: 2}
+  endDialogEvent:
+  - rid: 413003498803429453
   reader: Player
   contents: "<Scale>\uC548\uB155 \uBABB\uD574!"
   nodeDelay: 0
-  nextNode: {fileID: 0}
+  nextNode: {fileID: 2609269612029099866}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 413003498803429453
+      type: {class: ZoomEvent, ns: Dialog, asm: Assembly-CSharp}
+      data:
+        stopUntilCompleteEvent: 1
+        isCompleteEvent: 1
+        zoomLevel: 9
+        duration: 0.5
+        returnZoomOnEndNode: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39,6 +51,41 @@ MonoBehaviour:
   nodes:
   - {fileID: 5559389207879747461}
   - {fileID: -1368726312305940100}
+  - {fileID: 2609269612029099866}
+--- !u!114 &2609269612029099866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
+  m_Name: NormalNodeSO
+  m_EditorClassIdentifier: 
+  guid: 57244a8e535a8e840a7e224d958e89b2
+  position: {x: 750, y: 405}
+  isFirstNode: 0
+  startDialogEventSO:
+  - {fileID: 11400000, guid: db7a16beff4b9ba41afdb52c3ac7f0d3, type: 2}
+  startDialogEvent:
+  - rid: 413003498803429455
+  endDialogEventSO: []
+  endDialogEvent: []
+  reader: Mr.Jang
+  contents: "\uD5D0<Wait=2> \uC0C1\uCC98\u3160\u3160"
+  nodeDelay: 0
+  nextNode: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 413003498803429455
+      type: {class: EmotionIconEvent, ns: Dialog, asm: Assembly-CSharp}
+      data:
+        stopUntilCompleteEvent: 0
+        isCompleteEvent: 1
+        emotion: {fileID: 11400000, guid: b089b9631456c5e45bf9be60ed822a05, type: 2}
 --- !u!114 &5559389207879747461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,12 +99,14 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: b262da21fe7d9494f9258153c4d261d0
-  position: {x: 214, y: 408}
+  position: {x: 206, y: 407}
   isFirstNode: 1
-  dialogEventSO:
+  startDialogEventSO:
   - {fileID: 11400000, guid: 9f459284b3bbc9345ba54cd53550d13c, type: 2}
-  dialogEvents:
-  - rid: 413003476977844299
+  startDialogEvent:
+  - rid: 413003498803429451
+  endDialogEventSO: []
+  endDialogEvent: []
   reader: Mr.Jang
   contents: "\uC548\uB1FD\uD558\uC138\uC694"
   nodeDelay: 0
@@ -65,11 +114,11 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 413003476977844299
+    - rid: 413003498803429451
       type: {class: ZoomEvent, ns: Dialog, asm: Assembly-CSharp}
       data:
         stopUntilCompleteEvent: 1
         isCompleteEvent: 1
-        zoomLevel: 4
+        zoomLevel: 7.5
         duration: 0.5
         returnZoomOnEndNode: 0

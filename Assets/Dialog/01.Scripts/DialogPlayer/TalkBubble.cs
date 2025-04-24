@@ -41,6 +41,7 @@ namespace Dialog
         {
             _ownerTrm = owner;
             _offset = offset;
+            transform.parent = owner;
             transform.position = (Vector2)_ownerTrm.position + _offset;
         }
     }
