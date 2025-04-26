@@ -79,7 +79,14 @@ namespace Dialog
 
         private void HandleMoveToNextDialogue()
         {
+            StartCoroutine(HandelMoveToNextRoutine());
+        }
+
+        private IEnumerator HandelMoveToNextRoutine()
+        {
             _isInputDetected = true;
+            yield return null;
+            _isInputDetected = false;
         }
 
         protected virtual bool GetInput()

@@ -1,11 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cafe;
-using Combat.PlayerTagSystem;
 using TMPro;
-using UI.InGame.GameUI.CallTalk;
-using UI.InGame.SystemUI;
 using UnityEngine;
 
 namespace Dialog
@@ -15,12 +11,11 @@ namespace Dialog
     {
         private AnimationPlayer _animPlayer;
 
-        [SerializeField] private RectTransform _optionParent;
+        [SerializeField] private DialogOption _option;
 
         private Actor _currentActor;
         private bool _optionSelected = false;
         private NodeSO _nextNode;
-        private List<OptionButton> _optionBtns;
 
         protected override void Awake()
         {
@@ -112,31 +107,18 @@ namespace Dialog
         private void ReadingOptionNodeRoutine(OptionNodeSO node)
         {
             _optionSelected = false;
-            _optionBtns = new List<OptionButton>();
-            _optionParent.gameObject.SetActive(true);
             InitNodeAnim(node);
 
-            for (int i = 0; i < node.options.Count; i++)
-            {
-                OptionButton optionButton = Instantiate(node.optionPf, _optionParent);
-                optionButton.SetOption(node.options[i], _animPlayer);
-                optionButton.OnClcickEvent += OnSelectOption;
+            _option.gameObject.SetActive(true);
+            _option.SetOption(node, OnSelectOption);
 
-                _optionBtns.Add(optionButton);
-            }
-
-            StartCoroutine(WaitNodeRoutine(
-                () => _optionSelected,
-                () =>
-                {
-                    _optionParent.gameObject.SetActive(false);
-                    _optionBtns.ForEach(option => Destroy(option.gameObject));
-                    _optionBtns.Clear();
-                }));
+            StartCoroutine(WaitNodeRoutine(() => _optionSelected, null));
         }
 
         private void OnSelectOption(NodeSO node)
         {
+            _playingEndAnimation = false;
+            _option.gameObject.SetActive(false);
             _optionSelected = true;
             _nextNode = node;
         }
@@ -145,6 +127,7 @@ namespace Dialog
         {
             bool decision = branch.condition.Decision();
             _curReadingNode = branch.nextNodes[decision ? 0 : 1];
+            _playingEndAnimation = false;
             ReadSingleLine();
         }
 
@@ -153,8 +136,16 @@ namespace Dialog
             yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(waitPredict);
 
-            CompleteNodeAnim(_curReadingNode);
-            _playingEndAnimation = true;
+            if (_curReadingNode is NormalNodeSO)
+            {
+                _playingEndAnimation = true;
+                CompleteNodeAnim(_curReadingNode);
+            }
+            else
+            {
+                _playingEndAnimation = false;
+            }
+
             yield return new WaitUntil(() => !_playingEndAnimation);
 
             _curReadingNode.endDialogEvent.ForEach(dialogEvent => dialogEvent.PlayEvent(this, _currentActor));

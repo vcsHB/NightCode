@@ -52,6 +52,35 @@ MonoBehaviour:
   - {fileID: 5559389207879747461}
   - {fileID: -1368726312305940100}
   - {fileID: 2609269612029099866}
+  - {fileID: 5352021783530582940}
+  - {fileID: 6175283370080401298}
+  - {fileID: 2210431010484599877}
+--- !u!114 &2210431010484599877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
+  m_Name: NormalNodeSO
+  m_EditorClassIdentifier: 
+  guid: 8d687dd13712bd84f988532172fd8d7f
+  position: {x: 1337, y: 502}
+  isFirstNode: 0
+  startDialogEventSO: []
+  startDialogEvent: []
+  endDialogEventSO: []
+  endDialogEvent: []
+  reader: Player
+  contents: "\uB07C\uC590\uD638\uC6B0\uC6B0\uC6C5~!"
+  nodeDelay: 0
+  nextNode: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &2609269612029099866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,7 +94,7 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: 57244a8e535a8e840a7e224d958e89b2
-  position: {x: 750, y: 405}
+  position: {x: 752, y: 405}
   isFirstNode: 0
   startDialogEventSO:
   - {fileID: 11400000, guid: db7a16beff4b9ba41afdb52c3ac7f0d3, type: 2}
@@ -76,7 +105,7 @@ MonoBehaviour:
   reader: Mr.Jang
   contents: "\uD5D0<Wait=2> \uC0C1\uCC98\u3160\u3160"
   nodeDelay: 0
-  nextNode: {fileID: 0}
+  nextNode: {fileID: 5352021783530582940}
   references:
     version: 2
     RefIds:
@@ -86,6 +115,36 @@ MonoBehaviour:
         stopUntilCompleteEvent: 0
         isCompleteEvent: 1
         emotion: {fileID: 11400000, guid: b089b9631456c5e45bf9be60ed822a05, type: 2}
+--- !u!114 &5352021783530582940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf12593a4a5d8247bdea87308ca2eb6, type: 3}
+  m_Name: OptionNodeSO
+  m_EditorClassIdentifier: 
+  guid: 0d4025be2b3305847ab40b2e088f02a6
+  position: {x: 1038.075, y: 405.12506}
+  isFirstNode: 0
+  startDialogEventSO: []
+  startDialogEvent: []
+  endDialogEventSO: []
+  endDialogEvent: []
+  options:
+  - option: "\uB07C\uC58F\uD638\uC6B0~"
+    optionTxt: 
+    nextNode: {fileID: 6175283370080401298}
+  - option: "\uAE84\uD5A5"
+    optionTxt: 
+    nextNode: {fileID: 2210431010484599877}
+  optionPf: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &5559389207879747461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,3 +181,29 @@ MonoBehaviour:
         zoomLevel: 7.5
         duration: 0.5
         returnZoomOnEndNode: 0
+--- !u!114 &6175283370080401298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
+  m_Name: NormalNodeSO
+  m_EditorClassIdentifier: 
+  guid: 610eaa0ecc2407844af82f1112dd8495
+  position: {x: 1335, y: 309}
+  isFirstNode: 0
+  startDialogEventSO: []
+  startDialogEvent: []
+  endDialogEventSO: []
+  endDialogEvent: []
+  reader: Player
+  contents: "\uAE84\uD5A5~!"
+  nodeDelay: 0
+  nextNode: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
