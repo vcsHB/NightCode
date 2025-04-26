@@ -10,7 +10,7 @@ namespace Office
         public List<RectTransform> formationTrm;
         public List<CharacterFormationSlot> slots;
 
-        [SerializeField] private MissionSelectPanel _missionSelectPanel;
+        //[SerializeField] private MissionSelectPanel _missionSelectPanel;
         [SerializeField] private float _openCloseDuration;
         [SerializeField] private float _formationSetDuration;
         private Tween _openCloseTween;

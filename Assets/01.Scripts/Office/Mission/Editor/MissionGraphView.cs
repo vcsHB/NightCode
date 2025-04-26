@@ -1,12 +1,11 @@
 using Office;
 using System;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 
 [UxmlElement]
@@ -28,7 +27,7 @@ public partial class MissionGraphView : GraphView
         this.AddManipulator(new RectangleSelector());
     }
 
-    private MissionNodeView FindNodeView(MissionSO mission) 
+    private MissionNodeView FindNodeView(StageSO mission)
         => GetNodeByGuid(mission.guid) as MissionNodeView;
 
 
@@ -43,14 +42,6 @@ public partial class MissionGraphView : GraphView
         graphViewChanged -= OnGraphViewChanged;
         DeleteElements(graphElements);
         graphViewChanged += OnGraphViewChanged;
-
-        if (_missionSet.missionList.Count == 0 || _missionSet.missionList[0] == null)
-        {
-            MissionSO mission = _missionSet.CreateMission();
-            mission.id = 0;
-            mission.guid = GUID.Generate().ToString();
-            mission.nextMissions = new List<MissionSO>();
-        }
 
         //Create Node View
         _missionSet.missionList.ForEach(n => CreateNodeView(n));
@@ -78,14 +69,14 @@ public partial class MissionGraphView : GraphView
     }
 
 
-    private void CreateNode()
+    private void CreateNode(Type type, Vector2 position)
     {
-        MissionSO node = _missionSet.CreateMission();
-        if (node == null) return;
+        StageSO node = _missionSet.CreateMission(type);
+        node.position = position;
         CreateNodeView(node);
     }
 
-    private void CreateNodeView(MissionSO mission)
+    private void CreateNodeView(StageSO mission)
     {
         MissionNodeView nodeView = new MissionNodeView(mission);
 
@@ -136,11 +127,13 @@ public partial class MissionGraphView : GraphView
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
-        //base.BuildContextualMenu(evt);
+        var types = TypeCache.GetTypesDerivedFrom<StageSO>();
+        Vector2 mousePosition = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
+
+        foreach (Type type in types)
         {
-            evt.menu.AppendAction($"Mission", (a) => CreateNode());
-            //NodeSO n = ScriptableObject.CreateInstance<NodeSO>();
-            //Type type = n.GetType();
+            evt.menu.AppendAction(type.Name,
+                (a) => CreateNode(type, mousePosition));
         }
     }
 }

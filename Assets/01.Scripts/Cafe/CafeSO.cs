@@ -10,6 +10,6 @@ namespace Cafe
     {
         public float openTime;
         public List<CafeCustomerWaveSO> customerWave;
-        public MissionSO mission;
+        public StageSO mission;
     }
 }

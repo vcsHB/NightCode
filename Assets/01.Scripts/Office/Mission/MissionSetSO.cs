@@ -10,36 +10,36 @@ namespace Office
     [CreateAssetMenu(fileName = "MissionSetSO", menuName = "SO/Office/MissionSetSO")]
     public class MissionSetSO : ScriptableObject
     {
-        public List<MissionSO> missionList = new ();
+        public List<StageSO> missionList = new ();
 
 #if UNITY_EDITOR
-        public MissionSO CreateMission()
+        public StageSO CreateMission(Type type)
         {
-            MissionSO mission = ScriptableObject.CreateInstance<MissionSO>();
+            StageSO stage = ScriptableObject.CreateInstance(type) as StageSO;
 
-            mission.id = (ushort)missionList.Count;
-            mission.name = $"Mission-{mission.id}";
-            mission.guid = GUID.Generate().ToString();
-            mission.nextMissions = new List<MissionSO>();
-            missionList.Add(mission);
+            stage.id = (ushort)missionList.Count;
+            stage.name = $"{type.Name}-{stage.id}";
+            stage.guid = GUID.Generate().ToString();
+            stage.nextMissions = new List<StageSO>();
+            missionList.Add(stage);
 
-            AssetDatabase.AddObjectToAsset(mission, this);
+            AssetDatabase.AddObjectToAsset(stage, this);
             AssetDatabase.SaveAssets();
-            return mission;
+            return stage;
         }
 
-        public void DeleteScript(MissionSO mission)
+        public void DeleteScript(StageSO mission)
         {
             missionList.Remove(mission);
             AssetDatabase.RemoveObjectFromAsset(mission);
             AssetDatabase.SaveAssets();
         }
 
-        public List<MissionSO> GetConnectedMissions(MissionSO mission) 
+        public List<StageSO> GetConnectedMissions(StageSO mission) 
             => mission.nextMissions;
-        public MissionSO GetPrevNode(MissionSO mission) => mission.prevMission;
+        public StageSO GetPrevNode(StageSO mission) => mission.prevMission;
 
-        public void RemoveNextNode(MissionSO parent, MissionSO child)
+        public void RemoveNextNode(StageSO parent, StageSO child)
         {
             parent.nextMissions
                 .Where((mission) => mission.id == child.id)
@@ -50,7 +50,7 @@ namespace Office
                     node.prevMission = null;
                 });
         }
-        public void AddNextNode(MissionSO parent, MissionSO child)
+        public void AddNextNode(StageSO parent, StageSO child)
         {
             bool isExsist = parent.nextMissions.Where((node) => node.id == child.id).Count() > 0;
             if (!isExsist)

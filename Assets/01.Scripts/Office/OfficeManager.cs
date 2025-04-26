@@ -11,8 +11,8 @@ namespace Office
         public event Action onGetMoney, onLoseMoney;
 
         public MissionSetSO missionSet;
-        public MissionSelectPanel missionSelectPanel;
-        [HideInInspector] public List<MissionSO> _currentMission = new List<MissionSO>();
+        //public MissionSelectPanel missionSelectPanel;
+        [HideInInspector] public List<StageSO> _currentMission = new List<StageSO>();
 
         private string _path = Path.Combine(Application.dataPath, "Save/OfficeSave.json");
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
@@ -43,34 +43,34 @@ namespace Office
 
         public void AddMission(ushort missionId)
         {
-            MissionSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
+            StageSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
             AddMission(mission);
         }
 
-        public void AddMission(MissionSO mission)
+        public void AddMission(StageSO mission)
         {
             if (_currentMission.Exists(m => mission.id == m.id)) return;
 
             _currentMission.Add(mission);
-            missionSelectPanel.AddMission(mission);
+            //missionSelectPanel.AddMission(mission);
         }
 
         public void RemoveMission(int missionId)
         {
-            MissionSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
+            StageSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
             RemoveMission(mission);
         }
 
-        public void RemoveMission(MissionSO mission)
+        public void RemoveMission(StageSO mission)
         {
             if (_currentMission.Exists(m => mission.id == m.id) == false) return;
 
             _currentMission.Remove(mission);
-            missionSelectPanel.RemoveMission(mission);
+            //missionSelectPanel.RemoveMission(mission);
         }
 
 
-        public void ClearMission(MissionSO mission)
+        public void ClearMission(StageSO mission)
         {
             //DO NOT CHANGE ORDER
             RemoveMission(mission);
@@ -81,7 +81,7 @@ namespace Office
 
         public void ClearMission(int missionId)
         {
-            MissionSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
+            StageSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
             ClearMission(mission);
         }
 
@@ -116,7 +116,7 @@ namespace Office
 
             Money = save.money;
             _currentMission = save.GetCurrentMissions(missionSet);
-            _currentMission.ForEach(mission =>  missionSelectPanel.AddMission(mission));
+           // _currentMission.ForEach(mission =>  missionSelectPanel.AddMission(mission));
             //_currentMission.ForEach(mission => ClearMission(mission));
 
             if (_currentMission.Count == 0)
@@ -131,7 +131,7 @@ namespace Office
         public uint money;
         public List<ushort> clearedMissions;
 
-        public OfficeSave(uint money, List<MissionSO> clearedMissions)
+        public OfficeSave(uint money, List<StageSO> clearedMissions)
         {
             this.money = money;
             this.clearedMissions = new List<ushort>();
@@ -139,9 +139,9 @@ namespace Office
             clearedMissions.ForEach(mission => this.clearedMissions.Add(mission.id));
         }
 
-        public List<MissionSO> GetCurrentMissions(MissionSetSO missionSet)
+        public List<StageSO> GetCurrentMissions(MissionSetSO missionSet)
         {
-            List<MissionSO> missionList = new List<MissionSO>();
+            List<StageSO> missionList = new List<StageSO>();
 
             clearedMissions.ForEach(missionId =>
             missionList.Add(missionSet.missionList.Find(mission => mission.id == missionId)));

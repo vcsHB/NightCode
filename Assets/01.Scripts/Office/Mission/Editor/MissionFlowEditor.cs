@@ -53,7 +53,8 @@ namespace Office
         private void OnSelectionChange()
         {
             MissionSetSO mission = Selection.activeObject as MissionSetSO;
-            if (mission)
+
+            if (mission) 
                 graphView.ParpurateView(mission);
         }
 

@@ -8,14 +8,14 @@ using Office;
 public class MissionNodeView : UnityEditor.Experimental.GraphView.Node
 {
     public Action<MissionNodeView> OnNodeSelected;
-    public MissionSO mission;
+    public StageSO mission;
     public Port input;
     public Port output;
     public TextField nameInput;
     public List<Port> outputs = new List<Port>();
     public List<Button> buttons = new List<Button>();
 
-    public MissionNodeView(MissionSO mission)
+    public MissionNodeView(StageSO mission)
     {
         this.mission = mission;
 
