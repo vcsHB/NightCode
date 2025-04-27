@@ -23,7 +23,7 @@ namespace Agents.Enemies.BossManage
         public void Initialize(Agent agent)
         {
             _boss = agent as BurnOutBoss;
-            _patternPositionController  = _boss.GetComponent<BossPatternPositionController>();
+            _patternPositionController = _boss.GetComponent<BossPatternPositionController>();
         }
 
         public void AfterInit()
@@ -33,12 +33,12 @@ namespace Agents.Enemies.BossManage
         public void Dispose()
         {
         }
-        [ContextMenu("DebugMove")]
-        private void DebugMove()
-        {
-            SetMovement(_targetPosTrm.position, null);
-        }
 
+        public void MoveToStatePosition(BurnOutStateEnum state, Action OnArriveEvent = null)
+        {
+            SetMovement(_patternPositionController.GetStateSequencePosition(state), OnArriveEvent);
+        }
+      
         public void SetMovement(Vector2 targetPosition, Action OnMovementCompleteEvent)
         {
             _targetPosition = targetPosition;
@@ -59,7 +59,7 @@ namespace Agents.Enemies.BossManage
 
         private IEnumerator MoveYAxis()
         {
-            float fixedX =  transform.position.x;
+            float fixedX = transform.position.x;
 
             yield return MoveAxis(
                 _horizontalRail,
@@ -74,7 +74,7 @@ namespace Agents.Enemies.BossManage
 
         private IEnumerator MoveXAxis()
         {
-            float fixedY =  transform.position.y;
+            float fixedY = transform.position.y;
 
             yield return MoveAxis(
                 _verticalRail,

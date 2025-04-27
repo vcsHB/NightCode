@@ -14,18 +14,27 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
         [SerializeReference] public BlackboardVariable<BurnOutStateEnum> State;
         [SerializeReference] public BlackboardVariable<BurnOutBossMovement> Mover;
 
-        private bool _isInitialized;
+        private bool _isArrive;
 
         protected override Status OnStart()
         {
+            _isArrive = false;
+            Mover.Value.MoveToStatePosition(State.Value, HandleArrive);
             return Status.Running;
         }
-
         protected override Status OnUpdate()
         {
-            return Status.Success;
+            if (_isArrive)
+                return Status.Success;
+            else
+                return Status.Running;
+
         }
-        
+
+        private void HandleArrive()
+        {
+            _isArrive = true;
+        }
 
     }
 
