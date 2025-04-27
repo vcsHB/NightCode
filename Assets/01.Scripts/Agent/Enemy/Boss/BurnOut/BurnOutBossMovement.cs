@@ -18,10 +18,12 @@ namespace Agents.Enemies.BossManage
         [SerializeField] private Transform _horizontalRail; // Y Movement Follow
         private Vector2 _targetPosition;
         [SerializeField] private Transform _targetPosTrm;
+        private BossPatternPositionController _patternPositionController;
 
         public void Initialize(Agent agent)
         {
             _boss = agent as BurnOutBoss;
+            _patternPositionController  = _boss.GetComponent<BossPatternPositionController>();
         }
 
         public void AfterInit()

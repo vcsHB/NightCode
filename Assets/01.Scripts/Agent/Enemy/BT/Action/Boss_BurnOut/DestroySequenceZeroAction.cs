@@ -6,7 +6,7 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace Agents.Enemies.BT.ActionNodes
+namespace Agents.Enemies.BossManage.BT.ActionNodes
 {
 
     [Serializable, GeneratePropertyBag]
