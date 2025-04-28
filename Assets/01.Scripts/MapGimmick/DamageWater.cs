@@ -10,11 +10,15 @@ namespace Ingame.Gimmick
         [SerializeField] private float _knockbackPower;
         private SpriteRenderer _visualRenderer;
         public float CurrentFillLevel => _visualRenderer.size.y;
+        private bool _isInited;
 
         protected override void Awake()
         {
             base.Awake();
             _visualRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
+        private void Start()
+        {
         }
 
         public void SetFill(float fillLevel)
@@ -24,6 +28,11 @@ namespace Ingame.Gimmick
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if (!_isInited)
+            {
+                _isInited = true;
+                return;
+            }
             if (collision.contactCount > 0)
             {
                 Vector2 knockDir =
