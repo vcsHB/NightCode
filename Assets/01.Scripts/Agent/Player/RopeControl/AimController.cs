@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Combat;
 using ObjectManage;
 using ObjectManage.Rope;
 using ObjectManage.VFX;
@@ -104,7 +105,7 @@ namespace Agents.Players
             //_playerController.turboCount = 1;
 
             _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
-
+           
             HandleHang();
             _isShoot = true;
             return new ShootData { isHanged = true };

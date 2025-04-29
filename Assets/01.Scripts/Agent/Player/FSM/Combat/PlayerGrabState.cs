@@ -18,7 +18,7 @@ namespace Agents.Players.FSM
         {
             _mover.StopImmediately(true);
             if (_player.PlayerInput.IsShootRelease) HandleRemoveRope();
-            _grabThrower.Grab();
+            //_grabThrower.Grab();
             base.Enter();
             _player.PlayerInput.PullEvent += HandlePullTarget;
             _player.PlayerInput.OnAttackEvent += HandleAttack;
@@ -47,14 +47,14 @@ namespace Agents.Players.FSM
             if (!_canRemoveRope) return;
             if (!_player.IsActive) return;
             _aimController.RemoveWire();
-            if (_grabThrower.IsPulled)
-                _grabThrower.ThrowTarget();
+            // if (_grabThrower.IsPulled)
+            //     _grabThrower.ThrowTarget();
         }
 
         protected void SetCompleteCombo()
         {
             _isComboComplete = true;
-            _grabThrower.SetCompleteCombo();
+            //_grabThrower.SetCompleteCombo();
         }
 
 

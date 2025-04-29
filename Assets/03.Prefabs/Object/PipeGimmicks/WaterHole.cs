@@ -14,13 +14,18 @@ namespace ObjectManage.GimmickObjects
         [SerializeField] private float _waterFallMaxDuration;
         private Vector2 _waterSurfacePosition;
         [SerializeField] private bool _isActive;
-
+        [SerializeField] private float _fillWaterAmount = 1f;
+        private IWaterFillable _water;
         private void DetectWater()
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 100f, _collisionLayer);
             if (hit.collider != null)
             {
                 _waterSurfacePosition = hit.point;
+                if (_water == null)
+                {
+                    hit.collider.TryGetComponent(out _water);
+                }
             }
         }
 
@@ -28,6 +33,9 @@ namespace ObjectManage.GimmickObjects
         {
             if (!_isActive) return;
             DetectWater();
+            if (_water != null)
+                _water.Fill(_fillWaterAmount * Time.deltaTime);
+                
             _waterRenderer.SetPosition(1, _waterSurfacePosition);
             _waterSurfaceVFX.transform.position = _waterSurfacePosition;
         }

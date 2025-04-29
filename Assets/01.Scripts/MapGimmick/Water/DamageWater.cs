@@ -1,11 +1,13 @@
+using System;
 using Combat.Casters;
+using ObjectManage.GimmickObjects;
 using UnityEngine;
 
 namespace Ingame.Gimmick
 {
-    public class DamageWater : Caster
+    public class DamageWater : Caster, IWaterFillable, IWaterUsable
     {
-
+        public event Action<float> OnFillEvent;
         [SerializeField] private KnockbackCaster _knockBackCaster;
         [SerializeField] private float _knockbackPower;
         private SpriteRenderer _visualRenderer;
@@ -45,5 +47,16 @@ namespace Ingame.Gimmick
                 ForceCast(collision.collider);
             }
         }
+
+        public void Fill(float amount)
+        {
+            OnFillEvent?.Invoke(amount);
+        }
+
+        public void UseWater(float amount)
+        {
+        }
     }
+
+  
 }
