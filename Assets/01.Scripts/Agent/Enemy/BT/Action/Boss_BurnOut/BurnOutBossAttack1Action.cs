@@ -8,10 +8,9 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
 {
 
     [Serializable, GeneratePropertyBag]
-    [NodeDescription(name: "BurnOutBossAttack1", story: "attack [Target] with [AttackController] and [Mover] for [Duration]", category: "Action", id: "b48264d60ad2f8c6eda5363fdd4f0b6c")]
+    [NodeDescription(name: "BurnOutBossAttack1", story: "attack with [AttackController] and [Mover] for [Duration]", category: "Action", id: "b48264d60ad2f8c6eda5363fdd4f0b6c")]
     public partial class BurnOutBossAttack1Action : Action
     {
-        [SerializeReference] public BlackboardVariable<Transform> Target;
         [SerializeReference] public BlackboardVariable<BurnOutBossAttackController> AttackController;
         [SerializeReference] public BlackboardVariable<BurnOutBossMovement> Mover;
         [SerializeReference] public BlackboardVariable<float> Duration;
