@@ -20692,6 +20692,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 120458693}
+  - {fileID: 818768108}
   m_Father: {fileID: 636529521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &328216213
@@ -21627,7 +21628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &442493006
 Transform:
   m_ObjectHideFlags: 0
@@ -22736,6 +22737,9 @@ GameObject:
   - component: {fileID: 636529526}
   - component: {fileID: 636529527}
   - component: {fileID: 636529528}
+  - component: {fileID: 636529529}
+  - component: {fileID: 636529530}
+  - component: {fileID: 636529531}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -22865,6 +22869,7 @@ MonoBehaviour:
   - rid: 8887445413638963588
   - rid: 8887445413638963589
   - rid: 8887445413638963590
+  - rid: 8887445505419509813
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -22902,6 +22907,14 @@ MonoBehaviour:
           m_Value1: 1579701013970354826
         Name: DetectRange
         m_Value: 60
+    - rid: 8887445505419509813
+      type: {class: 'BlackboardVariable`1[[Agents.Enemies.EnemyAttackController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15473700980071834460
+          m_Value1: 16207505793001110568
+        Name: AttackController
+        m_Value: {fileID: 636529530}
 --- !u!114 &636529527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22954,6 +22967,76 @@ MonoBehaviour:
   _verticalRail: {fileID: 1825795952}
   _horizontalRail: {fileID: 1718443650}
   _targetPosTrm: {fileID: 1040117925}
+--- !u!114 &636529529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636529520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7cc963b841b69343b6c90a23118039a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPhaseChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _phaseDatas:
+  - OnPhaseEnterEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    healthCondition: 0.6
+  - OnPhaseEnterEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    healthCondition: 0.4
+  _currentPhase: 0
+--- !u!114 &636529530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636529520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c33188844071de439a9c0acc4e5c1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnAttackEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _enable: 0
+  _laser: {fileID: 753973197}
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _wallDetectDistance: 30
+--- !u!114 &636529531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636529520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d9437061f0e854d9d24e3f4af20ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHeatingEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCoolingEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _maxHeatLevel: 150
+  _waterLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  _waterDetectSize: {x: 5, y: 10}
+  _currentHeatLevel: 0
 --- !u!1 &639922492
 GameObject:
   m_ObjectHideFlags: 0
@@ -23601,7 +23684,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 2.52, z: 1}
+  m_LocalScale: {x: 0, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 753973196}
@@ -23707,6 +23790,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8992b78269c0e2f4eb61f24ee8e0e748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnFireEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 818768109}
+        m_TargetAssemblyTypeName: FeedbackSystem.FeedbackPlayer, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnFireStopEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 818768109}
+        m_TargetAssemblyTypeName: FeedbackSystem.FeedbackPlayer, Assembly-CSharp
+        m_MethodName: FinishFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _laserWidth: 0.5
   _fireMaxDistance: 20
   _laserIgnoreLayer:
@@ -28750,6 +28863,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 146149902}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &818768107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 818768108}
+  - component: {fileID: 818768109}
+  - component: {fileID: 818768110}
+  m_Layer: 0
+  m_Name: LaserFireFeedback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &818768108
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818768107}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 325282334}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &818768109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818768107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 818033d49ec6ced4ab4eb138e6721dc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &818768110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818768107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507b4b072045ea04ca38df5b090e538e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakePower: 25
+  _shakeDuration: 50
 --- !u!1 &829042401
 GameObject:
   m_ObjectHideFlags: 0
@@ -29445,7 +29617,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0

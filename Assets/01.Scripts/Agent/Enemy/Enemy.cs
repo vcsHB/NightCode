@@ -25,9 +25,9 @@ namespace Agents.Enemies
         protected override void Awake()
         {
             EventChannel = Instantiate(EventChannel);
+            HealthCompo = GetComponent<Health>();
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
-            HealthCompo = GetComponent<Health>();
             HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             _btAgent = GetComponent<BehaviorGraphAgent>();

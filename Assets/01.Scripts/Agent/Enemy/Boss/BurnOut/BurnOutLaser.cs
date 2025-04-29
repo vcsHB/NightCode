@@ -1,9 +1,12 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 namespace Agents.Enemies.BossManage
 {
     public class BurnOutLaser : MonoBehaviour
     {
+        public UnityEvent OnFireEvent;
+        public UnityEvent OnFireStopEvent;
         [SerializeField] private float _laserWidth;
         [SerializeField] private float _fireMaxDistance = 20f;
         [SerializeField] private LayerMask _laserIgnoreLayer;
@@ -14,6 +17,7 @@ namespace Agents.Enemies.BossManage
         public void StartFire()
         {
             _fireVFX.Play();
+            OnFireEvent?.Invoke();
             _visualTrm.DOScaleX(_laserWidth, _laserSizeTweenDuration);
         }
         private void Update()
@@ -23,7 +27,8 @@ namespace Agents.Enemies.BossManage
 
         public void StopFire()
         {
-            _fireVFX.Play();
+            _fireVFX.Stop();
+            OnFireStopEvent?.Invoke();
             _visualTrm.DOScaleX(0f, _laserSizeTweenDuration);
 
         }

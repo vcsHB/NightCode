@@ -21,6 +21,8 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
             enemy.SetVariable("Renderer", enemy.GetCompo<AgentRenderer>());
             enemy.SetVariable("AnimTrigger", enemy.GetCompo<EnemyAnimationTrigger>());
             enemy.SetVariable("Collider", enemy.GetComponent<Collider2D>());
+            enemy.SetVariable("PhaseController", enemy.GetCompo<BossPhaseController>());
+            enemy.SetVariable("HeatController", enemy.GetComponent<BossHeatController>());
 
 
             return Status.Running;

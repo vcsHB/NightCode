@@ -13,13 +13,30 @@ namespace Agents.Enemies.BossManage
         [SerializeField] private float _axisMovementMaxDuration = 10f;
         [SerializeField] private float _horizontalMovementSpeed = 3f;
         [SerializeField] private float _verticalMovementSpeed = 2f;
+        private float _axisMovementDefaultDuration;
 
         [SerializeField] private Transform _verticalRail; // X Movement Follow
         [SerializeField] private Transform _horizontalRail; // Y Movement Follow
         private Vector2 _targetPosition;
         [SerializeField] private Transform _targetPosTrm;
         private BossPatternPositionController _patternPositionController;
+        public Vector2 BossPosition => _boss.transform.position;
 
+
+        private void Awake()
+        {
+            _axisMovementDefaultDuration = _axisMovementMaxDuration;
+        }
+
+        public void SetAxisDuration(float newDuration)
+        {
+            _axisMovementMaxDuration = newDuration;
+        }
+
+        public void ResetAxisDuration()
+        {
+            _axisMovementMaxDuration = _axisMovementDefaultDuration;
+        }
         public void Initialize(Agent agent)
         {
             _boss = agent as BurnOutBoss;
@@ -38,13 +55,15 @@ namespace Agents.Enemies.BossManage
         {
             SetMovement(_patternPositionController.GetStateSequencePosition(state), OnArriveEvent);
         }
-      
+
         public void SetMovement(Vector2 targetPosition, Action OnMovementCompleteEvent)
         {
             _targetPosition = targetPosition;
             StartCoroutine(MoveToTarget(OnMovementCompleteEvent));
 
         }
+
+
         private IEnumerator MoveToTarget(Action OnMovementCompleteEvent)
         {
             OnMovementEndEvent?.Invoke();
