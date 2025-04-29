@@ -12,6 +12,12 @@ namespace ObjectManage.GimmickObjects
         private void Awake()
         {
             _water.OnFillEvent += HandleWaterFilled;
+            _water.OnUseEvent += HandleWaterUsed;
+        }
+
+        private void HandleWaterUsed(float amount)
+        {
+            _water.transform.localPosition = new Vector3(0, Mathf.Clamp(_water.transform.localPosition.y - amount, _minWaterLevel, _maxWaterLevel), 0f);
         }
 
         private void HandleWaterFilled(float amount)

@@ -8,6 +8,7 @@ namespace Ingame.Gimmick
     public class DamageWater : Caster, IWaterFillable, IWaterUsable
     {
         public event Action<float> OnFillEvent;
+        public event Action<float> OnUseEvent;
         [SerializeField] private KnockbackCaster _knockBackCaster;
         [SerializeField] private float _knockbackPower;
         private SpriteRenderer _visualRenderer;
@@ -55,6 +56,7 @@ namespace Ingame.Gimmick
 
         public void UseWater(float amount)
         {
+            OnUseEvent?.Invoke(amount);
         }
     }
 
