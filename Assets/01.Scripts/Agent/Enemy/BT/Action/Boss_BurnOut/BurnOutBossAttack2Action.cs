@@ -22,6 +22,7 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
         private float _targetAngle;
         private float _rotationTimer;
         private bool _isRotateCompleted;
+        
         protected override Status OnStart()
         {
 
@@ -33,8 +34,6 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
                 Vector2 toTarget = Target.Value.position - HeadTrm.Value.position;
                 _startAngle = HeadTrm.Value.localEulerAngles.z;
 
-                // 타겟이 왼쪽에 있을 경우 → 목표 각도 0 (시계 방향)
-                // 오른쪽에 있을 경우 → 목표 각도 360 (=0) (반시계 방향)
                 _targetAngle = (toTarget.x < 0) ? -180f : 180f;
 
                 _rotationTimer = 0f;
@@ -49,7 +48,6 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
             float t = Mathf.Clamp01(_rotationTimer / Duration);
             float newAngle = Mathf.LerpAngle(_startAngle, _targetAngle, t);
             HeadTrm.Value.localRotation = Quaternion.Euler(0, 0, newAngle);
-            Debug.Log("newAngle" + newAngle);
 
             if (t < 1f)
                 return Status.Running;

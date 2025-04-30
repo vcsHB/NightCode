@@ -17,7 +17,7 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
 
         protected override Status OnStart()
         {
-            HeatController.Value.ApplyCooling(Amount.Value);
+            HeatController.Value.SetHeatLevel(Amount);
             return Status.Success;
         }
 

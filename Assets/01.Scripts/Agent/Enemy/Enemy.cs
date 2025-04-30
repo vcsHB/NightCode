@@ -20,11 +20,9 @@ namespace Agents.Enemies
         public string EnemyName => _enemyName;
         public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
-        [field: SerializeField] public GameEventChannelSO EventChannel { get; private set; }
 
         protected override void Awake()
         {
-            EventChannel = Instantiate(EventChannel);
             HealthCompo = GetComponent<Health>();
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();

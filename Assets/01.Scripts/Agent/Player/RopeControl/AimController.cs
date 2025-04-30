@@ -104,7 +104,7 @@ namespace Agents.Players
             _currentShootTime = 0f;
             //_playerController.turboCount = 1;
 
-            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
+            _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
            
             HandleHang();
             _isShoot = true;
@@ -129,7 +129,7 @@ namespace Agents.Players
             
             if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
-                _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
+                _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
                 Vector2 newPosition = GetLerpTargetPosition(_wireClampedDistance);
                 _anchorDistance = Vector2.Distance(newPosition, _anchorPosition);
                 _clampCoroutine = StartCoroutine(

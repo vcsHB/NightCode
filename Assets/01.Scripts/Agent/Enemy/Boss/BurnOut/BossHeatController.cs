@@ -19,7 +19,11 @@ namespace Agents.Enemies.BossManage
         public float MaxHeatLevel => _maxHeatLevel;
         public float CurrentHeatLevel => _currentHeatLevel;
 
-
+        public void SetHeatLevel(float amount)
+        {
+            _currentHeatLevel = Mathf.Clamp(amount, 0, _maxHeatLevel);
+            InvokeHeatLevelChangeEvent();
+        }
         public void ApplyHeat(float amount)
         {
             _currentHeatLevel = Mathf.Clamp(_currentHeatLevel + amount, 0, _maxHeatLevel);

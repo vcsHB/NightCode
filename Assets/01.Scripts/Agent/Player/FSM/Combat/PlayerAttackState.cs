@@ -36,7 +36,7 @@ namespace Agents.Players.FSM
             }
             _animator.SetInteger(_comboCounterHash, _comboCounter);
             MoveToAttackFacing();
-            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("AttackCommon"));
+            _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("AttackCommon"));
         }
 
         protected virtual void MoveToAttackFacing()

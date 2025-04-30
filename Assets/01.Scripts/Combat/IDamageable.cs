@@ -6,7 +6,8 @@ namespace Combat
     public enum AttackType
     {
         Blunt = 0,
-        Sharp
+        Sharp,
+        Heat
     }
     [System.Serializable]
     public struct CombatData
