@@ -16,7 +16,8 @@ public partial class ResetBossHeadAction : Action
     private float _rotationTimer;
     protected override Status OnStart()
     {
-        _startAngle = HeadTrm.Value.eulerAngles.z;
+        _startAngle = HeadTrm.Value.localEulerAngles.z;
+        _rotationTimer = 0f;
         return Status.Running;
     }
 
@@ -25,7 +26,7 @@ public partial class ResetBossHeadAction : Action
         _rotationTimer += Time.deltaTime;
         float t = Mathf.Clamp01(_rotationTimer / Duration);
         float newAngle = Mathf.LerpAngle(_startAngle, Rotation.Value, t);
-        HeadTrm.Value.rotation = Quaternion.Euler(0, 0, newAngle);
+        HeadTrm.Value.localRotation = Quaternion.Euler(0, 0, newAngle);
 
         if (t < 1f)
             return Status.Running;

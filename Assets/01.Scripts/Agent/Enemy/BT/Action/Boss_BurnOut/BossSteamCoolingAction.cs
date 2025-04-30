@@ -24,7 +24,11 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
             _startTime = Time.time;
             Boss.Value.HealthCompo.ApplyDamage(
                 new CombatData()
-                { type = AttackType.Heat, damage = Damage.Value });
+                {
+                    type = AttackType.Heat,
+                    damage = Damage.Value,
+                    invalidityResistance = true
+                });
 
             return Status.Running;
         }
