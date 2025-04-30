@@ -15,7 +15,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            _grabThrower.PullTarget(HandleChangeGrab);
+            //_grabThrower.PullTarget(HandleChangeGrab);
         }
 
         private void HandleChangeGrab()
