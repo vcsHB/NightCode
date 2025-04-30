@@ -75,7 +75,7 @@ namespace Agents.Players
             bool isTargetDetected = boxHit.collider != null;
             if (!_isTargeted && isTargetDetected && _grabTarget != null)
             {
-                _grabTarget.Release();
+                _grabTarget.OnAimExited();
                 _grabTarget = null;
             }
 
@@ -98,7 +98,7 @@ namespace Agents.Players
                     _targetPos = grabTarget.GetTransform.position;
                     if (_grabTarget != grabTarget)
                     {
-                        grabTarget.Grab();
+                        grabTarget.OnAimEntered();
                     }
                     _grabTarget = grabTarget;
                 }
