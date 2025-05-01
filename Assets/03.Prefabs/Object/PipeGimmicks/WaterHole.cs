@@ -16,6 +16,12 @@ namespace ObjectManage.GimmickObjects
         [SerializeField] private bool _isActive;
         [SerializeField] private float _fillWaterAmount = 1f;
         private IWaterFillable _water;
+
+        private void Start()
+        {
+            SetWaterFall(_isActive);
+        }
+
         private void DetectWater()
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 100f, _collisionLayer);
@@ -35,7 +41,7 @@ namespace ObjectManage.GimmickObjects
             DetectWater();
             if (_water != null)
                 _water.Fill(_fillWaterAmount * Time.deltaTime);
-                
+
             _waterRenderer.SetPosition(1, _waterSurfacePosition);
             _waterSurfaceVFX.transform.position = _waterSurfacePosition;
         }

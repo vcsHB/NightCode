@@ -46,7 +46,7 @@ namespace Agents.Enemies.BossManage
 
         public void SetNextPhase()
         {
-            if (_currentPhase >= MaxPhase) return;
+            if (_currentPhase + 1 >= MaxPhase) return;
             _currentPhase++;
             OnPhaseChangeEvent?.Invoke();
             _phaseDatas[_currentPhase].OnPhaseEnterEvent?.Invoke();
