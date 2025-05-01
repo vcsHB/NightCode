@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Office
+namespace Core.StageController
 {
     public abstract class StageSO : ScriptableObject
     {

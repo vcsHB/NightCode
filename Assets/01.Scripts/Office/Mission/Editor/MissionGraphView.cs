@@ -1,3 +1,4 @@
+using Core.StageController;
 using Office;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using UnityEngine.UIElements;
 public partial class MissionGraphView : GraphView
 {
     public Action<MissionNodeView> OnNodeSelected;
-    private MissionSetSO _missionSet;
+    private StageSetSO _missionSet;
 
     public MissionGraphView()
     {
@@ -31,7 +32,7 @@ public partial class MissionGraphView : GraphView
         => GetNodeByGuid(mission.guid) as MissionNodeView;
 
 
-    public void ParpurateView(MissionSetSO missionSet)
+    public void ParpurateView(StageSetSO missionSet)
     {
         _missionSet = missionSet;
         CreateNodeAndEdge();
@@ -44,10 +45,10 @@ public partial class MissionGraphView : GraphView
         graphViewChanged += OnGraphViewChanged;
 
         //Create Node View
-        _missionSet.missionList.ForEach(n => CreateNodeView(n));
+        _missionSet.stageList.ForEach(n => CreateNodeView(n));
 
         //Create Edge
-        _missionSet.missionList.ForEach(parentMission =>
+        _missionSet.stageList.ForEach(parentMission =>
         {
             var children = _missionSet.GetConnectedMissions(parentMission);
 

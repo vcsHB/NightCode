@@ -1,6 +1,7 @@
+using Core.StageController;
 using UnityEngine;
 
-namespace Office
+namespace Core.StageController
 {
     [CreateAssetMenu(menuName = "SO/Stage/Cafe")]
     public class CafeSO : StageSO

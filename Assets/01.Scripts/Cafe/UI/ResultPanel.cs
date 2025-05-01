@@ -1,3 +1,4 @@
+using Core.StageController;
 using DG.Tweening;
 using Office;
 using System.Collections;
@@ -7,7 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class ResultPanel : MonoBehaviour, IWindowPanel
     {

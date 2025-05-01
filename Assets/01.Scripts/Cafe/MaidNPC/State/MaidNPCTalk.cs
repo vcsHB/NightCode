@@ -1,16 +1,15 @@
 using Agents.Animate;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class MaidNPCTalk : CafeEntityState
+    public class MaidNPCTalk : BaseEntityState
     {
         private CafeMaid _maid;
         private float _talkStartTime;
         private float _talkTime = 3;
 
-        public MaidNPCTalk(CafeEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public MaidNPCTalk(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
             _maid = npc as CafeMaid;
         }
@@ -25,7 +24,7 @@ namespace Cafe
         {
             base.UpdateState();
 
-            if(_talkStartTime + _talkTime < Time.time)
+            if (_talkStartTime + _talkTime < Time.time)
             {
                 _maid.OnCompleteTalk();
             }

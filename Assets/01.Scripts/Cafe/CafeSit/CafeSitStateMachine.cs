@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class CafeSitStateMachine
     {

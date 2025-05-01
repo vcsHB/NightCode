@@ -5,9 +5,9 @@ using UnityEditorInternal;
 using UnityEngine;
 
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class CafeCustomer : CafeEntity
+    public class CafeCustomer : BaseEntity
     {
         public CafeCustomerSO customerSO;
         public event Action onExitCafe;

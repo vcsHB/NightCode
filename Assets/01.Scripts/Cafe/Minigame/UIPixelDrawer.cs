@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Cafe
+namespace Base.Cafe
 {
     [RequireComponent(typeof(CanvasRenderer))]
     public class UIPixelDrawer : MaskableGraphic

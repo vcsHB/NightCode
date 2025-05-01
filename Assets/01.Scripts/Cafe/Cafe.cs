@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class Cafe : MonoBehaviour
     {

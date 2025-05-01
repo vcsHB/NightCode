@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class ProgressBar : MonoBehaviour
     {

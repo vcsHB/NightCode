@@ -1,9 +1,9 @@
-namespace Cafe
+namespace Base.Cafe
 {
     public class CafeManager : MonoSingleton<CafeManager>
     {
         public CafeSO cafeSO;
-        public CafeInput input;
+        public BaseInput input;
         public MSGText msgText;
         public OmeletRiceMiniGame omeletRiceMiniGame;
         public Cafe cafe;

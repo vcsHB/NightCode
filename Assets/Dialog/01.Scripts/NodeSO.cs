@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.UI.Toggle;
 
 namespace Dialog
 {
@@ -32,7 +30,7 @@ namespace Dialog
                     this.startDialogEvent.Add(dialogEvent);
             });
 
-            for(int i = 0; i < startDialogEvent.Count; i++)
+            for (int i = 0; i < startDialogEvent.Count; i++)
             {
                 DialogEventSO eventSO = startDialogEventSO.Find(so => so.Type == startDialogEvent[i].GetType());
 

@@ -1,8 +1,7 @@
 using Dialog;
-using System;
 using UnityEngine;
 
-namespace Office
+namespace Core.StageController
 {
     [CreateAssetMenu(menuName = "SO/Stage/Office")]
     public class OfficeSO : StageSO

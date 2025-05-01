@@ -1,16 +1,19 @@
+using Core.StageController;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Office
+namespace Base.Office
 {
     public class OfficeManager : MonoSingleton<OfficeManager>
     {
         public uint Money { get; private set; } = 0;
         public event Action onGetMoney, onLoseMoney;
 
-        public MissionSetSO missionSet;
+        public StageSetSO stageSet;
+        public OfficeNPC an, jinLay;
+
         //public MissionSelectPanel missionSelectPanel;
         [HideInInspector] public List<StageSO> _currentMission = new List<StageSO>();
 
@@ -20,7 +23,6 @@ namespace Office
         protected override void Awake()
         {
             base.Awake();
-
             Load();
         }
 
@@ -43,7 +45,7 @@ namespace Office
 
         public void AddMission(ushort missionId)
         {
-            StageSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
+            StageSO mission = stageSet.stageList.Find(mission => mission.id == missionId);
             AddMission(mission);
         }
 
@@ -57,7 +59,7 @@ namespace Office
 
         public void RemoveMission(int missionId)
         {
-            StageSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
+            StageSO mission = stageSet.stageList.Find(mission => mission.id == missionId);
             RemoveMission(mission);
         }
 
@@ -74,14 +76,14 @@ namespace Office
         {
             //DO NOT CHANGE ORDER
             RemoveMission(mission);
-            mission.nextMissions.ForEach(m =>  AddMission(m));
+            mission.nextMissions.ForEach(m => AddMission(m));
 
             Save();
         }
 
         public void ClearMission(int missionId)
         {
-            StageSO mission = missionSet.missionList.Find(mission => mission.id == missionId);
+            StageSO mission = stageSet.stageList.Find(mission => mission.id == missionId);
             ClearMission(mission);
         }
 
@@ -115,8 +117,8 @@ namespace Office
             OfficeSave save = JsonUtility.FromJson<OfficeSave>(json);
 
             Money = save.money;
-            _currentMission = save.GetCurrentMissions(missionSet);
-           // _currentMission.ForEach(mission =>  missionSelectPanel.AddMission(mission));
+            _currentMission = save.GetCurrentMissions(stageSet);
+            // _currentMission.ForEach(mission =>  missionSelectPanel.AddMission(mission));
             //_currentMission.ForEach(mission => ClearMission(mission));
 
             if (_currentMission.Count == 0)
@@ -139,12 +141,12 @@ namespace Office
             clearedMissions.ForEach(mission => this.clearedMissions.Add(mission.id));
         }
 
-        public List<StageSO> GetCurrentMissions(MissionSetSO missionSet)
+        public List<StageSO> GetCurrentMissions(StageSetSO missionSet)
         {
             List<StageSO> missionList = new List<StageSO>();
 
             clearedMissions.ForEach(missionId =>
-            missionList.Add(missionSet.missionList.Find(mission => mission.id == missionId)));
+            missionList.Add(missionSet.stageList.Find(mission => mission.id == missionId)));
             return missionList;
         }
     }

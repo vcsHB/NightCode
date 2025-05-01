@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class CafeMaid : CafeEntity
+    public class CafeMaid : BaseEntity
     {
         private CafeMaidSO _maidInfo;
         private CafeSit _targetSit;
@@ -21,7 +20,7 @@ namespace Cafe
         {
             _isDoService = true;
             _targetSit = sit;
-     
+
             Transform playerPosition = sit.CalculatePlayerPosition(transform);
             SetMoveTarget(playerPosition);
 

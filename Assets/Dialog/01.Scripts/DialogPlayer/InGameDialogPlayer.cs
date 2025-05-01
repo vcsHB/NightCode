@@ -14,7 +14,7 @@ namespace Dialog
         [SerializeField] private DialogOption _option;
 
         private Actor _currentActor;
-        private bool _optionSelected = false;
+        private OptionNodeSO _optionTalk;
         private NodeSO _nextNode;
 
         protected override void Awake()
@@ -106,21 +106,19 @@ namespace Dialog
 
         private void ReadingOptionNodeRoutine(OptionNodeSO node)
         {
-            _optionSelected = false;
             InitNodeAnim(node);
-
-            _option.gameObject.SetActive(true);
             _option.SetOption(node, OnSelectOption);
-
-            StartCoroutine(WaitNodeRoutine(() => _optionSelected, null));
+            //StartCoroutine(WaitNodeRoutine(() => _optionSelected, null));
         }
 
-        private void OnSelectOption(NodeSO node)
+        private void OnSelectOption(Option option)
         {
             _playingEndAnimation = false;
-            _option.gameObject.SetActive(false);
-            _optionSelected = true;
-            _nextNode = node;
+
+            _optionTalk = _curReadingNode as OptionNodeSO;
+            _curReadingNode = ScriptableObject.CreateInstance<NormalNodeSO>();
+            (_curReadingNode as NormalNodeSO).SetNormalNodeByOption(option);
+            ReadSingleLine();
         }
 
         private void JudgementCondition(BranchNodeSO branch)
@@ -155,7 +153,14 @@ namespace Dialog
             _curReadingNode = _nextNode;
             _isReadingDialog = false;
 
+            if(_optionTalk)
+            {
+                _option.Close();
+                _optionTalk = null;
+            }
+
             yield return new WaitForSeconds(_nextNodeDelay);
+            stopReading = false;
             ReadSingleLine();
         }
 

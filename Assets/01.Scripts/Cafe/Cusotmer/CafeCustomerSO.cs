@@ -2,7 +2,7 @@ using Dialog;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     [CreateAssetMenu(menuName = "SO/Cafe/CustomerSO")]
     public class CafeCustomerSO : ScriptableObject

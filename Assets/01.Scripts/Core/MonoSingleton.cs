@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T _instance = null;
+    protected static T _instance = null;
     public static bool IsDestroyed = false;
 
     public static T Instance

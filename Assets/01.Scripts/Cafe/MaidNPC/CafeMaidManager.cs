@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class CafeMaidManager : MonoSingleton<CafeMaidManager>
     {
@@ -26,7 +26,7 @@ namespace Cafe
 
             _maidInstanceList.ForEach(maid =>
             {
-            if (maid.IsDoService == false)
+                if (maid.IsDoService == false)
                 {
                     canAssignWork = true;
                     maid.AssignWork(sit);

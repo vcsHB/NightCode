@@ -4,6 +4,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Office;
+using Core.StageController;
 
 public class MissionNodeView : UnityEditor.Experimental.GraphView.Node
 {

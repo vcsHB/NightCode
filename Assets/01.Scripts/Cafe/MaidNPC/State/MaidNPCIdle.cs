@@ -1,11 +1,11 @@
 using Agents.Animate;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class MaidNPCIdle : CafeEntityState
+    public class MaidNPCIdle : BaseEntityState
     {
-        public MaidNPCIdle(CafeEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public MaidNPCIdle(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
         }
 

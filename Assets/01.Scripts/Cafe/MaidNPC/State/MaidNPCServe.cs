@@ -1,12 +1,12 @@
 using Agents.Animate;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class MaidNPCServe : CafeEntityState
+    public class MaidNPCServe : BaseEntityState
     {
         private CafeMaid _maid;
-        public MaidNPCServe(CafeEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public MaidNPCServe(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
             _maid = npc as CafeMaid;
         }

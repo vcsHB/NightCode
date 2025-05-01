@@ -1,14 +1,15 @@
 using Agents.Animate;
+using Base.Cafe;
 using UnityEngine;
 
-namespace Cafe
+namespace Base
 {
-    public class PlayerMoveToTargetState : CafeEntityState
+    public class PlayerMoveToTargetState : BaseEntityState
     {
-        private CafePlayer _player;
-        public PlayerMoveToTargetState(CafeEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        private BasePlayer _player;
+        public PlayerMoveToTargetState(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
-            _player = npc as CafePlayer;
+            _player = npc as BasePlayer;
         }
 
         public override void UpdateState()

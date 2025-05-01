@@ -65,7 +65,6 @@ namespace GGM.UI
 
         public void SetFillAmount(float process)
         {
-            Debug.Log(process);
             material.SetFloat("_DisolveValue", process);
         }
 

@@ -6,12 +6,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class OmeletRiceMiniGame : MonoBehaviour
     {
         public event Action<bool> onCompleteMiniGame;
-        public CafeInput input;
+        public BaseInput input;
 
         public PaintTexture paintTexture;
         public PaintTexture guideLineTexture;

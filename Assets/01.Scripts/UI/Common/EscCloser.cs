@@ -36,7 +36,5 @@ namespace UI.Common
             if (!_canControl) return;
             _window.Close();
         }
-
-
     }
 }

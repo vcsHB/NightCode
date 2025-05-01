@@ -1,14 +1,12 @@
 using Agents.Players;
+using Base;
 using System;
 using System.Collections.Generic;
-using Unity.Properties;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class CafeSit : MonoBehaviour
+    public class CafeSit : BaseInteractiveObject
     {
         public Transform customerPosition;
 
@@ -21,11 +19,10 @@ namespace Cafe
 
         private bool _isGetFood;
         private bool _isInteractive;
-        private CafePlayer _player;
         private CafeSitStateMachine _stateMachine;
 
         public CafeCustomer AssingedCustomer { get; private set; }
-        public CafePlayer Player => _player;
+        public BasePlayer Player => _player;
         public bool IsInteractive => _isInteractive;
         public bool IsGetFood => _isGetFood;
 
@@ -119,20 +116,13 @@ namespace Cafe
             _iconRenderer.sprite = _interactIcon[(int)iconType];
         }
 
-
-        protected void OnTriggerEnter2D(Collider2D collision)
+        public override void OnPlayerInteract()
         {
-            if (collision.TryGetComponent(out CafePlayer player) == false) return;
-
-            if (_player == null) _player = player;
             _stateMachine.OnTriggerEnter();
         }
 
-
-        protected void OnTriggerExit2D(Collider2D collision)
+        public override void OnPlayerInteractExit()
         {
-            if (collision.TryGetComponent(out CafePlayer player) == false) return;
-
             _stateMachine.OnTriggerExit();
         }
     }

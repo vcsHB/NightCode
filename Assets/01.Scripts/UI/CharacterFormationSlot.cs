@@ -7,7 +7,7 @@ namespace Office
 {
     public class CharacterFormationSlot : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
     {
-        public OfficeInput input;
+        public BaseInput input;
         public TextMeshProUGUI nameText;
         public Image icon;
         public CharacterIconSO iconSO;
@@ -30,7 +30,7 @@ namespace Office
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            _offset = (input.MousePosition - screenOffset) - RectTransform.anchoredPosition;
+            _offset = (input.mousePosition - screenOffset) - RectTransform.anchoredPosition;
             transform.SetAsLastSibling();
         }
 
@@ -41,7 +41,7 @@ namespace Office
 
         public void OnDrag(PointerEventData eventData)
         {
-            RectTransform.anchoredPosition = (input.MousePosition - screenOffset) - _offset;
+            RectTransform.anchoredPosition = (input.mousePosition - screenOffset) - _offset;
             _formation.OnDrag(this);
         }
     }
