@@ -14,7 +14,6 @@ namespace Base
         public bool isGetFood { get => food != null; }
         public FoodSO food { get; private set; }
 
-
         #region Food
 
         public void SetFood(FoodSO food)

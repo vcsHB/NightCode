@@ -1,3 +1,4 @@
+using Core.StageController;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,9 +20,11 @@ namespace Base.Cafe
         private int _completCustomer = 0;
         private float _prevSpawnTime;
         private bool _isWaveStart = false;
+        private bool _isLastWave = false;
 
         private void Awake()
         {
+            _isLastWave = false;
             _tableList = new List<CafeSit>();
             for (int i = 0; i < tableParent.childCount; i++)
             {
@@ -40,7 +43,7 @@ namespace Base.Cafe
                 if (_prevSpawnTime + _customerInfo.exsistDelay < Time.time)
                 {
                     CafeCustomerSO cafeCustomerSO = _customerInfo.customer;
-                    SpawnCustomer(cafeCustomerSO);
+                    SpawnCustomer(cafeCustomerSO, ((_currentWaveIndex + 1) >= _customerWave.exsistCustomer.Count));
                     _prevSpawnTime = Time.time;
                     _currentWaveIndex++;
                 }
@@ -55,7 +58,11 @@ namespace Base.Cafe
         public void StartCustomerWave()
         {
             _completCustomer++;
-            if (_currentIndex >= _cafeInfo.customerWave.Count) return;
+            if (_currentIndex >= _cafeInfo.customerWave.Count)
+            {
+                _isLastWave = true;
+                return;
+            }
             if (_customerWave != null && _completCustomer < _customerWave.exsistCustomer.Count) return;
 
             _isWaveStart = true;
@@ -66,13 +73,23 @@ namespace Base.Cafe
         }
 
 
-        private bool SpawnCustomer(CafeCustomerSO customerSO)
+        private bool SpawnCustomer(CafeCustomerSO customerSO, bool isLastCustomer)
         {
             if (TryGetValiadeTable(out CafeSit table))
             {
                 CafeCustomer customer = Instantiate(customerSO.customerPf, customerInitPosition);
                 customer.onExitCafe += StartCustomerWave;
                 customer.Init(table, customerSO.talk);
+                
+                if (_isLastWave && isLastCustomer)
+                {
+                    customer.onExitCafe += () =>
+                    {
+                        //TODO: Before change scene have to show UI
+                        StageManager.Instance.LoadNextStage();
+                    };
+                }
+
                 return true;
             }
             return false;

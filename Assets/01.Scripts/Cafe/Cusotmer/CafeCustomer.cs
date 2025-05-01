@@ -109,7 +109,7 @@ namespace Base.Cafe
         {
             _table = table;
             SetMoveTarget(table.customerPosition);
-            table.SetCustomer(this);
+            _table.SetCustomer(this);
             onCompleteMove += RequireFood;
         }
     }

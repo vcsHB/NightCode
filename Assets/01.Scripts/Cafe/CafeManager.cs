@@ -11,11 +11,11 @@ namespace Base.Cafe
         public bool IsCafeOpen { get; private set; }
         public float CurrentTime { get; private set; }
 
-        protected override void Awake()
+
+        public void Init(CafeSO cafeInfo)
         {
-            base.Awake();
             input.DisableInput();
-            cafe.Init(cafeSO);
+            cafe.Init(cafeInfo);
         }
 
 

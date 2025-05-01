@@ -1,3 +1,5 @@
+using Base.Cafe;
+using Base.Office;
 using Office;
 using System;
 using System.IO;
@@ -11,7 +13,8 @@ namespace Core.StageController
         public StageSetSO stageSet;
         [HideInInspector] public StageSO _currentStage;
 
-        private int _stageProgress = 0;
+        //SerailizeField is for debugind
+        [SerializeField]private int _stageProgress = 0;
         private StageLoadingPanel stageLoadingPanel;
         private string _path = Path.Combine(Application.dataPath, "Save/StageSave.json");
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
@@ -24,6 +27,7 @@ namespace Core.StageController
                 _instance = this;
                 DontDestroyOnLoad(gameObject);
                 stageLoadingPanel = GetComponentInChildren<StageLoadingPanel>();
+                Load();
             }
             else
             {
@@ -47,8 +51,18 @@ namespace Core.StageController
         {
             _currentStage = stageSet.stageList[++_stageProgress];
             AsyncOperation loadHandle = SceneManager.LoadSceneAsync(_currentStage.sceneName);
-            loadHandle.completed += (handle) => stageLoadingPanel.Close();
+            loadHandle.completed += (handle) =>
+            {
+                stageLoadingPanel.Close();
+
+                if (_currentStage is CafeStageSO cafeStage)
+                    CafeManager.Instance.Init(cafeStage.cafeInfo);
+
+                //if (_currentStage is OfficeStageSO officeStage)
+                //    OfficeManager.Instance.Init(officeStage.officeInfo);
+            };
             stageLoadingPanel.onCompleteOpenPanel -= LoadStage;
+            Save();
         }
 
         public void Save()

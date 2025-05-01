@@ -39,7 +39,7 @@ namespace Office.Armory
             _slots = GetComponentsInChildren<WeaponSlot>();
             _cameraFocus = GetComponentInChildren<CameraFocuser>();
             _escCloser = GetComponent<EscCloser>();
-            _escCloser.SetControl(false);
+            _escCloser.SetDisableControl();
         }
 
         private void Start()
@@ -107,6 +107,7 @@ namespace Office.Armory
             foreach (var slot in _slots) slot.SetEnable(false);
 
             _cameraFocus.ResetFocus();
+            _escCloser.SetDisableControl();
             //CameraManager.Instance.ResetFollow();
             //CameraManager.Instance.GetCompo<CameraZoomController>().ResetZoomLevel(1);
 
@@ -118,7 +119,7 @@ namespace Office.Armory
             foreach (var slot in _slots) slot.SetEnable(true);
 
             _isOpen = true;
-            _escCloser.SetControl(true);
+            _escCloser.SetEnableControl();
 
             _cameraFocus.SetFocus();
             //CameraManager.Instance.SetFollow(_cameraFollow);

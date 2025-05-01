@@ -9,7 +9,7 @@ namespace Core.StageController
     {
         public event Action onCompleteOpenPanel;
         public event Action onCompletClosePanel;
-        
+
         private CanvasGroup _canvasGruop;
         private Tween _toggleTween;
 
@@ -20,16 +20,15 @@ namespace Core.StageController
 
         public void Open()
         {
-            if (_toggleTween != null && _toggleTween.active) 
+            if (_toggleTween != null && _toggleTween.active)
                 _toggleTween.Kill();
 
+            _canvasGruop.blocksRaycasts = true;
+            _canvasGruop.interactable = true;
+
+            Debug.Log("¤±¤¤¤·¤©");
             _toggleTween = _canvasGruop.DOFade(1f, 0.2f)
-                .OnComplete(() =>
-                {
-                    _canvasGruop.blocksRaycasts = true;
-                    _canvasGruop.interactable = true;
-                    onCompleteOpenPanel?.Invoke();
-                });
+                .OnComplete(() => onCompleteOpenPanel?.Invoke());
         }
 
         public void Close()
