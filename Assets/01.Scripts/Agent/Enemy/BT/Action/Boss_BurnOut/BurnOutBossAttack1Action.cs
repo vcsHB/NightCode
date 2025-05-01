@@ -20,7 +20,6 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
         {
             _isArrived = false;
             Vector2 reverseWallDirection = -AttackController.Value.GetWallDirection();
-            Debug.Log(reverseWallDirection);
             AttackController.Value.SetLaserActive(true);
             Mover.Value.SetAxisDuration(30);
             Mover.Value.SetMovement(Mover.Value.BossPosition + reverseWallDirection.normalized * 51f, HandleArriveEvent);
