@@ -92,7 +92,7 @@ namespace Agents.Players.FSM
             _aimController.RefreshHangingDirection();
             _mover.UseTurbo(_aimController.HangingDirection);
             _canUseTurbo = false;
-            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));
+            _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));
         }
 
         protected void HandlePull()

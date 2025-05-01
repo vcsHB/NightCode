@@ -21,6 +21,7 @@ namespace Combat
 
         public virtual void ApplyKnockback(KnockbackCasterData knockbackData)
         {
+            if(_ownerHealth.IsDead) return;
             _rigidCompo.AddForce(knockbackData.powerDirection, ForceMode2D.Impulse);
             _isCrashed = knockbackData.isCrashed;
             StartCoroutine(KnockbackCoroutine(knockbackData.duration));

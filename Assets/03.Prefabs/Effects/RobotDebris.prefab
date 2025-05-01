@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4347869607960699331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2575120105832898025}
+  - component: {fileID: 3683727577274973679}
+  m_Layer: 0
+  m_Name: RobotDebris
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2575120105832898025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4347869607960699331}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3683727577274973679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4347869607960699331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b58494254dc39bc4c8d093f73e58fe14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <type>k__BackingField: 8
+  _debrisDatas:
+  - debrisSprite: {fileID: -7041237480707236917, guid: 008bd4a68dbbd3a46803b88812aa2623, type: 3}
+    isCircleCollider: 1
+    shardSize: 0.4
+  - debrisSprite: {fileID: -2191441811334800464, guid: 008bd4a68dbbd3a46803b88812aa2623, type: 3}
+    isCircleCollider: 1
+    shardSize: 0.4
+  - debrisSprite: {fileID: 5460760452485044894, guid: 008bd4a68dbbd3a46803b88812aa2623, type: 3}
+    isCircleCollider: 0
+    shardSize: 0
+  - debrisSprite: {fileID: -3182798307229899174, guid: 008bd4a68dbbd3a46803b88812aa2623, type: 3}
+    isCircleCollider: 1
+    shardSize: 0.3
+  _shardPrefab: {fileID: 7541526187568536270, guid: e8de4edf6c0193f438dcb75e91506ef6, type: 3}
+  velocityOffset: {x: 0, y: 1}
+  _explodeMaxPower: 6
+  _explodeMinPower: 1
+  _lifeTime: 10

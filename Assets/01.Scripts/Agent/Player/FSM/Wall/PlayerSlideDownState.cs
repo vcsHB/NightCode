@@ -12,7 +12,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("SlideDown"));
+            _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("SlideDown"));
 
         }
 
@@ -31,7 +31,7 @@ namespace Agents.Players.FSM
         public override void Exit()
         {
             base.Exit();
-            _player.FeedbackChannel.RaiseEvent(new FeedbackFinishEventData("SlideDown"));
+            _player.EventChannel.RaiseEvent(new FeedbackFinishEventData("SlideDown"));
         }
     }
 }

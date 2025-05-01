@@ -11,7 +11,6 @@ namespace Agents.Players
         [field: SerializeField] public PlayerInput PlayerInput { get; private set; }
         protected PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
-        [field: SerializeField] public GameEventChannelSO FeedbackChannel { get; private set; }
 
         public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
@@ -24,7 +23,6 @@ namespace Agents.Players
 
         protected override void Awake()
         {
-            FeedbackChannel = Instantiate(FeedbackChannel);
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
             HealthCompo = GetComponent<Health>();

@@ -36,12 +36,17 @@ namespace UI.InGame.GameUI.QuestSyetem
             _labelMaterial1 = _topLabelImage.material;
             _labelMaterial2 = _bottomLabelImage.material;
 
-            _questManager.OnQuestChangeEvent += HandleQuestSetEvent;
+            //_questManager.OnQuestChangeEvent += HandleQuestSetEvent;
+        }
+
+        private void Start()
+        {
+            HandleQuestSetEvent(_questManager.CurrentQuest);
         }
 
         private void OnDestroy()
         {
-            _questManager.OnQuestChangeEvent -= HandleQuestSetEvent;
+            //_questManager.OnQuestChangeEvent -= HandleQuestSetEvent;
 
         }
 
@@ -100,7 +105,7 @@ namespace UI.InGame.GameUI.QuestSyetem
                 case QuestType.KillMultiTarget:
                     displayer.SetQuestData(quest);
                     break;
-                case QuestType.Rescue:
+                case QuestType.Interaction:
                     // 구조대상 설정
                     break;
             }

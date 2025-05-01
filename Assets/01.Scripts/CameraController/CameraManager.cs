@@ -52,6 +52,11 @@ namespace CameraControllers
             _camera.Follow = target;
         }
 
+        public void SetFollowImmediately()
+        {
+            _camera.transform.position = _camera.Follow.position;
+        }
+
         public void ResetFollow()
         {
             if (_defaultFollowTarget == null) return;

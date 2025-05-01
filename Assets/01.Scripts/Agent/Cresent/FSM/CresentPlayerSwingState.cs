@@ -38,7 +38,7 @@ namespace Agents.Players.FSM
                 _staminaController.ReduceStamina();
                 //Vector2 newDirection = VectorCalculator.ClampTo8Directions(_mover.Velocity) * velocity.magnitude;
                 _mover.SetVelocity(_aimController.AimDirection.normalized * 120f);
-                _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("SwingDash"));
+                _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("SwingDash"));
             }
             else
             {
@@ -51,7 +51,6 @@ namespace Agents.Players.FSM
 
         public override void UpdateState()
         {
-            _cresentPlayerAnimationTrigger.CastSwingAttackCaster();
             base.UpdateState();
         }
 

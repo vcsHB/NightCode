@@ -5,6 +5,6 @@ namespace QuestSystem
         KillSingleTarget,
         KillMultiTarget,
         KillAll,
-        Rescue,
+        Interaction,
     }
 }

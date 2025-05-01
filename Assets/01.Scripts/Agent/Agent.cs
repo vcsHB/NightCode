@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.EventSystem;
 using UnityEngine;
 
 namespace Agents
@@ -8,11 +9,15 @@ namespace Agents
     public abstract class Agent : MonoBehaviour
     {
         public event Action OnDieEvent;
+        [field: SerializeField] public GameEventChannelSO EventChannel { get; protected set; }
+
         public bool IsDead { get; protected set; }
         private Dictionary<Type, IAgentComponent> _components = new Dictionary<Type, IAgentComponent>();
 
         protected virtual void Awake()
         {
+            EventChannel = Instantiate(EventChannel);
+
             AddComponentToDictionary();
             ComponentInitialize();
             AfterInit();
@@ -65,7 +70,7 @@ namespace Agents
 
         protected virtual void HandleAgentDie()
         {
-            if(IsDead) return;
+            if (IsDead) return;
             IsDead = true;
             OnDieEvent?.Invoke();
         }
@@ -75,7 +80,7 @@ namespace Agents
             // 페링, 또는 추가 상태 이상시 스턴효과 구현
             // 플레이어 : 미상
             // 에너미 : Stun State강제 전환
-             
+
         }
 
     }

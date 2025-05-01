@@ -19,6 +19,7 @@ namespace Combat
         private float _lastHitTime;
         public bool IsResist { get; private set; }
         private bool _isDie;
+        public bool IsDead => _isDie;
 
         public void Initialize(float health)
         {
