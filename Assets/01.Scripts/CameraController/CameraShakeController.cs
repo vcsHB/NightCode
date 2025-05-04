@@ -46,7 +46,7 @@ namespace CameraControllers
         /// <param name="duration"></param>
         public void Shake(float power, float duration)
         {
-            print("Start Shake- power: " + power + " Duration: " + duration);
+            //Debug.Log("Start Shake- power: " + power + " Duration: " + duration);
             EnqueueShake(new ShakeRequest(power, duration));
         }
         /// <summary>
