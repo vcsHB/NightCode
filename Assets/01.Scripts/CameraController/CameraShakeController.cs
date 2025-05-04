@@ -118,7 +118,7 @@ namespace CameraControllers
                 return;
             }
 
-            // 더 높은 파워로 들어왔을 경우: 중단 후 우선 처리
+            // If it comes in at higher power: Stop, Prioritize processing
             if (request.power > _currentShake.power)
             {
                 float remaining = _currentShake.remainingTime - _currentShakeElapsed;
@@ -136,14 +136,14 @@ namespace CameraControllers
                 return;
             }
 
-            // 현재 실행 중인 것과 거의 동일한 파워일 경우 → duration만 연장
+            // if new power is almost the same as currently running → Only extend Duration
             if (Mathf.Approximately(request.power, _currentShake.power))
             {
                 _currentShake.remainingTime += request.duration;
                 return;
             }
 
-            // 큐에 동일한 파워가 이미 있다면 병합
+            // SamePower return
             bool merged = false;
             var newQueue = new Queue<ShakeRequest>();
             while (_shakeQueue.Count > 0)
@@ -164,8 +164,8 @@ namespace CameraControllers
 
             // Replace old queue
             _shakeQueue.Clear();
-            foreach (var r in newQueue)
-                _shakeQueue.Enqueue(r);
+            foreach (var req in newQueue)
+                _shakeQueue.Enqueue(req);
         }
         private ShakeRequest DequeueHighestPower()
         {
@@ -186,8 +186,8 @@ namespace CameraControllers
                 }
             }
 
-            foreach (var req in tempList)
-                _shakeQueue.Enqueue(req);
+            foreach (var request in tempList)
+                _shakeQueue.Enqueue(request);
 
             return highest;
         }
