@@ -18,7 +18,7 @@ namespace FeedbackSystem
 
         public void PlayFeedback()
         {
-            FinishFeedback();
+            //FinishFeedback();
             _feedbackToPlay.ForEach(f => f.CreateFeedback());
 
         }

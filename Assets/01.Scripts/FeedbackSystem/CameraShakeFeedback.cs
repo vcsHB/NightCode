@@ -32,7 +32,7 @@ namespace FeedbackSystem
                 Debug.LogWarning("CameraShaker is Null!");
                 return;
             }
-            _cameraShaker?.StopShake();
+            _cameraShaker?.CancelCurrentShake();
         }
     }
 }
