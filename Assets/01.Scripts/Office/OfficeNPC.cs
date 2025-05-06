@@ -1,6 +1,7 @@
 using CameraControllers;
 using Dialog;
 using Office;
+using System;
 using UnityEngine;
 
 namespace Base.Office
@@ -44,6 +45,7 @@ namespace Base.Office
             _cameraFocus.onCompleteFocus -= ReadDialogOnCompletFocus;
         }
 
+
         private void OnCompleteDialog()
         {
             _officeInput.EnableInput();
@@ -60,6 +62,12 @@ namespace Base.Office
         public override void OnPlayerInteractExit()
         {
             _player.RemoveInteract(OnInteract);
+        }
+
+        public void Init(OfficeNPCSO npcInfo)
+        {
+            _dialog = npcInfo;
+            _talkCount = 0;
         }
     }
 }

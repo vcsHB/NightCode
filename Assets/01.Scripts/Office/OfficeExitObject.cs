@@ -1,26 +1,29 @@
 using Core.StageController;
+using Office;
 using UnityEngine;
 
 namespace Base.Office
 {
     public class OfficeExitObject : BaseInteractiveObject
     {
+        [SerializeField] private CharacterFormation _characterFormation;
+
         public override void OnPlayerInteract()
         {
-            OnInteract();
-            //_player.AddInteract(OnInteract);
+            _player.AddInteract(OnInteract);
         }
 
         public override void OnPlayerInteractExit()
         {
-           // OnInteract
-            //_player.RemoveInteract(OnInteract);
+            _player.RemoveInteract(OnInteract);
         }
 
         private void OnInteract()
         {
+            _characterFormation.Open();
+
             //TODO: Open UI and let going to next stage
-            StageManager.Instance.LoadNextStage();
+            //StageManager.Instance.LoadNextStage();
         }
     }
 }

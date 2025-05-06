@@ -36,6 +36,12 @@ namespace Dialog
             }
         }
 
+        public override void Init()
+        {
+            base.Init();
+            animStartFlag = true;
+        }
+
         public override void Complete()
         {
 
@@ -50,13 +56,6 @@ namespace Dialog
                 return false;
             }
             return true;
-        }
-
-        private IEnumerator Delay()
-        {
-            int delay = int.Parse(Param);
-            yield return new WaitForSeconds(delay);
-
         }
     }
 }

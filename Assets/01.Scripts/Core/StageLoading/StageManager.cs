@@ -14,7 +14,7 @@ namespace Core.StageController
         [HideInInspector] public StageSO _currentStage;
 
         //SerailizeField is for debugind
-        [SerializeField]private int _stageProgress = 0;
+        [SerializeField] private int _stageProgress = 0;
         private StageLoadingPanel stageLoadingPanel;
         private string _path = Path.Combine(Application.dataPath, "Save/StageSave.json");
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
@@ -43,13 +43,19 @@ namespace Core.StageController
 
         public void LoadNextStage()
         {
+            _currentStage = stageSet.stageList[++_stageProgress];
+            stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.Open();
+        }
+
+        public void ReloadCurrentScene()
+        {
             stageLoadingPanel.onCompleteOpenPanel += LoadStage;
             stageLoadingPanel.Open();
         }
 
         private void LoadStage()
         {
-            _currentStage = stageSet.stageList[++_stageProgress];
             AsyncOperation loadHandle = SceneManager.LoadSceneAsync(_currentStage.sceneName);
             loadHandle.completed += (handle) =>
             {
@@ -58,8 +64,8 @@ namespace Core.StageController
                 if (_currentStage is CafeStageSO cafeStage)
                     CafeManager.Instance.Init(cafeStage.cafeInfo);
 
-                //if (_currentStage is OfficeStageSO officeStage)
-                //    OfficeManager.Instance.Init(officeStage.officeInfo);
+                if (_currentStage is OfficeStageSO officeStage)
+                    OfficeManager.Instance.Init(officeStage.officeInfo);
             };
             stageLoadingPanel.onCompleteOpenPanel -= LoadStage;
             Save();
@@ -95,8 +101,8 @@ namespace Core.StageController
             // _currentMission.ForEach(mission =>  missionSelectPanel.AddMission(mission));
             //_currentMission.ForEach(mission => ClearMission(mission));
 
-            if (_currentStage == null)
-                _currentStage = stageSet.stageList[0];
+            if (_currentStage == null) _currentStage = stageSet.stageList[0];
+            LoadStage();
         }
     }
 
