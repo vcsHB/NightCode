@@ -1,4 +1,4 @@
-using Office;
+using Core.StageController;
 using Office.CharacterSkillTree;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -25,7 +25,7 @@ namespace Office
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceID, int line)
         {
-            if (Selection.activeObject is MissionSetSO)
+            if (Selection.activeObject is StageSetSO)
             {
                 ShowExample();
                 return true;
@@ -52,7 +52,8 @@ namespace Office
 
         private void OnSelectionChange()
         {
-            MissionSetSO mission = Selection.activeObject as MissionSetSO;
+            StageSetSO mission = Selection.activeObject as StageSetSO;
+
             if (mission)
                 graphView.ParpurateView(mission);
         }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     [CreateAssetMenu(menuName = "SO/Basement/Cafe/FoodSO")]
     public class FoodSO : ScriptableObject

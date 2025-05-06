@@ -10,7 +10,6 @@ namespace Dialog.SituationControl
     {
         public UnityEvent OnDialogueEndEvent;
         public UnityEvent OnDialogueStartEvent;
-        [SerializeField] private List<Actor> _characters;
         [SerializeField] private float _dialogueStartDelay = 3f;
         [SerializeField] private DialogSO _dialogScript;
         private InGameDialogPlayer _dialoguePlayer;
@@ -44,18 +43,17 @@ namespace Dialog.SituationControl
             SetSituation();
             _dialoguePlayer.StartDialog();
             OnDialogueStartEvent?.Invoke();
-            _dialoguePlayer.OnDialogueEnd += HandleDialogueOver;
+            _dialoguePlayer.OnDialogEnd += HandleDialogueOver;
         }
 
         public void SetSituation()
         {
-            _dialoguePlayer.SetDialogueData(_dialogScript);
-            _dialoguePlayer.SetCharacters(_characters);
+            _dialoguePlayer.SetDialog(_dialogScript);
         }
 
         private void HandleDialogueOver()
         {
-            _dialoguePlayer.OnDialogueEnd -= HandleDialogueOver;
+            _dialoguePlayer.OnDialogEnd -= HandleDialogueOver;
             OnDialogueEndEvent?.Invoke();
             for (int i = 0; i < _elements.Length; i++)
             {

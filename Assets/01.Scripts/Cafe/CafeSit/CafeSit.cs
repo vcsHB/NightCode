@@ -1,13 +1,12 @@
 using Agents.Players;
+using Base;
 using System;
 using System.Collections.Generic;
-using Unity.Properties;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class CafeSit : MonoBehaviour
+    public class CafeSit : BaseInteractiveObject
     {
         public Transform customerPosition;
 
@@ -20,11 +19,10 @@ namespace Cafe
 
         private bool _isGetFood;
         private bool _isInteractive;
-        private CafePlayer _player;
         private CafeSitStateMachine _stateMachine;
 
         public CafeCustomer AssingedCustomer { get; private set; }
-        public CafePlayer Player => _player;
+        public BasePlayer Player => _player;
         public bool IsInteractive => _isInteractive;
         public bool IsGetFood => _isGetFood;
 
@@ -64,10 +62,7 @@ namespace Cafe
 
         public void ServeByPlayer()
         {
-            float direction = Mathf.Sign(_player.transform.position.x - transform.position.x);
-
-            _playerPosition.position = transform.position + new Vector3(_playerStandingOffset * direction, 0, 0);
-            _player.SetMoveTarget(_playerPosition);
+            _player.SetMoveTarget(CalculatePlayerPosition(_player.transform));
             _player.onCompleteMove += OnCompleteServeByPlayer;
         }
 
@@ -80,10 +75,12 @@ namespace Cafe
             _player.onCompleteMove -= OnCompleteServeByPlayer;
         }
 
-        public void ServeByNPC(CafeMaid maid)
+        [Obsolete]
+        public void ServeByNPC()
         {
-            _iconRenderer.gameObject.SetActive(false);
-            AssingedCustomer.GetFood();
+            Debug.LogWarning("Serving by npc is not valid");
+            //SetInteractIcon(ECafeSitIcon.OrderIcon, false);
+            //AssingedCustomer.GetFood();
             //_isCustomerWaitingMenu = false;
         }
 
@@ -105,26 +102,27 @@ namespace Cafe
         #endregion
 
 
+        public Transform CalculatePlayerPosition(Transform playerTrm)
+        {
+            float direction = Mathf.Sign(playerTrm.position.x - transform.position.x);
+            _playerPosition.position = transform.position + new Vector3(_playerStandingOffset * direction, 0, 0);
+            return _playerPosition;
+        }
+
+
         public void SetInteractIcon(ECafeSitIcon iconType, bool isEnable)
         {
             _iconRenderer.gameObject.SetActive(isEnable);
             _iconRenderer.sprite = _interactIcon[(int)iconType];
         }
 
-
-        protected void OnTriggerEnter2D(Collider2D collision)
+        public override void OnPlayerInteract()
         {
-            if (collision.TryGetComponent(out CafePlayer player) == false) return;
-
-            if (_player == null) _player = player;
             _stateMachine.OnTriggerEnter();
         }
 
-
-        protected void OnTriggerExit2D(Collider2D collision)
+        public override void OnPlayerInteractExit()
         {
-            if (collision.TryGetComponent(out CafePlayer player) == false) return;
-
             _stateMachine.OnTriggerExit();
         }
     }

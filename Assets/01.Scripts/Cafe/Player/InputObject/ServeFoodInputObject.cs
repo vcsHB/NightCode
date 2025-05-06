@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe 
 {
-    public class ServeFoodInputObject : CafePlayerInputObject
+    public class ServeFoodInputObject : BaseInteractObject
     {
         private CafeSit _table;
 

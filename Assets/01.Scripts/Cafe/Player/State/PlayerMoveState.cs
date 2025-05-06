@@ -1,17 +1,18 @@
-using Agents.Animate;
+using Base.Cafe;
 using UnityEngine;
+using Agents.Animate;
 
-namespace Cafe
+namespace Base
 {
-    public class PlayerMoveState : CafeEntityState
+    public class PlayerMoveState : BaseEntityState
     {
 
-        private CafePlayer _player;
-        private CafeInput _input;
+        private BasePlayer _player;
+        private BaseInput _input;
 
-        public PlayerMoveState(CafeEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public PlayerMoveState(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
-            _player = npc as CafePlayer;
+            _player = npc as BasePlayer;
             _input = _player.input;
         }
 

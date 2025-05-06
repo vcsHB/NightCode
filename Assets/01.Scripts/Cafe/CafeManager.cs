@@ -1,9 +1,9 @@
-namespace Cafe
+namespace Base.Cafe
 {
     public class CafeManager : MonoSingleton<CafeManager>
     {
         public CafeSO cafeSO;
-        public CafeInput input;
+        public BaseInput input;
         public MSGText msgText;
         public OmeletRiceMiniGame omeletRiceMiniGame;
         public Cafe cafe;
@@ -11,11 +11,11 @@ namespace Cafe
         public bool IsCafeOpen { get; private set; }
         public float CurrentTime { get; private set; }
 
-        protected override void Awake()
+
+        public void Init(CafeSO cafeInfo)
         {
-            base.Awake();
             input.DisableInput();
-            cafe.Init(cafeSO);
+            cafe.Init(cafeInfo);
         }
 
 
@@ -24,7 +24,7 @@ namespace Cafe
         public void StartCafe()
         {
             IsCafeOpen = true;
-            cafe.EnterNextCustomer();
+            cafe.StartCustomerWave();
             input.EnableInput();
         }
 
