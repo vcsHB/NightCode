@@ -22,9 +22,9 @@ namespace Dialog
             }
         }
 
-        public override void PlayEvent()
+        public override void PlayEvent(DialogPlayer dialogPlayer, Actor actor)
         {
-            base.PlayEvent();
+            base.PlayEvent(dialogPlayer, actor);
             ZoomController.SetZoomLevel(zoomLevel, duration);
             ZoomController.onCompleteZoom += OnCompleteZoom;
         }

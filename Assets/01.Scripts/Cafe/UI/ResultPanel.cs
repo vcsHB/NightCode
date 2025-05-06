@@ -1,3 +1,4 @@
+using Core.StageController;
 using DG.Tweening;
 using Office;
 using System.Collections;
@@ -7,11 +8,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class ResultPanel : MonoBehaviour, IWindowPanel
     {
-        [SerializeField] private MissionSelectButton _missionSelect;
+        //[SerializeField] private MissionSelectButton _missionSelect;
         [SerializeField] private TextMeshProUGUI _ratingText;
         [SerializeField] private NumberPassing _customerNumber;
         [SerializeField] private NumberPassing _rewardNumber;
@@ -35,36 +36,36 @@ namespace Cafe
             RectTrm.anchoredPosition = new Vector2(0, Screen.height);
         }
 
-        public void Init(MissionSO mission, int customer, int rating)
+        public void Init(StageSO mission, int customer, int rating)
         {
             rating = Mathf.Clamp(rating, 1, 5);
-            _missionSelect.Init(mission);
+            //_missionSelect.Init(mission);
 
-            int reward = mission.missionDefaultReward;
+            //int reward = mission.missionDefaultReward;
 
-            switch (rating)
-            {
-                case 1: _ratingText.SetText("D"); break;
-                case 2:
-                    _ratingText.SetText("C");
-                    reward = Mathf.CeilToInt(reward * 1.1f);
-                    break;
-                case 3: 
-                    _ratingText.SetText("B");
-                    reward = Mathf.CeilToInt(reward * 1.2f);
-                    break;
-                case 4: 
-                    _ratingText.SetText("A");
-                    reward = Mathf.CeilToInt(reward * 1.4f);
-                    break;
-                case 5:
-                    _ratingText.SetText("S");
-                    reward = Mathf.CeilToInt(reward * 1.5f);
-                    break;
-            }
+            //switch (rating)
+            //{
+            //    case 1: _ratingText.SetText("D"); break;
+            //    case 2:
+            //        _ratingText.SetText("C");
+            //        reward = Mathf.CeilToInt(reward * 1.1f);
+            //        break;
+            //    case 3: 
+            //        _ratingText.SetText("B");
+            //        reward = Mathf.CeilToInt(reward * 1.2f);
+            //        break;
+            //    case 4: 
+            //        _ratingText.SetText("A");
+            //        reward = Mathf.CeilToInt(reward * 1.4f);
+            //        break;
+            //    case 5:
+            //        _ratingText.SetText("S");
+            //        reward = Mathf.CeilToInt(reward * 1.5f);
+            //        break;
+            //}
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(RectTrm);
-            StartCoroutine(InitRoutine(customer, reward));
+            //LayoutRebuilder.ForceRebuildLayoutImmediate(RectTrm);
+            //StartCoroutine(InitRoutine(customer, reward));
         }
 
         private IEnumerator InitRoutine(int customer, int reward)

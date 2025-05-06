@@ -1,13 +1,13 @@
 using Agents.Animate;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class CustomerSitState : CafeEntityState
+    public class CustomerSitState : BaseEntityState
     {
         private CafeCustomer _customer;
 
-        public CustomerSitState(CafeEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public CustomerSitState(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
             _customer = npc as CafeCustomer;
         }

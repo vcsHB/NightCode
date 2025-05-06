@@ -14,7 +14,7 @@ namespace Dialog
         public override void StartDialog()
         {
             _isReadingDialog = true;
-            _curReadingNode = dialog.nodes[0];
+            _curReadingNode = _dialog.nodes[0];
             ReadSingleLine();
         }
 
@@ -40,5 +40,9 @@ namespace Dialog
             }
         }
 
+        protected override IEnumerator ReadingNodeRoutine()
+        {
+            yield return null;
+        }
     }
 }

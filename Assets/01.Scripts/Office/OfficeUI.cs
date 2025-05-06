@@ -11,7 +11,7 @@ namespace Office
         public RectTransform background;
 
         public CharacterSelectPanel characterSelectPanel;
-        public MissionSelectPanel missionSelectPanel;
+        //public MissionSelectPanel missionSelectPanel;
         public SkillTreePanel skillTreePanel;
 
         private OfficeUIParent _initialUI;
@@ -34,7 +34,7 @@ namespace Office
             _isCharacterPanel = isCharacterPanel;
 
             if (_isCharacterPanel) _initialUI = characterSelectPanel;
-            else _initialUI = missionSelectPanel;
+            //else _initialUI = missionSelectPanel;
         }
 
         public override void OpenAnimation()
@@ -63,11 +63,11 @@ namespace Office
                 if (characterSelectPanel.isOpened) return;
             }
 
-            if (missionSelectPanel.isOpened)
-            {
-                missionSelectPanel.Close();
-                if (missionSelectPanel.isOpened) return;
-            }
+            //if (missionSelectPanel.isOpened)
+            //{
+            //    missionSelectPanel.Close();
+            //    if (missionSelectPanel.isOpened) return;
+            //}
 
 
             if (_openCloseSeq != null && _openCloseSeq.active)
@@ -89,14 +89,14 @@ namespace Office
                 _isCharacterPanel = false;
 
                 characterSelectPanel.CloseAllUI();
-                characterSelectPanel.onCloseUI += missionSelectPanel.Open;
+                //characterSelectPanel.onCloseUI += missionSelectPanel.Open;
             }
             else
             {
                 _isCharacterPanel = true;
 
-                missionSelectPanel.CloseAllUI();
-                missionSelectPanel.onCloseUI += characterSelectPanel.Open;
+                //missionSelectPanel.CloseAllUI();
+                //missionSelectPanel.onCloseUI += characterSelectPanel.Open;
             }
 
             _leftBtn.SetActive(_isCharacterPanel);

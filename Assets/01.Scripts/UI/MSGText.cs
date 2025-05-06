@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class MSGText : MonoBehaviour
     {

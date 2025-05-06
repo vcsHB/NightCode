@@ -15,7 +15,7 @@ namespace Basement
         public bool IsFocusRoom { get; private set; }
 
         [SerializeField] private LayerMask _whatIsBasementObject;
-        [SerializeField] private OfficeInput _input;
+        //[SerializeField] private OfficeInput _input;
         [SerializeField] private GameObject _buildModeObj;
         [SerializeField] private Office _office;
         [SerializeField] private float _dragSkipDist = 2;
@@ -41,7 +41,7 @@ namespace Basement
 
         private void Awake()
         {
-            _input.onPressLeftclick += MouseEvent;
+            //_input.onPressLeftclick += MouseEvent;
             _buildUISet = _buildModeObj.GetComponentsInChildren<BasementBuildUI>().ToList();
             _timer = UIManager.Instance.timer;
 
@@ -56,7 +56,7 @@ namespace Basement
 
         private void OnDisable()
         {
-            _input.onPressLeftclick -= MouseEvent;
+            //_input.onPressLeftclick -= MouseEvent;
         }
 
         public void Update()
@@ -77,7 +77,7 @@ namespace Basement
 
             if (isPress)
             {
-                _clickPos = _input.MousePosition;
+                //_clickPos = _input.MousePosition;
                 if (_isWideView) _prevMouseOffset = _mouseOffsetTemp;
             }
             else
@@ -133,7 +133,7 @@ namespace Basement
         private void MouseDragEvent()
         {
             float cameraSize = BasementCameraManager.Instance.CameraSize;
-            _dragValue = ((_input.MousePosition - _clickPos) / -_cameraMultiply * cameraSize);
+            //_dragValue = ((_input.MousePosition - _clickPos) / -_cameraMultiply * cameraSize);
             
             if (!_isWideView)
             {
@@ -151,8 +151,8 @@ namespace Basement
 
         private bool CheckIngameObjectInteract(bool isPress)
         {
-            Vector2 position = Camera.main.ScreenToWorldPoint(_input.MousePosition);
-            mouseTarget = Physics2D.OverlapCircle(position, 0.1f, _whatIsBasementObject);
+            //Vector2 position = Camera.main.ScreenToWorldPoint(_input.MousePosition);
+           // mouseTarget = Physics2D.OverlapCircle(position, 0.1f, _whatIsBasementObject);
 
             if (mouseTarget != null &&
                 mouseTarget.TryGetComponent(out IngameInteractiveObject interactObject))

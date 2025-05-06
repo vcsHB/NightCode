@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Unity.Burst.Intrinsics.X86.Avx;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class NumberPassing : MonoBehaviour
     {

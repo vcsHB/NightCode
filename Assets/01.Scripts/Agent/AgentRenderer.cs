@@ -30,6 +30,5 @@ namespace Agents
             if (Mathf.Abs(FacingDirection + normalizeXMove) < 0.5f)
                 Flip();
         }
-
     }
 }

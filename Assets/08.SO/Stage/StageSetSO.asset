@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1906522265503306003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f42a87ea44f525469426d4e9dce950c, type: 3}
+  m_Name: OfficeSO-2
+  m_EditorClassIdentifier: 
+  id: 2
+  guid: 09c77bf8d88ea7543b54b000b60781fe
+  position: {x: 740.5, y: 315}
+  prevMission: {fileID: 9000598671843702226}
+  nextMissions: []
+  sceneName: OfficeScene
+  officeInfo: {fileID: 11400000, guid: 5bba704f49826d341a1b544af6abb876, type: 2}
+  cutScene: 0
+  cutSceneDialog: {fileID: 0}
+--- !u!114 &-1715983533992208255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f42a87ea44f525469426d4e9dce950c, type: 3}
+  m_Name: OfficeSO-0
+  m_EditorClassIdentifier: 
+  id: 0
+  guid: 3645adb5ce50c8d488208d8854335a5a
+  position: {x: 369, y: 314}
+  prevMission: {fileID: 0}
+  nextMissions:
+  - {fileID: 9000598671843702226}
+  sceneName: OfficeScene
+  officeInfo: {fileID: 11400000, guid: acd54000942e49a44ba06146fd120b70, type: 2}
+  cutScene: 0
+  cutSceneDialog: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac590e5a787b9244aae6e813d4a432e, type: 3}
+  m_Name: StageSetSO
+  m_EditorClassIdentifier: 
+  stageList:
+  - {fileID: -1715983533992208255}
+  - {fileID: 9000598671843702226}
+  - {fileID: -1906522265503306003}
+--- !u!114 &9000598671843702226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65b37d9dd61b1234da259b39551369c5, type: 3}
+  m_Name: CafeSO-1
+  m_EditorClassIdentifier: 
+  id: 1
+  guid: 8e06b950af6e8da4b90f0fb092a760d1
+  position: {x: 551, y: 314}
+  prevMission: {fileID: -1715983533992208255}
+  nextMissions:
+  - {fileID: -1906522265503306003}
+  sceneName: Cafe_TutorialScene
+  cafeInfo: {fileID: 11400000, guid: 134d36233b35b8f4b8b683280fc18b3a, type: 2}

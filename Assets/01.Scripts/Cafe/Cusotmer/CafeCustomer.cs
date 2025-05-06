@@ -5,14 +5,14 @@ using UnityEditorInternal;
 using UnityEngine;
 
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class CafeCustomer : CafeEntity
+    public class CafeCustomer : BaseEntity
     {
         public CafeCustomerSO customerSO;
         public event Action onExitCafe;
 
-        private Situation _situation;
+        private InGameDialogPlayer _dialogPlayer;
         private OmeletRiceMiniGame _miniGame;
         private CafeSit _table;
         private float _foodGetTime;
@@ -22,11 +22,7 @@ namespace Cafe
         protected override void Awake()
         {
             base.Awake();
-
-            _situation = GetComponent<Situation>();
-
-            var dialogPlayer = FindAnyObjectByType<InGameDialogPlayer>();
-            _situation.Init(dialogPlayer);
+            _dialogPlayer = FindAnyObjectByType<InGameDialogPlayer>();
         }
 
         protected override void Update()
@@ -68,9 +64,17 @@ namespace Cafe
         {
             _miniGame.onCompleteMiniGame -= OnCompleteMiniGame;
 
-            CafeManager.Instance.input.DisableInput();
-            _situation.OnDialogueEndEvent.AddListener(OnGetFood);
-            _situation.PlaySituation();
+            if (customerSO.isInteractiveCustomer)
+            {
+                CafeManager.Instance.input.DisableInput();
+                _dialogPlayer.OnDialogEnd += OnGetFood;
+                _dialogPlayer.SetDialog(customerSO.talk);
+                _dialogPlayer.StartDialog();
+            }
+            else
+            {
+                OnGetFood();
+            }
         }
 
         //음식을 받았을 때 => 먹기 시작?
@@ -79,7 +83,7 @@ namespace Cafe
             _getFood = true;
             CafeManager.Instance.input.EnableInput();
             _foodGetTime = Time.time;
-            _situation.OnDialogueEndEvent.RemoveListener(OnGetFood);
+            _dialogPlayer.OnDialogEnd -= OnGetFood;
         }
 
 
@@ -105,9 +109,8 @@ namespace Cafe
         {
             _table = table;
             SetMoveTarget(table.customerPosition);
-            table.SetCustomer(this);
+            _table.SetCustomer(this);
             onCompleteMove += RequireFood;
-            _situation.SetDialogSO(talk);
         }
     }
 }

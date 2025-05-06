@@ -83,12 +83,12 @@ namespace Office
             CloseAnimation();
         }
 
-        protected void OnCompleteOpen()
+        protected virtual  void OnCompleteOpen()
         {
             onOpenUI?.Invoke();
             onOpenUI = null;
         }
-        protected void OnCompleteClose()
+        protected virtual void OnCompleteClose()
         {
             onCloseUI?.Invoke();
             onCloseUI = null;
