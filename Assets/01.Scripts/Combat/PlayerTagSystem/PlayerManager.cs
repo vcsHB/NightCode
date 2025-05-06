@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Agents;
 using Agents.Players;
-using Combat.SubWeaponSystem;
+using Core.StageController;
 using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
 using UI.InGame.GameUI.CharacterSelector;
 using UI.InGame.SystemUI.AlertSystem;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -51,11 +52,13 @@ namespace Combat.PlayerTagSystem
             base.Awake();
             GetComponentsInChildren<IPlayerSubManager>(true)
               .ToList().ForEach(controller => _subManagers.Add(controller.GetType(), controller));
+
             foreach (IPlayerSubManager subManager in _subManagers.Values)
             {
                 subManager.Initialize(this);
             }
         }
+
         public T GetCompo<T>(bool isDerived = false) where T : class
         {
             if (_subManagers.TryGetValue(typeof(T), out IPlayerSubManager compo))
@@ -76,6 +79,7 @@ namespace Combat.PlayerTagSystem
             Initialize();
             _playerInput.OnCharacterChangeEvent += Change;
             _playerSubWeaponManager.SetSubWeapon(null, CurrentPlayer);
+            OnAllPlayerDieEvent.AddListener(StageManager.Instance.ReloadCurrentScene);
         }
 
         private void Update()
