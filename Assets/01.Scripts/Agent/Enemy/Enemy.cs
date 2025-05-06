@@ -36,11 +36,7 @@ namespace Agents.Enemies
             _enemyName = name;
         }
 
-        protected override void HandleAgentDie()
-        {
-            base.HandleAgentDie();
-            GetVariable<StateChange>("StateChange").Value.SendEventMessage(Highbinders.HighbinderStateEnum.DEAD);
-        }
+        
 
         public BlackboardVariable<T> GetVariable<T>(string variableName)
         {

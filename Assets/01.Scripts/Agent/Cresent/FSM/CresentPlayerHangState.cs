@@ -18,8 +18,8 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            if(_aimController.IsGrabTargeted)
-                HandlePull();
+            // if(_aimController.IsGrabTargeted)
+            //     HandlePull();
             //_cresentPlayerRenderer.SetSwingAttackDirectionVisualEnable(true);
         }
 
