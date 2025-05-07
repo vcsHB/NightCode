@@ -12,14 +12,15 @@ namespace Office.CharacterSkillTree
         [HideInInspector] public int id;
         [HideInInspector] public List<NodeSO> nextNodes;
         [HideInInspector] public NodeSO prevNode;
-
-        public Sprite icon;
-        public int requireCoin;
+        public List<NodeSO> exceptNodes;
 
 
         public string nodeName;
         [TextArea]
         public string explain;
+        public Sprite icon;
+        public int requireCoin;
+
 
         private void OnValidate()
         {
