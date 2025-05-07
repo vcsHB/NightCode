@@ -33,7 +33,7 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
                 Vector2 toTarget = Target.Value.position - HeadTrm.Value.position;
                 _startAngle = HeadTrm.Value.localEulerAngles.z;
 
-                _targetAngle = (toTarget.x < 0) ? -180f : 180f;
+                _targetAngle = (toTarget.x < 0) ? -179f : 179f;
 
                 _rotationTimer = 0f;
                 _isRotateCompleted = false;
