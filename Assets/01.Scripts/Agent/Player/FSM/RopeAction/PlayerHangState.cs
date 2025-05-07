@@ -10,7 +10,8 @@ namespace Agents.Players.FSM
         protected bool _canUseTurbo = true;
 
         protected bool _isGroundCheck = true;
-
+        protected FeedbackCreateEventData _turboCreateFeedback = new FeedbackCreateEventData("Turbo");
+        protected FeedbackFinishEventData _turboFinishFeedback = new FeedbackFinishEventData("Turbo");
         public PlayerHangState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
         {
         }
@@ -73,6 +74,8 @@ namespace Agents.Players.FSM
             _canUseTurbo = true;
             _mover.CanManualMove = true;
             _aimController.SetOrbitVisual(false);
+            _player.EventChannel.RaiseEvent(_turboFinishFeedback);
+
 
             _renderer.SetLockRotation(true);
 
@@ -92,13 +95,14 @@ namespace Agents.Players.FSM
             _aimController.RefreshHangingDirection();
             _mover.UseTurbo(_aimController.HangingDirection);
             _canUseTurbo = false;
-            _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("Turbo"));
+            _player.EventChannel.RaiseEvent(_turboCreateFeedback);
         }
 
         protected void HandlePull()
         {
             if (!_player.IsActive) return;
             _isGroundCheck = false;
+            _player.EventChannel.RaiseEvent(_turboFinishFeedback);
             _aimController.HandlePull(HandleArriveAttack);
         }
 
@@ -111,5 +115,7 @@ namespace Agents.Players.FSM
             _isGroundCheck = true;
             _mover.SetVelocity(bounceDirection * 20f);
         }
+
+        
     }
 }
