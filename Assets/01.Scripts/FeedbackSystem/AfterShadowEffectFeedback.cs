@@ -33,7 +33,7 @@ namespace FeedbackSystem
                 if (currentGenerateTime > _generateTerm)
                 {
                     currentGenerateTime = 0f;
-                    AfterShadowVFXPlayer effect = PoolManager.Instance.Pop(PoolingType.AfterShadowEffect) as AfterShadowVFXPlayer;
+                    AfterShadowVFXPlayer effect = PoolManager.Instance.Pop(PoolingType.AfterShadowEffect, transform.position, _agentRenderer.transform.rotation) as AfterShadowVFXPlayer;
                     effect.Initialize(
                         transform.position,
                         _shadowLifeTime,
