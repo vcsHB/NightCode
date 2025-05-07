@@ -13,6 +13,7 @@ namespace Base
 
         protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
+            //To subscribe event to BasePlayer
             if (collision.TryGetComponent(out BasePlayer player))
             {
                 if (_player == null) _player = player;

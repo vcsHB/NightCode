@@ -67,7 +67,6 @@ namespace Dialog
 
                         if (parent.output == null)
                         {
-                            Debug.Log(index);
                             Edge edge = parent.outputs[index].ConnectTo(childNV.input);
                             AddElement(edge);
                         }

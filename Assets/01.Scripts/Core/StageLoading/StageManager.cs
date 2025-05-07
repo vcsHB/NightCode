@@ -43,7 +43,14 @@ namespace Core.StageController
 
         public void LoadNextStage()
         {
-            _currentStage = stageSet.stageList[++_stageProgress];
+            if (_currentStage.nextStage == null)
+            {
+                Debug.LogError("NextStageIsNotExsist");
+                return;
+            }
+
+            _currentStage = _currentStage.nextStage;
+            _stageProgress = _currentStage.id;
             stageLoadingPanel.onCompleteOpenPanel += LoadStage;
             stageLoadingPanel.Open();
         }
@@ -98,8 +105,6 @@ namespace Core.StageController
 
             _stageProgress = save.currentStage;
             _currentStage = stageSet.stageList[_stageProgress];
-            // _currentMission.ForEach(mission =>  missionSelectPanel.AddMission(mission));
-            //_currentMission.ForEach(mission => ClearMission(mission));
 
             if (_currentStage == null) _currentStage = stageSet.stageList[0];
             LoadStage();

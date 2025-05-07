@@ -17,11 +17,12 @@ namespace Core.StageController
         public StageSO CreateMission(Type type)
         {
             StageSO stage = ScriptableObject.CreateInstance(type) as StageSO;
+            if (stage == null) return null;
 
             stage.id = (ushort)stageList.Count;
-            stage.name = $"{type.Name}-{stage.id}";
+            stage.name = $"{stage.id}.{stage.displayStageName}";
             stage.guid = GUID.Generate().ToString();
-            stage.nextMissions = new List<StageSO>();
+            stage.nextStage = null;
             stageList.Add(stage);
 
             AssetDatabase.AddObjectToAsset(stage, this);
@@ -36,29 +37,18 @@ namespace Core.StageController
             AssetDatabase.SaveAssets();
         }
 
-        public List<StageSO> GetConnectedMissions(StageSO mission) 
-            => mission.nextMissions;
+        public StageSO GetConnectedMissions(StageSO mission) 
+            => mission.nextStage;
         public StageSO GetPrevNode(StageSO mission) => mission.prevMission;
 
         public void RemoveNextNode(StageSO parent, StageSO child)
         {
-            parent.nextMissions
-                .Where((mission) => mission.id == child.id)
-                .ToList()
-                .ForEach((node) =>
-                {
-                    parent.nextMissions.Remove(node);
-                    node.prevMission = null;
-                });
+            if (parent.nextStage.id != child.id) return;
+            parent.nextStage = null;
         }
         public void AddNextNode(StageSO parent, StageSO child)
         {
-            bool isExsist = parent.nextMissions.Where((node) => node.id == child.id).Count() > 0;
-            if (!isExsist)
-            {
-                parent.nextMissions.Add(child);
-                child.prevMission = parent;
-            }
+            parent.nextStage = child;
         }
 #endif
     }
