@@ -54,7 +54,6 @@ namespace CameraControllers
         /// </summary>
         public void CancelCurrentShake()
         {
-            print("Cancel Shake");
             if (_currentShakingCoroutine != null)
             {
                 StopCoroutine(_currentShakingCoroutine);

@@ -58,7 +58,7 @@ namespace ObjectManage.Rope
         {
             if (value)
                 OnAnchorLocatedEvent?.Invoke();
-
+            if(Wire == null) return; 
             Wire.gameObject.SetActive(value);
         }
 

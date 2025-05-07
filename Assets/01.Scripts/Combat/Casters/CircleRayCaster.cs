@@ -16,7 +16,6 @@ namespace Combat.Casters
                 if (i == _targetMaxAmount)
                     return;
 
-                print("Cast");
                 ForceCast(hit[i].collider);
             }
         }
