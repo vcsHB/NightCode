@@ -6,6 +6,7 @@ namespace ObjectManage.GimmickObjects
 
     public class WaterPipe : MonoBehaviour
     {
+        public UnityEvent OnBrokenEvent;
         public UnityEvent OnBlockEnableEvent;
         public UnityEvent OnBlockDsiableEvent;
         [SerializeField] private WaterHole _waterHole;
@@ -42,6 +43,13 @@ namespace ObjectManage.GimmickObjects
                 OnBlockDsiableEvent?.Invoke();
                 _waterHole.SetWaterFall(false);
             }
+        }
+
+        public void HandleSetBroken()
+        {
+            _currentAngle = 0f;
+            _waterHole.SetWaterFall(true);
+            OnBrokenEvent?.Invoke();
         }
     }
 }

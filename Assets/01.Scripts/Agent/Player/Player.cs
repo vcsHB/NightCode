@@ -31,14 +31,17 @@ namespace Agents.Players
 
             InitState();
         }
-
-
         private void Start()
         {
             StateMachine.StartState();
 
             if (_startDisable) gameObject.SetActive(false);
         }
+        private void OnDestroy()
+        {
+            _stateMachine.CurrentState.Exit();
+        }
+
         protected virtual void InitState()
         {
             _stateMachine = new PlayerStateMachine(this);
