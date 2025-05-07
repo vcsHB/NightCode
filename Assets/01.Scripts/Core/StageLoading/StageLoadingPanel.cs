@@ -26,7 +26,6 @@ namespace Core.StageController
             _canvasGruop.blocksRaycasts = true;
             _canvasGruop.interactable = true;
 
-            Debug.Log("¤±¤¤¤·¤©");
             _toggleTween = _canvasGruop.DOFade(1f, 0.2f)
                 .OnComplete(() => onCompleteOpenPanel?.Invoke());
         }

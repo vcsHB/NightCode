@@ -43,5 +43,11 @@ namespace ObjectManage.GimmickObjects
                 _waterHole.SetWaterFall(false);
             }
         }
+
+        public void HandleSetBroken()
+        {
+            _currentAngle = 0f;
+            _waterHole.SetWaterFall(true);
+        }
     }
 }

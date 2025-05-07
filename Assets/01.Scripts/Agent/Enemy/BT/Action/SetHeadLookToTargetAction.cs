@@ -25,6 +25,7 @@ namespace Agents.Enemies.BossManage.BT.ActionNodes
             _startAngle = HeadTrm.Value.localEulerAngles.z;
 
             // 방향 벡터 계산
+            if (Target.Value == null) return Status.Failure;
             Vector2 dir = Target.Value.position - HeadTrm.Value.position;
             _targetAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90f;
 
