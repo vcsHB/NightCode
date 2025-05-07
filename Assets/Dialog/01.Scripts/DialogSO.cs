@@ -8,7 +8,7 @@ namespace Dialog
     [CreateAssetMenu(menuName = "SO/Dialog/DialogSO")]
     public class DialogSO : ScriptableObject
     {
-        public List<NodeSO> nodes;
+        public List<NodeSO> nodes = new();
 
 
 #if UNITY_EDITOR

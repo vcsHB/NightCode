@@ -14,7 +14,8 @@ namespace Office.Armory
         private SpriteRenderer[] _visualRenderers;
         [SerializeField] private Color _activeOutlineColor;
         [SerializeField] private Color _disableOutlineColor;
-        private WeaponCameraHolder _weaponCameraHolder;
+
+        private bool _isEnable = false;
         private readonly int _disableBlinkAmountHash = Shader.PropertyToID("_Blink_amount");
         private readonly int _isOutlineBooleanHash = Shader.PropertyToID("_IsOutline");
         private readonly int _outlineColorHash = Shader.PropertyToID("_Outline_color");
@@ -22,7 +23,6 @@ namespace Office.Armory
         private void Awake()
         {
             _interactTarget = GetComponent<InteractionTarget>();
-            _weaponCameraHolder = GetComponentInChildren<WeaponCameraHolder>();
             _visualRenderers = GetComponentsInChildren<SpriteRenderer>();
 
 
@@ -31,11 +31,13 @@ namespace Office.Armory
             _interactTarget.OnInteractEvent.AddListener(HandleInteractEvent);
         }
 
-
+        public void SetEnable(bool value)
+        {
+            _isEnable = value;
+        }
 
         public void SetActive(bool value)
         {
-
             SetWeaponSlotEnable(value);
         }
 
@@ -51,11 +53,13 @@ namespace Office.Armory
 
         public void SetWeaponSelect()
         {
+            if (_isEnable == false) return; 
             SetWepaonSelect(true);
         }
 
         public void SetWeaponUnSelect()
         {
+            if (_isEnable == false) return;
             SetWepaonSelect(false);
         }
 
@@ -73,9 +77,10 @@ namespace Office.Armory
 
         private void HandleInteractEvent()
         {
+            if (_isEnable == false) return;
+
             // TODO : Send Weapon Data Later
             OnSelectEvent?.Invoke(_weaponSO, this);
-            _weaponCameraHolder.HoldCamera();
         }
 
 

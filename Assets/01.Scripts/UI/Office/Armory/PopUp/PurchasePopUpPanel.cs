@@ -45,14 +45,15 @@ namespace UI.OfficeScene.Armory
 
         public void Open()
         {
-            _mainPanelTrm.DOSizeDelta(new Vector2(_widthSize, _activeSize), _activeDuration).OnComplete(() => SetCanvasGroupEnable(true));
+            //_mainPanelTrm.DOSizeDelta(new Vector2(_widthSize, _activeSize), _activeDuration).OnComplete(() => SetCanvasGroupEnable(true));
+            SetCanvasGroupEnable(true);
 
         }
 
         public void Close()
         {
-            _mainPanelTrm.DOSizeDelta(new Vector2(_widthSize, 0f), _activeDuration).OnComplete(() => SetCanvasGroupEnable(false));
-
+            //_mainPanelTrm.DOSizeDelta(new Vector2(_widthSize, 0f), _activeDuration).OnComplete(() => SetCanvasGroupEnable(false));
+            SetCanvasGroupEnable(false);
         }
 
         private void SetCanvasGroupEnable(bool value)

@@ -1,13 +1,10 @@
-using CameraControllers;
 using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Cafe
+namespace Base
 {
-    public class ProcessInputObject : CafePlayerInputObject
+    public class ProcessInputObject : BaseInteractObject
     {
         public Action OnComplete;
         [SerializeField] private Image _frame;
@@ -24,7 +21,7 @@ namespace Cafe
 
         private void OnEnable()
         {
-            input.onLeftClick += OnLeftClick; 
+            input.onLeftClick += OnLeftClick;
             input.onRightClick += OnRightClick;
         }
 
@@ -55,7 +52,7 @@ namespace Cafe
             if (_wasClickedLeft == false) return;
 
             _wasClickedLeft = false;
-            _leftClickBtn.color = _enableColor;  
+            _leftClickBtn.color = _enableColor;
             _rightClickBtn.color = _disableColor;
 
             AddProcess();
@@ -65,7 +62,7 @@ namespace Cafe
         {
             _process += _processPerClick;
             _frame.fillAmount = _process / _targetProcess;
-            
+
             if (_process >= _targetProcess)
             {
                 _process = 0; OnComplete?.Invoke();
@@ -79,7 +76,7 @@ namespace Cafe
             gameObject.SetActive(true);
             _wasClickedLeft = false;
             _frame.fillAmount = 0;
-            _process = 0; 
+            _process = 0;
         }
 
         public override void Close()

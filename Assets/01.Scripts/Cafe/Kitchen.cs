@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class Kitchen : MonoBehaviour
     {
@@ -11,7 +11,7 @@ namespace Cafe
         //Debuging
         public FoodSO food;
 
-        private CafePlayer _player;
+        private BasePlayer _player;
         private Collider2D _collider;
         private float _prevFoodOutTime;
         private bool _isFoodOut = false;
@@ -19,7 +19,7 @@ namespace Cafe
         private void Awake()
         {
             _collider = GetComponent<Collider2D>();
-            _player = FindAnyObjectByType<CafePlayer>();
+            _player = FindAnyObjectByType<BasePlayer>();
         }
 
 

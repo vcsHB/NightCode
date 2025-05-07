@@ -2,7 +2,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class CafeTimer : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Cafe
+namespace Base.Cafe
 {
 
     public class MSGTextBox : MonoBehaviour

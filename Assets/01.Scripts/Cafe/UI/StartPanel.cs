@@ -3,7 +3,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class StartPanel : MonoBehaviour, IWindowPanel
     {

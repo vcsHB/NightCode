@@ -10,7 +10,7 @@ namespace Dialog
         public bool stopUntilCompleteEvent;
         [HideInInspector] public bool isCompleteEvent = true;
 
-        public virtual void PlayEvent()
+        public virtual void PlayEvent(DialogPlayer dialogPlayer, Actor actor)
         {
             isCompleteEvent = !stopUntilCompleteEvent;
         }

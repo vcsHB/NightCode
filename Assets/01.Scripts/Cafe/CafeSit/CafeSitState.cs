@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public abstract class CafeSitState
     {

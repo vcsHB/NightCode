@@ -1,10 +1,11 @@
+using Base;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class CafeSitDirtyState : CafeSitState
     {
-        private CafePlayer _player;
+        private BasePlayer _player;
 
 
         public CafeSitDirtyState(CafeSit cafeSit) : base(cafeSit)
