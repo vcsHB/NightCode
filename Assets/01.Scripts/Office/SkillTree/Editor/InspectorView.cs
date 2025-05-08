@@ -28,7 +28,7 @@ namespace Office.CharacterSkillTree
             Clear();
 
             UnityEngine.Object.DestroyImmediate(editor);
-            editor = Editor.CreateEditor(view.mission);
+            editor = Editor.CreateEditor(view.stage);
             IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
             Add(container);
         }

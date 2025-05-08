@@ -105,7 +105,10 @@ namespace Office.CharacterSkillTree
 
                 if (nodeDic.TryGetValue(nodeSO, out Node node))
                 {
-                    if (node.NodeType.id == 0) node.EnableNode(true);
+                    if (node.NodeType.id == 0)
+                    {
+                        node.EnableNode(true);
+                    }
                     node.Init(characterType);
                 }
             }

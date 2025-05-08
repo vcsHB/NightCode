@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   guid: 09c77bf8d88ea7543b54b000b60781fe
-  position: {x: 740.7999, y: 313.59995}
-  prevMission: {fileID: 9000598671843702226}
-  nextMissions:
-  - {fileID: 2687508600907706596}
+  position: {x: 188, y: 184}
+  prevMission: {fileID: 0}
+  nextStage: {fileID: 3270399570515033136}
+  displayStageName: "\uC0AC\uBB34\uC2E4"
+  stageIcon: {fileID: 0}
   sceneName: OfficeScene
   officeInfo: {fileID: 11400000, guid: 5bba704f49826d341a1b544af6abb876, type: 2}
   cutScene: 0
@@ -36,10 +37,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   guid: 3645adb5ce50c8d488208d8854335a5a
-  position: {x: 369, y: 314}
+  position: {x: -87, y: 185}
   prevMission: {fileID: 0}
-  nextMissions:
-  - {fileID: 9000598671843702226}
+  nextStage: {fileID: 9000598671843702226}
+  displayStageName: "\uC0AC\uBB34\uC2E4"
+  stageIcon: {fileID: 0}
   sceneName: OfficeScene
   officeInfo: {fileID: 11400000, guid: acd54000942e49a44ba06146fd120b70, type: 2}
   cutScene: 0
@@ -60,9 +62,8 @@ MonoBehaviour:
   - {fileID: -1715983533992208255}
   - {fileID: 9000598671843702226}
   - {fileID: -1906522265503306003}
-  - {fileID: 2687508600907706596}
-  - {fileID: 128143961533259671}
---- !u!114 &128143961533259671
+  - {fileID: 3270399570515033136}
+--- !u!114 &3270399570515033136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,40 +73,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f1ed5d81afb4f74092bb917ac039a3d, type: 3}
-  m_Name: IngameSO-3
+  m_Name: -3
   m_EditorClassIdentifier: 
   id: 3
-  guid: 2829284b952e1134196b18ba52fd1e1a
-  position: {x: 1066.4, y: 313.59998}
-  prevMission: {fileID: 2687508600907706596}
-  nextMissions: []
-  sceneName: Stage3_Boss
-  stageName: "\uD654\uB048\uD55C \uD654\uC81C"
-  stageIcon: {fileID: 0}
-  stageExplain: "\uD074\uB85C\uBC84\uB97C \uCD94\uACA9\uD558\uB2E4 \uC2DC\uC124 \uAE4A\uC740
-    \uACF3\uC5D0 \uB3C4\uB2EC\uD588\uB2E4. \uADF8\uB7F0\uB370 \uBB54\uAC00 \uC810\uC810
-    \uB365\uC9C0 \uC54A\uC544?"
---- !u!114 &2687508600907706596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f1ed5d81afb4f74092bb917ac039a3d, type: 3}
-  m_Name: IngameSO-4
-  m_EditorClassIdentifier: 
-  id: 4
-  guid: 37d878ceaa3bcbe4eafdaf115970b9c4
-  position: {x: 899.19995, y: 313.59998}
+  guid: b3447180605475c409286d22e4557e46
+  position: {x: 326, y: 184}
   prevMission: {fileID: -1906522265503306003}
-  nextMissions:
-  - {fileID: 128143961533259671}
-  sceneName: Stage_4
-  stageName: "\u3141\u3134\u3147"
+  nextStage: {fileID: 0}
+  displayStageName: "\uBCF4\uC2A4\uC804"
   stageIcon: {fileID: 0}
+  sceneName: IngameScene
   stageExplain: 
 --- !u!114 &9000598671843702226
 MonoBehaviour:
@@ -121,9 +98,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   guid: 8e06b950af6e8da4b90f0fb092a760d1
-  position: {x: 551, y: 314}
-  prevMission: {fileID: -1715983533992208255}
-  nextMissions:
-  - {fileID: -1906522265503306003}
+  position: {x: 54, y: 185}
+  prevMission: {fileID: 0}
+  nextStage: {fileID: -1906522265503306003}
+  displayStageName: "\uCE74\uD398"
+  stageIcon: {fileID: 0}
   sceneName: Cafe_TutorialScene
-  cafeInfo: {fileID: 11400000, guid: 134d36233b35b8f4b8b683280fc18b3a, type: 2}
+  cafeInfo: {fileID: 11400000, guid: e5dffcbb668dcd44d8c055d2c1d0359e, type: 2}
