@@ -11,7 +11,7 @@ namespace Base.Cafe
         //Debuging
         public FoodSO food;
 
-        private BasePlayer _player;
+        private AvatarPlayer _player;
         private Collider2D _collider;
         private float _prevFoodOutTime;
         private bool _isFoodOut = false;
@@ -19,7 +19,7 @@ namespace Base.Cafe
         private void Awake()
         {
             _collider = GetComponent<Collider2D>();
-            _player = FindAnyObjectByType<BasePlayer>();
+            _player = FindAnyObjectByType<AvatarPlayer>();
         }
 
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Base.Cafe
 {
-    public class CafeCustomer : BaseEntity
+    public class CafeCustomer : AvatarEntity
     {
         public CafeCustomerSO customerSO;
         public event Action onExitCafe;
@@ -37,7 +37,7 @@ namespace Base.Cafe
             }
         }
 
-        //À½½ÄÀ» ¿äÃ»ÇßÀ» ¶§ => ¾É¾ÒÀ» ¶§
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ => ï¿½É¾ï¿½ï¿½ï¿½ ï¿½ï¿½
         public void RequireFood()
         {
             float direction = Mathf.Sign(_table.transform.position.x - transform.position.x);
@@ -77,7 +77,7 @@ namespace Base.Cafe
             }
         }
 
-        //À½½ÄÀ» ¹Þ¾ÒÀ» ¶§ => ¸Ô±â ½ÃÀÛ?
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ => ï¿½Ô±ï¿½ ï¿½ï¿½ï¿½ï¿½?
         public void OnGetFood()
         {
             _getFood = true;

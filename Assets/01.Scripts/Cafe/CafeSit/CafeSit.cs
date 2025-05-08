@@ -22,7 +22,7 @@ namespace Base.Cafe
         private CafeSitStateMachine _stateMachine;
 
         public CafeCustomer AssingedCustomer { get; private set; }
-        public BasePlayer Player => _player;
+        public AvatarPlayer Player => _player;
         public bool IsInteractive => _isInteractive;
         public bool IsGetFood => _isGetFood;
 
@@ -44,14 +44,14 @@ namespace Base.Cafe
         }
 
 
-        //µ¥ÀÌÅÍ»ó ¼Õ´Ô ÇÒ´ç
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ ï¿½Õ´ï¿½ ï¿½Ò´ï¿½
         public void SetCustomer(CafeCustomer customer)
         {
             AssingedCustomer = customer;
             _isInteractive = customer.customerSO.isInteractiveCustomer;
         }
 
-        //°ÔÀÓ¿¡¼­ ¼Õ´Ô ÇÒ´ç
+        //ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ ï¿½Õ´ï¿½ ï¿½Ò´ï¿½
         public void CustomerSit()
         {
             _stateMachine.ChangeState(ECafeSitState.Wait);
@@ -84,7 +84,7 @@ namespace Base.Cafe
             //_isCustomerWaitingMenu = false;
         }
 
-        //¼Õ´ÔÀÌ ¶°³¯¶§
+        //ï¿½Õ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         public void LeaveCustomer()
         {
             if (AssingedCustomer == null) return;

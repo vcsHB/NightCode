@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Base.Cafe
 {
-    public class MaidNPCClean : BaseEntityState
+    public class MaidNPCClean : AvatarEntityState
     {
-        public MaidNPCClean(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public MaidNPCClean(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
         }
     }

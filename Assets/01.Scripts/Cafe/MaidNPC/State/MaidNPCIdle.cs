@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Base.Cafe
 {
-    public class MaidNPCIdle : BaseEntityState
+    public class MaidNPCIdle : AvatarEntityState
     {
-        public MaidNPCIdle(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public MaidNPCIdle(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
         }
 

@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Base
 {
-    public abstract class BaseEntity : MonoBehaviour
+    public abstract class AvatarEntity : MonoBehaviour
     {
-        public BaseEntityStateMachine stateMachine;
+        public AvatarEntityStateMachine stateMachine;
         public EntityRenderer npcRenderer;
-        public BaseEntitySO npcSO;
+        public AvatarEntitySO npcSO;
 
         public Action onCompleteMove;
         public float LookDir { get; protected set; } = 1;
@@ -22,8 +22,8 @@ namespace Base
 
         protected virtual void Awake()
         {
-            _rigid = GetComponent<Rigidbody2D>(); ;
-            stateMachine = new BaseEntityStateMachine(this);
+            _rigid = GetComponent<Rigidbody2D>();
+            stateMachine = new AvatarEntityStateMachine(this);
 
             npcSO.entityStateList.ForEach(state => stateMachine.AddState(state.stateName, state.className, state.animParam));
             stateMachine.ChangeState(npcSO.entityStateList[0].stateName);

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Base.Cafe
 {
-    public class CafeMaid : BaseEntity
+    public class CafeMaid : AvatarEntity
     {
         private CafeMaidSO _maidInfo;
         private CafeSit _targetSit;

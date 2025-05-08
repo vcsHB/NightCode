@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Base
 {
     [CreateAssetMenu(menuName = "SO/Base/EntityState")]
-    public class BaseEntityStateSO : ScriptableObject
+    public class AvatarEntityStateSO : ScriptableObject
     {
         public string stateName;
         public string className;

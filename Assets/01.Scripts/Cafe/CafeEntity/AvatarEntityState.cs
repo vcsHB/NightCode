@@ -3,17 +3,17 @@ using Base.Entity;
 
 namespace Base
 {
-    public abstract class BaseEntityState
+    public abstract class AvatarEntityState
     {
-        public BaseEntity npc;
-        public BaseEntityStateMachine stateMachine;
+        public AvatarEntity npc;
+        public AvatarEntityStateMachine stateMachine;
         public EntityRenderer npcRenderer;
 
         protected AnimParamSO _stateAnimParam;
         protected bool _isTriggered;
         protected int _animHash;
 
-        public BaseEntityState(BaseEntity npc, AnimParamSO animParamSO)
+        public AvatarEntityState(AvatarEntity npc, AnimParamSO animParamSO)
         {
             this.npc = npc;
             npcRenderer = npc.npcRenderer;
