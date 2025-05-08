@@ -36,6 +36,12 @@ namespace ObjectManage
 
         public void Grab()
         {
+            if (this == null)
+            {
+                // The Bizarre Missing Reference Problem // DONT TOUCH
+                return;
+            }
+
             Collider2D player = Physics2D.OverlapCircle(transform.position, _playerDetectRadius, _playerLayer);
             if (player == null)
             {

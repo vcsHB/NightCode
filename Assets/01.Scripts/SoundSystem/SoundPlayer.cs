@@ -41,7 +41,8 @@ namespace SoundManage
 
             _audioSource.loop = data.loop;
 
-            _audioSource.PlayOneShot(data.clip);
+            //_audioSource.PlayOneShot(data.clip);
+            _audioSource.Play();
             if (!data.loop)
             {
                 float time = _audioSource.clip.length + 1.0f;
@@ -52,6 +53,12 @@ namespace SoundManage
         private IEnumerator DisableSoundTimer(float time)
         {
             yield return new WaitForSeconds(time);
+            OnSoundPlayCompleteEvent?.Invoke(this);
+        }
+
+        public void SetForceOverSound()
+        {
+            _audioSource.Stop();
             OnSoundPlayCompleteEvent?.Invoke(this);
         }
 
