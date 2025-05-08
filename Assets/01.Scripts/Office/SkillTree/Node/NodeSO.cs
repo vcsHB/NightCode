@@ -21,11 +21,11 @@ namespace Office.CharacterSkillTree
         public string explain;
         public Sprite icon;
         public int requireCoin;
-
+        public Action onValueChange;
 
         private void OnValidate()
         {
-            name = nodeName;
+            onValueChange?.Invoke();
             exceptNodes.ForEach(except => except.AddExcept(this));
 
             for(int i = 0; i < exceptNodes.Count - 1; i++)
