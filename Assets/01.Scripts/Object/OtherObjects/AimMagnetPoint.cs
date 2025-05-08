@@ -7,7 +7,7 @@ namespace ObjectManage
     public class AimMagnetPoint : MonoBehaviour, IGrabable
     {
         public Transform GetTransform => transform;
-        private SpriteRenderer _aimedMarkRenderer;
+        //private SpriteRenderer _aimedMarkRenderer;
         private Health _ownerHealth;
         private Collider2D _collider;
         private AimMagnetPointVisual _aimMagnetVisual;
@@ -50,12 +50,12 @@ namespace ObjectManage
 
         public void OnAimEntered()
         {
-            _aimedMarkRenderer.enabled = true;
+            //_aimedMarkRenderer.enabled = true;
         }
 
         public void OnAimExited()
         {
-            _aimedMarkRenderer.enabled = false;
+            //_aimedMarkRenderer.enabled = false;
 
         }
     }
