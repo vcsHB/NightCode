@@ -1,16 +1,15 @@
 using DG.Tweening;
 using UI;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class StartPanel : MonoBehaviour, IWindowPanel
     {
-        [SerializeField] private RectTransform _readyText;
-        [SerializeField] private RectTransform _startText;
+        [SerializeField] private Image _bg;
 
         private Sequence _openCloseSeq;
-        private RectTransform rectTrm => transform as RectTransform;
 
         private void Awake()
         {
@@ -22,24 +21,17 @@ namespace Cafe
             if (_openCloseSeq != null && _openCloseSeq.active)
                 _openCloseSeq.Kill();
 
+            _bg.color = new Color(_bg.color.r, _bg.color.g, _bg.color.b, 1);
+
             _openCloseSeq = DOTween.Sequence();
             _openCloseSeq.AppendInterval(0.2f)
-                .Append(_readyText.DOScale(1, 0.2f))
-                .AppendInterval(0.5f)
-                .Append(_readyText.DOScale(0, 0.2f))
-                .Append(_startText.DOScale(1, 0.2f))
-                .AppendInterval(1f)
-                .Append(_startText.DOScale(0, 0.3f))
+                .Append(_bg.DOFade(0f, 0.5f))
                 .OnComplete(CafeManager.Instance.StartCafe);
-        }
+     }
 
         public void Close()
         {
-            if (_openCloseSeq != null && _openCloseSeq.active)
-                _openCloseSeq.Kill();
-
-            _openCloseSeq = DOTween.Sequence();
-            _openCloseSeq.Append(rectTrm.DOAnchorPosY(1080, 0.2f));
+            _bg.gameObject.SetActive(false);
         }
     }
 }

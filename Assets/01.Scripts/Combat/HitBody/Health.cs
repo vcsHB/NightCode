@@ -19,6 +19,7 @@ namespace Combat
         private float _lastHitTime;
         public bool IsResist { get; private set; }
         private bool _isDie;
+        public bool IsDead => _isDie;
 
         public void Initialize(float health)
         {
@@ -34,6 +35,7 @@ namespace Combat
 
         public bool ApplyDamage(CombatData data)
         {
+            //Debug.Log(data.invalidityResistance);
             if (!data.invalidityResistance && _lastHitTime + _hitResistanceCooltime > Time.time) return false;
             if (IsResist) return false;
             _currentHealth -= data.damage;

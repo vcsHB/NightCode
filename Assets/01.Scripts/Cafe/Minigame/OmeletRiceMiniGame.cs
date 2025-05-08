@@ -6,12 +6,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class OmeletRiceMiniGame : MonoBehaviour
     {
         public event Action<bool> onCompleteMiniGame;
-        public CafeInput input;
+        public BaseInput input;
 
         public PaintTexture paintTexture;
         public PaintTexture guideLineTexture;
@@ -47,7 +47,7 @@ namespace Cafe
         private void Start()
         {
             input.onLeftClick += OnLeftClick;
-            RectTrm.anchoredPosition = new Vector2(0, screenSize.y);
+            RectTrm.anchoredPosition = new Vector2(0, screenSize.y * 2);
         }
 
         private void OnDisable()
@@ -87,8 +87,8 @@ namespace Cafe
             }
             else
             {
-                CompareCompletion();
                 _isEndDrawing = true;
+                CompareCompletion();
             }
         }
 
@@ -186,7 +186,8 @@ namespace Cafe
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(Screen.height, _duration);
+            _openCloseTween = RectTrm.DOAnchorPosY(Screen.height, _duration)
+                .OnComplete(() => onCompleteMiniGame?.Invoke(_isGood));
             paintTexture.ResetTexture();
             _pixelPositions.Clear();
             input.EnableInput();
@@ -241,7 +242,7 @@ namespace Cafe
                 _isGood = true;
             }
 
-            onCompleteMiniGame?.Invoke(_isGood);
+            //onCompleteMiniGame?.Invoke(_isGood);
         }
 
 

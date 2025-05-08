@@ -1,5 +1,6 @@
 using System;
 using Combat.Casters;
+using ObjectManage;
 using ObjectPooling;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +18,7 @@ namespace Combat.CombatObjects.ProjectileManage
         private float _currentLifeTime = 0f;
         [SerializeField] private ProjectileData _projectileData;
         [field: SerializeField] public PoolingType type { get; set; }
+        [SerializeField] private PoolingType _destroyVFXType;
         [Header("Projectile Damage Reflect Setting")]
         [SerializeField] private bool _canDamagedReflect;
         [SerializeField] private LayerMask _defaultTargetLayer;
@@ -148,20 +150,29 @@ namespace Combat.CombatObjects.ProjectileManage
         {
             _isActive = false;
             OnDestroyEvent?.Invoke();
+            VFXPlayer vfx = PoolManager.Instance.Pop(_destroyVFXType) as VFXPlayer;
+            vfx.transform.position = transform.position;
+            vfx.Play();
             PoolManager.Instance.Push(this);
             //Destroy(gameObject);
         }
 
         public bool ApplyDamage(CombatData data)
         {
-            if (_canDamagedReflect && !_isReflected)
+            if (_canDamagedReflect)
             {
-                Vector2 direction = (Vector2)transform.position - data.originPosition;
-                _isReflected = true;
-                _caster.SetTargetLayer(_reflectTargetLayer);
-                _currentLifeTime = 0f;
-                Shoot(-_projectileData.direction + UnityEngine.Random.insideUnitCircle);
-                return false;
+                if (!_isReflected)
+                {
+                    _isReflected = true;
+                    _caster.SetTargetLayer(_reflectTargetLayer);
+                    _currentLifeTime = 0f;
+                    Shoot(-_projectileData.direction + UnityEngine.Random.insideUnitCircle);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             if (!_projectileData.canDestroy) return false;
             OnDamagedEvent?.Invoke();

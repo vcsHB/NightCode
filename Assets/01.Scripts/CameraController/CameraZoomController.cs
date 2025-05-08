@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -6,6 +7,7 @@ namespace CameraControllers
 
     public class CameraZoomController : MonoBehaviour, ICameraControlable
     {
+        public event Action onCompleteZoom;
         [SerializeField] private float _defaultZoomLevel = 20f;
         [SerializeField] private float _dialogueZoomLevel = 10f;
         private CinemachineCamera _virtualCamera;
@@ -33,6 +35,13 @@ namespace CameraControllers
             _zoomCoroutine = StartCoroutine(ZoomCoroutine(zoomLevel, duration));
         }
 
+
+
+        public void ResetZoomLevel(float duration)
+        {
+            SetZoomLevel(_defaultZoomLevel, duration, true);
+        }
+
         private IEnumerator ZoomCoroutine(float level, float duration)
         {
             float previousLevel = ZoomLevel;
@@ -47,6 +56,7 @@ namespace CameraControllers
             }
             SetZoomLevel(level);
             _zoomCoroutine = null;
+            onCompleteZoom?.Invoke();
         }
 
     }

@@ -37,7 +37,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""Use"",
                     ""type"": ""Button"",
                     ""id"": ""91e9fcdf-108b-492d-978a-3a1a09f9230f"",
                     ""expectedControlType"": """",
@@ -150,11 +150,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ece51998-2e92-4455-9ef3-f52e76520c31"",
-                    ""path"": ""<Keyboard>/numLock"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
-                    ""action"": ""Attack"",
+                    ""action"": ""Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -236,6 +236,33 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftMouseButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""726b799b-e025-4a6a-b96a-22f7cfc67c46"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightMouseButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""46546dc9-9ac3-468b-852c-9f18237847dc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""598ca89a-a39a-485a-b563-774f9f6f7df7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -260,178 +287,44 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Space"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Basement"",
-            ""id"": ""0ee7d667-10e2-4f47-b32f-9fe91c21a681"",
-            ""actions"": [
-                {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""37e751b5-9b30-4b3f-9fef-6b063e1c212f"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""MouseDown"",
-                    ""type"": ""Button"",
-                    ""id"": ""82001aab-6e19-4b30-8015-6be44076ee38"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseMove"",
-                    ""type"": ""Value"",
-                    ""id"": ""d636f5e9-902f-44d1-b142-88d691081211"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""b848ed86-e007-4c65-9658-07be19c7d5e2"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""879eb157-a1f4-4367-9337-7759ed8126fb"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""b2e88f43-ef2a-47d5-99e9-09bdfc4bb571"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""b2c347b8-7fdf-4ea1-9a9b-61df194d31a2"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""ae32e22f-49cf-4340-8c2e-770a147827b6"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""dde29885-0186-4a4f-8748-3e30a407db82"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""b535bb9a-c8e5-4500-847a-3ac3947e3975"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""91181d73-6025-48a4-9990-e129028ade17"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""9c0d64d8-38a1-442b-a0e1-46955334d7ad"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""9e2afa45-2aa4-48b2-83fc-3aff334084cd"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
-                    ""id"": ""5362322e-9aa0-43bb-9081-ce2817426638"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseMove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c7169df0-0c15-4647-82c1-198adb243cc1"",
+                    ""id"": ""be08dc64-1871-4ac9-8e86-70360050c1fb"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseDown"",
+                    ""groups"": "";KeyMouse"",
+                    ""action"": ""LeftMouseButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8524f320-a09e-4bc0-bbda-4a62778b20f2"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyMouse"",
+                    ""action"": ""RightMouseButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2833767-40cf-4a29-bab5-b7257aacd992"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyMouse"",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
             ]
         },
         {
-            ""name"": ""Cafe"",
+            ""name"": ""Base"",
             ""id"": ""a450912a-3feb-4723-b24d-25d03f904dd9"",
             ""actions"": [
                 {
@@ -585,7 +478,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Turbo = m_Player.FindAction("Turbo", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
@@ -595,25 +488,22 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Esc = m_UI.FindAction("Esc", throwIfNotFound: true);
         m_UI_Space = m_UI.FindAction("Space", throwIfNotFound: true);
-        // Basement
-        m_Basement = asset.FindActionMap("Basement", throwIfNotFound: true);
-        m_Basement_Move = m_Basement.FindAction("Move", throwIfNotFound: true);
-        m_Basement_MouseDown = m_Basement.FindAction("MouseDown", throwIfNotFound: true);
-        m_Basement_MouseMove = m_Basement.FindAction("MouseMove", throwIfNotFound: true);
-        // Cafe
-        m_Cafe = asset.FindActionMap("Cafe", throwIfNotFound: true);
-        m_Cafe_Move = m_Cafe.FindAction("Move", throwIfNotFound: true);
-        m_Cafe_Interact = m_Cafe.FindAction("Interact", throwIfNotFound: true);
-        m_Cafe_MouseLeftClick = m_Cafe.FindAction("MouseLeftClick", throwIfNotFound: true);
-        m_Cafe_MouseRightClick = m_Cafe.FindAction("MouseRightClick", throwIfNotFound: true);
+        m_UI_LeftMouseButton = m_UI.FindAction("LeftMouseButton", throwIfNotFound: true);
+        m_UI_RightMouseButton = m_UI.FindAction("RightMouseButton", throwIfNotFound: true);
+        m_UI_MousePosition = m_UI.FindAction("MousePosition", throwIfNotFound: true);
+        // Base
+        m_Base = asset.FindActionMap("Base", throwIfNotFound: true);
+        m_Base_Move = m_Base.FindAction("Move", throwIfNotFound: true);
+        m_Base_Interact = m_Base.FindAction("Interact", throwIfNotFound: true);
+        m_Base_MouseLeftClick = m_Base.FindAction("MouseLeftClick", throwIfNotFound: true);
+        m_Base_MouseRightClick = m_Base.FindAction("MouseRightClick", throwIfNotFound: true);
     }
 
     ~@Controls()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, Controls.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, Controls.UI.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_Basement.enabled, "This will cause a leak and performance issues, Controls.Basement.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_Cafe.enabled, "This will cause a leak and performance issues, Controls.Cafe.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Base.enabled, "This will cause a leak and performance issues, Controls.Base.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -676,7 +566,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Use;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Turbo;
     private readonly InputAction m_Player_Jump;
@@ -687,7 +577,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         private @Controls m_Wrapper;
         public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Turbo => m_Wrapper.m_Player_Turbo;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
@@ -705,9 +595,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Attack.started += instance.OnAttack;
-            @Attack.performed += instance.OnAttack;
-            @Attack.canceled += instance.OnAttack;
+            @Use.started += instance.OnUse;
+            @Use.performed += instance.OnUse;
+            @Use.canceled += instance.OnUse;
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
@@ -730,9 +620,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Attack.started -= instance.OnAttack;
-            @Attack.performed -= instance.OnAttack;
-            @Attack.canceled -= instance.OnAttack;
+            @Use.started -= instance.OnUse;
+            @Use.performed -= instance.OnUse;
+            @Use.canceled -= instance.OnUse;
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
@@ -771,12 +661,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_Esc;
     private readonly InputAction m_UI_Space;
+    private readonly InputAction m_UI_LeftMouseButton;
+    private readonly InputAction m_UI_RightMouseButton;
+    private readonly InputAction m_UI_MousePosition;
     public struct UIActions
     {
         private @Controls m_Wrapper;
         public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Esc => m_Wrapper.m_UI_Esc;
         public InputAction @Space => m_Wrapper.m_UI_Space;
+        public InputAction @LeftMouseButton => m_Wrapper.m_UI_LeftMouseButton;
+        public InputAction @RightMouseButton => m_Wrapper.m_UI_RightMouseButton;
+        public InputAction @MousePosition => m_Wrapper.m_UI_MousePosition;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -792,6 +688,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Space.started += instance.OnSpace;
             @Space.performed += instance.OnSpace;
             @Space.canceled += instance.OnSpace;
+            @LeftMouseButton.started += instance.OnLeftMouseButton;
+            @LeftMouseButton.performed += instance.OnLeftMouseButton;
+            @LeftMouseButton.canceled += instance.OnLeftMouseButton;
+            @RightMouseButton.started += instance.OnRightMouseButton;
+            @RightMouseButton.performed += instance.OnRightMouseButton;
+            @RightMouseButton.canceled += instance.OnRightMouseButton;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -802,6 +707,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Space.started -= instance.OnSpace;
             @Space.performed -= instance.OnSpace;
             @Space.canceled -= instance.OnSpace;
+            @LeftMouseButton.started -= instance.OnLeftMouseButton;
+            @LeftMouseButton.performed -= instance.OnLeftMouseButton;
+            @LeftMouseButton.canceled -= instance.OnLeftMouseButton;
+            @RightMouseButton.started -= instance.OnRightMouseButton;
+            @RightMouseButton.performed -= instance.OnRightMouseButton;
+            @RightMouseButton.canceled -= instance.OnRightMouseButton;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -820,92 +734,30 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     }
     public UIActions @UI => new UIActions(this);
 
-    // Basement
-    private readonly InputActionMap m_Basement;
-    private List<IBasementActions> m_BasementActionsCallbackInterfaces = new List<IBasementActions>();
-    private readonly InputAction m_Basement_Move;
-    private readonly InputAction m_Basement_MouseDown;
-    private readonly InputAction m_Basement_MouseMove;
-    public struct BasementActions
+    // Base
+    private readonly InputActionMap m_Base;
+    private List<IBaseActions> m_BaseActionsCallbackInterfaces = new List<IBaseActions>();
+    private readonly InputAction m_Base_Move;
+    private readonly InputAction m_Base_Interact;
+    private readonly InputAction m_Base_MouseLeftClick;
+    private readonly InputAction m_Base_MouseRightClick;
+    public struct BaseActions
     {
         private @Controls m_Wrapper;
-        public BasementActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Basement_Move;
-        public InputAction @MouseDown => m_Wrapper.m_Basement_MouseDown;
-        public InputAction @MouseMove => m_Wrapper.m_Basement_MouseMove;
-        public InputActionMap Get() { return m_Wrapper.m_Basement; }
+        public BaseActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Base_Move;
+        public InputAction @Interact => m_Wrapper.m_Base_Interact;
+        public InputAction @MouseLeftClick => m_Wrapper.m_Base_MouseLeftClick;
+        public InputAction @MouseRightClick => m_Wrapper.m_Base_MouseRightClick;
+        public InputActionMap Get() { return m_Wrapper.m_Base; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BasementActions set) { return set.Get(); }
-        public void AddCallbacks(IBasementActions instance)
+        public static implicit operator InputActionMap(BaseActions set) { return set.Get(); }
+        public void AddCallbacks(IBaseActions instance)
         {
-            if (instance == null || m_Wrapper.m_BasementActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_BasementActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-            @MouseDown.started += instance.OnMouseDown;
-            @MouseDown.performed += instance.OnMouseDown;
-            @MouseDown.canceled += instance.OnMouseDown;
-            @MouseMove.started += instance.OnMouseMove;
-            @MouseMove.performed += instance.OnMouseMove;
-            @MouseMove.canceled += instance.OnMouseMove;
-        }
-
-        private void UnregisterCallbacks(IBasementActions instance)
-        {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-            @MouseDown.started -= instance.OnMouseDown;
-            @MouseDown.performed -= instance.OnMouseDown;
-            @MouseDown.canceled -= instance.OnMouseDown;
-            @MouseMove.started -= instance.OnMouseMove;
-            @MouseMove.performed -= instance.OnMouseMove;
-            @MouseMove.canceled -= instance.OnMouseMove;
-        }
-
-        public void RemoveCallbacks(IBasementActions instance)
-        {
-            if (m_Wrapper.m_BasementActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IBasementActions instance)
-        {
-            foreach (var item in m_Wrapper.m_BasementActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_BasementActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public BasementActions @Basement => new BasementActions(this);
-
-    // Cafe
-    private readonly InputActionMap m_Cafe;
-    private List<ICafeActions> m_CafeActionsCallbackInterfaces = new List<ICafeActions>();
-    private readonly InputAction m_Cafe_Move;
-    private readonly InputAction m_Cafe_Interact;
-    private readonly InputAction m_Cafe_MouseLeftClick;
-    private readonly InputAction m_Cafe_MouseRightClick;
-    public struct CafeActions
-    {
-        private @Controls m_Wrapper;
-        public CafeActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Cafe_Move;
-        public InputAction @Interact => m_Wrapper.m_Cafe_Interact;
-        public InputAction @MouseLeftClick => m_Wrapper.m_Cafe_MouseLeftClick;
-        public InputAction @MouseRightClick => m_Wrapper.m_Cafe_MouseRightClick;
-        public InputActionMap Get() { return m_Wrapper.m_Cafe; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CafeActions set) { return set.Get(); }
-        public void AddCallbacks(ICafeActions instance)
-        {
-            if (instance == null || m_Wrapper.m_CafeActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_CafeActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_BaseActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_BaseActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -920,7 +772,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @MouseRightClick.canceled += instance.OnMouseRightClick;
         }
 
-        private void UnregisterCallbacks(ICafeActions instance)
+        private void UnregisterCallbacks(IBaseActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -936,21 +788,21 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @MouseRightClick.canceled -= instance.OnMouseRightClick;
         }
 
-        public void RemoveCallbacks(ICafeActions instance)
+        public void RemoveCallbacks(IBaseActions instance)
         {
-            if (m_Wrapper.m_CafeActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_BaseActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ICafeActions instance)
+        public void SetCallbacks(IBaseActions instance)
         {
-            foreach (var item in m_Wrapper.m_CafeActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_BaseActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_CafeActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_BaseActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public CafeActions @Cafe => new CafeActions(this);
+    public BaseActions @Base => new BaseActions(this);
     private int m_KeyMouseSchemeIndex = -1;
     public InputControlScheme KeyMouseScheme
     {
@@ -963,7 +815,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnTurbo(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
@@ -974,14 +826,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     {
         void OnEsc(InputAction.CallbackContext context);
         void OnSpace(InputAction.CallbackContext context);
+        void OnLeftMouseButton(InputAction.CallbackContext context);
+        void OnRightMouseButton(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
     }
-    public interface IBasementActions
-    {
-        void OnMove(InputAction.CallbackContext context);
-        void OnMouseDown(InputAction.CallbackContext context);
-        void OnMouseMove(InputAction.CallbackContext context);
-    }
-    public interface ICafeActions
+    public interface IBaseActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);

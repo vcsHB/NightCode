@@ -3,7 +3,7 @@ using Core.EventSystem;
 using FeedbackSystem;
 using UnityEngine;
 
-namespace Agents.Players
+namespace Agents
 {
 
     public class FeedbackCreateEventData : GameEvent
@@ -27,8 +27,7 @@ namespace Agents.Players
     {
         private GameEventChannelSO _feedbackEventChannel;
         private Dictionary<string, FeedbackPlayer> _feedbackPlayerDictionary;
-        private Player _player;
-
+        private Agent _owner;
         private void Awake()
         {
             // 딕셔너리 채우기
@@ -50,8 +49,8 @@ namespace Agents.Players
 
         public void Initialize(Agent agent)
         {
-            _player = agent as Player;
-            _feedbackEventChannel = _player.FeedbackChannel;
+            _owner = agent;
+            _feedbackEventChannel = _owner.EventChannel;
 
             _feedbackEventChannel.AddListener<FeedbackCreateEventData>(HandleInvokeFeedbacks);
             _feedbackEventChannel.AddListener<FeedbackFinishEventData>(HandleFinishFeedbacks);

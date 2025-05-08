@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using Combat;
 using ObjectManage;
 using ObjectManage.Rope;
+using ObjectManage.VFX;
+using ObjectPooling;
 using UnityEngine;
 
 namespace Agents.Players
@@ -20,7 +23,7 @@ namespace Agents.Players
         [SerializeField] private float _wireClampedDistance = 12f;
         [SerializeField] private float _clampDuration = 0.2f;
         [SerializeField] private float _pullClampDuration = 0.01f;
-        [SerializeField] private SlashVFXPlayer _slashVFXPlayer;
+        [SerializeField] private Gradient _gradient;
         // Properties
         public bool canShoot = true;
         public bool IsShoot => _isShoot;
@@ -35,11 +38,13 @@ namespace Agents.Players
 
         private AimData _currentAimData;
         private GrabData _currentGrabData;
+        public bool IsGrabTargeted => _currentGrabData.isTargeted;
         public bool IsTargeted => _currentAimData.isTargeted;
         public Vector2 AimDirection => _currentAimData.aimDirection;
         public Vector2 TargetPoint => _currentAimData.targetPosition;
         public Vector2 OriginPosition => _currentAimData.originPlayerPosition;
         private float _currentShootTime = 0;
+        private float _anchorDistance;
         private Vector2 _anchorPosition;
 
 
@@ -99,8 +104,8 @@ namespace Agents.Players
             _currentShootTime = 0f;
             //_playerController.turboCount = 1;
 
-            _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
-
+            _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
+           
             HandleHang();
             _isShoot = true;
             return new ShootData { isHanged = true };
@@ -118,26 +123,37 @@ namespace Agents.Players
         {
             _aimGroupController.SetActiveWire(true);
             _anchorPosition = _currentAimData.targetPosition; // _currentAimData.targetPosition;
+            _anchorDistance = _currentAimData.distanceToPoint;
             _aimGroupController.SetAnchorPosition(TargetPoint);
+            _aimGroupController.SetAnchorParent(_currentAimData.targetTrm);
+            
             if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
-                _player.FeedbackChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
+                _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
+                Vector2 newPosition = GetLerpTargetPosition(_wireClampedDistance);
+                _anchorDistance = Vector2.Distance(newPosition, _anchorPosition);
                 _clampCoroutine = StartCoroutine(
                     DistanceClampCoroutine(
-                        GetLerpTargetPosition(_wireClampedDistance), _clampDuration));
+                        newPosition, _clampDuration));
             }
             else
-                _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
+                _aimGroupController.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
+            KatanaSlashVFXPlayer vfx = PoolManager.Instance.Pop(PoolingType.RopeAnchoredVFX) as KatanaSlashVFXPlayer;
+            vfx.SetGradient(_gradient);
+            vfx.SlashLerp(transform.position, _anchorPosition , _anchorDistance * 0.05f);
+
 
         }
         public void RemoveWire()
         {
             if (IsClamping)
                 StopCoroutine(_clampCoroutine);
+            _clampCoroutine = null;
             Vector2 velocity = _playerMovement.Velocity;
             _aimGroupController.SetActiveWire(false);
+            _aimGroupController.SetAnchorParent();
             _aimGroupController.SetAnchorPosition(transform.position);
-            _aimGroupController.Wire.SetWireEnable(false);
+            _aimGroupController.SetWireEnable(false);
             _isShoot = false;
 
             _playerMovement.SetVelocity(velocity);
@@ -155,21 +171,31 @@ namespace Agents.Players
                 _player.transform.position = Vector2.Lerp(before, clampPosition, currentTime / duration);
                 yield return null;
             }
-            _aimGroupController.Wire.SetWireEnable(true, _anchorPosition, _wireClampedDistance);
+            _aimGroupController.SetWireEnable(true, _anchorPosition, _wireClampedDistance);
             _playerMovement.AddForceToEntity(velocity);
             OnComplete?.Invoke();
 
             _clampCoroutine = null;
         }
 
+        public void RefreshOrbitVisual()
+        {
+            _aimGroupController.SetOrbitVisual(_player.transform.position);
+        }
+
+        public void SetOrbitVisual(bool value)
+        {
+            _aimGroupController.SetOrbitVisual(value);
+        }
+
 
         public void HandlePull(Action OnComplete = null)
         {
-            if (IsClamping || _currentAimData.distanceToPoint < 2f) return;
+            if (IsClamping || _anchorDistance < 1f) return;
             _playerMovement.StopImmediately(true);
             _clampCoroutine = StartCoroutine(DistanceClampCoroutine(
                 GetLerpTargetPositionByRatio(0.9f),
-                _currentAimData.distanceToPoint * _pullClampDuration,
+                _anchorDistance * _pullClampDuration,
                 OnComplete));
 
         }

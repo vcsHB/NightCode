@@ -1,54 +1,114 @@
+using Core.StageController;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Cafe
+namespace Base.Cafe
 {
     public class Cafe : MonoBehaviour
     {
         public Transform customerInitPosition;
-        public List<CafeCustomer> customerList;
         public Transform tableParent;
 
-        private List<CafeTable> tableList;
+        private CafeCustomerWaveSO _customerWave;
+        private CustomerInfo _customerInfo;
+        private CafeSO _cafeInfo;
+        private List<CafeSit> _tableList;
+
+        private int _currentIndex = 0;
+        private int _currentWaveIndex = 0;
+        private int _completCustomer = 0;
+        private float _prevSpawnTime;
+        private bool _isWaveStart = false;
 
         private void Awake()
         {
-            tableList = new List<CafeTable>();
+            _tableList = new List<CafeSit>();
             for (int i = 0; i < tableParent.childCount; i++)
             {
-                if (tableParent.GetChild(i).TryGetComponent(out CafeTable table))
-                    tableList.Add(table);
+                if (tableParent.GetChild(i).TryGetComponent(out CafeSit table))
+                    _tableList.Add(table);
             }
         }
 
-
-        public bool EnterCustomer(CafeCustomerSO customerSO)
+        private void Update()
         {
-            if (TryGetValiadeTable(out CafeTable table))
+            if (_isWaveStart)
+            {
+                if (_currentWaveIndex >= _customerWave.exsistCustomer.Count) return;
+                _customerInfo = _customerWave.exsistCustomer[_currentWaveIndex];
+
+                if (_prevSpawnTime + _customerInfo.exsistDelay < Time.time)
+                {
+                    CafeCustomerSO cafeCustomerSO = _customerInfo.customer;
+                    SpawnCustomer(cafeCustomerSO);
+                    _prevSpawnTime = Time.time;
+                    _currentWaveIndex++;
+                }
+            }
+        }
+
+        public void Init(CafeSO cafeSO)
+        {
+            _cafeInfo = cafeSO;
+        }
+
+        public void StartCustomerWave()
+        {
+            _completCustomer++;
+            if (_customerWave != null && _completCustomer < _customerWave.exsistCustomer.Count) return;
+
+            if ((_currentIndex + 1) > _cafeInfo.customerWave.Count)
+            {
+                //TODO: Before change scene have to show UI
+                StageManager.Instance.LoadNextStage();
+                return;
+            }
+
+            _isWaveStart = true;
+            _currentWaveIndex = 0;
+            _completCustomer = 0;
+            _prevSpawnTime = Time.time;
+            _customerWave = _cafeInfo.customerWave[_currentIndex++];
+        }
+
+
+        private bool SpawnCustomer(CafeCustomerSO customerSO)
+        {
+            if (TryGetValiadeTable(out CafeSit table))
             {
                 CafeCustomer customer = Instantiate(customerSO.customerPf, customerInitPosition);
-                customer.Init(table);
+                customer.onExitCafe += StartCustomerWave;
+                customer.Init(table, customerSO.talk);
+
                 return true;
             }
             return false;
         }
 
-        public bool TryGetValiadeTable(out CafeTable table)
+        public bool TryGetValiadeTable(out CafeSit sit)
         {
-            CafeTable valiadeTable = null;
+            var sitListTemp = _tableList;
 
-            tableList.ForEach(t =>
+            for (int i = 0; i < sitListTemp.Count; i++)
             {
-                if (t.CanCustomerSitdown())
-                {
-                    valiadeTable = t;
-                    return;
-                }
-            });
+                int randomIndex = Random.Range(0, sitListTemp.Count);
+                CafeSit sitTemp = sitListTemp[i];
+                sitListTemp[i] = sitListTemp[randomIndex];
+                sitListTemp[randomIndex] = sitTemp;
+            }
 
-            table = valiadeTable;
-            return (valiadeTable != null);
+            for (int i = 0; i < sitListTemp.Count; i++)
+            {
+                if (sitListTemp[i].AssingedCustomer == null)
+                {
+                    sit = sitListTemp[i];
+                    return true;
+                }
+            }
+
+            sit = null;
+            return false;
         }
     }
 }

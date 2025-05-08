@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace UI.Common
@@ -7,6 +8,8 @@ namespace UI.Common
 
     public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        public UnityEvent OnHoverEnterEvent;
+        public UnityEvent OnHoverExitEvent;
         [SerializeField] private Vector3 _highlightScale = new Vector3(1.2f, 1.2f, 1f);
         [SerializeField] private bool _useUnscaledTime;
         private Vector3 _defaultScale;
@@ -22,6 +25,7 @@ namespace UI.Common
         {
             // if (_currentTween.IsPlaying())
             //     _currentTween.Complete();
+            OnHoverEnterEvent?.Invoke();
             _currentTween = transform.DOScale(_highlightScale, _duration).SetUpdate(_useUnscaledTime);
         }
 
@@ -29,6 +33,7 @@ namespace UI.Common
         {
             // if (_currentTween.IsPlaying())
             //     _currentTween.Complete();
+            OnHoverExitEvent?.Invoke();
             _currentTween = transform.DOScale(_defaultScale, _duration).SetUpdate(_useUnscaledTime);
 
         }

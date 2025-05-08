@@ -1,61 +1,66 @@
-using Office;
+using Core.StageController;
+using Office.CharacterSkillTree;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MissionFlowEditor : EditorWindow
+namespace Office
 {
-    private MissionGraphView graphView;
-    private InspectorView inspectorView;
-
-    [SerializeField]
-    private VisualTreeAsset m_VisualTreeAsset = default;
-
-    [MenuItem("Tools/MissionFlowGenerator")]
-    public static void ShowExample()
+    public class MissionFlowEditor : EditorWindow
     {
-        MissionFlowEditor wnd = GetWindow<MissionFlowEditor>();
-        wnd.titleContent = new GUIContent("MissionFlowEditor");
-    }
+        private MissionGraphView graphView;
+        private InspectorView inspectorView;
 
-    [OnOpenAsset]
-    public static bool OnOpenAsset(int instanceID, int line)
-    {
-        if (Selection.activeObject is MissionSetSO)
+        [SerializeField]
+        private VisualTreeAsset m_VisualTreeAsset = default;
+
+        [MenuItem("Tools/MissionFlowGenerator")]
+        public static void ShowExample()
         {
-            ShowExample();
-            return true;
+            MissionFlowEditor wnd = GetWindow<MissionFlowEditor>();
+            wnd.titleContent = new GUIContent("MissionFlowEditor");
         }
-        return false;
-    }
 
-    public void CreateGUI()
-    {
-        VisualElement root = rootVisualElement;
+        [OnOpenAsset]
+        public static bool OnOpenAsset(int instanceID, int line)
+        {
+            if (Selection.activeObject is StageSetSO)
+            {
+                ShowExample();
+                return true;
+            }
+            return false;
+        }
 
-        m_VisualTreeAsset.CloneTree(root);
+        public void CreateGUI()
+        {
+            VisualElement root = rootVisualElement;
 
-        StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/01.Scripts/Office/Mission/Editor/MissionFlowEditor.uss");
-        root.styleSheets.Add(styleSheet);
+            m_VisualTreeAsset.CloneTree(root);
 
-        graphView = root.Q<MissionGraphView>();
-        inspectorView = root.Q<InspectorView>();
+            StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/01.Scripts/Office/Mission/Editor/MissionFlowEditor.uss");
+            root.styleSheets.Add(styleSheet);
 
-        graphView.OnNodeSelected = OnNodeSelectionChanged;
+            graphView = root.Q<MissionGraphView>();
+            inspectorView = root.Q<InspectorView>();
 
-        OnSelectionChange();
-    }
+            graphView.OnNodeSelected = OnNodeSelectionChanged;
 
-    private void OnSelectionChange()
-    {
-        MissionSetSO mission = Selection.activeObject as MissionSetSO;
-        if (mission)
-            graphView.ParpurateView(mission);
-    }
+            OnSelectionChange();
+        }
 
-    private void OnNodeSelectionChanged(MissionNodeView view)
-    {
-        inspectorView.UpdateSelection(view);
+        private void OnSelectionChange()
+        {
+            StageSetSO mission = Selection.activeObject as StageSetSO;
+
+            if (mission)
+                graphView.ParpurateView(mission);
+        }
+
+        private void OnNodeSelectionChanged(MissionNodeView view)
+        {
+            inspectorView.UpdateSelection(view);
+        }
     }
 }

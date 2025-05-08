@@ -1,3 +1,4 @@
+using Agents.Enemies.BT.Event;
 using UnityEngine;
 namespace Agents.Enemies.Highbinders
 {
@@ -16,6 +17,7 @@ namespace Agents.Enemies.Highbinders
         protected override void HandleAgentDie()
         {
             base.HandleAgentDie();
+            GetVariable<StateChange>("StateChange").Value.SendEventMessage(HighbinderStateEnum.DEAD);
             gameObject.layer = _deadBodyLayer;
 
         }

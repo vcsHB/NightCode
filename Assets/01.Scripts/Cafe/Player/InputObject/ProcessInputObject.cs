@@ -1,15 +1,12 @@
-using CameraControllers;
 using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Cafe
+namespace Base
 {
-    public class ProcessInputObject : CafePlayerInputObject
+    public class ProcessInputObject : BaseInteractObject
     {
-        private CafeTable _table;
+        public Action OnComplete;
         [SerializeField] private Image _frame;
         [SerializeField] private Image _icon;
         [SerializeField] private float _processPerClick;
@@ -24,7 +21,7 @@ namespace Cafe
 
         private void OnEnable()
         {
-            input.onLeftClick += OnLeftClick; 
+            input.onLeftClick += OnLeftClick;
             input.onRightClick += OnRightClick;
         }
 
@@ -34,10 +31,8 @@ namespace Cafe
             input.onRightClick -= OnRightClick;
         }
 
-        public void Init(CafeTable table)
+        public void Init()
         {
-            if (_table != null) return;
-            _table = table;
             Open();
         }
 
@@ -57,7 +52,7 @@ namespace Cafe
             if (_wasClickedLeft == false) return;
 
             _wasClickedLeft = false;
-            _leftClickBtn.color = _enableColor;  
+            _leftClickBtn.color = _enableColor;
             _rightClickBtn.color = _disableColor;
 
             AddProcess();
@@ -67,12 +62,10 @@ namespace Cafe
         {
             _process += _processPerClick;
             _frame.fillAmount = _process / _targetProcess;
-            CameraManager.Instance.GetCompo<CameraShakeController>().Shake(4, 0.03f);
-            
+
             if (_process >= _targetProcess)
             {
-                _process = 0;
-                _table.CleanTable();
+                _process = 0; OnComplete?.Invoke();
                 Close();
             }
         }
@@ -83,13 +76,12 @@ namespace Cafe
             gameObject.SetActive(true);
             _wasClickedLeft = false;
             _frame.fillAmount = 0;
-            _process = 0; 
+            _process = 0;
         }
 
         public override void Close()
         {
             gameObject.SetActive(false);
-            _table = null;
         }
     }
 }

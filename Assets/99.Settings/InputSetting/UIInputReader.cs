@@ -9,8 +9,11 @@ namespace InputManage
     {
         public event Action OnEscEvent;
         public event Action OnSpaceEvent;
+        public event Action OnLeftClickEvent;
+        public event Action OnRightClickEvent;
 
         private Controls _controls;
+        public Vector2 MousePositionOnScreen { get; private set; }
 
         private void OnEnable()
         {
@@ -37,10 +40,29 @@ namespace InputManage
 
         public void OnSpace(InputAction.CallbackContext context)
         {
-            if(context.performed)
+            if (context.performed)
             {
                 OnSpaceEvent?.Invoke();
             }
+        }
+
+        public void OnLeftMouseButton(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                OnLeftClickEvent?.Invoke();
+
+        }
+
+        public void OnRightMouseButton(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                OnRightClickEvent?.Invoke();
+
+        }
+
+        public void OnMousePosition(InputAction.CallbackContext context)
+        {
+            MousePositionOnScreen = context.ReadValue<Vector2>();
         }
     }
 

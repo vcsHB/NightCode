@@ -1,3 +1,4 @@
+using Agents;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -5,10 +6,10 @@ using UnityEngine;
 
 namespace Dialog
 {
-    [CreateAssetMenu(menuName = "SO/DialogSO")]
+    [CreateAssetMenu(menuName = "SO/Dialog/DialogSO")]
     public class DialogSO : ScriptableObject
     {
-        public List<NodeSO> nodes;
+        public List<NodeSO> nodes = new();
 
 
 #if UNITY_EDITOR
@@ -39,6 +40,18 @@ namespace Dialog
                 return;
             }
 
+            if(parent is TimelineNodeSO timeline)
+            {
+                timeline.nextNode = nextNode;
+                return;
+            }
+
+            if(parent is EventNodeSO eventNode)
+            {
+                eventNode.nextNode = nextNode;
+                return;
+            }
+
             if (parent is OptionNodeSO option)
             {
                 option.AddOption(nextNode, index);
@@ -57,6 +70,19 @@ namespace Dialog
             if (parent is NormalNodeSO node)
             {
                 node.nextNode = null;
+                return;
+            }
+
+
+            if (parent is TimelineNodeSO timeline)
+            {
+                timeline.nextNode = null;
+                return;
+            }
+
+            if (parent is EventNodeSO eventNode)
+            {
+                eventNode.nextNode = null;
                 return;
             }
 
@@ -80,6 +106,12 @@ namespace Dialog
 
             if (node is NormalNodeSO normal)
                 children.Add(normal.nextNode);
+
+            if (node is TimelineNodeSO timeline)
+                children.Add(timeline.nextNode);
+
+            if (node is EventNodeSO eventNode)
+                children.Add(eventNode.nextNode);
 
             if (node is OptionNodeSO option)
                 option.options.ForEach(opt => children.Add(opt.nextNode));

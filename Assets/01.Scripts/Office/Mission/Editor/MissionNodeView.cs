@@ -4,31 +4,40 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Office;
+using Core.StageController;
 
 public class MissionNodeView : UnityEditor.Experimental.GraphView.Node
 {
     public Action<MissionNodeView> OnNodeSelected;
-    public MissionSO mission;
+    public StageSO stage;
     public Port input;
     public Port output;
     public TextField nameInput;
     public List<Port> outputs = new List<Port>();
     public List<Button> buttons = new List<Button>();
 
-    public MissionNodeView(MissionSO mission)
+    public MissionNodeView(StageSO stage)
     {
-        this.mission = mission;
+        this.stage = stage;
+        stage.onValueChange += OnUpdateValue;
 
-        title = mission.name;
-        viewDataKey = mission.guid;
+        OnUpdateValue();
+        viewDataKey = stage.guid;
 
-        style.left = mission.position.x;
-        style.top = mission.position.y;
+        style.left = stage.position.x;
+        style.top = stage.position.y;
 
         CreateInputPorts();
         CreateOutputPorts();
 
         this.Add(nameInput);
+    }
+
+    ~MissionNodeView() { stage.onValueChange -= OnUpdateValue; }
+
+    private void OnUpdateValue()
+    {
+        title = $"{stage.id}.{stage.displayStageName}";
     }
 
 
@@ -45,7 +54,7 @@ public class MissionNodeView : UnityEditor.Experimental.GraphView.Node
 
     private void CreateOutputPorts()
     {
-        output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+        output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
 
         if (output != null)
         {
@@ -57,8 +66,8 @@ public class MissionNodeView : UnityEditor.Experimental.GraphView.Node
     public override void SetPosition(Rect newPos)
     {
         base.SetPosition(newPos);
-        mission.position.x = newPos.xMin;
-        mission.position.y = newPos.yMin;
+        stage.position.x = newPos.xMin;
+        stage.position.y = newPos.yMin;
     }
 
     public override void OnSelected()

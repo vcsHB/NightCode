@@ -11,7 +11,6 @@ namespace Agents.Players
         [field: SerializeField] public PlayerInput PlayerInput { get; private set; }
         protected PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
-        [field: SerializeField] public GameEventChannelSO FeedbackChannel { get; private set; }
 
         public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
@@ -24,22 +23,25 @@ namespace Agents.Players
 
         protected override void Awake()
         {
-            FeedbackChannel = Instantiate(FeedbackChannel);
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
             HealthCompo = GetComponent<Health>();
+            HealthCompo.OnHealthChangedEvent.AddListener(HandlePlayerHit);
             HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             InitState();
         }
-
-
         private void Start()
         {
             StateMachine.StartState();
 
             if (_startDisable) gameObject.SetActive(false);
         }
+        private void OnDestroy()
+        {
+            _stateMachine.CurrentState.Exit();
+        }
+
         protected virtual void InitState()
         {
             _stateMachine = new PlayerStateMachine(this);
@@ -73,6 +75,11 @@ namespace Agents.Players
             base.HandleAgentDie();
 
             _stateMachine.ChangeState("Dead");
+        }
+
+        protected void HandlePlayerHit()
+        {
+            _stateMachine.ChangeState("Swing");
         }
 
         public void SetStartDisable(bool value) => _startDisable = value;

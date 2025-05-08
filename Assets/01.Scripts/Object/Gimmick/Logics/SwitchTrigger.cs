@@ -25,10 +25,16 @@ namespace ObjectManage.GimmickObjects.Logics
             return true;
         }
 
+        public void OnTriggerDisable()
+        {
+            _isTriggered = false;
+            HandleTrigger();
+            SetStateSprite();
+        }
+
         private void SetStateSprite()
         {
             _spriteRenderer.sprite = !_isTriggered ? _activeSprite : _disableSprite;
-
         }
     }
 

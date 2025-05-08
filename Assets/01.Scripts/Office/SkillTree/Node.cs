@@ -1,17 +1,18 @@
 using GGM.UI;
-using System;
+using StatSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Office
+namespace Office.CharacterSkillTree
 {
     public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] private NodeSO _nodeType;
 
+        [SerializeField] private Image _disablePanel;
         [SerializeField] private UILineRenderer _edge;
         [SerializeField] private UILineRenderer _edgeFill;
         [SerializeField] private Image _icon;
@@ -21,8 +22,7 @@ namespace Office
 
         private Vector2[] _offsets;
         private bool _isNodeEnable;
-        private bool _isNodeActive;
-        private int _requireCoin;
+        private bool _isNodeActive = true;
         private Node _curEnableNode;
 
         private Stack<Node> _prevNodes;
@@ -33,12 +33,12 @@ namespace Office
         private Coroutine _cancelCoroutine;
         private Coroutine _currentCancelRoutine;
 
-        private bool _tryNodeEnable = false;
+        private CharacterEnum _characterType;
         private readonly string CoinLackText = $"코인이 부족합니다ㅠㅠ";
 
         #region Property
 
-        private SkillTree _techTree => GetComponentInParent<SkillTree>();
+        private SkillTree techTree => GetComponentInParent<SkillTree>();
         public RectTransform RectTrm => transform as RectTransform;
         public bool IsNodeEnable => _isNodeEnable;
         public NodeSO NodeType => _nodeType;
@@ -70,7 +70,7 @@ namespace Office
         #region EnableNode
 
         //선택된 노드들을 전부 활성화시켜주는 코루틴
-        public IEnumerator StartEnableAllNodes()
+        public IEnumerator StartEnableAllSelectedNodes()
         {
             if (_cancelCoroutine != null)
                 StopCoroutine(_cancelCoroutine);
@@ -120,32 +120,21 @@ namespace Office
             }
         }
 
-        public void EnableNode()
+        public void EnableNode(bool isLoading = false)
         {
-            //재화 사용
             _isNodeEnable = true;
-            //GameDataManager.Instance.UseCoin(NodeType.requireCoin);
+            //재화 사용
+            //.Instance.(NodeType.requireCoin);
 
             //fillAmount 1로 초기화
             _vertexFill.fillAmount = 1;
             _edgeFill.SetFillAmount(1);
 
-            //다음 노드가 활성화 되었다고 알려줌
-            for (int i = 0; i < NodeType.nextNodes.Count; i++)
-            {
-                if (_techTree.TryGetNode(NodeType.nextNodes[i], out Node prevNode))
-                {
-                    prevNode.ActiveNode();
-                }
-            }
+            NodeType.exceptNodes.ForEach(exceptNode => techTree.GetNode(exceptNode.id).SetActive(false));
 
-            //파츠 혹은 무기 활성화시켜주기
-            //if (NodeType is PartNodeSO part)
-            //    GameDataManager.Instance.EnablePart(part.openPart);
-            //if (NodeType is WeaponNodeSO weapon)
-            //    GameDataManager.Instance.EnableWeapon(weapon.weapon);
-
-            _techTree.Save();
+            //어떤 스탯이 열렸는지만 저장
+            if (isLoading == false)
+                SaveManager.Instance.AddSaveStat(_characterType, NodeType);
         }
 
         #endregion
@@ -201,10 +190,10 @@ namespace Office
                 int requireCoin = 0;
                 NodeSO curNode = _nodeType;
 
-                while (curNode != null && !_techTree.GetNode(curNode.id).IsNodeEnable)
+                while (curNode != null && !techTree.GetNode(curNode.id).IsNodeEnable)
                 {
                     requireCoin += curNode.requireCoin;
-                    _prevNodes.Push(_techTree.GetNode(curNode.id));
+                    _prevNodes.Push(techTree.GetNode(curNode.id));
 
                     curNode = curNode.prevNode;
                 }
@@ -214,35 +203,29 @@ namespace Office
             }
         }
 
-        public void ActiveNode()
+        public void SetActive(bool isActive)
         {
-            _isNodeActive = true;
+            _isNodeActive = isActive;
+            NodeType.nextNodes.ForEach(next => techTree.GetNode(next.id).SetActive(isActive));
+
+            if (isActive) ActiveNode();
+            else UnActiveNode();
+        }
+
+        private void ActiveNode()
+        {
+            _disablePanel.color = new Color(1f, 1f, 1f, 0f);
+        }
+
+        private void UnActiveNode()
+        {
+            _disablePanel.color = new Color(0f, 0f, 0f, 0.9f);
         }
 
 
-        public void Init(bool isEnable)
+        public void Init(CharacterEnum characterType)
         {
-            if (isEnable)
-            {
-                _isNodeEnable = true;
-
-                _vertexFill.fillAmount = 1;
-                _edgeFill.SetFillAmount(1);
-
-                for (int i = 0; i < NodeType.nextNodes.Count; i++)
-                {
-                    if (_techTree.TryGetNode(NodeType.nextNodes[i], out Node prevNode))
-                    {
-                        prevNode.ActiveNode();
-                    }
-                }
-
-                //파츠 혹은 무기 활성화시켜주기
-                //if (NodeType is PartNodeSO part)
-                //    GameDataManager.Instance.EnablePart(part.openPart);
-                //if (NodeType is WeaponNodeSO weapon)
-                //    GameDataManager.Instance.EnableWeapon(weapon.weapon);
-            }
+            _characterType = characterType;
         }
 
 
@@ -250,14 +233,11 @@ namespace Office
 
         private void InitEdge()
         {
-            _edge.transform.SetParent(_techTree.edgeParent);
-            _edgeFill.transform.SetParent(_techTree.edgeFillParent);
+            _edge.transform.SetParent(techTree.edgeParent);
+            _edgeFill.transform.SetParent(techTree.edgeFillParent);
 
-            Material edgeMat = new Material(_lineMaterial);
-            Material edgeFillmat = new Material(_lineMaterial);
-
-            _edge.SetMaterial(edgeMat);
-            _edgeFill.SetMaterial(edgeFillmat);
+            _edge.SetMaterial(_lineMaterial);
+            _edgeFill.SetMaterial(_lineMaterial);
         }
 
         public void SetEdge()
@@ -265,7 +245,7 @@ namespace Office
             if (_nodeType.prevNode == null) return;
 
             Vector2 size = RectTrm.sizeDelta;
-            Node prevNode = _techTree.GetNode(_nodeType.prevNode.id);
+            Node prevNode = techTree.GetNode(_nodeType.prevNode.id);
 
             _offsets = new Vector2[4]
             {
@@ -350,28 +330,32 @@ namespace Office
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (_isNodeActive == false) return;
             if (eventData.button != PointerEventData.InputButton.Right) return;
+
 
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _prevNodes = new Stack<Node>();
-
+            if (_isNodeActive == false) return;
             if (eventData.button != PointerEventData.InputButton.Right) return;
+            _prevNodes = new Stack<Node>();
 
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            if (_isNodeActive == false) return;
             if (eventData.button != PointerEventData.InputButton.Left) return;
             //if (_requireCoin > GameDataManager.Instance.Coin) return;
 
-            _enableCoroutine = StartCoroutine(StartEnableAllNodes());
+            _enableCoroutine = StartCoroutine(StartEnableAllSelectedNodes());
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
+            if (_isNodeActive == false) return;
             if (eventData.button != PointerEventData.InputButton.Left) return;
             //if (_requireCoin > GameDataManager.Instance.Coin) return;
 

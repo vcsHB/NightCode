@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
-    public class Kitchen : CafeInteractiveObject
+    public class Kitchen : MonoBehaviour
     {
         public float foodDelay = 1;
         public GameObject foodObjectIcon;
@@ -11,6 +11,7 @@ namespace Cafe
         //Debuging
         public FoodSO food;
 
+        private BasePlayer _player;
         private Collider2D _collider;
         private float _prevFoodOutTime;
         private bool _isFoodOut = false;
@@ -18,6 +19,7 @@ namespace Cafe
         private void Awake()
         {
             _collider = GetComponent<Collider2D>();
+            _player = FindAnyObjectByType<BasePlayer>();
         }
 
 
@@ -50,11 +52,28 @@ namespace Cafe
             return food;
         }
 
-        protected override void OnTriggerEnter2D(Collider2D collision)
+        private void OnGetFood()
+        {
+            FoodSO food = GetFood();
+            if (food == null) return;
+
+            _player.SetFood(food);
+        }
+
+        protected void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent(out _player) == false) return;
             if (_isFoodOut == false || _player.isGetFood) return;
-            base.OnTriggerEnter2D(collision);
+
+            _player.AddInteract(OnGetFood);
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent(out _player) == false) return;
+            if (_isFoodOut == false || _player.isGetFood) return;
+
+            _player.RemoveInteract(OnGetFood);
         }
     }
 }

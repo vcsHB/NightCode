@@ -3,7 +3,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Office
+namespace Office.CharacterSkillTree
 {
     public class SkillTreeTooltip : MonoBehaviour, IWindowPanel
     {

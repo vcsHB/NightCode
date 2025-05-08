@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace GGM.UI
 {
@@ -18,10 +13,6 @@ namespace GGM.UI
         public bool center = true;
         public Color lineColor;
 
-        private VertexHelper _vh;
-        private Vector2 _zeroPos;
-        private Vector2 _center;
-        private Vector2 _size;
         private float _totalDistance;
         private float _distance = 0;
 
@@ -131,7 +122,7 @@ namespace GGM.UI
 
         public void SetMaterial(Material lineMaterial)
         {
-            material = new Material(lineMaterial);
+            material = Instantiate(lineMaterial);
             material.SetColor("_TintColor", lineColor);
         }
     }

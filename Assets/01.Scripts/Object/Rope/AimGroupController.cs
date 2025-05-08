@@ -1,3 +1,4 @@
+using System;
 using Agents.Players;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,6 +17,16 @@ namespace ObjectManage.Rope
         // Properties
         public Vector2 AnchorPos => _anchorTrm.position;
         public Vector2 VirtualAimPos => _virtualAimTrm.position;
+        [SerializeField] private Transform _swingOrbitVisualTrm;
+        private SpriteRenderer _swingOrbitVisualRenderer;
+        private Material _swingOrbitMaterial;
+        private readonly int _orbitPlayerPositionHash = Shader.PropertyToID("_PlayerPos");
+
+        private void Awake()
+        {
+            _swingOrbitVisualRenderer = _swingOrbitVisualTrm.GetComponent<SpriteRenderer>();
+            _swingOrbitMaterial = _swingOrbitVisualRenderer.material;
+        }
 
         public void SetVirtualAimPosition(Vector2 position)
         {
@@ -47,7 +58,7 @@ namespace ObjectManage.Rope
         {
             if (value)
                 OnAnchorLocatedEvent?.Invoke();
-
+            if(Wire == null) return; 
             Wire.gameObject.SetActive(value);
         }
 
@@ -56,6 +67,31 @@ namespace ObjectManage.Rope
             _aimAnchor.SetOwnerPlayerRigidbody(ownerRigid);
             RopePhysics.startTransform = ropeHolder;
 
+        }
+
+        public void SetOrbitVisual(bool value)
+        {
+            _swingOrbitVisualRenderer.enabled = value;
+        }
+
+        public void SetOrbitVisual(Vector2 position)
+        {
+            _swingOrbitMaterial.SetVector(_orbitPlayerPositionHash, position);
+        }
+
+        public void SetAimColor(Color personalColor)
+        {
+            _aimAnchor.SetColor(personalColor);
+        }
+        public void SetWireEnable(bool enable)
+        {
+            Wire.SetWireEnable(enable);
+        }
+
+        public void SetWireEnable(bool enable, Vector2 targetPos, float length)
+        {
+            Wire.SetWireEnable(enable, targetPos, length);
+            _swingOrbitVisualTrm.localScale = Vector3.one * length * 2f;
         }
     }
 }

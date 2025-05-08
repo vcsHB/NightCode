@@ -25,6 +25,7 @@ namespace ObjectManage.Obstacles
         [SerializeField] private TurretAim _turretAim;
         [SerializeField] private float _aimCheckSize;
         [SerializeField] private float _bulletRandomize = 0.2f;
+        private Collider2D _collider;
 
         private Collider2D _target;
         public bool IsTargetDetected => _target != null;
@@ -38,6 +39,7 @@ namespace ObjectManage.Obstacles
         private void Awake()
         {
             _healthCompo = GetComponent<Health>();
+            _collider = GetComponent<Collider2D>();
             _healthCompo.OnDieEvent.AddListener(HandleDie);
             //SetSprite(_isActive);
         }
@@ -45,7 +47,7 @@ namespace ObjectManage.Obstacles
         private void HandleDie()
         {
             _isActive = false;
-            SetSprite(_isActive);
+            SetEnabled(_isActive);
         }
 
         private void Update()
@@ -106,8 +108,9 @@ namespace ObjectManage.Obstacles
             return _target.transform.position - transform.position;
         }
 
-        private void SetSprite(bool value)
+        private void SetEnabled(bool value)
         {
+            _collider.enabled = value;
             _headVisualRenderer.sprite = value ? _enabledSprite : _disabledSprite;
             _turretAim.SetActive(value);
             _aimDirectionRenderer.enabled = value;

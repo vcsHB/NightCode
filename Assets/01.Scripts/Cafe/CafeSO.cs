@@ -1,15 +1,14 @@
-using Office;
-using System;
+using Core.StageController;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cafe
+namespace Base.Cafe
 {
     [CreateAssetMenu(fileName = "CafeSO", menuName = "SO/Cafe/CafeSO")]
     public class CafeSO : ScriptableObject
     {
         public float openTime;
-        public List<CustomerWaveSO> waveData;
-        public MissionSO mission;
+        public List<CafeCustomerWaveSO> customerWave;
+        public StageSO mission;
     }
 }

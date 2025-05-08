@@ -7,15 +7,19 @@ namespace Agents.Players
         [SerializeField] private Sprite[] _aimMarkSprites;
         [SerializeField] private ParticleSystem _anchorVFX;
         [SerializeField] private InstantFlashLight _light;
-        private SpriteRenderer _aimRenderer;
+        private SpriteRenderer _anchorRenderer;
         [SerializeField] private GameObject _anchorPhysicObject;
+        [SerializeField] private SpriteRenderer _virtualAimRenderer;
+        [SerializeField] private SpriteRenderer _aimRenderer;
         private DistanceJoint2D _jointCompo;
         private Transform _visualTrm;
+        private readonly int _aimMaterialColorHash = Shader.PropertyToID("_Color");
+
 
         private void Awake()
         {
             _visualTrm = transform.Find("Visual");
-            _aimRenderer = _visualTrm.GetComponent<SpriteRenderer>();
+            _anchorRenderer = _visualTrm.GetComponent<SpriteRenderer>();
             _jointCompo = _anchorPhysicObject.GetComponent<DistanceJoint2D>();
         }
 
@@ -41,6 +45,13 @@ namespace Agents.Players
         public void SetOwnerPlayerRigidbody(Rigidbody2D owner)
         {
             _jointCompo.connectedBody = owner;
+        }
+
+        public void SetColor(Color color)
+        {
+            _anchorRenderer.material.SetColor(_aimMaterialColorHash, color);
+            _aimRenderer.material.SetColor(_aimMaterialColorHash, color);
+            _virtualAimRenderer.material.SetColor(_aimMaterialColorHash, color);
         }
     }
 }

@@ -1,4 +1,3 @@
-using QuestSystem.LevelSystem;
 using QuestSystem.QuestTarget;
 using UnityEngine;
 namespace QuestSystem
@@ -15,7 +14,9 @@ namespace QuestSystem
         public float startProgress = 0f; //초기 진행상황. 보통의 경우 0임
         public float goalProgress;
         public TargetInfoSO[] targetInfoList;
-        public LevelDataSO levelData;
+        //public LevelDataSO levelData;
+        public string sceneName;
+
 
         #region External Functions
 

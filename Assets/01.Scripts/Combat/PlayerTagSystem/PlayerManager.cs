@@ -1,13 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Agents;
 using Agents.Players;
+using Core.StageController;
 using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
 using UI.InGame.GameUI.CharacterSelector;
 using UI.InGame.SystemUI.AlertSystem;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,29 +19,67 @@ namespace Combat.PlayerTagSystem
 
     public class PlayerManager : MonoSingleton<PlayerManager>
     {
+        // Events
         public UnityEvent OnAllPlayerDieEvent;
+
+        /// <summary>
+        /// param : <Previous Player, Current Player>
+        /// </summary>
+        public event Action<Player, Player> OnPlayerChangedEvent;
         [Header("Essential Settings")]
         [SerializeField] private PlayerInput _playerInput;
         [SerializeField] private List<PlayerSO> _playerDatas;
-        [SerializeField] private List<Player> _playerList;
+        [SerializeField] internal List<Player> playerList;
         [SerializeField] private AimGroupController _aimGroup;
         [SerializeField] private AlertGroup _alertGroup;
         [SerializeField] private int _currentPlayerIndex = 0;
         [SerializeField] private CharacterSelectWindow _characterSelectWindow;
-        public Player CurrentPlayer => _playerList[_currentPlayerIndex];
+        [SerializeField] private PlayerSubWeaponManager _playerSubWeaponManager;
+        public Player CurrentPlayer => playerList[_currentPlayerIndex];
         public Transform CurrentPlayerTrm => CurrentPlayer.transform;
         public PlayerSO CurrentPlayerData => _playerDatas[_currentPlayerIndex];
-        public bool IsAllRetire => _playerList.All(x => x.IsDead);
+        public bool IsAllRetire => playerList.All(x => x.IsDead);
+
+        private Dictionary<Type, IPlayerSubManager> _subManagers = new Dictionary<Type, IPlayerSubManager>();
+
 
         [Header("Change Setting")]
         [SerializeField] private float _changeCooltime = 1f;
         private float _currentCooltime = 0f;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            GetComponentsInChildren<IPlayerSubManager>(true)
+              .ToList().ForEach(controller => _subManagers.Add(controller.GetType(), controller));
+
+            foreach (IPlayerSubManager subManager in _subManagers.Values)
+            {
+                subManager.Initialize(this);
+            }
+        }
+
+        public T GetCompo<T>(bool isDerived = false) where T : class
+        {
+            if (_subManagers.TryGetValue(typeof(T), out IPlayerSubManager compo))
+            {
+                return compo as T;
+            }
+
+            if (!isDerived) return default;
+
+            Type findType = _subManagers.Keys.FirstOrDefault(x => x.IsSubclassOf(typeof(T)));
+            if (findType != null)
+                return _subManagers[findType] as T;
+
+            return default(T);
+        }
         private void Start()
         {
             Initialize();
             _playerInput.OnCharacterChangeEvent += Change;
-            SetPlayer(CurrentPlayer);
+            _playerSubWeaponManager.SetSubWeapon(null, CurrentPlayer);
+            OnAllPlayerDieEvent.AddListener(StageManager.Instance.ReloadCurrentScene);
         }
 
         private void Update()
@@ -59,7 +100,7 @@ namespace Combat.PlayerTagSystem
             {
                 Player playerCharacter = Instantiate(_playerDatas[i].playerPrefab, transform);
                 playerCharacter.GetComponentInChildren<AimController>().SetAimGroup(_aimGroup);
-                _playerList.Add(playerCharacter);
+                playerList.Add(playerCharacter);
                 _characterSelectWindow.AddCharacterSlot(_playerDatas[i], playerCharacter);
                 playerCharacter.SetActive(false);
                 playerCharacter.SetStartDisable(i != 0);
@@ -94,10 +135,10 @@ namespace Combat.PlayerTagSystem
             Player prevPlayer = CurrentPlayer;
 
             int prevIndex = _currentPlayerIndex;
-            for (int i = 0; i < _playerList.Count; i++)
+            for (int i = 0; i < playerList.Count; i++)
             {
 
-                _currentPlayerIndex = (_currentPlayerIndex + 1) % _playerList.Count; // index change -> character Change
+                _currentPlayerIndex = (_currentPlayerIndex + 1) % playerList.Count; // index change -> character Change
                 if (!CurrentPlayer.IsDead)
                     break;
             }
@@ -115,13 +156,15 @@ namespace Combat.PlayerTagSystem
             float direction = prevPlayer.GetCompo<AgentRenderer>().FacingDirection;
             prevPlayer.ExitCharacter();
             prevPlayer.SetActive(false);
-
+            OnPlayerChangedEvent?.Invoke(prevPlayer, CurrentPlayer);
             yield return new WaitForSeconds(0.2f);
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
+            SetPlayerSubWeaponUI();
             CurrentPlayer.transform.position = changePosition;
             //CurrentPlayer.transform.rotation = prevRotation;
             CurrentPlayer.GetCompo<AgentRenderer>().FlipController(direction);
             SetPlayer(CurrentPlayer);
+            _aimGroup.SetAimColor(CurrentPlayerData.personalColor);
         }
 
         private void SetPlayer(Player newCharacter)
@@ -131,6 +174,15 @@ namespace Combat.PlayerTagSystem
             HUDController.Instance.SetFollowTarget(newCharacter.transform);
             CameraControllers.CameraManager.Instance.SetFollow(newCharacter.transform);
             _aimGroup.SetAnchorOwner(newCharacter.RigidCompo, newCharacter.RopeHolder);
+        }
+
+
+
+        private void SetPlayerSubWeaponUI(Player player = null)
+        {
+            if (player == null)
+                player = CurrentPlayer;
+
         }
 
         private void HandlePlayerDie()
@@ -166,13 +218,14 @@ namespace Combat.PlayerTagSystem
             Player playerCharacter = Instantiate(playerSO.playerPrefab, transform);
             playerCharacter.GetComponentInChildren<AimController>().SetAimGroup(_aimGroup);
             _playerDatas.Add(playerSO);
-            _playerList.Add(playerCharacter);
+            playerList.Add(playerCharacter);
             _characterSelectWindow.AddCharacterSlot(playerSO, playerCharacter);
             playerCharacter.ExitCharacter();
             playerCharacter.SetActive(false);
             playerCharacter.SetStartDisable(false);
             playerCharacter.OnDieEvent += HandlePlayerDie;
         }
+
 
     }
 

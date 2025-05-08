@@ -1,19 +1,19 @@
+using Core.StageController;
 using Office;
 using System;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 
 [UxmlElement]
 public partial class MissionGraphView : GraphView
 {
     public Action<MissionNodeView> OnNodeSelected;
-    private MissionSetSO _missionSet;
+    private StageSetSO _missionSet;
 
     public MissionGraphView()
     {
@@ -28,11 +28,11 @@ public partial class MissionGraphView : GraphView
         this.AddManipulator(new RectangleSelector());
     }
 
-    private MissionNodeView FindNodeView(MissionSO mission) 
+    private MissionNodeView FindNodeView(StageSO mission)
         => GetNodeByGuid(mission.guid) as MissionNodeView;
 
 
-    public void ParpurateView(MissionSetSO missionSet)
+    public void ParpurateView(StageSetSO missionSet)
     {
         _missionSet = missionSet;
         CreateNodeAndEdge();
@@ -44,48 +44,34 @@ public partial class MissionGraphView : GraphView
         DeleteElements(graphElements);
         graphViewChanged += OnGraphViewChanged;
 
-        if (_missionSet.missionList.Count == 0 || _missionSet.missionList[0] == null)
-        {
-            MissionSO mission = _missionSet.CreateMission();
-            mission.id = 0;
-            mission.guid = GUID.Generate().ToString();
-            mission.nextMissions = new List<MissionSO>();
-        }
-
         //Create Node View
-        _missionSet.missionList.ForEach(n => CreateNodeView(n));
+        _missionSet.stageList.ForEach(n => CreateNodeView(n));
 
         //Create Edge
-        _missionSet.missionList.ForEach(parentMission =>
+        _missionSet.stageList.ForEach(parentStage =>
         {
-            var children = _missionSet.GetConnectedMissions(parentMission);
+            StageSO childStage = _missionSet.GetConnectedMissions(parentStage);
 
-            children.ForEach(childMission =>
+            MissionNodeView parentView = FindNodeView(parentStage);
+            MissionNodeView childView = FindNodeView(childStage);
+
+            if (parentView.output != null)
             {
-                if (childMission != null)
-                {
-                    MissionNodeView parentView = FindNodeView(parentMission);
-                    MissionNodeView childView = FindNodeView(childMission);
-
-                    if (parentView.output != null)
-                    {
-                        Edge edge = parentView.output.ConnectTo(childView.input);
-                        AddElement(edge);
-                    }
-                }
-            });
+                Edge edge = parentView.output.ConnectTo(childView.input);
+                AddElement(edge);
+            }
         });
     }
 
 
-    private void CreateNode()
+    private void CreateNode(Type type, Vector2 position)
     {
-        MissionSO node = _missionSet.CreateMission();
-        if (node == null) return;
+        StageSO node = _missionSet.CreateMission(type);
+        node.position = position;
         CreateNodeView(node);
     }
 
-    private void CreateNodeView(MissionSO mission)
+    private void CreateNodeView(StageSO mission)
     {
         MissionNodeView nodeView = new MissionNodeView(mission);
 
@@ -99,17 +85,17 @@ public partial class MissionGraphView : GraphView
         {
             graphViewChange.elementsToRemove.ForEach(elem =>
             {
-                MissionNodeView nodeView = elem as MissionNodeView;
-                if (nodeView != null)
-                    _missionSet.DeleteScript(nodeView.mission);
+                if (elem is MissionNodeView nodeView)
+                {
+                    _missionSet.DeleteScript(nodeView.stage);
+                }
 
-                Edge edge = elem as Edge;
-                if (edge != null)
+                if (elem is Edge edge)
                 {
                     MissionNodeView parentView = edge.output.node as MissionNodeView;
                     MissionNodeView childView = edge.input.node as MissionNodeView;
 
-                    _missionSet.RemoveNextNode(parentView.mission, childView.mission);
+                    _missionSet.RemoveNextNode(parentView.stage, childView.stage);
                 }
             });
         }
@@ -120,7 +106,7 @@ public partial class MissionGraphView : GraphView
             {
                 MissionNodeView parentView = edge.output.node as MissionNodeView;
                 MissionNodeView childView = edge.input.node as MissionNodeView;
-                _missionSet.AddNextNode(parentView.mission, childView.mission);
+                _missionSet.AddNextNode(parentView.stage, childView.stage);
             });
         }
 
@@ -136,11 +122,13 @@ public partial class MissionGraphView : GraphView
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
-        //base.BuildContextualMenu(evt);
+        var types = TypeCache.GetTypesDerivedFrom<StageSO>();
+        Vector2 mousePosition = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
+
+        foreach (Type type in types)
         {
-            evt.menu.AppendAction($"Mission", (a) => CreateNode());
-            //NodeSO n = ScriptableObject.CreateInstance<NodeSO>();
-            //Type type = n.GetType();
+            evt.menu.AppendAction(type.Name,
+                (a) => CreateNode(type, mousePosition));
         }
     }
 }

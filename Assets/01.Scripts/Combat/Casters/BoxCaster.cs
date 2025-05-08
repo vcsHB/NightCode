@@ -5,12 +5,16 @@ namespace Combat.Casters
     public class BoxCaster : Caster
     {
         [SerializeField] private Vector2 _boxSize;
+        [SerializeField] private bool _applyLocalAngle;
 
         [ContextMenu("DebugCast")]
         public override void Cast()
         {
             base.Cast();
-            _hits = Physics2D.OverlapBoxAll(CenterPosition, _boxSize, 0, _targetLayer);
+            float angle = 0;
+            if (_applyLocalAngle)
+                angle = transform.localEulerAngles.z;
+            _hits = Physics2D.OverlapBoxAll(CenterPosition, _boxSize, angle, _targetLayer);
             ForceCast(_hits);
         }
 

@@ -9,12 +9,13 @@ namespace Dialog
         None,
         Wait,       //Parameter: (float time)
         Play,       //Parameter: (string animName)
-        Wobble,     //None - (May add speed)
+        Wobble,     //Parameter: (float speed)
         Shake,      //Parameter: (float power)
         Rainbow,    //None - (May add speed)
         Fromup,     //None - (May add speed)
-        Todown,      //None - (May add speed)
-        Speed,       //Parameter: (float speed)
+        Todown,     //None - (May add speed)
+        Speed,      //Parameter: (float speed)
+        Scale,       //None - (May add duration)
     }
 
     public enum TMPTag 
@@ -23,6 +24,7 @@ namespace Dialog
         sup,
         sub,
         mark,
+        size,
         b,
         u,
         s,
