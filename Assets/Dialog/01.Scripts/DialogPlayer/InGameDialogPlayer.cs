@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace Dialog
 {
@@ -10,6 +11,7 @@ namespace Dialog
     public class InGameDialogPlayer : DialogPlayer
     {
         private AnimationPlayer _animPlayer;
+        private PlayableDirector _director;
 
         [SerializeField] private DialogOption _option;
 
@@ -20,6 +22,7 @@ namespace Dialog
         protected override void Awake()
         {
             base.Awake();
+            _director = GetComponent<PlayableDirector>();
             _animPlayer = GetComponent<AnimationPlayer>();
         }
 
@@ -74,6 +77,11 @@ namespace Dialog
                 _currentActor?.personalTalkBubble.SetEnabled();
                 _readingNodeRoutine = StartCoroutine(ReadingNormalNodeRoutine(normal));
             }
+            else if(_curReadingNode is TimelineNodeSO timeline)
+            {
+                _director.Play(timeline.playable);
+                StartCoroutine(WaitNodeRoutine(() => _director.state != PlayState.Playing, null));
+            }
             else if (_curReadingNode is OptionNodeSO option)
             {
                 ReadingOptionNodeRoutine(option);
@@ -102,7 +110,6 @@ namespace Dialog
             _nextNode = node.nextNode;
             StartCoroutine(WaitNodeRoutine(GetInput, _currentActor.OnCompleteNode));
         }
-
 
         private void ReadingOptionNodeRoutine(OptionNodeSO node)
         {
@@ -144,10 +151,10 @@ namespace Dialog
                 _playingEndAnimation = false;
             }
 
-            yield return new WaitUntil(() => !_playingEndAnimation);
+            yield return new WaitUntil(() => _playingEndAnimation == false);
 
             _curReadingNode.endDialogEvent.ForEach(dialogEvent => dialogEvent.PlayEvent(this, _currentActor));
-            yield return new WaitUntil(() => !_curReadingNode.endDialogEvent.Exists(dialogEvent => dialogEvent.isCompleteEvent == false));
+            yield return new WaitUntil(() => _curReadingNode.endDialogEvent.Exists(dialogEvent => dialogEvent.isCompleteEvent == false) == false);
 
             endAction?.Invoke();
             _curReadingNode = _nextNode;

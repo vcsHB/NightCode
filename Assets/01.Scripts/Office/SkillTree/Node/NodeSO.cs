@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,18 +13,37 @@ namespace Office.CharacterSkillTree
         [HideInInspector] public int id;
         [HideInInspector] public List<NodeSO> nextNodes;
         [HideInInspector] public NodeSO prevNode;
-
-        public Sprite icon;
-        public int requireCoin;
+        public List<NodeSO> exceptNodes;
 
 
         public string nodeName;
         [TextArea]
         public string explain;
+        public Sprite icon;
+        public int requireCoin;
+
 
         private void OnValidate()
         {
             name = nodeName;
+            exceptNodes.ForEach(except => except.AddExcept(this));
+
+            for(int i = 0; i < exceptNodes.Count - 1; i++)
+            {
+                for(int j = i + 1; j < exceptNodes.Count; j++)
+                {
+                    if (exceptNodes[i] == exceptNodes[j]) 
+                        exceptNodes.RemoveAt(j--);
+                }
+            }
+        }
+
+        private void AddExcept(NodeSO nodeSO)
+        {
+            if (exceptNodes == null) exceptNodes = new();
+
+            if(exceptNodes.Contains(nodeSO) == false)
+                exceptNodes.Add(nodeSO);
         }
     }
 }

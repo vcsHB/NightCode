@@ -21,9 +21,9 @@ namespace Office.CharacterSkillTree
             this.node = node;
 
             if (node is StatIncNodeSO stat)
-                title = $"";
+                title = $"{stat.nodeName}";
             else if (node is OpenSkillNodeSO weapon)
-                title = $"";
+                title = $"{weapon.nodeName}";
             else if (node is StartNodeSO)
                 title = "StartNode";
 

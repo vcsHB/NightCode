@@ -20,6 +20,7 @@ namespace Office.CharacterSkillTree
 
             node.id = nodes.Count;
             node.nodeName = $"{type.Name}-{node.id}";
+            node.name = node.nodeName;
             node.guid = GUID.Generate().ToString();
             node.nextNodes = new List<NodeSO>();
             nodes.Add(node);
