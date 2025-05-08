@@ -26,6 +26,7 @@ namespace Office.CharacterSkillTree
         private void OnValidate()
         {
             onValueChange?.Invoke();
+            name = nodeName;
             exceptNodes.ForEach(except => except.AddExcept(this));
 
             for(int i = 0; i < exceptNodes.Count - 1; i++)
