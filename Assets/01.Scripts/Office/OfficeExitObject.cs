@@ -20,6 +20,7 @@ namespace Base.Office
 
         private void OnInteract()
         {
+            _characterFormation.Init(StageManager.Instance.GetNextStage());
             _characterFormation.Open();
 
             //TODO: Open UI and let going to next stage

@@ -3,6 +3,7 @@ using Core.StageController;
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,11 @@ namespace Office
         [SerializeField] private float _formationSetDuration;
         [SerializeField] private RectTransform _panelRect;
         [SerializeField] private Button _nextStageButton;
+        [Space]
+        [SerializeField] private TextMeshProUGUI _stageText;
+        [SerializeField] private Image _stageIcon;
+
+        private bool _isIngame = false;
         private CanvasGroup _canvasGruop;
         private Sequence _toggleSequence;
         private Tween _changeTween;
@@ -30,7 +36,7 @@ namespace Office
         {
             base.Awake();
             _canvasGruop = GetComponent<CanvasGroup>();
-           // RectTrm.anchoredPosition = new Vector2(RectTrm.anchoredPosition.x, -screenPosition.y);
+            // RectTrm.anchoredPosition = new Vector2(RectTrm.anchoredPosition.x, -screenPosition.y);
             for (int i = 0; i < 3; i++)
             {
                 slots[i].Init(this);
@@ -150,6 +156,44 @@ namespace Office
         {
             base.OnCompleteClose();
             _baseInput.EnableInput();
+        }
+
+        public void Init(StageSO stageSO)
+        {
+            _isIngame = stageSO is IngameSO;
+            _stageText.SetText(stageSO.displayStageName);
+            _stageIcon.sprite = stageSO.stageIcon;
+
+            if (_isIngame == false)
+            {
+                slots.ForEach(slot =>
+                {
+                    if (slot.characterType == CharacterEnum.Cross)
+                    {
+                        slot.RectTransform.anchoredPosition = formationTrm[1].anchoredPosition;
+                        slot.enabled = false;
+                    }
+                    else
+                    {
+                        slot.gameObject.SetActive(false);
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < slots.Count; i++)
+                {
+                    var slot = slots[i];
+
+                    slot.enabled = true;
+                    slot.gameObject.SetActive(true);
+                    slot.RectTransform.anchoredPosition = formationTrm[i].anchoredPosition;
+                }
+
+                slots.ForEach(slot =>
+                {
+                });
+            }
         }
     }
 }

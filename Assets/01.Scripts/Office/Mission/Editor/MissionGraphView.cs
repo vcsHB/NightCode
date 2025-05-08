@@ -48,24 +48,18 @@ public partial class MissionGraphView : GraphView
         _missionSet.stageList.ForEach(n => CreateNodeView(n));
 
         //Create Edge
-        _missionSet.stageList.ForEach(parentMission =>
+        _missionSet.stageList.ForEach(parentStage =>
         {
-            var children = _missionSet.GetConnectedMissions(parentMission);
+            StageSO childStage = _missionSet.GetConnectedMissions(parentStage);
 
-            children.ForEach(childMission =>
+            MissionNodeView parentView = FindNodeView(parentStage);
+            MissionNodeView childView = FindNodeView(childStage);
+
+            if (parentView.output != null)
             {
-                if (childMission != null)
-                {
-                    MissionNodeView parentView = FindNodeView(parentMission);
-                    MissionNodeView childView = FindNodeView(childMission);
-
-                    if (parentView.output != null)
-                    {
-                        Edge edge = parentView.output.ConnectTo(childView.input);
-                        AddElement(edge);
-                    }
-                }
-            });
+                Edge edge = parentView.output.ConnectTo(childView.input);
+                AddElement(edge);
+            }
         });
     }
 
@@ -91,17 +85,17 @@ public partial class MissionGraphView : GraphView
         {
             graphViewChange.elementsToRemove.ForEach(elem =>
             {
-                MissionNodeView nodeView = elem as MissionNodeView;
-                if (nodeView != null)
-                    _missionSet.DeleteScript(nodeView.mission);
+                if (elem is MissionNodeView nodeView)
+                {
+                    _missionSet.DeleteScript(nodeView.stage);
+                }
 
-                Edge edge = elem as Edge;
-                if (edge != null)
+                if (elem is Edge edge)
                 {
                     MissionNodeView parentView = edge.output.node as MissionNodeView;
                     MissionNodeView childView = edge.input.node as MissionNodeView;
 
-                    _missionSet.RemoveNextNode(parentView.mission, childView.mission);
+                    _missionSet.RemoveNextNode(parentView.stage, childView.stage);
                 }
             });
         }
@@ -112,7 +106,7 @@ public partial class MissionGraphView : GraphView
             {
                 MissionNodeView parentView = edge.output.node as MissionNodeView;
                 MissionNodeView childView = edge.input.node as MissionNodeView;
-                _missionSet.AddNextNode(parentView.mission, childView.mission);
+                _missionSet.AddNextNode(parentView.stage, childView.stage);
             });
         }
 

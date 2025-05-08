@@ -1,3 +1,5 @@
+using Core.Attribute;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,18 +7,27 @@ namespace Core.StageController
 {
     public abstract class StageSO : ScriptableObject
     {
-        [HideInInspector] public ushort id;
+        public event Action onValueChange;
+
+        [ReadOnly]public ushort id;
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
 
         [HideInInspector] public StageSO prevMission;
-        [HideInInspector] public List<StageSO> nextMissions;
+        [HideInInspector] public StageSO nextStage;
 
+        public string displayStageName;
+        public Sprite stageIcon;
         public string sceneName;
+
+        private void OnValidate()
+        {
+            onValueChange?.Invoke();
+        }
     }
 
     public enum StageType
     {
-
+        Ingame, Cafe, Office
     }
 }

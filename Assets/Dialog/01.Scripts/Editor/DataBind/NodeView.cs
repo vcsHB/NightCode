@@ -30,7 +30,7 @@ namespace Dialog
 
         private void CreateOutputPort()
         {
-            if (nodeSO is NormalNodeSO)
+            if (nodeSO is NormalNodeSO || nodeSO is EventNodeSO || nodeSO is TimelineNodeSO)
             {
                 output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
             }

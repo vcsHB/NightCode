@@ -19,13 +19,13 @@ namespace Office.CharacterSkillTree
         public NodeView(NodeSO node)
         {
             this.node = node;
+            node.onValueChange += OnUpdateNode;
 
-            if (node is StatIncNodeSO stat)
-                title = $"";
-            else if (node is OpenSkillNodeSO weapon)
-                title = $"";
-            else if (node is StartNodeSO)
-                title = "StartNode";
+            if (node is StatIncNodeSO stat) title = $"{stat.nodeName}";
+            else if (node is OpenSkillNodeSO weapon) title = $"{weapon.nodeName}";
+            else if (node is StartNodeSO)  title = "StartNode";
+
+            
 
             //title = NodeType.name;
             viewDataKey = node.guid;
@@ -37,6 +37,16 @@ namespace Office.CharacterSkillTree
             CreateOutputPorts();
 
             this.Add(nameInput);
+        }
+
+        ~NodeView()
+        {
+            node.onValueChange -= OnUpdateNode;
+        }
+
+        private void OnUpdateNode()
+        {
+            title = node.nodeName;
         }
 
         private void CreateInputPorts()
