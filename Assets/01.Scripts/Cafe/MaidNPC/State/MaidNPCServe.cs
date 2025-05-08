@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Base.Cafe
 {
-    public class MaidNPCServe : BaseEntityState
+    public class MaidNPCServe : AvatarEntityState
     {
         private CafeMaid _maid;
-        public MaidNPCServe(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public MaidNPCServe(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
             _maid = npc as CafeMaid;
         }

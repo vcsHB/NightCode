@@ -113,14 +113,20 @@ namespace Combat.PlayerTagSystem
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
 
         }
-
+        public void Change()
+        {
+            Change(false);
+        }
         /// <summary>
         /// Change Character Func
         /// </summary>
-        public void Change()
+        public void Change(bool isForece = false)
         {
+            if (!isForece)
+            {
+                if (_currentCooltime < _changeCooltime) return;
+            }
             if (_currentPlayerIndex < 0) return;
-            if (_currentCooltime < _changeCooltime) return;
             _currentCooltime = 0f;
 
             if (CurrentPlayer.CanCharacterChange)
@@ -187,7 +193,7 @@ namespace Combat.PlayerTagSystem
 
         private void HandlePlayerDie()
         {
-            Change();
+            Change(true);
         }
 
         public void SetCurrentPlayerPosition(Vector2 position)

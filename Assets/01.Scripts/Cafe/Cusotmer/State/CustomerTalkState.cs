@@ -3,9 +3,9 @@ using Agents.Animate;
 
 namespace Base.Cafe
 {
-    public class CustomerTalkState : BaseEntityState
+    public class CustomerTalkState : AvatarEntityState
     {
-        public CustomerTalkState(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public CustomerTalkState(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
         }
 

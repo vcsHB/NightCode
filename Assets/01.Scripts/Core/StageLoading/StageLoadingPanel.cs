@@ -9,7 +9,7 @@ namespace Core.StageController
     {
         public event Action onCompleteOpenPanel;
         public event Action onCompletClosePanel;
-
+        [SerializeField] private float _sceneChangeIntervalDuration = 2f;
         private CanvasGroup _canvasGruop;
         private Tween _toggleTween;
 
@@ -26,8 +26,10 @@ namespace Core.StageController
             _canvasGruop.blocksRaycasts = true;
             _canvasGruop.interactable = true;
 
-            _toggleTween = _canvasGruop.DOFade(1f, 0.2f)
-                .OnComplete(() => onCompleteOpenPanel?.Invoke());
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_toggleTween = _canvasGruop.DOFade(1f, 0.2f));
+            sequence.AppendInterval(_sceneChangeIntervalDuration);
+            sequence.OnComplete(() => onCompleteOpenPanel?.Invoke());
         }
 
         public void Close()

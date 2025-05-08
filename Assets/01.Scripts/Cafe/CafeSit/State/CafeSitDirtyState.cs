@@ -5,7 +5,7 @@ namespace Base.Cafe
 {
     public class CafeSitDirtyState : CafeSitState
     {
-        private BasePlayer _player;
+        private AvatarPlayer _player;
 
 
         public CafeSitDirtyState(CafeSit cafeSit) : base(cafeSit)

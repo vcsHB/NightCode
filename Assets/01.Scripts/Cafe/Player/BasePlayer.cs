@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Base
 {
-    public class BasePlayer : BaseEntity
+    public class AvatarPlayer : AvatarEntity
     {
         public BaseInput input;
         [SerializeField] private BaseTalkBubble _talkBubble;
@@ -21,7 +21,7 @@ namespace Base
             this.food = food;
             _talkBubble.Open();
             _talkBubble.SetIcon(food.icon);
-            //¹º°¡ À½½ÄÀ» µé°í ÀÖ´Ù´Â Ç¥Çö?
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´Ù´ï¿½ Ç¥ï¿½ï¿½?
         }
 
         public void ServeFood()

@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Base.Cafe
 {
-    public class MaidNPCTalk : BaseEntityState
+    public class MaidNPCTalk : AvatarEntityState
     {
         private CafeMaid _maid;
         private float _talkStartTime;
         private float _talkTime = 3;
 
-        public MaidNPCTalk(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public MaidNPCTalk(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
             _maid = npc as CafeMaid;
         }
