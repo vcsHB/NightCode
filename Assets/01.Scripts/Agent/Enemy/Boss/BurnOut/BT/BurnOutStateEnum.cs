@@ -5,6 +5,7 @@ namespace Agents.Enemies.BossManage
     [BlackboardEnum]
     public enum BurnOutStateEnum
     {
+        Start,
         Idle,
         Cooling,
         DestroySequence1,

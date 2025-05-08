@@ -115,7 +115,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnShotSerializedEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5482415271011815044}
+        m_TargetAssemblyTypeName: UnityEngine.TrailRenderer, UnityEngine
+        m_MethodName: Clear
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _projectileData:
     direction: {x: 0, y: 0}
     speed: 60
@@ -148,7 +160,7 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 512
-  _wallDetectDistance: 0.6
+  _wallDetectDistance: 1.44
   _reflectSpeedMultipler: 1
 --- !u!114 &985954555734994186
 MonoBehaviour:
@@ -219,7 +231,7 @@ MonoBehaviour:
     m_Bits: 384
   _targetMaxAmount: 1
   _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
-  _detectRadius: 0.3
+  _detectRadius: 0.93
 --- !u!114 &8986931697502915477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a0be73c02b55e42aa26e86ba184cd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnCastSuccessEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _damage: 3
   _attackType: 1
   _invalidityResistance: 1
@@ -262,7 +277,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.9, y: 1, z: 1}
+  m_LocalScale: {x: 4.66, y: 1.95, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3938916547698714948}
@@ -312,7 +327,7 @@ SpriteRenderer:
   m_SortingLayerID: 1518623459
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1521442995, guid: f9325e9ca4f17cd47af7e54967b6c09b, type: 3}
+  m_Sprite: {fileID: 6781167332700664777, guid: f9325e9ca4f17cd47af7e54967b6c09b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

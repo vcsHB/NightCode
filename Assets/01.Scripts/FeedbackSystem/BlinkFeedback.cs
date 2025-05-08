@@ -31,7 +31,7 @@ namespace FeedbackSystem
             _targetMaterial.SetFloat(_blinkValueHash, _blinkLevel);
             yield return new WaitForSeconds(_blinkTime);
             _targetMaterial.SetFloat(_blinkValueHash, beforeValue);
-
+            _coroutine = null;
         }
 
         public override void FinishFeedback()
