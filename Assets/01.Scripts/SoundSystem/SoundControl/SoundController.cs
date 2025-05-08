@@ -30,7 +30,7 @@ namespace SoundManage
         }
 
 
-        public void PlaySound(SoundSO soundSO, Vector2 position)
+        public SoundPlayer PlaySound(SoundSO soundSO, Vector2 position)
         {
             SoundPlayer player = _pool.Count > 0
                     ? _pool.Dequeue()
@@ -38,6 +38,7 @@ namespace SoundManage
             player.transform.position = position;
             player.PlaySound(soundSO);
             player.OnSoundPlayCompleteEvent += HandleSoundPlayOver;
+            return player;
         }
 
         private void HandleSoundPlayOver(SoundPlayer player)
