@@ -51,6 +51,7 @@ public partial class MissionGraphView : GraphView
         _missionSet.stageList.ForEach(parentStage =>
         {
             StageSO childStage = _missionSet.GetConnectedMissions(parentStage);
+            if (childStage == null) return;
 
             MissionNodeView parentView = FindNodeView(parentStage);
             MissionNodeView childView = FindNodeView(childStage);
