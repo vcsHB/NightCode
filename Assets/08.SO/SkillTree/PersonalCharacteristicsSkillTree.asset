@@ -1,0 +1,416 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5623493736973719944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac815d82227f384ebfb1c79328f0baf, type: 3}
+  m_Name: Jin-ShcokWave
+  m_EditorClassIdentifier: 
+  guid: b604e7600f280cb4283bcfddb15d20d0
+  position: {x: 410.92007, y: 122.40002}
+  id: 14
+  nextNodes:
+  - {fileID: 1966904398815565352}
+  - {fileID: -4753632401993135093}
+  prevNode: {fileID: 311067388007914363}
+  exceptNodes:
+  - {fileID: -2013957039908166973}
+  fileName: Jin-ShcokWave
+  nodeName: "\uD6C4\uD3ED\uD48D"
+  explain: "\uACF5\uACA9 \uC9C1\uD6C4 \uC9C0\uBA74\uC774\uB098 \uBCBD\uC5D0 \uCDA9\uB3CC
+    \uC2DC, \uC606\uC73C\uB85C \uD37C\uC9C0\uB294 \uCDA9\uACA9\uD30C\uB97C \uC0DD\uC131\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: d170b91e2afef1a41bcb94126591c712, type: 3}
+  requireCoin: 15
+  skillToOpen: CrecentBladeShockWave
+--- !u!114 &-5370557318455123529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: An-BleedingChangeUP
+  m_EditorClassIdentifier: 
+  guid: 5b42ce356b2561f45a0740b9d0163144
+  position: {x: 628.6459, y: -174.40001}
+  id: 5
+  nextNodes: []
+  prevNode: {fileID: -2258790704749550526}
+  exceptNodes: []
+  fileName: An-BleedingChangeUP
+  nodeName: "\uD750\uB974\uB294 \uD53C"
+  explain: "\uCD9C\uD608 \uD655\uB960\uC774 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 52b2f020f1155c54fbd457e22752db6c, type: 3}
+  requireCoin: 25
+  stat:
+  - statType: 7
+    increaseValue: 10
+--- !u!114 &-5052005161004696931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: Jin-InvincibelTimeUp
+  m_EditorClassIdentifier: 
+  guid: d8206d3866375db42b24681e7f233030
+  position: {x: 601.6, y: 316.80002}
+  id: 9
+  nextNodes: []
+  prevNode: {fileID: -2013957039908166973}
+  exceptNodes: []
+  fileName: Jin-InvincibelTimeUp
+  nodeName: "\uBB34\uC801"
+  explain: "\uBB34\uC801 \uC2DC\uAC04\uC774 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: f863cc04477ba6647a3d1a066dcb5e6c, type: 3}
+  requireCoin: 25
+  stat:
+  - statType: 10
+    increaseValue: 0.2
+--- !u!114 &-4753632401993135093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: Jin-ShockWaveRangeUp
+  m_EditorClassIdentifier: 
+  guid: e34d7f98d8339a940b296be5fe4bf17f
+  position: {x: 596, y: 196.00002}
+  id: 12
+  nextNodes: []
+  prevNode: {fileID: -5623493736973719944}
+  exceptNodes:
+  - {fileID: 1966904398815565352}
+  fileName: Jin-ShockWaveRangeUp
+  nodeName: "\uD0DC\uD48D"
+  explain: "\uCDA9\uACA9\uD30C \uBC94\uC704\uAC00 \uB113\uC5B4\uC9D1\uB2C8\uB2E4."
+  icon: {fileID: -2162956485115592547, guid: 0b93b115b2b4ede46b951dc14d345f7e, type: 3}
+  requireCoin: 25
+  stat:
+  - statType: 12
+    increaseValue: 2
+--- !u!114 &-4112014198405706646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: AnSKillOpen
+  m_EditorClassIdentifier: 
+  guid: 334ff4b37d8c4c44e89aea3fdee0d77f
+  position: {x: 211.458, y: -161.60004}
+  id: 15
+  nextNodes:
+  - {fileID: -2864095142388706091}
+  - {fileID: -2258790704749550526}
+  prevNode: {fileID: -3847036930873610003}
+  exceptNodes: []
+  fileName: AnSKillOpen
+  nodeName: "\uC548"
+  explain: "\uC5D0\uC774\uC804\uD2B8 - \uC548\uC758 \uACE0\uC720 \uD2B9\uC131\uC744
+    \uD574\uAE08\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 8b0f442c4b18a63429f236d1cd88889f, type: 3}
+  requireCoin: 5
+  stat:
+  - statType: 6
+    increaseValue: 1
+  - statType: 8
+    increaseValue: 1
+--- !u!114 &-3847036930873610003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a579d6d09d4d54e9f01a96ad8ac520, type: 3}
+  m_Name: PersonalCharacteristicsSkillTree
+  m_EditorClassIdentifier: 
+  guid: dc6ffddf535175a45b17832e61fd59ac
+  position: {x: -0.000010833741, y: -0.91999817}
+  id: 0
+  nextNodes:
+  - {fileID: -4112014198405706646}
+  - {fileID: 311067388007914363}
+  prevNode: {fileID: 0}
+  exceptNodes: []
+  fileName: PersonalCharacteristicsSkillTree
+  nodeName: "\uAC1C\uC778 \uD2B9\uC131"
+  explain: "\uC5D0\uC774\uC804\uD2B8\uC758 \uACE0\uC720 \uD2B9\uC131\uC744 \uADF9\uB300\uD654
+    \uC2DC\uD0B5\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: b3958c54c298fed4a912ae162be7acc2, type: 3}
+  requireCoin: 0
+--- !u!114 &-2864095142388706091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: An-AccelerationUp
+  m_EditorClassIdentifier: 
+  guid: 51ffe7d1d03781347bc5dec80349a3c7
+  position: {x: 449.6001, y: -14.399994}
+  id: 6
+  nextNodes: []
+  prevNode: {fileID: -4112014198405706646}
+  exceptNodes:
+  - {fileID: -2258790704749550526}
+  fileName: An-AccelerationUp
+  nodeName: "\uC2A4\uC719\uBC14\uC774"
+  explain: "\uAC00\uC18D \uD69F\uC218\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 1caf91a976300ce4bb0562362ca26b8e, type: 3}
+  requireCoin: 20
+  stat:
+  - statType: 8
+    increaseValue: 1
+--- !u!114 &-2258790704749550526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac815d82227f384ebfb1c79328f0baf, type: 3}
+  m_Name: An-BloodingOpen
+  m_EditorClassIdentifier: 
+  guid: 0e7c2e1a3513b83408cd51b91801a250
+  position: {x: 431.21808, y: -184.81818}
+  id: 15
+  nextNodes:
+  - {fileID: -5370557318455123529}
+  prevNode: {fileID: -4112014198405706646}
+  exceptNodes:
+  - {fileID: -2864095142388706091}
+  fileName: An-BloodingOpen
+  nodeName: "\uCD9C\uD608"
+  explain: "\uB0AE\uC740 \uD655\uB960\uB85C \uACF5\uACA9 \uC2DC \uCD9C\uD608\uC744
+    \uC720\uBC1C\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 52b2f020f1155c54fbd457e22752db6c, type: 3}
+  requireCoin: 15
+  skillToOpen: KatanaBleeding
+--- !u!114 &-2013957039908166973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: Jin-AttackRangeUP
+  m_EditorClassIdentifier: 
+  guid: 2d2094e62604dec4eb7f2ef6e4bc82f3
+  position: {x: 417.616, y: 318.40002}
+  id: 10
+  nextNodes:
+  - {fileID: -5052005161004696931}
+  prevNode: {fileID: 311067388007914363}
+  exceptNodes:
+  - {fileID: -5623493736973719944}
+  - {fileID: 0}
+  fileName: Jin-AttackRangeUP
+  nodeName: "\uC57D\uC9C4"
+  explain: "\uACF5\uACA9\uBC94\uC704\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: db137968f858c6a44b63ce68d68c7e8e, type: 3}
+  requireCoin: 15
+  stat:
+  - statType: 9
+    increaseValue: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a540f074e8eedc143a24836c44f62d00, type: 3}
+  m_Name: PersonalCharacteristicsSkillTree
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -3847036930873610003}
+  - {fileID: -5370557318455123529}
+  - {fileID: -2864095142388706091}
+  - {fileID: -3847036930873610003}
+  - {fileID: -5052005161004696931}
+  - {fileID: -2013957039908166973}
+  - {fileID: 1966904398815565352}
+  - {fileID: -4753632401993135093}
+  - {fileID: 7323220215253465809}
+  - {fileID: 6526206374250266308}
+  - {fileID: -5623493736973719944}
+  - {fileID: -4112014198405706646}
+  - {fileID: 311067388007914363}
+  - {fileID: 3605602420191633871}
+  - {fileID: -2258790704749550526}
+--- !u!114 &311067388007914363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: JinReiSkillOpen
+  m_EditorClassIdentifier: 
+  guid: 2933fc79afd83e647b73d77ddb0e204f
+  position: {x: 222.68005, y: 126.96002}
+  id: 14
+  nextNodes:
+  - {fileID: -5623493736973719944}
+  - {fileID: -2013957039908166973}
+  prevNode: {fileID: -3847036930873610003}
+  exceptNodes: []
+  fileName: JinReiSkillOpen
+  nodeName: "\uC9C4 \uB808\uC774"
+  explain: "\uC5D0\uC774\uC804\uD2B8 - \uC9C4 \uB808\uC774\uC758 \uACE0\uC720 \uD2B9\uC131\uC744
+    \uD574\uAE08\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 331518979386548439242045f8ea4b77, type: 3}
+  requireCoin: 5
+  stat:
+  - statType: 11
+    increaseValue: 1
+  - statType: 9
+    increaseValue: 1
+--- !u!114 &1966904398815565352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: Jin-ShockWaveSpeedUp
+  m_EditorClassIdentifier: 
+  guid: 236c71c6a0393a84aab126887ef88272
+  position: {x: 597.6, y: 67.2}
+  id: 11
+  nextNodes: []
+  prevNode: {fileID: -5623493736973719944}
+  exceptNodes:
+  - {fileID: -4753632401993135093}
+  fileName: Jin-ShockWaveSpeedUp
+  nodeName: "\uCE7C\uBC14\uB78C"
+  explain: "\uCDA9\uACA9\uD30C \uC18D\uB3C4\uAC00 \uBE68\uB77C\uC9D1\uB2C8\uB2E4."
+  icon: {fileID: -2162956485115592547, guid: 0b93b115b2b4ede46b951dc14d345f7e, type: 3}
+  requireCoin: 25
+  stat:
+  - statType: 13
+    increaseValue: 4
+--- !u!114 &3605602420191633871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: VESkillOpen
+  m_EditorClassIdentifier: 
+  guid: 9f1bc0ea537533249b1256e830ece35b
+  position: {x: 224.71999, y: 455.92004}
+  id: 14
+  nextNodes:
+  - {fileID: 7323220215253465809}
+  prevNode: {fileID: 0}
+  exceptNodes: []
+  fileName: VESkillOpen
+  nodeName: "\uBE44\uB098"
+  explain: "\uC5D0\uC774\uC804\uD2B8 - \uBE44\uB098\uC758 \uACE0\uC720 \uD2B9\uC131\uC744
+    \uD574\uAE08\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 813747fc85cb8d9428b9f6e4fa61e87e, type: 3}
+  requireCoin: 5
+  stat:
+  - statType: 15
+    increaseValue: 1
+--- !u!114 &6526206374250266308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: VE-AmmoUp_2
+  m_EditorClassIdentifier: 
+  guid: de56fd166e45b884aac40b6d4f0c61b8
+  position: {x: 609.0579, y: 453.59998}
+  id: 14
+  nextNodes: []
+  prevNode: {fileID: 7323220215253465809}
+  exceptNodes: []
+  fileName: VE-AmmoUp_2
+  nodeName: "\uB354 \uB9CE\uC740 \uD0C4\uC57D_2"
+  explain: "\uC7A5\uD0C4 \uC218\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: b5c1bbce430a83043b15574eaf427def, type: 3}
+  requireCoin: 20
+  stat:
+  - statType: 15
+    increaseValue: 10
+--- !u!114 &7323220215253465809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68fb6ffae12804594c6f979305a648, type: 3}
+  m_Name: VE-AmmoUp_1
+  m_EditorClassIdentifier: 
+  guid: 3a6309f32e5f8f243b2807f06cded681
+  position: {x: 413.04016, y: 455}
+  id: 13
+  nextNodes:
+  - {fileID: 6526206374250266308}
+  prevNode: {fileID: 3605602420191633871}
+  exceptNodes: []
+  fileName: VE-AmmoUp_1
+  nodeName: "\uB354 \uB9CE\uC740 \uD0C4\uC57D_1"
+  explain: "\uC7A5\uD0C4 \uC218\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 7f9c8f710cc11b44b8878e4b3bb17081, type: 3}
+  requireCoin: 10
+  stat:
+  - statType: 15
+    increaseValue: 10
