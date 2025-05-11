@@ -76,7 +76,12 @@ namespace CameraControllers
             _followCam.FollowOffset = _defaultFollowOffset;
         }
 
-        public void SetConfiner(bool value)
+        public void SetFollowFunction(bool value)
+        {
+            _followCam.enabled = value;
+        }
+
+        public void SetConfinerFunction(bool value)
         {
             _confinerCompo.enabled = value;
             

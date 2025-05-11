@@ -1,3 +1,5 @@
+using CameraControllers;
+using Combat.PlayerTagSystem;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -12,6 +14,7 @@ namespace PerformanceSystem.CutScene
         {
             _director = GetComponentInChildren<PlayableDirector>();
         }
+      
 
         public void PauseTimeline()
         {
