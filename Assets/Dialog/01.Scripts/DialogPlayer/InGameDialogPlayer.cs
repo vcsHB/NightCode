@@ -10,25 +10,22 @@ namespace Dialog
     [RequireComponent(typeof(AnimationPlayer))]
     public class InGameDialogPlayer : DialogPlayer
     {
-        private AnimationPlayer _animPlayer;
-        private PlayableDirector _director;
+        protected AnimationPlayer _animPlayer;
+        [SerializeField] protected DialogOption _option;
 
-        [SerializeField] private DialogOption _option;
-
-        private Actor _currentActor;
-        private OptionNodeSO _optionTalk;
-        private NodeSO _nextNode;
+        protected Actor _currentActor;
+        protected OptionNodeSO _optionTalk;
+        protected NodeSO _nextNode;
 
         protected override void Awake()
         {
             base.Awake();
-            _director = GetComponent<PlayableDirector>();
             _animPlayer = GetComponent<AnimationPlayer>();
         }
 
         #region Animation
 
-        private void LateUpdate()
+        protected void LateUpdate()
         {
             if (_curReadingNode is NormalNodeSO node && _isReadingDialog)
             {
@@ -36,7 +33,7 @@ namespace Dialog
             }
         }
 
-        private void InitNodeAnim(NodeSO node)
+        protected void InitNodeAnim(NodeSO node)
         {
             List<TagAnimation> anims = node.GetAllAnimations();
 
@@ -49,7 +46,7 @@ namespace Dialog
             });
         }
 
-        private void CompleteNodeAnim(NodeSO node)
+        protected void CompleteNodeAnim(NodeSO node)
         {
             List<TagAnimation> anims = node.GetAllAnimations();
             anims.ForEach((anim) => anim.Complete());
@@ -77,11 +74,6 @@ namespace Dialog
                 _currentActor?.personalTalkBubble.SetEnabled();
                 _readingNodeRoutine = StartCoroutine(ReadingNormalNodeRoutine(normal));
             }
-            else if(_curReadingNode is TimelineNodeSO timeline)
-            {
-                _director.Play(timeline.playable);
-                StartCoroutine(WaitNodeRoutine(() => _director.state != PlayState.Playing, null));
-            }
             else if (_curReadingNode is OptionNodeSO option)
             {
                 ReadingOptionNodeRoutine(option);
@@ -92,7 +84,7 @@ namespace Dialog
             }
         }
 
-        private IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
+        protected virtual IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
         {
             TextMeshProUGUI tmp = _currentActor.ContentText;
 
@@ -111,14 +103,14 @@ namespace Dialog
             StartCoroutine(WaitNodeRoutine(GetInput, _currentActor.OnCompleteNode));
         }
 
-        private void ReadingOptionNodeRoutine(OptionNodeSO node)
+        protected virtual void ReadingOptionNodeRoutine(OptionNodeSO node)
         {
             InitNodeAnim(node);
             _option.SetOption(node, OnSelectOption);
             //StartCoroutine(WaitNodeRoutine(() => _optionSelected, null));
         }
 
-        private void OnSelectOption(Option option)
+        protected virtual void OnSelectOption(Option option)
         {
             _playingEndAnimation = false;
 
@@ -128,7 +120,7 @@ namespace Dialog
             ReadSingleLine();
         }
 
-        private void JudgementCondition(BranchNodeSO branch)
+        protected virtual void JudgementCondition(BranchNodeSO branch)
         {
             bool decision = branch.condition.Decision();
             _curReadingNode = branch.nextNodes[decision ? 0 : 1];
@@ -136,7 +128,7 @@ namespace Dialog
             ReadSingleLine();
         }
 
-        private IEnumerator WaitNodeRoutine(Func<bool> waitPredict, Action endAction)
+        protected virtual IEnumerator WaitNodeRoutine(Func<bool> waitPredict, Action endAction)
         {
             yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(waitPredict);
