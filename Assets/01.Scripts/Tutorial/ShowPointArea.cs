@@ -7,7 +7,7 @@ namespace Tutorial
     {
         public UnityEvent OnGoalArrivedEvent;
         private readonly string _targetTag = "Player";
-        private bool _isActive;
+        private bool _isActive = false;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {

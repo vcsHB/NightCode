@@ -1,5 +1,4 @@
 using System;
-using Combat.PlayerTagSystem;
 using TMPro;
 using UnityEngine;
 namespace Dialog
@@ -12,8 +11,19 @@ namespace Dialog
         public TextMeshProUGUI ContentTextMeshPro => _contentText;
         private Transform _ownerTrm;
         private Vector2 _offset;
+        private Vector2 _originScale;
 
         public bool IsEnable { get; private set; }
+
+        private void Awake()
+        {
+            _originScale = transform.localScale;
+        }
+
+        private void Update()
+        {
+            transform.localRotation = transform.parent.rotation;
+        }
 
         public void SetEnable(bool value)
         {
