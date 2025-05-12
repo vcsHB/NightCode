@@ -20,7 +20,6 @@ namespace Dialog
 
         public override void StartDialog()
         {
-            base.StartDialog();
             _director.Play();
         }
 
