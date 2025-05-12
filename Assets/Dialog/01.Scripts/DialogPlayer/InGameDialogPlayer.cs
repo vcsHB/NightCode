@@ -62,7 +62,7 @@ namespace Dialog
 
             if (_curReadingNode is NormalNodeSO node)
             {
-                DialogActorManager.Instance.TryGetActor(node.GetReaderName(), out _currentActor);
+                DialogActorManager.TryGetActor(node.GetReaderName(), out _currentActor);
             }
 
             _curReadingNode.startDialogEvent.ForEach(dialogEvent => dialogEvent.PlayEvent(this, _currentActor));
