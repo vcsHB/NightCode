@@ -172,8 +172,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9f459284b3bbc9345ba54cd53550d13c, type: 2}
   startDialogEvent:
   - rid: 413003498803429451
-  endDialogEventSO: []
-  endDialogEvent: []
+  endDialogEventSO:
+  - {fileID: 11400000, guid: 9f459284b3bbc9345ba54cd53550d13c, type: 2}
+  endDialogEvent:
+  - rid: 1847600910467858530
   reader: Mr.Jang
   contents: "\uC548\uB1FD\uD558\uC138\uC694"
   nodeDelay: 0
@@ -188,6 +190,14 @@ MonoBehaviour:
         isCompleteEvent: 1
         zoomLevel: 7.5
         duration: 0.5
+        returnZoomOnEndNode: 0
+    - rid: 1847600910467858530
+      type: {class: ZoomEvent, ns: Dialog, asm: Assembly-CSharp}
+      data:
+        stopUntilCompleteEvent: 0
+        isCompleteEvent: 1
+        zoomLevel: 0
+        duration: 0
         returnZoomOnEndNode: 0
 --- !u!114 &6175283370080401298
 MonoBehaviour:
