@@ -17,6 +17,7 @@ namespace Dialog
                 Debug.LogWarning($"actor name of {key} is arleady exsist.\nbut you still trying to add actor with key {key}");
                 return;
             }
+
             actorDic.Add(key, actor);
         }
 
@@ -29,6 +30,7 @@ namespace Dialog
 
         public static bool TryGetActor(string key, out Actor actor)
         {
+
             return actorDic.TryGetValue(key, out actor);
         }
     }
