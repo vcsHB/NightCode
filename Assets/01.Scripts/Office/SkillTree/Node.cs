@@ -219,7 +219,7 @@ namespace Office.CharacterSkillTree
 
         private void UnActiveNode()
         {
-            _disablePanel.color = new Color(0f, 0f, 0f, 0.9f);
+            _disablePanel.color = new Color(0f, 0f, 0f, 0.9f); 
         }
 
 
