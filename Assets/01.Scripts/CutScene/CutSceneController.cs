@@ -18,7 +18,12 @@ namespace PerformanceSystem.CutScene
 
         public void PauseTimeline()
         {
-            _director.Stop();
+            _director.Pause();
+        }
+
+        public void Restart()
+        {
+            _director.Resume();
         }
 
         public void StartTimeline()

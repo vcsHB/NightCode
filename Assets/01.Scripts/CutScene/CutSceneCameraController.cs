@@ -15,15 +15,21 @@ namespace PerformanceSystem.CutScene
             _playerManager = PlayerManager.Instance;
 
         }
+        public void EnableCameraFollow()
+        {
+            _cameraManager.SetFollowFunction(true);
+            _cameraManager.SetConfinerFunction(true);
+        }
 
         public void DisableCameraFollow()
         {
             _cameraManager.SetFollowFunction(false);
+
         }
 
         public void SetFollowPlayer()
         {
-            _cameraManager.SetFollow(_playerManager.CurrentPlayerTrm.transform);
+            _cameraManager.SetFollow(_playerManager.CurrentPlayerTrm);
         }
     }
 }
