@@ -80,6 +80,33 @@ MonoBehaviour:
   stat:
   - statType: 10
     increaseValue: 0.2
+--- !u!114 &-4812889609480451211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a579d6d09d4d54e9f01a96ad8ac520, type: 3}
+  m_Name: StartNode
+  m_EditorClassIdentifier: 
+  guid: 31fe14512705cca48b60ca0c244a4ad3
+  position: {x: -94.399994, y: 119.99999}
+  id: 0
+  nextNodes:
+  - {fileID: -4112014198405706646}
+  - {fileID: 311067388007914363}
+  - {fileID: 3605602420191633871}
+  prevNode: {fileID: 0}
+  exceptNodes: []
+  fileName: StartNode
+  nodeName: "\uAC1C\uC778 \uD2B9\uC131"
+  explain: "\uC5D0\uC774\uC804\uD2B8\uB4E4\uC758 \uAC1C\uC778 \uD2B9\uC131 \uD574\uAE08\uD560
+    \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: b3958c54c298fed4a912ae162be7acc2, type: 3}
+  requireCoin: 0
 --- !u!114 &-4753632401993135093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,7 +120,7 @@ MonoBehaviour:
   m_Name: Jin-ShockWaveRangeUp
   m_EditorClassIdentifier: 
   guid: e34d7f98d8339a940b296be5fe4bf17f
-  position: {x: 596, y: 196.00002}
+  position: {x: 596.00006, y: 194.78331}
   id: 12
   nextNodes: []
   prevNode: {fileID: -5623493736973719944}
@@ -125,7 +152,7 @@ MonoBehaviour:
   nextNodes:
   - {fileID: -2864095142388706091}
   - {fileID: -2258790704749550526}
-  prevNode: {fileID: -3847036930873610003}
+  prevNode: {fileID: -4812889609480451211}
   exceptNodes: []
   fileName: AnSKillOpen
   nodeName: "\uC548"
@@ -138,32 +165,6 @@ MonoBehaviour:
     increaseValue: 1
   - statType: 8
     increaseValue: 1
---- !u!114 &-3847036930873610003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5a579d6d09d4d54e9f01a96ad8ac520, type: 3}
-  m_Name: PersonalCharacteristicsSkillTree
-  m_EditorClassIdentifier: 
-  guid: dc6ffddf535175a45b17832e61fd59ac
-  position: {x: -0.000010833741, y: -0.91999817}
-  id: 0
-  nextNodes:
-  - {fileID: -4112014198405706646}
-  - {fileID: 311067388007914363}
-  prevNode: {fileID: 0}
-  exceptNodes: []
-  fileName: PersonalCharacteristicsSkillTree
-  nodeName: "\uAC1C\uC778 \uD2B9\uC131"
-  explain: "\uC5D0\uC774\uC804\uD2B8\uC758 \uACE0\uC720 \uD2B9\uC131\uC744 \uADF9\uB300\uD654
-    \uC2DC\uD0B5\uB2C8\uB2E4."
-  icon: {fileID: 21300000, guid: b3958c54c298fed4a912ae162be7acc2, type: 3}
-  requireCoin: 0
 --- !u!114 &-2864095142388706091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +239,6 @@ MonoBehaviour:
   prevNode: {fileID: 311067388007914363}
   exceptNodes:
   - {fileID: -5623493736973719944}
-  - {fileID: 0}
   fileName: Jin-AttackRangeUP
   nodeName: "\uC57D\uC9C4"
   explain: "\uACF5\uACA9\uBC94\uC704\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
@@ -260,10 +260,9 @@ MonoBehaviour:
   m_Name: PersonalCharacteristicsSkillTree
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: -3847036930873610003}
+  - {fileID: -4812889609480451211}
   - {fileID: -5370557318455123529}
   - {fileID: -2864095142388706091}
-  - {fileID: -3847036930873610003}
   - {fileID: -5052005161004696931}
   - {fileID: -2013957039908166973}
   - {fileID: 1966904398815565352}
@@ -293,7 +292,7 @@ MonoBehaviour:
   nextNodes:
   - {fileID: -5623493736973719944}
   - {fileID: -2013957039908166973}
-  prevNode: {fileID: -3847036930873610003}
+  prevNode: {fileID: -4812889609480451211}
   exceptNodes: []
   fileName: JinReiSkillOpen
   nodeName: "\uC9C4 \uB808\uC774"
