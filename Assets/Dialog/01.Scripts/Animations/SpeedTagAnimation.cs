@@ -14,14 +14,12 @@ namespace Dialog
 
         public override void OnStartTag()
         {
-            Debug.Log(_player.TextOutDelay);
             _originSpeed = _player.TextOutDelay;
             _player.SetTextOutDelay(_speed);
         }
 
         public override void OnEndTag()
         {
-            Debug.Log(_originSpeed);
             _player.SetTextOutDelay(_originSpeed);
         }
 
