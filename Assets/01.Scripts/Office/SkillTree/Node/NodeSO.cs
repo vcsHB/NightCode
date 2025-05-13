@@ -11,7 +11,7 @@ namespace Office.CharacterSkillTree
         [HideInInspector] public Vector2 position;
 
         [HideInInspector] public int id;
-        [HideInInspector] public List<NodeSO> nextNodes;
+        public List<NodeSO> nextNodes;
         [HideInInspector] public NodeSO prevNode;
         public List<NodeSO> exceptNodes;
 

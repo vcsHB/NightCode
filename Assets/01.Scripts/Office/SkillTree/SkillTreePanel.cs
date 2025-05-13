@@ -18,7 +18,7 @@ namespace Office
         private Tween _openCloseTween;
         private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
 
-        private void Awake()
+        protected override void Awake()
         {
             RectTrm.anchoredPosition = new Vector2(0, -screenPosition.y);
         }
