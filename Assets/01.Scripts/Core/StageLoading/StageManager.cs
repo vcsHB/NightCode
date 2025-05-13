@@ -52,27 +52,34 @@ namespace Core.StageController
             _currentStage = _currentStage.nextStage;
             _stageProgress = _currentStage.id;
             stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.onCompletClosePanel += InitStage;
             stageLoadingPanel.Open();
         }
 
         public void ReloadCurrentScene()
         {
             stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.onCompletClosePanel += InitStage;
             stageLoadingPanel.Open();
         }
 
-        private void LoadStage()
+        private void InitStage()
         {
-            SceneManager.LoadScene(_currentStage.sceneName);
-
-            stageLoadingPanel.Close();
-
+            Debug.Log("InitStage");
             if (_currentStage is CafeStageSO cafeStage)
                 CafeManager.Instance.Init(cafeStage.cafeInfo);
 
             if (_currentStage is OfficeStageSO officeStage)
                 OfficeManager.Instance.Init(officeStage.officeInfo);
 
+            stageLoadingPanel.onCompletClosePanel -= InitStage;
+        }
+
+        private void LoadStage()
+        {
+            SceneManager.LoadScene(_currentStage.sceneName);   
+
+            stageLoadingPanel.Close();
             stageLoadingPanel.onCompleteOpenPanel -= LoadStage;
             Save();
         }
@@ -106,7 +113,10 @@ namespace Core.StageController
             _currentStage = stageSet.stageList[_stageProgress];
 
             if (_currentStage == null) _currentStage = stageSet.stageList[0];
-            LoadStage();
+
+            stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.onCompletClosePanel += InitStage;
+            stageLoadingPanel.Open();
         }
     }
 
