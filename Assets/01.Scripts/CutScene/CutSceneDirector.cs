@@ -34,6 +34,11 @@ namespace PerformanceSystem.CutScene
         {
             _director.Play();
         }
+
+        public void EndTimeline()
+        {
+            _director.time = _director.duration;
+        }
     }
 
 }

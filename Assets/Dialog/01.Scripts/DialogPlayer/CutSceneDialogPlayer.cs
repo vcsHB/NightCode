@@ -34,6 +34,7 @@ namespace Dialog
         public virtual void ReadNode()
         {
             ReadSingleLine();
+           
         }
 
         public virtual void ReadNodeWithPause()
@@ -42,7 +43,7 @@ namespace Dialog
             ReadNode();
         }
 
-        protected override IEnumerator WaitNodeRoutine(Func<bool> waitPredict, Action endAction)
+        protected override IEnumerator WaitNodeRoutine(Func<bool> waitPredict)
         {
             yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(() => _isDirectorStopped);
@@ -63,7 +64,7 @@ namespace Dialog
             _curReadingNode.endDialogEvent.ForEach(dialogEvent => dialogEvent.PlayEvent(this, _currentActor));
             yield return new WaitUntil(() => _curReadingNode.endDialogEvent.Exists(dialogEvent => dialogEvent.isCompleteEvent == false) == false);
 
-            endAction?.Invoke();
+            _waitCompleteAction?.Invoke();
             _curReadingNode = _nextNode;
             _isReadingDialog = false;
 

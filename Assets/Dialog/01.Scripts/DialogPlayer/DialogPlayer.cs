@@ -41,6 +41,14 @@ namespace Dialog
             ReadSingleLine();
         }
 
+        public virtual void SkipDialog()
+        {
+            _curReadingNode = null;
+            _readingNodeRoutine = null;
+            StopAllCoroutines();
+            EndDialog();
+        }
+
         public virtual void EndDialog()
         {
             _isReadingDialog = false;
