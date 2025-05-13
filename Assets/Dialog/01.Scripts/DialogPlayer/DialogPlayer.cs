@@ -56,6 +56,7 @@ namespace Dialog
                 return;
             }
 
+            Debug.Log("ReadSingleLine");
             StartCoroutine(ReadingNodeRoutine());
             //DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
         }
@@ -67,7 +68,7 @@ namespace Dialog
 
         public virtual void SetTextOutDelay(float delay) => _textOutDelay = delay;
 
-        protected virtual  void Awake()
+        protected virtual void Awake()
         {
             _uiInputReader.OnSpaceEvent += HandleMoveToNextDialogue;
         }

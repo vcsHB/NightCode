@@ -17,8 +17,8 @@ namespace PerformanceSystem.CutScene
         }
         public void EnableCameraFollow()
         {
-            _cameraManager.SetFollowFunction(true);
             _cameraManager.SetConfinerFunction(true);
+            _cameraManager.SetFollowFunction(true);
         }
 
         public void DisableCameraFollow()

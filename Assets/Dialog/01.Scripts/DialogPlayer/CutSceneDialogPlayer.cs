@@ -1,31 +1,33 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using PerformanceSystem.CutScene;
 using UnityEngine;
-using UnityEngine.Playables;
 
 namespace Dialog
 {
     public class CutSceneDialogPlayer : InGameDialogPlayer
     {
-        [SerializeField] private PlayableDirector _director;
+        [SerializeField] private CutSceneDirector _director;
+        [SerializeField] private bool _startOnAwake;
         private bool _isDirectorStopped = false;
 
         protected override void Awake()
         {
             base.Awake();
-            _director = GetComponent<PlayableDirector>();
+            if (_startOnAwake)
+                StartDialog();
         }
 
         public override void StartDialog()
         {
-            _director.Play();
+            _curReadingNode = _dialog.nodes[0];
+            _director.StartTimeline();
         }
 
         public virtual void PauseDirector()
         {
-            _director.Pause();
+            _director.PauseTimeline();
+            print("Pause");
             _isDirectorStopped = true;
         }
 
@@ -36,8 +38,8 @@ namespace Dialog
 
         public virtual void ReadNodeWithPause()
         {
-            ReadNode();
             PauseDirector();
+            ReadNode();
         }
 
         protected override IEnumerator WaitNodeRoutine(Func<bool> waitPredict, Action endAction)
@@ -71,7 +73,7 @@ namespace Dialog
                 _optionTalk = null;
             }
 
-            _director.Resume(); 
+            _director.ResumeTimeline();
             _isDirectorStopped = false;
         }
     }
