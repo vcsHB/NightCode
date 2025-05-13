@@ -63,17 +63,16 @@ namespace Core.StageController
 
         private void LoadStage()
         {
-            AsyncOperation loadHandle = SceneManager.LoadSceneAsync(_currentStage.sceneName);
-            loadHandle.completed += (handle) =>
-            {
-                stageLoadingPanel.Close();
+            SceneManager.LoadScene(_currentStage.sceneName);
 
-                if (_currentStage is CafeStageSO cafeStage)
-                    CafeManager.Instance.Init(cafeStage.cafeInfo);
+            stageLoadingPanel.Close();
 
-                if (_currentStage is OfficeStageSO officeStage)
-                    OfficeManager.Instance.Init(officeStage.officeInfo);
-            };
+            if (_currentStage is CafeStageSO cafeStage)
+                CafeManager.Instance.Init(cafeStage.cafeInfo);
+
+            if (_currentStage is OfficeStageSO officeStage)
+                OfficeManager.Instance.Init(officeStage.officeInfo);
+
             stageLoadingPanel.onCompleteOpenPanel -= LoadStage;
             Save();
         }

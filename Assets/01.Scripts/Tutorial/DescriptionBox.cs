@@ -38,7 +38,8 @@ namespace Tutorial
         {
             TMP_TextInfo textInfo = _textCompo.textInfo;
             _textCompo.maxVisibleCharacters = 0;
-            for (int i = 0; i < textInfo.characterCount; i++)
+
+            for (int i = 0; i < _textCompo.text.Length; i++)
             {
                 _textCompo.maxVisibleCharacters++;
                 yield return _waitForSec;
