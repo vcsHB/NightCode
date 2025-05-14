@@ -21,6 +21,7 @@ namespace Combat.PlayerTagSystem
     {
         // Events
         public UnityEvent OnAllPlayerDieEvent;
+        public UnityEvent OnPlayerDieEvent;
 
         /// <summary>
         /// param : <Previous Player, Current Player>
@@ -169,7 +170,15 @@ namespace Combat.PlayerTagSystem
             CurrentPlayer.transform.position = changePosition;
             //CurrentPlayer.transform.rotation = prevRotation;
             CurrentPlayer.GetCompo<AgentRenderer>().FlipController(direction);
-            SetPlayer(CurrentPlayer);
+
+            // SetPlayer(CurrentPlayer);
+
+            CurrentPlayer.SetIdleEnter();
+            CurrentPlayer.SetActive(true);
+            HUDController.Instance.SetFollowTarget(CurrentPlayer.transform);
+            CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
+            _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
+
             _aimGroup.SetAimColor(CurrentPlayerData.personalColor);
         }
 
@@ -194,6 +203,7 @@ namespace Combat.PlayerTagSystem
         private void HandlePlayerDie()
         {
             Change(true);
+            OnPlayerDieEvent?.Invoke();
         }
 
         public void SetCurrentPlayerPosition(Vector2 position)
