@@ -57,6 +57,7 @@ namespace Dialog
                 return;
             }
 
+            DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
             StartCoroutine(ReadingNodeRoutine());
             //DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
         }
