@@ -15,40 +15,13 @@ MonoBehaviour:
   guid: e7526eb7638ebc74e8c2ba71dda058f1
   position: {x: 715, y: 254}
   isFirstNode: 0
+  textOutSound: {fileID: 11400000, guid: adb8ff3a7f5cc0b4c9b1027cb0c3ff7c, type: 2}
   startDialogEventSO: []
   startDialogEvent: []
   endDialogEventSO: []
   endDialogEvent: []
   reader: NPC-1
-  contents: "\uCD5C\uADFC\uC5D0 \uB098\uC628 <Wobble=5>\uC2A4\uD300\uD391\uD06C3077</Wobble>
-    \uD574\uBD24\uC5B4?"
-  nodeDelay: 0
-  nextNode: {fileID: -6947885555092284884}
-  references:
-    version: 2
-    RefIds: []
---- !u!114 &-6947885555092284884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
-  m_Name: NormalNodeSO
-  m_EditorClassIdentifier: 
-  guid: 4c481826394c5424f84cf324970bf06b
-  position: {x: 985.5, y: 254}
-  isFirstNode: 0
-  startDialogEventSO: []
-  startDialogEvent: []
-  endDialogEventSO: []
-  endDialogEvent: []
-  reader: Player
-  contents: "\uC694\uC998 \uC9C0\uAC11 \uC0AC\uC815\uC774 \uC88B\uC9C0 \uC54A\uC544\uC11C
-    \uC544\uC9C1 \uD50C\uB808\uC774 \uD574\uBCF4\uC9C0\uB294 \uBABB\uD588\uC5B4\uC694"
+  contents: "\uADFC\uB370 \uB300\uBD80\uBD84 \uBE48\uBBFC\uAC00 \uC0AC\uB78C\uB4E4\uC774\uC5B4\uC11C"
   nodeDelay: 0
   nextNode: {fileID: -371130604804763586}
   references:
@@ -69,12 +42,13 @@ MonoBehaviour:
   guid: 42997739105e0f84ea98ccabfb53b7d3
   position: {x: 168.5, y: 254}
   isFirstNode: 1
+  textOutSound: {fileID: 11400000, guid: adb8ff3a7f5cc0b4c9b1027cb0c3ff7c, type: 2}
   startDialogEventSO: []
   startDialogEvent: []
   endDialogEventSO: []
   endDialogEvent: []
   reader: NPC-1
-  contents: "\uC548\uB155!<Wait=0.5>\uC624\uB79C\uB9CC\uC774\uC57C."
+  contents: "\uADF8\uAC70 \uB4E4\uC5C8\uC5B4?"
   nodeDelay: 0
   nextNode: {fileID: 5165221691580807302}
   references:
@@ -93,17 +67,17 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: 3487241b7df56b84c9d8e2b7603712d1
-  position: {x: 1280, y: 253}
+  position: {x: 1022.02167, y: 253.87448}
   isFirstNode: 0
+  textOutSound: {fileID: 11400000, guid: adb8ff3a7f5cc0b4c9b1027cb0c3ff7c, type: 2}
   startDialogEventSO: []
   startDialogEvent: []
   endDialogEventSO: []
   endDialogEvent: []
   reader: NPC-1
-  contents: "\uBB50 \uC544\uC27D\uB124.\\n\uB098\uC911\uC5D0 \uC5EC\uC720\uAC00 \uC0DD\uAE30\uBA74
-    \uAF2D \uD55C\uBC88 \uD574\uBD10"
+  contents: "\uB300\uCDA9 \uB118\uC5B4\uAC00\uB098 \uBD10"
   nodeDelay: 0
-  nextNode: {fileID: 0}
+  nextNode: {fileID: 9023141402556921078}
   references:
     version: 2
     RefIds: []
@@ -117,14 +91,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5428f57e6e1463b4b8d0636e183f2213, type: 3}
-  m_Name: 1-1_Cafe_NPC_01_Talk
+  m_Name: 1-2_Cafe_NPC_01_Talk
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: -5578730105260459382}
   - {fileID: 5165221691580807302}
   - {fileID: -7226189933062860859}
-  - {fileID: -6947885555092284884}
   - {fileID: -371130604804763586}
+  - {fileID: 9023141402556921078}
 --- !u!114 &5165221691580807302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,14 +114,55 @@ MonoBehaviour:
   guid: 55a3932f984e9a44684a22d03a2f5090
   position: {x: 415, y: 254.5}
   isFirstNode: 0
+  textOutSound: {fileID: 11400000, guid: adb8ff3a7f5cc0b4c9b1027cb0c3ff7c, type: 2}
   startDialogEventSO: []
   startDialogEvent: []
   endDialogEventSO: []
   endDialogEvent: []
-  reader: Player
-  contents: "\uC548\uB155\uD558\uC138\uC694"
+  reader: NPC-1
+  contents: "\uC800\uBC88\uC5D0 \uAE30\uC800 \uAD6C\uC5ED\uC5D0\uC11C <Wobble=5>\uB300\uADDC\uBAA8
+    \uC2E4\uC885\uC790</Wobble>\uAC00 \uBC1C\uC0DD\uD588\uB300."
   nodeDelay: 0
   nextNode: {fileID: -7226189933062860859}
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &9023141402556921078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf12593a4a5d8247bdea87308ca2eb6, type: 3}
+  m_Name: OptionNodeSO
+  m_EditorClassIdentifier: 
+  guid: 632009ff3321eac4e85363d07748d3f9
+  position: {x: 1289, y: 254}
+  isFirstNode: 0
+  textOutSound: {fileID: 0}
+  startDialogEventSO: []
+  startDialogEvent: []
+  endDialogEventSO: []
+  endDialogEvent: []
+  options:
+  - option: ......
+    optionTxt: 
+    startDialogEventSO: []
+    startDialogEvent: []
+    endDialogEventSO: []
+    endDialogEvent: []
+    nextNode: {fileID: 0}
+  - option: "\uC790\uBCF8\uC8FC\uC758\uC758 \uD3D0\uD574\uB124\uC694;;;"
+    optionTxt: 
+    startDialogEventSO: []
+    startDialogEvent: []
+    endDialogEventSO: []
+    endDialogEvent: []
+    nextNode: {fileID: 0}
+  optionPf: {fileID: 0}
   references:
     version: 2
     RefIds: []

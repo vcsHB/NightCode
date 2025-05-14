@@ -48,6 +48,7 @@ namespace Dialog
             OnDialogEnd?.Invoke();
         }
 
+
         public virtual void ReadSingleLine()
         {
             if (_curReadingNode == null)
