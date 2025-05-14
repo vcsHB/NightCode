@@ -25,7 +25,7 @@ namespace Core.StageController
             _canvasGruop.blocksRaycasts = true;
             _canvasGruop.interactable = true;
 
-            Sequence sequence = DOTween.Sequence();
+            Sequence sequence = DOTween.Sequence().SetUpdate(true);
             sequence.Append(_toggleTween = _canvasGruop.DOFade(1f, 0.2f));
             sequence.AppendInterval(_sceneChangeIntervalDuration);
             sequence.OnComplete(() => onCompleteOpenPanel?.Invoke());
@@ -37,6 +37,7 @@ namespace Core.StageController
                 _toggleTween.Kill();
 
             _toggleTween = _canvasGruop.DOFade(0f, 0.2f)
+                .SetUpdate(true)
                 .OnComplete(() =>
                 {
                     _canvasGruop.blocksRaycasts = false;

@@ -1,7 +1,8 @@
-namespace UI{
-
-    public interface IWindowTogglable
+namespace UI
+{
+    public interface IWindowTogglable  
     {
         public void Toggle();
+
     }
 }

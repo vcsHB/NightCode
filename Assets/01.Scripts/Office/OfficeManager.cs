@@ -12,6 +12,7 @@ namespace Base.Office
         public uint Money { get; private set; } = 0;
         public event Action onGetMoney, onLoseMoney;
 
+        public OfficeSO office;
         public OfficeNPC an, jinLay;
 
         //public MissionSelectPanel missionSelectPanel;
@@ -28,6 +29,7 @@ namespace Base.Office
        
         public void Init(OfficeSO office)
         {
+            this.office = office;
             an.Init(office.ANInfo);
             jinLay.Init(office.JinLayInfo);
         }
@@ -74,11 +76,6 @@ namespace Base.Office
             OfficeSave save = JsonUtility.FromJson<OfficeSave>(json);
 
             Money = save.money;
-        }
-
-        internal void Init(object officeInfo)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
