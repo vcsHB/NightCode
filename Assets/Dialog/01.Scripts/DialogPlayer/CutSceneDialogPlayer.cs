@@ -1,46 +1,49 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using PerformanceSystem.CutScene;
 using UnityEngine;
-using UnityEngine.Playables;
 
 namespace Dialog
 {
     public class CutSceneDialogPlayer : InGameDialogPlayer
     {
-        [SerializeField] private PlayableDirector _director;
+        [SerializeField] private CutSceneDirector _director;
+        [SerializeField] private bool _startOnAwake;
         private bool _isDirectorStopped = false;
 
         protected override void Awake()
         {
             base.Awake();
-            _director = GetComponent<PlayableDirector>();
+            if (_startOnAwake)
+                StartDialog();
         }
 
         public override void StartDialog()
         {
-            _director.Play();
+            _curReadingNode = _dialog.nodes[0];
+            _director.StartTimeline();
         }
 
         public virtual void PauseDirector()
         {
-            _director.Pause();
+            _director.PauseTimeline();
+            print("Pause");
             _isDirectorStopped = true;
         }
 
         public virtual void ReadNode()
         {
             ReadSingleLine();
+           
         }
 
         public virtual void ReadNodeWithPause()
         {
-            ReadNode();
             PauseDirector();
+            ReadNode();
         }
 
-        protected override IEnumerator WaitNodeRoutine(Func<bool> waitPredict, Action endAction)
+        protected override IEnumerator WaitNodeRoutine(Func<bool> waitPredict)
         {
             yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(() => _isDirectorStopped);
@@ -61,7 +64,7 @@ namespace Dialog
             _curReadingNode.endDialogEvent.ForEach(dialogEvent => dialogEvent.PlayEvent(this, _currentActor));
             yield return new WaitUntil(() => _curReadingNode.endDialogEvent.Exists(dialogEvent => dialogEvent.isCompleteEvent == false) == false);
 
-            endAction?.Invoke();
+            _waitCompleteAction?.Invoke();
             _curReadingNode = _nextNode;
             _isReadingDialog = false;
 
@@ -71,7 +74,7 @@ namespace Dialog
                 _optionTalk = null;
             }
 
-            _director.Resume(); 
+            _director.ResumeTimeline();
             _isDirectorStopped = false;
         }
     }

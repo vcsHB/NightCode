@@ -58,6 +58,12 @@ namespace Agents.Players
             IsActive = value;
         }
 
+        public virtual void SetIdleEnter()
+        {
+            _stateMachine.ChangeState("Idle");
+            OnEnterEvent?.Invoke();
+
+        }
         public virtual void EnterCharacter()
         {
             _stateMachine.ChangeState("Enter");
