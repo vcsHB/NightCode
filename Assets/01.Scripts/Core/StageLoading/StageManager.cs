@@ -70,6 +70,13 @@ namespace Core.StageController
             stageLoadingPanel.Open();
         }
 
+        public void LoadScene()
+        {
+            stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.onCompletClosePanel += InitStage;
+            stageLoadingPanel.Open();
+        }
+
         public void LoadNextStage()
         {
             if (currentStage.nextStage == null)

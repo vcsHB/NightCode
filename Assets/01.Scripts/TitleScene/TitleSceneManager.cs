@@ -20,7 +20,7 @@ namespace TitleScene
         public void HandleStartBoss()
         {
             StageManager.Instance.currentStage = _bossStage;
-            StageManager.Instance.LoadCurrentScene();
+            StageManager.Instance.LoadScene();
         }
 
         public void ResetData()
