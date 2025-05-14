@@ -14,7 +14,7 @@ namespace Dialog
 
         public override bool Decision()
         {
-            return DialogConditionManager.instance.GetVisit(node.guid) >= visitCnt;
+            return DialogConditionManager.Instance.GetVisit(node.guid) >= visitCnt;
         }
 
     }
