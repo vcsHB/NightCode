@@ -41,7 +41,7 @@ namespace Base.Cafe
 
 
         public RectTransform RectTrm => transform as RectTransform;
-        private Vector2 screenSize = new Vector2(Screen.width, Screen.height);
+        private Vector2 screenSize => new Vector2(Screen.width, Screen.height);
 
 
         private void Start()
@@ -81,8 +81,6 @@ namespace Base.Cafe
             if (isPressed)
             {
                 _checkPrevPosition = false;
-
-                ketchupTip.anchoredPosition = Mouse.current.position.value;// - screenSize / 2;
                 ketchupParticle.Play();
             }
             else
