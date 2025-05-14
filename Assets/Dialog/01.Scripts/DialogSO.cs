@@ -60,6 +60,7 @@ namespace Dialog
 
             if (parent is BranchNodeSO branch)
             {
+                Debug.Log(index + " " + branch.nextNodes.Count);
                 branch.nextNodes[index] = nextNode;
                 return;
             }
