@@ -23,14 +23,14 @@ namespace Office.CharacterSkillTree
             _slotParent.GetComponentsInChildren<StatSlot>().ToList()
                 .ForEach(prevSlot => Destroy(prevSlot.gameObject));
 
-            _characterName.SetText(_characterNameList[(int)tree.characterType]);
-            StatGroupSO statGroup = CharacterStatManager.Instance.StatGroup[tree.characterType];
+            //_characterName.SetText(_characterNameList[(int)tree.characterType]);
+            //StatGroupSO statGroup = CharacterStatManager.Instance.StatGroup[tree.characterType];
 
-            statGroup.statList.ForEach(stat =>
-            {
-                StatSlot slot = Instantiate(_statSlotPf, _slotParent);
-                slot.SetStat(stat);
-            });
+            //statGroup.statList.ForEach(stat =>
+            //{
+            //    StatSlot slot = Instantiate(_statSlotPf, _slotParent);
+            //    slot.SetStat(stat);
+            //});
 
 
 

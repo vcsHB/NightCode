@@ -67,7 +67,7 @@ public partial class MissionGraphView : GraphView
 
     private void CreateNode(Type type, Vector2 position)
     {
-        StageSO node = _missionSet.CreateMission(type);
+        StageSO node = _missionSet.CreateStage(type);
         node.position = position;
         CreateNodeView(node);
     }

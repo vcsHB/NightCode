@@ -1,9 +1,6 @@
-using Office.CharacterSkillTree;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
-using UnityEngine.Events;
 
 
 namespace StatSystem
@@ -61,17 +58,9 @@ namespace StatSystem
         }
     }
 
-
-    [Serializable]
-    public class StatSave
-    {
-        public List<TechTreeSave> treeSave = new List<TechTreeSave>();
-    }
-
     [Serializable]
     public class TechTreeSave
     {
-        public CharacterEnum characterType;
         public List<string> openListGUID;
     }
 }
