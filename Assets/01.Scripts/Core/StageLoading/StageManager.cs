@@ -11,7 +11,7 @@ namespace Core.StageController
     public class StageManager : MonoSingleton<StageManager>
     {
         public StageSetSO stageSet;
-        [HideInInspector] public StageSO _currentStage;
+        [HideInInspector] public StageSO currentStage;
 
         //SerailizeField is for debugind
         [SerializeField] private int _stageProgress = 0;
@@ -27,6 +27,7 @@ namespace Core.StageController
                 _instance = this;
                 DontDestroyOnLoad(gameObject);
                 stageLoadingPanel = GetComponentInChildren<StageLoadingPanel>();
+
                 Load();
             }
             else
@@ -35,45 +36,85 @@ namespace Core.StageController
             }
         }
 
+        public void GoToTitle()
+        {
+            stageLoadingPanel.onCompleteOpenPanel += LoadTitle;
+            stageLoadingPanel.Open();
+        }
+
+        private void LoadTitle()
+        {
+            SceneManager.LoadScene(SceneName.TitleScene);
+
+            stageLoadingPanel.Close();
+            stageLoadingPanel.onCompleteOpenPanel -= LoadTitle;
+        }
+
         public StageSO GetNextStage()
         {
             if (stageSet.stageList.Count <= _stageProgress + 1) return null;
             return stageSet.stageList[_stageProgress + 1];
         }
 
+        public void LoadCurrentScene()
+        {
+            if (currentStage == null)
+            {
+                currentStage = stageSet.stageList.Find(stage => stage.prevStage == null);
+                _stageProgress = currentStage.id;
+            }
+            else currentStage = stageSet.stageList[_stageProgress];
+
+            stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.onCompletClosePanel += InitStage;
+            stageLoadingPanel.Open();
+        }
+
+        public void LoadScene()
+        {
+            stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.onCompletClosePanel += InitStage;
+            stageLoadingPanel.Open();
+        }
+
         public void LoadNextStage()
         {
-            if (_currentStage.nextStage == null)
+            if (currentStage.nextStage == null)
             {
                 Debug.LogError("NextStageIsNotExsist");
                 return;
             }
 
-            _currentStage = _currentStage.nextStage;
-            _stageProgress = _currentStage.id;
+            currentStage = currentStage.nextStage;
+            _stageProgress = currentStage.id;
             stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.onCompletClosePanel += InitStage;
             stageLoadingPanel.Open();
         }
 
         public void ReloadCurrentScene()
         {
             stageLoadingPanel.onCompleteOpenPanel += LoadStage;
+            stageLoadingPanel.onCompletClosePanel += InitStage;
             stageLoadingPanel.Open();
+        }
+
+        private void InitStage()
+        {
+            if (currentStage is CafeStageSO cafeStage)
+                CafeManager.Instance.Init(cafeStage.cafeInfo);
+
+            if (currentStage is OfficeStageSO officeStage)
+                OfficeManager.Instance.Init(officeStage.officeInfo);
+
+            stageLoadingPanel.onCompletClosePanel -= InitStage;
         }
 
         private void LoadStage()
         {
-            AsyncOperation loadHandle = SceneManager.LoadSceneAsync(_currentStage.sceneName);
-            loadHandle.completed += (handle) =>
-            {
-                stageLoadingPanel.Close();
+            SceneManager.LoadScene(currentStage.sceneName);
 
-                if (_currentStage is CafeStageSO cafeStage)
-                    CafeManager.Instance.Init(cafeStage.cafeInfo);
-
-                if (_currentStage is OfficeStageSO officeStage)
-                    OfficeManager.Instance.Init(officeStage.officeInfo);
-            };
+            stageLoadingPanel.Close();
             stageLoadingPanel.onCompleteOpenPanel -= LoadStage;
             Save();
         }
@@ -85,8 +126,11 @@ namespace Core.StageController
             if (directiory.Exists == false)
                 directiory.Create();
 
-            if (_currentStage == null)
-                _currentStage = stageSet.stageList[0];
+            if (File.Exists(_path) == false)
+            {
+                currentStage = stageSet.stageList.Find(stage => stage.isFirstStage);
+                _stageProgress = currentStage.id;
+            }
 
             StageSave save = new StageSave();
             save.currentStage = _stageProgress;
@@ -104,10 +148,7 @@ namespace Core.StageController
             StageSave save = JsonUtility.FromJson<StageSave>(json);
 
             _stageProgress = save.currentStage;
-            _currentStage = stageSet.stageList[_stageProgress];
-
-            if (_currentStage == null) _currentStage = stageSet.stageList[0];
-            LoadStage();
+            currentStage = stageSet.stageList[_stageProgress];
         }
     }
 

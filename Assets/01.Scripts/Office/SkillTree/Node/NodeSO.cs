@@ -12,7 +12,7 @@ namespace Office.CharacterSkillTree
 
         [HideInInspector] public int id;
         public List<NodeSO> nextNodes;
-        [HideInInspector] public NodeSO prevNode;
+        public NodeSO prevNode;
         public List<NodeSO> exceptNodes;
 
 

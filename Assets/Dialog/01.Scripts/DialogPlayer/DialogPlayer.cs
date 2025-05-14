@@ -56,6 +56,7 @@ namespace Dialog
             OnDialogEnd?.Invoke();
         }
 
+
         public virtual void ReadSingleLine()
         {
             if (_curReadingNode == null)
@@ -64,7 +65,7 @@ namespace Dialog
                 return;
             }
 
-            Debug.Log("ReadSingleLine");
+            DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
             StartCoroutine(ReadingNodeRoutine());
             //DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
         }

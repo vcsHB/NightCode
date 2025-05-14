@@ -8,5 +8,6 @@ namespace Core
         public static string TutorialScene => "TutorailScene";
         public static string CafeScene => "CafeScene";
         public static string OfficeScene => "OfficeScene";
+        public static string TitleScene => "TitleScene";
     }
 }

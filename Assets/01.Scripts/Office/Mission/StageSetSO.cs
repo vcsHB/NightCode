@@ -14,7 +14,7 @@ namespace Core.StageController
         public List<StageSO> stageList = new ();
 
 #if UNITY_EDITOR
-        public StageSO CreateMission(Type type)
+        public StageSO CreateStage(Type type)
         {
             StageSO stage = ScriptableObject.CreateInstance(type) as StageSO;
             if (stage == null) return null;
@@ -39,7 +39,7 @@ namespace Core.StageController
 
         public StageSO GetConnectedMissions(StageSO mission) 
             => mission.nextStage;
-        public StageSO GetPrevNode(StageSO mission) => mission.prevMission;
+        public StageSO GetPrevNode(StageSO mission) => mission.prevStage;
 
         public void RemoveNextNode(StageSO parent, StageSO child)
         {

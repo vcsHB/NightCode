@@ -1,3 +1,4 @@
+using SoundManage;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Dialog
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
         public bool isFirstNode;
+        public SoundSO textOutSound;
 
         public List<DialogEventSO> startDialogEventSO;
         [SerializeReference] public List<DialogEvent> startDialogEvent = new();

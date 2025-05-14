@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 14
   guid: 42215a4e07b685441ba9ea4ed5a4bec5
-  position: {x: 1252.284, y: 202.55602}
-  prevMission: {fileID: 0}
+  position: {x: 1256.8724, y: 211.245}
+  prevStage: {fileID: 0}
   nextStage: {fileID: 3001399436601047601}
-  displayStageName: "\uC0AC\uBB34\uC2E4_4"
+  isFirstStage: 0
+  displayStageName: "\uC0AC\uBB34\uC2E4_6"
   stageIcon: {fileID: 0}
   sceneName: OfficeScene
-  officeInfo: {fileID: 0}
+  officeInfo: {fileID: 11400000, guid: 9f0b39e8b34595f4e95c841059a22cf1, type: 2}
   cutScene: 0
   cutSceneDialog: {fileID: 0}
 --- !u!114 &-8925072373233417195
@@ -37,9 +38,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 7
   guid: f625f24241176b14aac2ecfb174f9585
-  position: {x: 1582.6802, y: 205.48003}
-  prevMission: {fileID: 0}
+  position: {x: 2062.8994, y: 202.637}
+  prevStage: {fileID: 0}
   nextStage: {fileID: 3270399570515033136}
+  isFirstStage: 0
   displayStageName: 1-4Lv
   stageIcon: {fileID: 0}
   sceneName: 1-4Lv
@@ -58,13 +60,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   guid: 4eabc4afb9637194e86682569e8b7d9c
-  position: {x: 772, y: 207.2}
-  prevMission: {fileID: 0}
+  position: {x: 773.21674, y: 205.6}
+  prevStage: {fileID: 0}
   nextStage: {fileID: 9195267687057114728}
+  isFirstStage: 0
   displayStageName: 1-2lv
   stageIcon: {fileID: 0}
   sceneName: 1-2Lv
   stageExplain: "2\uBC88\uC9F8"
+--- !u!114 &-6955275437481886970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f42a87ea44f525469426d4e9dce950c, type: 3}
+  m_Name: 17.
+  m_EditorClassIdentifier: 
+  id: 17
+  guid: 25a50bc560101a3489af0375da93c037
+  position: {x: 1907.0801, y: 207.56003}
+  prevStage: {fileID: 0}
+  nextStage: {fileID: -8925072373233417195}
+  isFirstStage: 0
+  displayStageName: "\uC0AC\uBB34\uC2E4_8"
+  stageIcon: {fileID: 0}
+  sceneName: OfficeScene
+  officeInfo: {fileID: 11400000, guid: 29c9b54ba616f474fbf72c615cfe7c6d, type: 2}
+  cutScene: 0
+  cutSceneDialog: {fileID: 0}
 --- !u!114 &-4334778715261510855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,11 +107,12 @@ MonoBehaviour:
   id: 9
   guid: bf389fb8a1f77a84b9123dd4ed28a91a
   position: {x: 458.47998, y: 211.56006}
-  prevMission: {fileID: 0}
+  prevStage: {fileID: 0}
   nextStage: {fileID: -3375644941950091559}
-  displayStageName: "\uCE74\uD398_1"
+  isFirstStage: 0
+  displayStageName: "\uCE74\uD398_2"
   stageIcon: {fileID: 0}
-  sceneName: Cafe_TutorialScene
+  sceneName: CafeScene
   cafeInfo: {fileID: 0}
 --- !u!114 &-3375644941950091559
 MonoBehaviour:
@@ -100,13 +128,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11
   guid: 3bf4dd3b5f6011747870a4ec542ba7f2
-  position: {x: 616.08, y: 208.56003}
-  prevMission: {fileID: 0}
+  position: {x: 603.906, y: 207.20001}
+  prevStage: {fileID: 0}
   nextStage: {fileID: -7725821293977742183}
-  displayStageName: "\uC0AC\uBB34\uC2E4_2"
+  isFirstStage: 0
+  displayStageName: "\uC0AC\uBB34\uC2E4_4"
   stageIcon: {fileID: 0}
   sceneName: OfficeScene
-  officeInfo: {fileID: 0}
+  officeInfo: {fileID: 11400000, guid: 655616b14dbf4d34084bb98d01bc14e6, type: 2}
   cutScene: 0
   cutSceneDialog: {fileID: 0}
 --- !u!114 &-1906522265503306003
@@ -123,10 +152,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   guid: 09c77bf8d88ea7543b54b000b60781fe
-  position: {x: 31.199951, y: 209.6}
-  prevMission: {fileID: 0}
+  position: {x: 31.200039, y: 208.54198}
+  prevStage: {fileID: 0}
   nextStage: {fileID: 6314763210727406670}
-  displayStageName: "\uC0AC\uBB34\uC2E4"
+  isFirstStage: 0
+  displayStageName: "\uC0AC\uBB34\uC2E4_2"
   stageIcon: {fileID: 0}
   sceneName: OfficeScene
   officeInfo: {fileID: 11400000, guid: 5bba704f49826d341a1b544af6abb876, type: 2}
@@ -146,10 +176,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   guid: 3645adb5ce50c8d488208d8854335a5a
-  position: {x: -263.3656, y: 208.68002}
-  prevMission: {fileID: 0}
+  position: {x: -303, y: 208.5}
+  prevStage: {fileID: 0}
   nextStage: {fileID: 9000598671843702226}
-  displayStageName: "\uC0AC\uBB34\uC2E4"
+  isFirstStage: 0
+  displayStageName: "\uC0AC\uBB34\uC2E4_1"
   stageIcon: {fileID: 0}
   sceneName: OfficeScene
   officeInfo: {fileID: 11400000, guid: acd54000942e49a44ba06146fd120b70, type: 2}
@@ -183,6 +214,31 @@ MonoBehaviour:
   - {fileID: 3963322927231098171}
   - {fileID: -9208281854445842032}
   - {fileID: 3607940404995409366}
+  - {fileID: 3259760090188008209}
+  - {fileID: 325315851442216346}
+  - {fileID: -6955275437481886970}
+--- !u!114 &325315851442216346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65b37d9dd61b1234da259b39551369c5, type: 3}
+  m_Name: 17.
+  m_EditorClassIdentifier: 
+  id: 17
+  guid: 0dd68c392bf7ecc4281dce693b6c5c25
+  position: {x: 1753.5999, y: 217.00073}
+  prevStage: {fileID: 0}
+  nextStage: {fileID: -6955275437481886970}
+  isFirstStage: 0
+  displayStageName: "\uCE74\uD398_4"
+  stageIcon: {fileID: 0}
+  sceneName: CafeScene
+  cafeInfo: {fileID: 0}
 --- !u!114 &2456666334951687826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,12 +254,13 @@ MonoBehaviour:
   id: 8
   guid: e9f7c4e161f5b384ca068c6c89020be5
   position: {x: 314.4, y: 207.08003}
-  prevMission: {fileID: 0}
+  prevStage: {fileID: 0}
   nextStage: {fileID: -4334778715261510855}
-  displayStageName: "\uC0AC\uBB34\uC2E4_1"
+  isFirstStage: 0
+  displayStageName: "\uC0AC\uBB34\uC2E4_3"
   stageIcon: {fileID: 0}
   sceneName: OfficeScene
-  officeInfo: {fileID: 0}
+  officeInfo: {fileID: 11400000, guid: 68e25b1b3ca11da42a0e7d558f1aa875, type: 2}
   cutScene: 0
   cutSceneDialog: {fileID: 0}
 --- !u!114 &3001399436601047601
@@ -220,13 +277,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 6
   guid: 24099597269256e45894e02f4e8813d6
-  position: {x: 1425.3601, y: 207.44006}
-  prevMission: {fileID: 0}
-  nextStage: {fileID: -8925072373233417195}
+  position: {x: 1418.504, y: 210.99797}
+  prevStage: {fileID: 0}
+  nextStage: {fileID: 3259760090188008209}
+  isFirstStage: 0
   displayStageName: 1-3Lv
   stageIcon: {fileID: 0}
   sceneName: 1-3Lv
   stageExplain: "3\uBC88\uC9F8"
+--- !u!114 &3259760090188008209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f42a87ea44f525469426d4e9dce950c, type: 3}
+  m_Name: 15.
+  m_EditorClassIdentifier: 
+  id: 15
+  guid: b22eb48c397a1974e84bafc452e4d3f8
+  position: {x: 1600, y: 202.27997}
+  prevStage: {fileID: 0}
+  nextStage: {fileID: 325315851442216346}
+  isFirstStage: 0
+  displayStageName: "\uC0AC\uBB34\uC2E4_7"
+  stageIcon: {fileID: 0}
+  sceneName: OfficeScene
+  officeInfo: {fileID: 11400000, guid: 7fde8290efee7ae43a4a5ef4a137d952, type: 2}
+  cutScene: 0
+  cutSceneDialog: {fileID: 0}
 --- !u!114 &3270399570515033136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,13 +323,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   guid: b3447180605475c409286d22e4557e46
-  position: {x: 1742.76, y: 195.16006}
-  prevMission: {fileID: -1906522265503306003}
+  position: {x: 2225.2722, y: 184.76004}
+  prevStage: {fileID: 0}
   nextStage: {fileID: 0}
+  isFirstStage: 0
   displayStageName: "\uBCF4\uC2A4\uC804"
   stageIcon: {fileID: 0}
   sceneName: Stage3_Boss
-  stageExplain: 
+  stageExplain: "\uBCF4\uC2A4\uC804"
 --- !u!114 &3607940404995409366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,8 +346,9 @@ MonoBehaviour:
   id: 14
   guid: c1e9dbc0bd7cd514b98de70cd3a09993
   position: {x: -473.4001, y: 210.52007}
-  prevMission: {fileID: 0}
+  prevStage: {fileID: 0}
   nextStage: {fileID: -1715983533992208255}
+  isFirstStage: 1
   displayStageName: "\uD29C\uD1A0\uB9AC\uC5BC"
   stageIcon: {fileID: 0}
   sceneName: TutorialScene
@@ -283,12 +367,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 13
   guid: 74ccaa2ac9630b84ab995d0432767371
-  position: {x: 1085.756, y: 210.684}
-  prevMission: {fileID: 0}
+  position: {x: 1093.1975, y: 208.31648}
+  prevStage: {fileID: 0}
   nextStage: {fileID: -9208281854445842032}
-  displayStageName: "\uCE74\uD398_2"
+  isFirstStage: 0
+  displayStageName: "\uCE74\uD398_3"
   stageIcon: {fileID: 0}
-  sceneName: Cafe_TutorialScene
+  sceneName: CafeScene
   cafeInfo: {fileID: 0}
 --- !u!114 &6314763210727406670
 MonoBehaviour:
@@ -305,8 +390,9 @@ MonoBehaviour:
   id: 4
   guid: 6ecdcc287322b304b8adb031e3bac984
   position: {x: 181.59998, y: 208.80002}
-  prevMission: {fileID: 0}
+  prevStage: {fileID: 0}
   nextStage: {fileID: 2456666334951687826}
+  isFirstStage: 0
   displayStageName: 1-1Lv
   stageIcon: {fileID: 0}
   sceneName: 1-1Lv
@@ -325,12 +411,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   guid: 8e06b950af6e8da4b90f0fb092a760d1
-  position: {x: -100.79999, y: 210.4}
-  prevMission: {fileID: 0}
+  position: {x: -123, y: 210.5}
+  prevStage: {fileID: 0}
   nextStage: {fileID: -1906522265503306003}
-  displayStageName: "\uCE74\uD398"
+  isFirstStage: 0
+  displayStageName: "\uCE74\uD398_1"
   stageIcon: {fileID: 0}
-  sceneName: Cafe_TutorialScene
+  sceneName: CafeScene
   cafeInfo: {fileID: 11400000, guid: e5dffcbb668dcd44d8c055d2c1d0359e, type: 2}
 --- !u!114 &9195267687057114728
 MonoBehaviour:
@@ -346,12 +433,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 12
   guid: 12d4047d4753d474ca46ae1e7b8a6281
-  position: {x: 934.12213, y: 210.88998}
-  prevMission: {fileID: 0}
+  position: {x: 916.5146, y: 209.6}
+  prevStage: {fileID: 0}
   nextStage: {fileID: 3963322927231098171}
-  displayStageName: "\uC0AC\uBB34\uC2E4_3"
+  isFirstStage: 0
+  displayStageName: "\uC0AC\uBB34\uC2E4_5"
   stageIcon: {fileID: 0}
   sceneName: OfficeScene
-  officeInfo: {fileID: 0}
+  officeInfo: {fileID: 11400000, guid: f3801ef6075c335498c33a0e48137872, type: 2}
   cutScene: 0
   cutSceneDialog: {fileID: 0}

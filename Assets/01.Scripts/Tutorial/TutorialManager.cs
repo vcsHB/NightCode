@@ -1,5 +1,6 @@
 using System.Collections;
 using Combat.PlayerTagSystem;
+using Core.StageController;
 using QuestSystem.LevelSystem;
 using UI;
 using UnityEngine;
@@ -43,15 +44,15 @@ namespace Tutorial
 
         public void ExitAndMoveToScene(string sceneName)
         {
-            StartCoroutine(ExitScene(sceneName));
+            StartCoroutine(ExitScene());
 
         }
 
-        private IEnumerator ExitScene(string sceneName)
+        private IEnumerator ExitScene()
         {
             OpenSceneExitPanel();
             yield return new WaitForSeconds(_sceneExitDelay);
-            SceneManager.LoadScene(sceneName);
+            StageManager.Instance.LoadNextStage();
         }
 
 

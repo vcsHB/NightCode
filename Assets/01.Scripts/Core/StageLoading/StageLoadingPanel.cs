@@ -13,13 +13,12 @@ namespace Core.StageController
         private CanvasGroup _canvasGruop;
         private Tween _toggleTween;
 
-        private void Awake()
-        {
-            _canvasGruop = GetComponent<CanvasGroup>();
-        }
 
         public void Open()
         {
+            if(_canvasGruop == null)
+                _canvasGruop = GetComponent<CanvasGroup>();
+
             if (_toggleTween != null && _toggleTween.active)
                 _toggleTween.Kill();
 

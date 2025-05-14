@@ -1,3 +1,4 @@
+using SoundManage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -102,6 +103,9 @@ namespace Dialog
             {
                 if (tmp.text[tmp.maxVisibleCharacters++] == ' ') continue;
 
+                if (node.textOutSound != null)
+                    SoundController.Instance.PlaySound(node.textOutSound, _currentActor.target.position);
+
                 yield return new WaitForSeconds(_textOutDelay);
                 yield return new WaitUntil(() => stopReading == false);
             }
@@ -160,7 +164,7 @@ namespace Dialog
             _curReadingNode = _nextNode;
             _isReadingDialog = false;
 
-            if(_optionTalk)
+            if (_optionTalk)
             {
                 _option.Close();
                 _optionTalk = null;

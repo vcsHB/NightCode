@@ -14,7 +14,7 @@ namespace Base.Cafe
         [SerializeField] private SpriteRenderer _iconRenderer;
         [SerializeField] private float _playerStandingOffset;
 
-        [SerializeField] private Sprite _onSitIcon, _requierFoodIcon, _dirtyIcon;
+        [SerializeField] private Sprite _onSitIcon, _requierFoodIcon;
         private List<Sprite> _interactIcon;
 
         private bool _isGetFood;
@@ -32,14 +32,12 @@ namespace Base.Cafe
             _stateMachine = new CafeSitStateMachine();
             _stateMachine.AddState(ECafeSitState.Empty, new CafeSitEmptyState(this));
             _stateMachine.AddState(ECafeSitState.Wait, new CafeSitWaitState(this));
-            _stateMachine.AddState(ECafeSitState.Dirty, new CafeSitDirtyState(this));
             _stateMachine.ChangeState(ECafeSitState.Empty);
 
-            _interactIcon = new List<Sprite>(3)
+            _interactIcon = new List<Sprite>(2)
             {
                 _onSitIcon,
                 _requierFoodIcon,
-                _dirtyIcon
             };
         }
 
@@ -90,7 +88,7 @@ namespace Base.Cafe
             if (AssingedCustomer == null) return;
 
             AssingedCustomer = null;
-            _stateMachine.ChangeState(ECafeSitState.Dirty);
+            _stateMachine.ChangeState(ECafeSitState.Empty);
         }
 
         public void CleanTable()

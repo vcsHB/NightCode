@@ -12,7 +12,7 @@ namespace Dialog.SituationControl
         public UnityEvent OnDialogueStartEvent;
         [SerializeField] private float _dialogueStartDelay = 3f;
         [SerializeField] private DialogSO _dialogScript;
-        private InGameDialogPlayer _dialoguePlayer;
+        [SerializeField]private InGameDialogPlayer _dialoguePlayer;
         private SituationElement[] _elements;
 
         private void Awake()
