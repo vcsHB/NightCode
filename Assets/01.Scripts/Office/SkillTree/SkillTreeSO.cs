@@ -13,6 +13,14 @@ namespace Office.CharacterSkillTree
     {
         public List<NodeSO> nodes = new List<NodeSO>();
 
+        private void OnValidate()
+        {
+            for(int i = 0; i< nodes.Count; ++i)
+            {
+                nodes[i].id = i;
+            }
+        }
+
 #if UNITY_EDITOR
         public NodeSO CreateNode(System.Type type)
         {

@@ -223,12 +223,6 @@ namespace Office.CharacterSkillTree
         }
 
 
-        public void Init(CharacterEnum characterType)
-        {
-            _characterType = characterType;
-        }
-
-
         #region Edge
 
         private void InitEdge()
