@@ -1,9 +1,8 @@
-using Agents.Enemies;
 using System;
 using Unity.Behavior;
 using UnityEngine;
 using Unity.Properties;
-using Agents.Enemies.Highbinders;
+using Agents.Enemies.Bat;
 
 namespace Agents.Enemies.BT.Event
 {
@@ -11,13 +10,13 @@ namespace Agents.Enemies.BT.Event
     [CreateAssetMenu(menuName = "Behavior/Event Channels/StateChange")]
 #endif
     [Serializable, GeneratePropertyBag]
-    [EventChannelDescription(name: "StateChange", message: "change to [state]", category: "Events", id: "ba535b503dd964d3fa75a8c52eb754b9")]
-    public partial class StateChange : EventChannelBase
+    [EventChannelDescription(name: "StateChange", message: "change to [state]", category: "Events", id: "e1892734981")]
+    public partial class BatStateChange : EventChannelBase
     {
-        public delegate void StateChangeEventHandler(HighbinderStateEnum state);
+        public delegate void StateChangeEventHandler(BatStateEnum state);
         public event StateChangeEventHandler Event;
 
-        public void SendEventMessage(HighbinderStateEnum state)
+        public void SendEventMessage(BatStateEnum state)
         {
             Event?.Invoke(state);
             //Debug.Log("SendEvent 호출됨: " + state);
@@ -25,8 +24,8 @@ namespace Agents.Enemies.BT.Event
 
         public override void SendEventMessage(BlackboardVariable[] messageData)
         {
-            BlackboardVariable<HighbinderStateEnum> stateBlackboardVariable = messageData[0] as BlackboardVariable<HighbinderStateEnum>;
-            var state = stateBlackboardVariable != null ? stateBlackboardVariable.Value : default(HighbinderStateEnum);
+            BlackboardVariable<BatStateEnum> stateBlackboardVariable = messageData[0] as BlackboardVariable<BatStateEnum>;
+            var state = stateBlackboardVariable != null ? stateBlackboardVariable.Value : default(BatStateEnum);
 
             Event?.Invoke(state);
             //Debug.Log("SendEvent 호출됨: " + state);
@@ -36,7 +35,7 @@ namespace Agents.Enemies.BT.Event
         {
             StateChangeEventHandler del = (state) =>
             {
-                BlackboardVariable<HighbinderStateEnum> var0 = vars[0] as BlackboardVariable<HighbinderStateEnum>;
+                BlackboardVariable<BatStateEnum> var0 = vars[0] as BlackboardVariable<BatStateEnum>;
                 if (var0 != null)
                     var0.Value = state;
                 else

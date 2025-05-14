@@ -14,6 +14,7 @@ namespace CameraControllers
         public Transform CurrentFollowTarget => _camera.Follow;
         [SerializeField] private Transform _defaultFollowTarget;
         private CinemachineFollow _followCam;
+        private CinemachineConfiner2D _confinerCompo;
         private Vector3 _defaultFollowOffset;
 
         protected override void Awake()
@@ -21,6 +22,7 @@ namespace CameraControllers
             base.Awake();
 
             _followCam = _camera.GetComponent<CinemachineFollow>();
+            _confinerCompo = _camera.GetComponent<CinemachineConfiner2D>();
             _defaultFollowOffset = _followCam.FollowOffset;
             GetComponentsInChildren<ICameraControlable>(true)
                .ToList().ForEach(controller => _controllers.Add(controller.GetType(), controller));
@@ -72,6 +74,17 @@ namespace CameraControllers
         public void ResetFollowOffset()
         {
             _followCam.FollowOffset = _defaultFollowOffset;
+        }
+
+        public void SetFollowFunction(bool value)
+        {
+            _followCam.enabled = value;
+        }
+
+        public void SetConfinerFunction(bool value)
+        {
+            _confinerCompo.enabled = value;
+            
         }
 
 

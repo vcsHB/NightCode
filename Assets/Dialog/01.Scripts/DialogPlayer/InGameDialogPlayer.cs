@@ -15,6 +15,7 @@ namespace Dialog
         [SerializeField] protected DialogOption _option;
 
         protected Actor _currentActor;
+        protected Action _waitCompleteAction;
         protected OptionNodeSO _optionTalk;
         protected NodeSO _nextNode;
 
@@ -23,7 +24,12 @@ namespace Dialog
             base.Awake();
             _animPlayer = GetComponent<AnimationPlayer>();
         }
+        public override void SkipDialog()
+        {
+            
+            base.SkipDialog();
 
+        }
         #region Animation
 
         protected void LateUpdate()
@@ -104,7 +110,9 @@ namespace Dialog
                 yield return new WaitUntil(() => stopReading == false);
             }
             _nextNode = node.nextNode;
-            StartCoroutine(WaitNodeRoutine(GetInput, _currentActor.OnCompleteNode));
+            _waitCompleteAction = _currentActor.OnCompleteNode;
+            StartCoroutine(WaitNodeRoutine(GetInput));
+            
         }
 
         protected virtual void ReadingOptionNodeRoutine(OptionNodeSO node)
@@ -132,7 +140,7 @@ namespace Dialog
             ReadSingleLine();
         }
 
-        protected virtual IEnumerator WaitNodeRoutine(Func<bool> waitPredict, Action endAction)
+        protected virtual IEnumerator WaitNodeRoutine(Func<bool> waitPredict)
         {
             yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(waitPredict);
@@ -152,7 +160,7 @@ namespace Dialog
             _curReadingNode.endDialogEvent.ForEach(dialogEvent => dialogEvent.PlayEvent(this, _currentActor));
             yield return new WaitUntil(() => _curReadingNode.endDialogEvent.Exists(dialogEvent => dialogEvent.isCompleteEvent == false) == false);
 
-            endAction?.Invoke();
+            _waitCompleteAction?.Invoke();
             _curReadingNode = _nextNode;
             _isReadingDialog = false;
 

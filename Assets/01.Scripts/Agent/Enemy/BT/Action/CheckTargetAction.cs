@@ -9,7 +9,7 @@ namespace Agents.Enemies.BT.ActionNodes
 {
 
     [Serializable, GeneratePropertyBag]
-    [NodeDescription(name: "CheckTarget", story: "[Enemy] check [Target] in [DetectRange]", category: "Action", id: "e50b4c0eb5f86186b5e4ba145a69cedc")]
+    [NodeDescription(name: "CheckTarget", story: "[Enemy] check [Target] in [Radius]", category: "Action", id: "e50b4c0eb5f86186b5e4ba145a69cedc")]
     public partial class CheckTargetAction : Action
     {
 

@@ -16,6 +16,11 @@ namespace Agents.Enemies.BossManage
         private void Start()
         {
         }
+        public void SetStartBoss()
+        {
+            GetVariable<BurnOutStateChange>("StateChange").Value.SendEventMessage(BurnOutStateEnum.Idle);
+        }
+
         protected override void HandleAgentDie()
         {
             base.HandleAgentDie();
