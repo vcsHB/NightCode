@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using StatSystem;
+using UI;
 
 namespace Office
 {
-    public class SkillTreePanel : OfficeUIParent
+    public class SkillTreePanel : MonoBehaviour, IWindowPanel
     {
         [Space]
         public SkillTree[] skillTrees;
@@ -16,11 +17,18 @@ namespace Office
         [SerializeField] private float _easingDuration;
 
         private Tween _openCloseTween;
-        private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
+        private Vector2 screenPosition => new Vector2(Screen.width, Screen.height);
 
-        protected override void Awake()
+        private RectTransform RectTrm => transform as RectTransform;
+
+        protected void Awake()
         {
             RectTrm.anchoredPosition = new Vector2(0, -screenPosition.y);
+
+            for (int i = 0; i < skillTrees.Length; i++)
+            {
+                skillTrees[i].Init();
+            }
         }
 
         #region UI
@@ -43,37 +51,37 @@ namespace Office
 
         public void InitSkillTree(CharacterEnum characterType)
         {
-            _statIndicator.SetCharacter(skillTrees[(int)characterType]);
-            for (int i = 0; i < skillTrees.Length; i++)
-            {
-                skillTrees[i].Init();
-                if (i == (int)characterType)
-                {
-                    skillTrees[i].Open();
-                }
-                else
-                {
-                    skillTrees[i].Close();
-                }
-            }
+            //_statIndicator.SetCharacter(skillTrees[(int)characterType]);
+            //for (int i = 0; i < skillTrees.Length; i++)
+            //{
+            //    skillTrees[i].Init();
+            //    if (i == (int)characterType)
+            //    {
+            //        skillTrees[i].Open();
+            //    }
+            //    else
+            //    {
+            //        skillTrees[i].Close();
+            //    }
+            //}
         }
 
-        public override void OpenAnimation()
+
+
+        public void Open()
         {
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(0, _easingDuration)
-                .OnComplete(OnCompleteOpen);
+            _openCloseTween = RectTrm.DOAnchorPosY(0, _easingDuration);
         }
 
-        public override void CloseAnimation()
+        public void Close()
         {
             if (_openCloseTween != null && _openCloseTween.active)
                 _openCloseTween.Kill();
 
-            _openCloseTween = RectTrm.DOAnchorPosY(-screenPosition.y, _easingDuration)
-                .OnComplete(OnCompleteClose);
+            _openCloseTween = RectTrm.DOAnchorPosY(-screenPosition.y, _easingDuration);
         }
         #endregion
     }

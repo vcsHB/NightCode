@@ -9,7 +9,7 @@ namespace StatSystem
 {
     public class SaveManager : MonoSingleton<SaveManager>
     {
-        private StatSave _statSave = new();
+        private TechTreeSave _treeSave = new();
         private string _path => Path.Combine(Application.dataPath, "Save/TechTree.json");
 
 
@@ -26,49 +26,38 @@ namespace StatSystem
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    TechTreeSave treeSave = new TechTreeSave();
-                    treeSave.characterType = (CharacterEnum)i;
-                    treeSave.openListGUID = new List<string>();
-
-                    _statSave.treeSave.Add(treeSave);
+                    _treeSave = new TechTreeSave();
+                    _treeSave.openListGUID = new List<string>();
                 }
 
-                json = JsonUtility.ToJson(_statSave);
+                json = JsonUtility.ToJson(_treeSave);
                 File.WriteAllText(_path, json);
 
                 return;
             }
 
             json = File.ReadAllText(_path);
-            _statSave = JsonUtility.FromJson<StatSave>(json);
+            _treeSave = JsonUtility.FromJson<TechTreeSave>(json);
         }
 
         public void Save()
         {
-            string json = JsonUtility.ToJson(_statSave);
+            string json = JsonUtility.ToJson(_treeSave);
             File.WriteAllText(_path, json);
         }
 
 
         public void AddSaveStat(CharacterEnum characterType, NodeSO nodeToSave)
         {
-            if (_statSave.treeSave[(int)characterType].openListGUID.Contains(nodeToSave.guid)) return;
-            _statSave.treeSave[(int)characterType].openListGUID.Add(nodeToSave.guid);
+            if (_treeSave.openListGUID.Contains(nodeToSave.guid)) return;
+            _treeSave.openListGUID.Add(nodeToSave.guid);
 
             Save();
         }
 
-        public TechTreeSave GetStatValue(CharacterEnum characterType)
+        public TechTreeSave GetStatValue()
         {
-            for (int i = 0; i < _statSave.treeSave.Count; i++)
-            {
-                if (_statSave.treeSave[i].characterType == characterType)
-                {
-                    return _statSave.treeSave[i];
-                }
-            }
-
-            return null;
+            return _treeSave;
         }
     }
 }
