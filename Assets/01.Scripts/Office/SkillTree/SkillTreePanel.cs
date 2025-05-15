@@ -2,6 +2,8 @@ using DG.Tweening;
 using UnityEngine;
 using Office.CharacterSkillTree;
 using UI;
+using TMPro;
+using MissionAdjust;
 
 namespace Office
 {
@@ -11,6 +13,7 @@ namespace Office
         public SkillTree[] skillTrees;
         [SerializeField] private CharacterStatIndicator _statIndicator;
         [SerializeField] private float _easingDuration;
+        [SerializeField] private TextMeshProUGUI _coinText;
 
         private Tween _openCloseTween;
         private Vector2 screenPosition => new Vector2(Screen.width, Screen.height);
@@ -25,6 +28,11 @@ namespace Office
             {
                 skillTrees[i].Init();
             }
+        }
+
+        private void Update()
+        {
+            _coinText.SetText($"스킬 포인트: {AdjustmentManager.Instance.CurrentPoint}");
         }
 
         #region UI

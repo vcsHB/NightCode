@@ -241,6 +241,7 @@ MonoBehaviour:
   - {fileID: 4590811071174632128}
   _statIndicator: {fileID: 0}
   _easingDuration: 0.2
+  _coinText: {fileID: 8967982195617238955}
 --- !u!1 &3790127833907006172
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &957307378211955900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -501,9 +502,9 @@ RectTransform:
   - {fileID: 4268625249295533084}
   m_Father: {fileID: 4798713188151775913}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 643, y: -193}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 70}
   m_SizeDelta: {x: 250, y: 70}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7197874839737006435
@@ -941,6 +942,10 @@ PrefabInstance:
       propertyPath: treeSO
       value: 
       objectReference: {fileID: 11400000, guid: 9d6f406ad8ef5ff49b4bd808dbe043e2, type: 2}
+    - target: {fileID: 5758667985887925209, guid: 414a0c8fbafff4f4eb50988b29ead486, type: 3}
+      propertyPath: _coinIndicator
+      value: 
+      objectReference: {fileID: 6943550911177276269}
     - target: {fileID: 6568635453206449850, guid: 414a0c8fbafff4f4eb50988b29ead486, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -3355,6 +3360,10 @@ PrefabInstance:
       propertyPath: treeSO
       value: 
       objectReference: {fileID: 11400000, guid: b7eac87641a536f46a1f8de0f514bab5, type: 2}
+    - target: {fileID: 5758667985887925209, guid: 414a0c8fbafff4f4eb50988b29ead486, type: 3}
+      propertyPath: _coinIndicator
+      value: 
+      objectReference: {fileID: 6943550911177276269}
     - target: {fileID: 7101502849796673015, guid: 414a0c8fbafff4f4eb50988b29ead486, type: 3}
       propertyPath: m_SizeDelta.x
       value: 950

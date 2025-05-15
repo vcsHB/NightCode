@@ -19,6 +19,7 @@ namespace Office.CharacterSkillTree
         public SkillTreeSO treeSO;
         public Dictionary<NodeSO, Node> nodeDic;
         [SerializeField] private Node nodePf;
+        [SerializeField] private CoinIndicator _coinIndicator;
 
         public Transform nodeParent;
         public Transform edgeParent;
@@ -95,6 +96,8 @@ namespace Office.CharacterSkillTree
                     {
                         if (treeSO.nodes[i] != node.NodeType) continue;
                         nodeDic.Add(treeSO.nodes[i], node);
+                        node.onPointerEnter += _coinIndicator.SetIndicator;
+                        node.onPointerExit += _coinIndicator.Close;
                     }
                 }
             }
@@ -119,6 +122,10 @@ namespace Office.CharacterSkillTree
             }
         }
 
+        private void CalculateCoin()
+        {
+           
+        }
 
         public bool TryGetNode(NodeSO nodeSO, out Node node)
         {

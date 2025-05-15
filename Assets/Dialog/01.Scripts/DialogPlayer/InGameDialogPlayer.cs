@@ -30,9 +30,10 @@ namespace Dialog
 
         private void Update()
         {
+            if (_isReadingDialog == false) return;
+
             if(_isReadingNodeComplete == false && GetInput())
             {
-                Debug.Log("¤²¤¸¤§¤¡");
                 StopCoroutine(_readingNodeRoutine);
                 _currentActor.ContentText.maxVisibleCharacters = _currentActor.ContentText.text.Length;
 

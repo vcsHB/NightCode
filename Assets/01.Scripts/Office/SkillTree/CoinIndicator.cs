@@ -11,8 +11,14 @@ namespace Office.CharacterSkillTree
 
         public void SetIndicator(int coin)
         {
+            gameObject.SetActive(true);
             RectTrm.anchoredPosition = Mouse.current.position.ReadValue();
             _coinText.SetText($"{coin} ÇÊ¿ä");
+        }
+
+        public void Close()
+        {
+            gameObject.SetActive(false);
         }
     }
 }
