@@ -1,3 +1,4 @@
+using Core.StageController;
 using InputManage;
 using UnityEngine;
 namespace Dialog.SituationControl
@@ -16,6 +17,11 @@ namespace Dialog.SituationControl
         public override void EndSituation()
         {
             _playerInput.SetEnabledAllStatus();
+        }
+
+        public void GoToTitle()
+        {
+            StageManager.Instance.GoToTitle();
         }
     }
 }
