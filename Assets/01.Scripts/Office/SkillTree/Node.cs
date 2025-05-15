@@ -1,4 +1,5 @@
 using GGM.UI;
+using MissionAdjust;
 using StatSystem;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Office.CharacterSkillTree
         private Coroutine _currentCancelRoutine;
 
         private CharacterEnum _characterType;
-        private readonly string CoinLackText = $"ÄÚÀÎÀÌ ºÎÁ·ÇÕ´Ï´Ù¤Ð¤Ð";
+        private readonly string CoinLackText = $"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´Ù¤Ð¤ï¿½";
 
         #region Property
 
@@ -69,7 +70,7 @@ namespace Office.CharacterSkillTree
 
         #region EnableNode
 
-        //¼±ÅÃµÈ ³ëµåµéÀ» ÀüºÎ È°¼ºÈ­½ÃÄÑÁÖ´Â ÄÚ·çÆ¾
+        //ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ú·ï¿½Æ¾
         public IEnumerator StartEnableAllSelectedNodes()
         {
             if (_cancelCoroutine != null)
@@ -80,7 +81,7 @@ namespace Office.CharacterSkillTree
             GetPrevNodes();
             _enabledNodes = new Stack<Node>();
 
-            //_prevNodes¿¡ È°¼ºÈ­ ½ÃÅ³ ³ëµåµéÀ» ¼øÂ÷ÀûÀ¸·Î ²¨³»¼­ È°¼ºÈ­½ÃÅ°±â ½Ãµµ
+            //_prevNodesï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½Å°ï¿½ï¿½ ï¿½Ãµï¿½
             while (_prevNodes.TryPop(out _curEnableNode))
             {
                 _currentEnableRoutine = StartCoroutine(_curEnableNode.EnableNodeRoutine());
@@ -88,8 +89,8 @@ namespace Office.CharacterSkillTree
                 yield return _currentEnableRoutine;
             }
 
-            //ÀüºÎ È°¼ºÈ­ ‰ç´Ù¸é, ÇÑ¹ø¿¡ µ¥ÀÌÅÍ»ó¿¡¼­ È°¼ºÈ­ ½ÃÄÑÁÖ±â
-            //Ãë¼ÒÇßÀ» ¶§ ÀüºÎ »ç¶óÁ®¾ßÇÏ±â ¶§¹®
+            //ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½Ù¸ï¿½, ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í»ó¿¡¼ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
             while (_enabledNodes.TryPop(out _curEnableNode))
             {
                 _curEnableNode.EnableNode();
@@ -98,6 +99,12 @@ namespace Office.CharacterSkillTree
 
         public IEnumerator EnableNodeRoutine()
         {
+            if (AdjustmentManager.Instance.CurrentPoint < _nodeType.requireCoin)
+                yield break;
+
+            AdjustmentManager.Instance.UsePoint(_nodeType.requireCoin);
+
+
             float process = 0;
 
             if (_nodeType is not StartNodeSO)
@@ -122,19 +129,23 @@ namespace Office.CharacterSkillTree
 
         public void EnableNode(bool isLoading = false)
         {
+            if (isLoading == false)
+            {
+                SaveManager.Instance.AddSaveStat(_characterType, NodeType);
+
+            }
             _isNodeEnable = true;
-            //ÀçÈ­ »ç¿ë
+            //ï¿½ï¿½È­ ï¿½ï¿½ï¿½
             //.Instance.(NodeType.requireCoin);
 
-            //fillAmount 1·Î ÃÊ±âÈ­
+            //fillAmount 1ï¿½ï¿½ ï¿½Ê±ï¿½È­
             _vertexFill.fillAmount = 1;
             _edgeFill.SetFillAmount(1);
 
             NodeType.exceptNodes.ForEach(exceptNode => techTree.GetNode(exceptNode.id).SetActive(false));
 
-            //¾î¶² ½ºÅÈÀÌ ¿­·È´ÂÁö¸¸ ÀúÀå
-            if (isLoading == false)
-                SaveManager.Instance.AddSaveStat(_characterType, NodeType);
+            //ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+
         }
 
         #endregion
@@ -219,7 +230,7 @@ namespace Office.CharacterSkillTree
 
         private void UnActiveNode()
         {
-            _disablePanel.color = new Color(0f, 0f, 0f, 0.9f); 
+            _disablePanel.color = new Color(0f, 0f, 0f, 0.9f);
         }
 
 
