@@ -41,6 +41,7 @@ namespace InputManage
         public event Action PullEvent;
         public event Action TurboEvent;
         public event Action OnCharacterChangeEvent;
+        public event Action OnInteractEvent;
         private Controls _controls;
         [SerializeField] private Vector2 _inputDirection;
         public Vector2 InputDirection
@@ -168,6 +169,15 @@ namespace InputManage
 
         }
 
+        public void OnInteract(InputAction.CallbackContext context)
+        {
+            if (!playerInputStatus.use) return;
+            if (context.performed)
+            {
+                OnInteractEvent?.Invoke();
+            }
+            
+        }
     }
 
 }

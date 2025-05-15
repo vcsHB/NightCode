@@ -14,13 +14,19 @@ namespace UI.InGame.GameUI.AdjustmentSystem
         protected override void Awake()
         {
             base.Awake();
+            _manager.OnEndMissionEvent += Open;
+
+        }
+
+        void OnDestroy()
+        {
+            _manager.OnEndMissionEvent -= Open;
 
         }
         [ContextMenu("DebugOver")]
         public override void Open()
         {
             base.Open();
-            _manager.ClearMission();
             _timeDisplayer.SetTimeText(_manager.EndTime);
             _currentPointText.text = $"{_manager.CurrentPoint.ToString()} 획득";
 

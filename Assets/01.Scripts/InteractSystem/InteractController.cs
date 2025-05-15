@@ -5,10 +5,11 @@ namespace InteractSystem
 
     public class InteractController : InteractTrigger, IAgentComponent
     {
-        private Agent _owner;
-        public void Initialize(Agent agent)
+        protected Agent _owner;
+        public virtual void Initialize(Agent agent)
         {
             _owner = agent;
+
         }
         public void AfterInit()
         {
@@ -16,6 +17,11 @@ namespace InteractSystem
 
         public void Dispose()
         {
+        }
+
+        protected virtual void Update()
+        {
+            DetectTarget();
         }
 
     }
