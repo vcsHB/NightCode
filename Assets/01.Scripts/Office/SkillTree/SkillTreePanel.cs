@@ -4,6 +4,7 @@ using Office.CharacterSkillTree;
 using UI;
 using TMPro;
 using MissionAdjust;
+using Core.StageController;
 
 namespace Office
 {
@@ -33,6 +34,11 @@ namespace Office
         private void Update()
         {
             _coinText.SetText($"스킬 포인트: {AdjustmentManager.Instance.CurrentPoint}");
+        }
+
+        public void CompleteSkillTree()
+        {
+            StageManager.Instance.LoadNextStage();
         }
 
         #region UI

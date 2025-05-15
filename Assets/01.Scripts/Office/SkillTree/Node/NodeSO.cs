@@ -10,7 +10,7 @@ namespace Office.CharacterSkillTree
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
 
-        [HideInInspector] public int id;
+        public int id;
         public List<NodeSO> nextNodes;
         public NodeSO prevNode;
         public List<NodeSO> exceptNodes;
