@@ -79,7 +79,7 @@ namespace Base.Cafe
             {
                 CafeCustomer customer = Instantiate(customerSO.customerPf, customerInitPosition);
                 customer.onExitCafe += StartCustomerWave;
-                customer.Init(table, customerSO.talk);
+                customer.Init(table, customerSO);
 
                 return true;
             }

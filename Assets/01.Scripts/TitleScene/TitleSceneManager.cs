@@ -29,9 +29,10 @@ namespace TitleScene
             {
                 string[] files = Directory.GetFiles(_folderPath);
 
-                 Debug.Log("삭제할 파일들 : " + files.Length);
                 foreach (string file in files)
+                {
                     File.Delete(file);
+                }
 
                 StageManager.Instance.Save();
             }

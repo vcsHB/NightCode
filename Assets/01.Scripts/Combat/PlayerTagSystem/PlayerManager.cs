@@ -1,16 +1,14 @@
+using Agents;
+using Agents.Players;
+using HUDSystem;
+using InputManage;
+using ObjectManage.Rope;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Agents;
-using Agents.Players;
-using Core.StageController;
-using HUDSystem;
-using InputManage;
-using ObjectManage.Rope;
 using UI.InGame.GameUI.CharacterSelector;
 using UI.InGame.SystemUI.AlertSystem;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -171,13 +169,13 @@ namespace Combat.PlayerTagSystem
             //CurrentPlayer.transform.rotation = prevRotation;
             CurrentPlayer.GetCompo<AgentRenderer>().FlipController(direction);
 
-            // SetPlayer(CurrentPlayer);
+            SetPlayer(CurrentPlayer);
 
-            CurrentPlayer.SetIdleEnter();
-            CurrentPlayer.SetActive(true);
-            HUDController.Instance.SetFollowTarget(CurrentPlayer.transform);
-            CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
-            _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
+            //CurrentPlayer.SetIdleEnter();
+            //CurrentPlayer.SetActive(true);
+            //HUDController.Instance.SetFollowTarget(CurrentPlayer.transform);
+            //CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
+            //_aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
 
             _aimGroup.SetAimColor(CurrentPlayerData.personalColor);
         }

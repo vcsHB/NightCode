@@ -14,7 +14,7 @@ namespace Base.Cafe
         [SerializeField] private SpriteRenderer _iconRenderer;
         [SerializeField] private float _playerStandingOffset;
 
-        [SerializeField] private Sprite _onSitIcon, _requierFoodIcon;
+        [SerializeField] private Sprite _onSitIcon, _requierFoodIcon, _talkIcon;
         private List<Sprite> _interactIcon;
 
         private bool _isGetFood;
@@ -34,10 +34,11 @@ namespace Base.Cafe
             _stateMachine.AddState(ECafeSitState.Wait, new CafeSitWaitState(this));
             _stateMachine.ChangeState(ECafeSitState.Empty);
 
-            _interactIcon = new List<Sprite>(2)
+            _interactIcon = new List<Sprite>(3)
             {
                 _onSitIcon,
                 _requierFoodIcon,
+                _talkIcon
             };
         }
 
@@ -67,7 +68,15 @@ namespace Base.Cafe
         private void OnCompleteServeByPlayer()
         {
             SetInteractIcon(ECafeSitIcon.FoodIcon, false);
-            AssingedCustomer.GetFood();
+
+            if (AssingedCustomer.customerSO.isClient)
+            {
+                AssingedCustomer.OnCompleteMiniGame(true);
+            }
+            else
+            {
+                AssingedCustomer.GetFood();
+            }
 
             _player.ServeFood();
             _player.onCompleteMove -= OnCompleteServeByPlayer;
@@ -129,6 +138,6 @@ namespace Base.Cafe
     {
         OrderIcon,
         FoodIcon,
-        CleanIcon
+        InteractIcon
     }
 }

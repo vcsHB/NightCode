@@ -3,6 +3,7 @@ using Core.StageController;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Tutorial;
 using UnityEngine;
 
 namespace Base.Office
@@ -12,7 +13,9 @@ namespace Base.Office
         public uint Money { get; private set; } = 0;
         public event Action onGetMoney, onLoseMoney;
 
+        public OfficeSO office;
         public OfficeNPC an, jinLay;
+        public CheckSkipStagePanel checkSkipStagePanel;
 
         //public MissionSelectPanel missionSelectPanel;
 
@@ -25,11 +28,18 @@ namespace Base.Office
             Load();
         }
 
-       
+
         public void Init(OfficeSO office)
         {
+            this.office = office;
             an.Init(office.ANInfo);
             jinLay.Init(office.JinLayInfo);
+            
+            if (office.stageToSkip != null)
+            {
+                checkSkipStagePanel.stageToSkip = office.stageToSkip;
+                checkSkipStagePanel.Open();
+            }
         }
 
 
@@ -74,11 +84,6 @@ namespace Base.Office
             OfficeSave save = JsonUtility.FromJson<OfficeSave>(json);
 
             Money = save.money;
-        }
-
-        internal void Init(object officeInfo)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

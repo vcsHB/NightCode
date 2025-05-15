@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
-using UnityEditor.PackageManager;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace Dialog.Animation
 {

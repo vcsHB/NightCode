@@ -11,7 +11,21 @@ namespace Core.StageController
     [CreateAssetMenu(fileName = "StageSetSO", menuName = "SO/Office/StageSetSO")]
     public class StageSetSO : ScriptableObject
     {
-        public List<StageSO> stageList = new ();
+        public List<StageSO> stageList = new();
+
+        private void OnValidate()
+        {
+            ushort index = 0;
+
+            StageSO current = stageList.Find(stage => stage.isFirstStage);
+
+            while(current != null)
+            {
+                current.name = $"{index}.{current.sceneName}";
+                current.id = index++;
+                current = current.nextStage;
+            }
+        }
 
 #if UNITY_EDITOR
         public StageSO CreateStage(Type type)
@@ -37,7 +51,7 @@ namespace Core.StageController
             AssetDatabase.SaveAssets();
         }
 
-        public StageSO GetConnectedMissions(StageSO mission) 
+        public StageSO GetConnectedMissions(StageSO mission)
             => mission.nextStage;
         public StageSO GetPrevNode(StageSO mission) => mission.prevStage;
 

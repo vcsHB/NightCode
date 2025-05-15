@@ -1,7 +1,5 @@
 using Dialog;
-using Dialog.SituationControl;
 using System;
-using UnityEditorInternal;
 using UnityEngine;
 
 
@@ -62,7 +60,10 @@ namespace Base.Cafe
 
         public void OnCompleteMiniGame(bool isGood)
         {
-            _miniGame.onCompleteMiniGame -= OnCompleteMiniGame;
+            if (_miniGame != null)
+            {
+                _miniGame.onCompleteMiniGame -= OnCompleteMiniGame;
+            }
 
             if (customerSO.isInteractiveCustomer)
             {
@@ -105,9 +106,10 @@ namespace Base.Cafe
         }
 
 
-        public void Init(CafeSit table, DialogSO talk)
+        public void Init(CafeSit table, CafeCustomerSO customerSO)
         {
             _table = table;
+            this.customerSO = customerSO;
             SetMoveTarget(table.customerPosition);
             _table.SetCustomer(this);
             onCompleteMove += RequireFood;
