@@ -16,7 +16,7 @@ namespace Office.CharacterSkillTree
         {
             gameObject.SetActive(true);
             RectTrm.anchoredPosition = Mouse.current.position.ReadValue();
-            _coinText.SetText($"{coin} 필요");
+            _coinText.SetText($"{coin}포인트 필요");
 
             StringBuilder sb = new StringBuilder();
 
