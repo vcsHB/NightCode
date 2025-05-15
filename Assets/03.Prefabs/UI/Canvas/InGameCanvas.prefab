@@ -1321,7 +1321,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7122333577924108360}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7672880137791743090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2070,6 +2082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5592864343594730959}
   - component: {fileID: 3799988984456072313}
+  - component: {fileID: 7864011916848999387}
   m_Layer: 5
   m_Name: ExitQuestion
   m_TagString: Untagged
@@ -2107,9 +2120,30 @@ CanvasGroup:
   m_GameObject: {fileID: 1210072783816585718}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &7864011916848999387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210072783816585718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd263cb437c5194499e5403729b24f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnOpenEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCloseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _useUnscaledTime: 1
+  _activeDuration: 0.3
+  _isActive: 0
 --- !u!1 &1302728483040583203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2968,6 +3002,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1612417070487052355}
         m_TargetAssemblyTypeName: UI.UIPanel, Assembly-CSharp
         m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7864011916848999387}
+        m_TargetAssemblyTypeName: UI.UIPanel, Assembly-CSharp
+        m_MethodName: Open
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10737,7 +10783,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4754584175940419163}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7864011916848999387}
+        m_TargetAssemblyTypeName: UI.UIPanel, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1612417070487052355}
+        m_TargetAssemblyTypeName: UI.UIPanel, Assembly-CSharp
+        m_MethodName: Open
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5811892168038448267
 MonoBehaviour:
   m_ObjectHideFlags: 0
