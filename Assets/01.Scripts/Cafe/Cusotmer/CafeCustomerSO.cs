@@ -10,6 +10,7 @@ namespace Base.Cafe
         public DialogSO talk;
         public CafeCustomer customerPf;
         public float moveSpeed;
+        public bool isClient;
         public bool isInteractiveCustomer;
 
         [Tooltip("오므라이스 그림")]

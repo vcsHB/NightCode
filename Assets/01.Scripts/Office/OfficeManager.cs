@@ -3,6 +3,7 @@ using Core.StageController;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Tutorial;
 using UnityEngine;
 
 namespace Base.Office
@@ -14,6 +15,7 @@ namespace Base.Office
 
         public OfficeSO office;
         public OfficeNPC an, jinLay;
+        public CheckSkipStagePanel checkSkipStagePanel;
 
         //public MissionSelectPanel missionSelectPanel;
 
@@ -26,12 +28,18 @@ namespace Base.Office
             Load();
         }
 
-       
+
         public void Init(OfficeSO office)
         {
             this.office = office;
             an.Init(office.ANInfo);
             jinLay.Init(office.JinLayInfo);
+            
+            if (office.stageToSkip != null)
+            {
+                checkSkipStagePanel.stageToSkip = office.stageToSkip;
+                checkSkipStagePanel.Open();
+            }
         }
 
 

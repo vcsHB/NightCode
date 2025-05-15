@@ -10,7 +10,14 @@ namespace Base.Cafe
 
         public override void OnEnterState()
         {
-            _cafeSit.SetInteractIcon(ECafeSitIcon.FoodIcon, true);
+            if (_cafeSit.AssingedCustomer.customerSO.isClient)
+            {
+                _cafeSit.SetInteractIcon(ECafeSitIcon.InteractIcon, true);
+            }
+            else
+            {
+                _cafeSit.SetInteractIcon(ECafeSitIcon.FoodIcon, true);
+            }
         }
 
         public override void OnExitState()
@@ -22,7 +29,9 @@ namespace Base.Cafe
         public override void OnTriggerEnter()
         {
             if (_cafeSit.Player.isGetFood && _cafeSit.IsGetFood == false)
+            {
                 _cafeSit.Player.AddInteract(_cafeSit.ServeByPlayer);
+            }
         }
 
         public override void OnTriggerExit()

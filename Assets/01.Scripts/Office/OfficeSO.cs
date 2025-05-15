@@ -1,3 +1,4 @@
+using Core.StageController;
 using Dialog;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace Base.Office
     [CreateAssetMenu(menuName = "SO/Office/OfficeSO")]
     public class OfficeSO : ScriptableObject
     {
+        public StageSO stageToSkip;
         public OfficeNPCSO ANInfo;
         public OfficeNPCSO JinLayInfo;
 

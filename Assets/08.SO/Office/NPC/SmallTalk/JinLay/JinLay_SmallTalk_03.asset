@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3225933438769622173
+--- !u!114 &-7203203941156611524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
-  guid: 8baacbc70dfc8da4ba2104c53a111ef9
-  position: {x: 800.78723, y: -39.196835}
+  guid: 37b00080c8999194eb2eb763221e86b1
+  position: {x: 1378, y: -118}
   isFirstNode: 0
   textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
   startDialogEventSO: []
@@ -21,13 +21,13 @@ MonoBehaviour:
   endDialogEventSO: []
   endDialogEvent: []
   reader: Jin
-  contents: "\uD558\uC544\uC544....."
+  contents: "\uD558..."
   nodeDelay: 0
-  nextNode: {fileID: -1689284108558600708}
+  nextNode: {fileID: 1960156366824522378}
   references:
     version: 2
     RefIds: []
---- !u!114 &-1689284108558600708
+--- !u!114 &-7171677815771264922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,22 +39,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
-  guid: 5ae5268babea4154e87067b28bc27064
-  position: {x: 1121.9762, y: -31.187292}
+  guid: 7da95d0edfb5da549be8763ed9cb3cf5
+  position: {x: 1946, y: -117}
   isFirstNode: 0
   textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
   startDialogEventSO: []
   startDialogEvent: []
   endDialogEventSO: []
   endDialogEvent: []
-  reader: Player
-  contents: "\uBB34\uC2A8 \uC77C \uC788\uC2B5\uB2C8\uAE4C?"
+  reader: Jin
+  contents: "\uC815\uB9D0 \uC18C\uBB38\uC77C \uBFD0\uC774\uB2C8\uAE4C \uAC71\uC815\uD558\uC9C0\uB9C8"
   nodeDelay: 0
-  nextNode: {fileID: 7805517244211838512}
+  nextNode: {fileID: 0}
   references:
     version: 2
     RefIds: []
---- !u!114 &-682138809024776036
+--- !u!114 &-6533875083471304704
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,22 +63,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
-  m_Name: NormalNodeSO
+  m_Script: {fileID: 11500000, guid: 23aee5184e8159f4e9ee55e8ab227ed5, type: 3}
+  m_Name: BranchNodeSO
   m_EditorClassIdentifier: 
-  guid: a0c2dca9cf4ec1a4b924d406959e2062
-  position: {x: 2124, y: 13.800758}
+  guid: 999036fa922b2944cb2b51f6a7b9f09b
+  position: {x: 750.55536, y: -47.90327}
   isFirstNode: 0
-  textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
+  textOutSound: {fileID: 0}
   startDialogEventSO: []
   startDialogEvent: []
   endDialogEventSO: []
   endDialogEvent: []
-  reader: Player
-  contents: "\uBB34\uAE30\uB825\uD568\uACFC \uC6B0\uC744\uAC10\uC740 \uC784\uBB34
-    \uB2A5\uB960 \uAC10\uC18C\uC5D0 \uC601\uD5A5\uC744 \uC904 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
-  nodeDelay: 0
-  nextNode: {fileID: 2310867321502812757}
+  condition: {fileID: 11400000, guid: 32bf4326567ce8e4e9c673f651655548, type: 2}
+  nextNodes:
+  - {fileID: 74569006669178254}
+  - {fileID: 6223387901666436413}
   references:
     version: 2
     RefIds: []
@@ -96,13 +95,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 8785839137879747505}
-  - {fileID: -3225933438769622173}
-  - {fileID: -1689284108558600708}
-  - {fileID: 7805517244211838512}
-  - {fileID: 5421941640753564933}
-  - {fileID: -682138809024776036}
-  - {fileID: 2310867321502812757}
---- !u!114 &2310867321502812757
+  - {fileID: -6533875083471304704}
+  - {fileID: 74569006669178254}
+  - {fileID: 6223387901666436413}
+  - {fileID: -7203203941156611524}
+  - {fileID: 1960156366824522378}
+  - {fileID: -7171677815771264922}
+--- !u!114 &74569006669178254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,35 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
-  guid: bba721db90daf4d4084260a246620796
-  position: {x: 2494.0156, y: 32}
-  isFirstNode: 0
-  textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
-  startDialogEventSO: []
-  startDialogEvent: []
-  endDialogEventSO: []
-  endDialogEvent: []
-  reader: Jin
-  contents: "\uB10C \uB4E4\uC5B4\uB3C4 \uC774\uD574 \uBABB \uD574."
-  nodeDelay: 0
-  nextNode: {fileID: 0}
-  references:
-    version: 2
-    RefIds: []
---- !u!114 &5421941640753564933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
-  m_Name: NormalNodeSO
-  m_EditorClassIdentifier: 
-  guid: a8ae3a77b31d8754aaac639d4d979fd5
-  position: {x: 1764.8, y: 5.985716}
+  guid: 8692eaa8b26980d43bdb64c6a11280e6
+  position: {x: 1114, y: -119}
   isFirstNode: 0
   textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
   startDialogEventSO: []
@@ -150,13 +122,14 @@ MonoBehaviour:
   endDialogEventSO: []
   endDialogEvent: []
   reader: Player
-  contents: "\uADF8\uAC8C \uBB50\uC8E0?"
+  contents: "\uD558\uC218 \uCC98\uB9AC \uC2DC\uC124\uC5D0 \uAD70\uC6A9 \uBB34\uAE30\uAC00
+    \uC788\uB2E4\uB294 \uC18C\uBB38\uC744 \uB4E4\uC5C8\uC2B5\uB2C8\uB2E4."
   nodeDelay: 0
-  nextNode: {fileID: -682138809024776036}
+  nextNode: {fileID: -7203203941156611524}
   references:
     version: 2
     RefIds: []
---- !u!114 &7805517244211838512
+--- !u!114 &1960156366824522378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,8 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
-  guid: 155d29bd1735e5849bd29bcbc649d139
-  position: {x: 1445.2676, y: -7.228632}
+  guid: e4524c2f9b0770c44bf4dd8d9ee3b543
+  position: {x: 1661, y: -119}
   isFirstNode: 0
   textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
   startDialogEventSO: []
@@ -177,9 +150,36 @@ MonoBehaviour:
   endDialogEventSO: []
   endDialogEvent: []
   reader: Jin
-  contents: "\uC5B4? \uC5B4. \uC788\uC9C0. \uB108\uBB34\uB098\uB3C4 \uC2AC\uD508..."
+  contents: "\uC548\uC774 \uB9D0\uD574\uC92C\uC9C0?"
   nodeDelay: 0
-  nextNode: {fileID: 5421941640753564933}
+  nextNode: {fileID: -7171677815771264922}
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &6223387901666436413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
+  m_Name: NormalNodeSO
+  m_EditorClassIdentifier: 
+  guid: 8c30669f40b22ee41ac91cb63bb3f894
+  position: {x: 1112.0908, y: 30.034113}
+  isFirstNode: 0
+  textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
+  startDialogEventSO: []
+  startDialogEvent: []
+  endDialogEventSO: []
+  endDialogEvent: []
+  reader: Player
+  contents: "\uC54C\uACA0\uC2B5\uB2C8\uB2E4."
+  nodeDelay: 0
+  nextNode: {fileID: 0}
   references:
     version: 2
     RefIds: []
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: aedbafff2ea12ce4db7d6007d374fcb2
-  position: {x: 562.0568, y: -46.016693}
+  position: {x: 508.99997, y: -51.66008}
   isFirstNode: 1
   textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
   startDialogEventSO: []
@@ -204,9 +204,10 @@ MonoBehaviour:
   endDialogEventSO: []
   endDialogEvent: []
   reader: Jin
-  contents: "\uC544......"
+  contents: "\uBB3C\uD0F1\uD06C\uC758 \uC704\uCE58\uB3C4 \uC54C\uC544\uB0C8\uC73C\uB2C8
+    \uC900\uBE44\uD574\uB450\uB77C\uACE0"
   nodeDelay: 0
-  nextNode: {fileID: -3225933438769622173}
+  nextNode: {fileID: -6533875083471304704}
   references:
     version: 2
     RefIds: []

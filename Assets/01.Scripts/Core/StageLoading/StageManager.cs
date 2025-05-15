@@ -60,10 +60,10 @@ namespace Core.StageController
         {
             if (currentStage == null)
             {
-                currentStage = stageSet.stageList.Find(stage => stage.prevStage == null);
+                currentStage = stageSet.stageList.Find(stage => stage.isFirstStage);
                 _stageProgress = currentStage.id;
             }
-            else currentStage = stageSet.stageList[_stageProgress];
+            else currentStage = stageSet.stageList.Find(stage => stage.id == _stageProgress);
 
             stageLoadingPanel.onCompleteOpenPanel += LoadStage;
             stageLoadingPanel.onCompletClosePanel += InitStage;
