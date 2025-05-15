@@ -53,6 +53,7 @@ namespace Tutorial
             OpenSceneExitPanel();
             yield return new WaitForSeconds(_sceneExitDelay);
             StageManager.Instance.LoadNextStage();
+            //PlayerManager.Instance.
         }
 
 

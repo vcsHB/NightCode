@@ -76,7 +76,7 @@ namespace Office.CharacterSkillTree
         //���õ� ������ ���� Ȱ��ȭ�����ִ� �ڷ�ƾ
         public IEnumerator StartEnableAllSelectedNodes()
         {
-            Debug.Log(GetPrevNodesCoin());
+            _enabledNodes = new Stack<Node>();
             if (AdjustmentManager.Instance.CurrentPoint < GetPrevNodesCoin() || _isNodeActive == false || _isNodeEnable)
                 yield break;
 
@@ -86,7 +86,6 @@ namespace Office.CharacterSkillTree
                 StopCoroutine(_currentCancelRoutine);
 
 
-            _enabledNodes = new Stack<Node>();
 
             //_prevNodes�� Ȱ��ȭ ��ų ������ ���������� ������ Ȱ��ȭ��Ű�� �õ�
             while (_prevNodes.TryPop(out _curEnableNode))
@@ -231,13 +230,13 @@ namespace Office.CharacterSkillTree
         private void ActiveNode()
         {
             _disablePanel.color = new Color(1f, 1f, 1f, 0f);
-            _isNodeActive = false;
+            _isNodeActive = true;
         }
 
         private void UnActiveNode()
         {
             _disablePanel.color = new Color(0f, 0f, 0f, 0.9f);
-            _isNodeActive = true;
+            _isNodeActive = false;
         }
 
 
@@ -348,7 +347,7 @@ namespace Office.CharacterSkillTree
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_isNodeActive == false || _isNodeEnable) return;
+            //if (_isNodeActive == false || _isNodeEnable) return;
             onPointerExit?.Invoke();
         }
 
