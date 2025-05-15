@@ -1,3 +1,4 @@
+using Core.StageController;
 using GGM.UI;
 using MissionAdjust;
 using StatSystem;
@@ -8,6 +9,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 namespace Office.CharacterSkillTree
 {
@@ -27,7 +29,7 @@ namespace Office.CharacterSkillTree
         private bool _isNodeEnable;
         private bool _isNodeActive = true;
         private Node _curEnableNode;
-        public event Action<int> onPointerEnter;
+        public event Action<int, List<NodeSO>> onPointerEnter;
         public event Action onPointerExit;
 
         private Stack<Node> _prevNodes;
@@ -143,7 +145,7 @@ namespace Office.CharacterSkillTree
             _edgeFill.SetFillAmount(1);
 
             NodeType.exceptNodes.ForEach(exceptNode => techTree.GetNode(exceptNode.id).SetActive(false));
-
+            _exceptedNodes.Clear();
             //� ������ ���ȴ����� ����
 
         }
@@ -195,20 +197,23 @@ namespace Office.CharacterSkillTree
 
         private int GetPrevNodesCoin()
         {
-            int coin = 0;
             _prevNodes = new Stack<Node>();
             if (IsNodeEnable == false)
             {
-                int requireCoin = _nodeType.requireCoin;
                 NodeSO curNode = _nodeType;
+                int requireCoin = curNode.requireCoin;
 
-                while (curNode != null && !techTree.GetNode(curNode.id).IsNodeEnable && techTree.GetNode(curNode.id)._isNodeActive)
+                while (true)
                 {
-                    requireCoin += curNode.requireCoin;
                     _prevNodes.Push(techTree.GetNode(curNode.id));
 
                     curNode = curNode.prevNode;
-                    coin += curNode.requireCoin;
+                    Node prevNode = techTree.GetNode(curNode.id);
+
+                    if (curNode == null || prevNode.IsNodeEnable || prevNode._isNodeActive == false || curNode is StartNodeSO)
+                        break;
+
+                    requireCoin += curNode.requireCoin;
                 }
 
                 //int coin = GameDataManager.Instance.Coin;
@@ -217,6 +222,31 @@ namespace Office.CharacterSkillTree
             }
             return 0;
         }
+
+        private List<NodeSO> GetPrevNodes()
+        {
+            List<NodeSO> nodeList = new List<NodeSO>();
+            if (IsNodeEnable == false)
+            {
+                NodeSO curNode = _nodeType;
+                nodeList.Add(curNode);
+
+                while (true)
+                {
+                    _prevNodes.Push(techTree.GetNode(curNode.id));
+
+                    curNode = curNode.prevNode;
+                    Node prevNode = techTree.GetNode(curNode.id);
+
+                    if (curNode == null || prevNode.IsNodeEnable || prevNode._isNodeActive == false || curNode is StartNodeSO)
+                        break;
+
+                    nodeList.Add(curNode);
+                }
+            }
+            return nodeList;
+        }
+
 
         public void SetActive(bool isActive)
         {
@@ -339,16 +369,38 @@ namespace Office.CharacterSkillTree
         #region InputRegion
 
 
+        private Queue<Node> _exceptedNodes = new Queue<Node>();
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (_isNodeActive == false || _isNodeEnable) return;
-            onPointerEnter?.Invoke(GetPrevNodesCoin());
+
+            List<NodeSO> prevNodes = GetPrevNodes();
+            onPointerEnter?.Invoke(GetPrevNodesCoin(), prevNodes);
+
+            prevNodes.ForEach(prev =>
+            {
+                prev.exceptNodes.ForEach(except =>
+                {
+                    Node exceptNode = techTree.GetNode(except.id);
+                    if (exceptNode._isNodeActive)
+                    {
+                        _exceptedNodes.Enqueue(exceptNode);
+                        exceptNode.SetActive(false);
+                    }
+                });
+            });
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             //if (_isNodeActive == false || _isNodeEnable) return;
             onPointerExit?.Invoke();
+
+            while(_exceptedNodes.TryDequeue(out Node exceptNode))
+            {
+                exceptNode.SetActive(true);
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)
