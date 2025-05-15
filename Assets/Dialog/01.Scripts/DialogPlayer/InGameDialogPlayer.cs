@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace Dialog
 {
@@ -19,11 +20,30 @@ namespace Dialog
         protected OptionNodeSO _optionTalk;
         protected NodeSO _nextNode;
 
+        private bool _isReadingNodeComplete = false;
+
         protected override void Awake()
         {
             base.Awake();
             _animPlayer = GetComponent<AnimationPlayer>();
         }
+
+        private void Update()
+        {
+            if (_isReadingDialog == false) return;
+
+            if(_isReadingNodeComplete == false && GetInput())
+            {
+                StopCoroutine(_readingNodeRoutine);
+                _currentActor.ContentText.maxVisibleCharacters = _currentActor.ContentText.text.Length;
+
+                _isReadingNodeComplete = true;
+                _nextNode = (_curReadingNode as NormalNodeSO).nextNode;
+                _waitCompleteAction = _currentActor.OnCompleteNode;
+                StartCoroutine(WaitNodeRoutine(GetInput));
+            }
+        }
+
         public override void SkipDialog()
         {
             
@@ -99,6 +119,7 @@ namespace Dialog
             tmp.maxVisibleCharacters = 0;
             InitNodeAnim(node);
             _isReadingDialog = true;
+            _isReadingNodeComplete = false;
             while (tmp.maxVisibleCharacters < tmp.text.Length)
             {
                 if (tmp.text[tmp.maxVisibleCharacters++] == ' ') continue;
@@ -110,6 +131,7 @@ namespace Dialog
                 yield return new WaitUntil(() => stopReading == false);
             }
             _nextNode = node.nextNode;
+            _isReadingNodeComplete = true;
             _waitCompleteAction = _currentActor.OnCompleteNode;
             StartCoroutine(WaitNodeRoutine(GetInput));
             

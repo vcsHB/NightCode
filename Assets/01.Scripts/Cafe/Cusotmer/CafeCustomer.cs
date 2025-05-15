@@ -1,6 +1,7 @@
 using Dialog;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 namespace Base.Cafe
@@ -9,6 +10,7 @@ namespace Base.Cafe
     {
         public CafeCustomerSO customerSO;
         public event Action onExitCafe;
+        public UnityEvent unitCompleteTalk;
 
         private InGameDialogPlayer _dialogPlayer;
         private OmeletRiceMiniGame _miniGame;
@@ -84,6 +86,7 @@ namespace Base.Cafe
             _getFood = true;
             CafeManager.Instance.input.EnableInput();
             _foodGetTime = Time.time;
+            unitCompleteTalk?.Invoke();
             _dialogPlayer.OnDialogEnd -= OnGetFood;
         }
 
