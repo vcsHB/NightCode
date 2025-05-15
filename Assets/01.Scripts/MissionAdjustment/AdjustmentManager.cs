@@ -10,7 +10,7 @@ namespace MissionAdjust
         public float time;// Less than time.
         public int point;
     }
-    public class AdjustmentManager : MonoBehaviour
+    public class AdjustmentManager : MonoSingleton<AdjustmentManager>
     {
         [Header("Point Setting")]
         [SerializeField] private TimePointScale[] _timePointScales;
@@ -26,8 +26,9 @@ namespace MissionAdjust
         public int CurrentPoint => _currentPoint;
         [SerializeField] private bool _startTimeCountOnAwake;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _startTime = Time.time;
             if (_startTimeCountOnAwake)
                 StartMission();
