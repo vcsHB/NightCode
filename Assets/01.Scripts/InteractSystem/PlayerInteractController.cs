@@ -10,13 +10,13 @@ namespace InteractSystem
         {
             base.Initialize(agent);
             _ownerPlayer = agent as Player;
-            _ownerPlayer.PlayerInput.OnUseEvent += HandleInteract;
+            _ownerPlayer.PlayerInput.OnInteractEvent += HandleInteract;
 
         }
 
         private void OnDestroy()
         {
-            _ownerPlayer.PlayerInput.OnUseEvent -= HandleInteract;
+            _ownerPlayer.PlayerInput.OnInteractEvent -= HandleInteract;
 
         }
 

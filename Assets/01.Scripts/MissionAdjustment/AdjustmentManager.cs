@@ -12,6 +12,7 @@ namespace MissionAdjust
     }
     public class AdjustmentManager : MonoSingleton<AdjustmentManager>
     {
+        public event Action OnEndMissionEvent;
         [Header("Point Setting")]
         [SerializeField] private TimePointScale[] _timePointScales;
         [SerializeField] private int _playerAlivePoint = 10;
@@ -54,6 +55,7 @@ namespace MissionAdjust
         {
             _endTime = CurrentTime;
             _currentPoint = GetTotalPoint();
+            OnEndMissionEvent?.Invoke();
         }
 
         public int GetTotalPoint()
