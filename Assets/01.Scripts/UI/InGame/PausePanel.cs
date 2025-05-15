@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace UI.InGame.SystemUI
 {
 
-    public class PausePanel : UIPanel, IWindowPanel
+    public class PausePanel : UIPanel, IWindowPanel, IWindowTogglable
     {
         [SerializeField] private PauseButtonGroup _buttonGroup;
         [SerializeField] private RectTransform _panelRectTrm;
