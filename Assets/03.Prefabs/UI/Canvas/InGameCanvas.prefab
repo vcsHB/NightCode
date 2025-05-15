@@ -693,14 +693,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: d16878a2fb1b04a40b6c844a7b9e4fe9, type: 2}
-  m_Color: {r: 0, g: 1, b: 0.9838848, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.306664, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f688c17d8f2a91a448ace716ebf3b948, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 59ea36bddaf98e045bab18d4192e3a1f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1424,7 +1424,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 9165091024997888045, guid: 539bcc4b63e6fcb4c95da57ed2fb1f7b, type: 2}
   m_audioClip: {fileID: 8300000, guid: e4353fd486f9e864e9827ab7d970f5fd, type: 3}
   m_Resource: {fileID: 8300000, guid: e4353fd486f9e864e9827ab7d970f5fd, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3695,14 +3695,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: d16878a2fb1b04a40b6c844a7b9e4fe9, type: 2}
-  m_Color: {r: 0, g: 1, b: 0.9838848, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.306664, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f688c17d8f2a91a448ace716ebf3b948, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 59ea36bddaf98e045bab18d4192e3a1f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13161,9 +13161,61 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4629264716734768991}
     m_Modifications:
+    - target: {fileID: 233980085853561260, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233980085853561260, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233980085853561260, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233980085853561260, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233980085853561260, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233980085853561260, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2289484158211557089, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3671183791450467296, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
       propertyPath: m_Name
       value: SkillTreePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268625249295533084, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268625249295533084, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268625249295533084, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268625249295533084, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268625249295533084, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268625249295533084, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4798713188151775913, guid: dd33c09561c32a14c9637bd55ef3f17a, type: 3}
       propertyPath: m_Pivot.x
