@@ -1,5 +1,6 @@
 using Agents;
 using Agents.Players;
+using Core.StageController;
 using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
@@ -78,6 +79,7 @@ namespace Combat.PlayerTagSystem
             Initialize();
             _playerInput.OnCharacterChangeEvent += Change;
             _playerSubWeaponManager.SetSubWeapon(null, CurrentPlayer);
+            OnAllPlayerDieEvent.AddListener(StageManager.Instance.LoadCurrentScene);
             //OnAllPlayerDieEvent.AddListener(StageManager.Instance.ReloadCurrentScene);
         }
 

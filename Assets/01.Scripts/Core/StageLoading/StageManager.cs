@@ -72,6 +72,8 @@ namespace Core.StageController
 
         public void LoadScene()
         {
+            _stageProgress = currentStage.id;
+            Save();
             stageLoadingPanel.onCompleteOpenPanel += LoadStage;
             stageLoadingPanel.onCompletClosePanel += InitStage;
             stageLoadingPanel.Open();
