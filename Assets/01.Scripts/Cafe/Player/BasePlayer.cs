@@ -14,6 +14,11 @@ namespace Base
         public bool isGetFood { get => food != null; }
         public FoodSO food { get; private set; }
 
+        private void OnEnable()
+        {
+            input.EnableInput();
+        }
+
         #region Food
 
         public void SetFood(FoodSO food)
