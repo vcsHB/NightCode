@@ -79,7 +79,7 @@ namespace Combat.PlayerTagSystem
             Initialize();
             _playerInput.OnCharacterChangeEvent += Change;
             _playerSubWeaponManager.SetSubWeapon(null, CurrentPlayer);
-            OnAllPlayerDieEvent.AddListener(StageManager.Instance.LoadCurrentScene);
+            //OnAllPlayerDieEvent.AddListener(StageManager.Instance.LoadCurrentScene);
             //OnAllPlayerDieEvent.AddListener(StageManager.Instance.ReloadCurrentScene);
         }
 
