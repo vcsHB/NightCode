@@ -39,7 +39,7 @@ namespace Dialog
             for (int i = 0; i < animLength; ++i)
             {
                 var charInfo = _txtInfo.characterInfo[animStartPos + i];
-                if (!charInfo.isVisible) continue;
+                if (charInfo.isVisible == false) continue;
 
 
                 Vector3[] verts = _txtInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
