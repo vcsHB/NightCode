@@ -4,40 +4,36 @@ using UnityEngine.Events;
 namespace Agents.Players
 {
 
-    public abstract class PlayerAnimationTrigger : AnimationTrigger
+    public class PlayerAnimationTrigger : AnimationTrigger
     {
-        public UnityEvent OnGroundPullAttackEvent;
+        public UnityEvent OnGroundPullStartEvent;
+        public UnityEvent OnGroundPullArriveEvent;
+        public UnityEvent OnRopeTurboEvent;
+        public UnityEvent OnRopeShootEvent;
+        public UnityEvent OnRopeRemoveEvent;
 
-       
-
-#region Old Prototype Attack System Functions
-
-        // public UnityEvent OnFirstAttackEvent;
-        // public UnityEvent OnSecondAttackEvent;
-        // public UnityEvent OnThirdAttackEvent;
-
-        [Obsolete("Old Type Attack Handler")]
-        public void HandleAttack1()
+        public void HandleGroundPullStart()
         {
-            //OnFirstAttackEvent?.Invoke();
+            OnGroundPullStartEvent?.Invoke();
         }
-        [Obsolete("Old Type Attack Handler")]
-        public void HandleAttack2()
+        public void HandleGroundPullArrive()
         {
-            //OnSecondAttackEvent?.Invoke();
-        }
-        [Obsolete("Old Type Attack Handler")]
-        public void HandleAttack3()
-        {
-            //OnSecondAttackEvent?.Invoke();
+            OnGroundPullArriveEvent?.Invoke();
         }
 
-        // public abstract void HandleAirAttack1();
-        // public abstract void HandleAirAttack2();
-#endregion
-        public void HandleGroundPullAttack()
+        public void HandleRopeShoot()
         {
-            OnGroundPullAttackEvent?.Invoke();
+            OnRopeShootEvent?.Invoke();
+        }
+
+        public void HandleTurboEvent()
+        {
+            OnRopeTurboEvent?.Invoke();
+        }
+
+        public void HandleRopeRemove()
+        {
+            OnRopeRemoveEvent?.Invoke();
         }
 
 

@@ -23,6 +23,7 @@ namespace Agents.Players.FSM
             _isGroundCheck = true;
             _player.PlayerInput.TurboEvent += HandleUseTurbo;
             _player.PlayerInput.PullEvent += HandlePull;
+            _animationTrigger.HandleRopeShoot();
             _renderer.SetLockRotation(false);
             _aimController.SetOrbitVisual(true);
             CameraManager.Instance.GetCompo<CameraZoomController>().SetZoomLevel(30, 1f, true);
@@ -39,7 +40,7 @@ namespace Agents.Players.FSM
 
 
             CheckExitToGround();
-            
+
             if (_mover.Velocity.magnitude < 0.6f)
             {
                 if (CheckWallAndHold())
@@ -93,6 +94,7 @@ namespace Agents.Players.FSM
         protected virtual void ForceUseTurbo()
         {
             _aimController.RefreshHangingDirection();
+            _animationTrigger.HandleTurboEvent();
             _mover.UseTurbo(_aimController.HangingDirection);
             _canUseTurbo = false;
             _player.EventChannel.RaiseEvent(_turboCreateFeedback);
@@ -102,6 +104,7 @@ namespace Agents.Players.FSM
         {
             if (!_player.IsActive) return;
             _isGroundCheck = false;
+            _animationTrigger.HandleGroundPullStart();
             _player.EventChannel.RaiseEvent(_turboFinishFeedback);
             _aimController.HandlePull(HandleArriveAttack);
         }
@@ -110,12 +113,12 @@ namespace Agents.Players.FSM
         {
             Vector2 bounceDirection = -_aimController.HangingDirection.normalized;
             bounceDirection.y += 1;
-            _animationTrigger.HandleGroundPullAttack();
+            _animationTrigger.HandleGroundPullArrive();
             HandleRemoveRope();
             _isGroundCheck = true;
             _mover.SetVelocity(bounceDirection * 20f);
         }
 
-        
+
     }
 }

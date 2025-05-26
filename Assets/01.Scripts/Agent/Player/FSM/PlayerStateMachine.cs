@@ -29,19 +29,20 @@ namespace Agents.Players.FSM
 
         public virtual void Initialize(string firstState)
         {
-            if (playerRenderer == null) Debug.Log("playerRenderer가 널임");
+            if (playerRenderer == null) Debug.Log("playerRenderer is null");
             AddState("Idle", "PlayerIdle", playerRenderer.IdleParam);
             AddState("Move", "PlayerMove", playerRenderer.MoveParam);
             AddState("Jump", "PlayerJump", playerRenderer.JumpParam);
             AddState("Fall", "PlayerFall", playerRenderer.FallParam);
-            //AddState("Grab", "PlayerGrab", playerRenderer.GrabParam);
-            //AddState("Pull", "PlayerPull", playerRenderer.PullParam);
+
             AddState("Enter", "PlayerTagEnter", playerRenderer.EnterParam);
             AddState("Exit", "PlayerTagExit", playerRenderer.ExitParam);
-
             AddState("SlideDown", "PlayerSlideDown", playerRenderer.SlideDownParam);
             AddState("HoldingWall", "PlayerHoldingWall", playerRenderer.HoldWallParam);
             AddState("Climb", "PlayerClimb", playerRenderer.ClimbParam);
+            
+            AddState("Hang", "PlayerHang", playerRenderer.HangParam);
+            AddState("Swing", "PlayerSwing", playerRenderer.SwingParam);
 
             if (_stateDictionary.TryGetValue(firstState, out PlayerState state))
             {
