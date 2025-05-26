@@ -10,7 +10,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         [SerializeField] private Caster _attackCaster;
         [SerializeField] private Caster _projectileParryCaster;
         private bool _isAttackEnabled;
-     
+
         public override void Initialize(Player player)
         {
             base.Initialize(player);
@@ -31,7 +31,6 @@ namespace Agents.Players.WeaponSystem.Weapon
 
         public override void HandleAttack()
         {
-            print("asd");
             _attackCaster.Cast();
         }
 

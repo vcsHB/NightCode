@@ -23,6 +23,7 @@ namespace Agents.Players.FSM
             _isGroundCheck = true;
             _player.PlayerInput.TurboEvent += HandleUseTurbo;
             _player.PlayerInput.PullEvent += HandlePull;
+            
             _animationTrigger.HandleRopeShoot();
             _renderer.SetLockRotation(false);
             _aimController.SetOrbitVisual(true);
