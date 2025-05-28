@@ -12,7 +12,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         private bool _isAttackEnabled;
         private DamageCasterData _damageCasterData;
         private float _currentAttackTime = 0f;
-        
+
         private void Awake()
         {
             _caster = GetComponentInChildren<Caster>();
@@ -33,6 +33,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         public override void HandleAttack()
         {
             _isAttackEnabled = true;
+            _attackGuideVisual.enabled = true;
             _currentAttackTime = 0f;
         }
 
