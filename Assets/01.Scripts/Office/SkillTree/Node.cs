@@ -133,7 +133,7 @@ namespace Office.CharacterSkillTree
         {
             if (isLoading == false)
             {
-                SaveManager.Instance.AddSaveStat(_characterType, NodeType);
+                //SaveManager.Instance.AddSaveStat(_characterType, NodeType);
                 AdjustmentManager.Instance.UsePoint(GetPrevNodesCoin());
             }
             _isNodeEnable = true;

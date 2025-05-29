@@ -53,7 +53,7 @@ namespace Chipset
                 Vector2 offset = _slotPositionDic[_selectedSlotOffset] + _offset;
                 RectTrm.anchoredPosition = (Vector2)Input.mousePosition - offset;
 
-                if (Keyboard.current.rKey.wasPressedThisFrame)
+                if (Keyboard.current.rKey.wasPressedThisFrame && info.isRotatable)
                 {
                     Rotate();
                 }
@@ -76,6 +76,13 @@ namespace Chipset
                 _slotPositionDic.Add(newOffset, new Vector2(positions[i].y, -positions[i].x));
                 _slots[i].SetPosition(newOffset);
             }
+
+            if (_prevPositions != null)
+            {
+                for (int i = 0; i < _prevPositions.Count; i++)
+                    _prevPositions[i] = new Vector2Int(_prevPositions[i].y, -_prevPositions[i].x);
+            }
+
             onRotate?.Invoke();
         }
 

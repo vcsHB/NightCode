@@ -13,5 +13,6 @@ namespace Chipset
         [Header("Add position from leftbottom of each slot")]
         public List<Vector2Int> chipsetSize;
         public Chipset chipsetPrefab;
+        public bool isRotatable;
     }
 }
