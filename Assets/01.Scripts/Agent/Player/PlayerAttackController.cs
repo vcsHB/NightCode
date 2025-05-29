@@ -1,18 +1,18 @@
+using Agents.Players.WeaponSystem;
 using UnityEngine;
 namespace Agents.Players
 {
-    [System.Serializable]
-    public class AttackData
-    {   
-        public float movePower;
-        public float moveduration;
-    }
     public class PlayerAttackController : MonoBehaviour, IAgentComponent
     {
-        [SerializeField] private AttackData[] _attackDatas;
-
-        
-
+        [SerializeField] private PlayerWeaponListSO _weaponListSO;
+        [SerializeField] private PlayerWeaponSO _weaponSO;
+        private Player _player;
+        private PlayerWeapon _weapon;
+        public void Initialize(Agent agent)
+        {
+            _player = agent as Player;
+            SetWeaponSO(_weaponSO); // Debug; => Connect SaveData
+        }
         public void AfterInit()
         {
         }
@@ -21,19 +21,12 @@ namespace Agents.Players
         {
         }
 
-        public void Initialize(Agent agent)
+        public void SetWeaponSO(PlayerWeaponSO data)
         {
+            _weaponSO = data;
+            _weapon = Instantiate(_weaponSO.weaponPrefab, transform);
+            _weapon.Initialize(_player);
         }
 
-
-        public AttackData GetAttackData(int index)
-        {
-            if(index >= _attackDatas.Length)
-            {
-                Debug.LogWarning("AttackData Not Found : Index Range Over");
-                return null;
-            }
-            return _attackDatas[index];
-        }
     }
 }

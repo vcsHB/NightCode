@@ -1,7 +1,6 @@
 using System;
 using Agents.Players.FSM;
 using Combat;
-using Core.EventSystem;
 using InputManage;
 using UnityEngine;
 namespace Agents.Players
