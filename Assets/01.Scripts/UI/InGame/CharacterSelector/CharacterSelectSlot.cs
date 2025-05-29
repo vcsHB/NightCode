@@ -20,8 +20,8 @@ namespace UI.InGame.GameUI.CharacterSelector
         [SerializeField] private Gradient _healthFillColorLevel;
         [SerializeField] private RetireSign _retireSign;
         [Header("Select Setting")]
-        [SerializeField] private float _unSelectPos;
-        [SerializeField] private float _selectPos;
+        [SerializeField] private Vector3 _defaultScale;
+        [SerializeField] private Vector3 _selectScale;
         [SerializeField] private float _tweenDuration;
         private RectTransform _rectTrm;
 
@@ -67,7 +67,7 @@ namespace UI.InGame.GameUI.CharacterSelector
 
         public void Select(bool value)
         {
-            _rectTrm.DOAnchorPosX(value ? _selectPos : _unSelectPos, _tweenDuration);
+            transform.DOScale(value ? _selectScale : _defaultScale, _tweenDuration);
 
         }
 
