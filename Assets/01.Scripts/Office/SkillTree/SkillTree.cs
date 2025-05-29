@@ -173,12 +173,12 @@ namespace Office.CharacterSkillTree
 
         public void Load()
         {
-            TechTreeSave treeSave = SaveManager.Instance.GetStatValue();
-            treeSave.openListGUID.ForEach(openGUI =>
-            {
-                NodeSO node = treeSO.nodes.Find(node => node.guid == openGUI);
-                if (node != null) nodeDic[node].EnableNode(true);
-            });
+            //TechTreeSave treeSave = SaveManager.Instance.GetStatValue();
+            //treeSave.openListGUID.ForEach(openGUI =>
+            //{
+            //    NodeSO node = treeSO.nodes.Find(node => node.guid == openGUI);
+            //    if (node != null) nodeDic[node].EnableNode(true);
+            //});
         }
 
 
