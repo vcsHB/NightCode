@@ -105,7 +105,7 @@ namespace Agents.Players
             //_playerController.turboCount = 1;
 
             _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("Shoot"));
-           
+
             HandleHang();
             _isShoot = true;
             return new ShootData { isHanged = true };
@@ -126,7 +126,7 @@ namespace Agents.Players
             _anchorDistance = _currentAimData.distanceToPoint;
             _aimGroupController.SetAnchorPosition(TargetPoint);
             _aimGroupController.SetAnchorParent(_currentAimData.targetTrm);
-            
+
             if (_currentAimData.distanceToPoint > _wireClampedDistance)
             {
                 _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("ShootClamping"));
@@ -140,7 +140,7 @@ namespace Agents.Players
                 _aimGroupController.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
             KatanaSlashVFXPlayer vfx = PoolManager.Instance.Pop(PoolingType.RopeAnchoredVFX) as KatanaSlashVFXPlayer;
             vfx.SetGradient(_gradient);
-            vfx.SlashLerp(transform.position, _anchorPosition , _anchorDistance * 0.05f);
+            vfx.SlashLerp(transform.position, _anchorPosition, _anchorDistance * 0.05f);
 
 
         }
@@ -150,10 +150,17 @@ namespace Agents.Players
                 StopCoroutine(_clampCoroutine);
             _clampCoroutine = null;
             Vector2 velocity = _playerMovement.Velocity;
+
+            // KatanaSlashVFXPlayer vfx = PoolManager.Instance.Pop(PoolingType.RopeAnchoredVFX) as KatanaSlashVFXPlayer;
+            // vfx.SetGradient(_gradient);
+            // vfx.SlashLerpFollow(_anchorPosition, transform, _anchorDistance * 0.1f);
+            
             _aimGroupController.SetActiveWire(false);
             _aimGroupController.SetAnchorParent();
             _aimGroupController.SetAnchorPosition(transform.position);
             _aimGroupController.SetWireEnable(false);
+
+
             _isShoot = false;
 
             _playerMovement.SetVelocity(velocity);
