@@ -19650,7 +19650,7 @@ GameObject:
   - component: {fileID: 5258192718874030832}
   - component: {fileID: 3644255265736145714}
   - component: {fileID: 2857841804664254029}
-  - component: {fileID: 8252694963551110673}
+  - component: {fileID: 6397036397284339492}
   - component: {fileID: 5901774825045965016}
   - component: {fileID: 9100013226160919046}
   - component: {fileID: 6856392147110448272}
@@ -19764,7 +19764,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &8252694963551110673
+--- !u!114 &6397036397284339492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19773,7 +19773,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2252815048038035069}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54fe796e9b29ede4b8be358f29941d7c, type: 3}
+  m_Script: {fileID: 11500000, guid: d513a4e0eb94029449487f01436ec4af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <EventChannel>k__BackingField: {fileID: 11400000, guid: 7a25197fe48bd1748a4fc37f25267224, type: 2}
@@ -25318,7 +25318,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47639d97c0356ba4989c222538a091f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnGroundPullAttackEvent:
+  OnGroundPullStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGroundPullArriveEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRopeTurboEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRopeShootEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRopeRemoveEvent:
     m_PersistentCalls:
       m_Calls: []
   _attackController: {fileID: 695140754567836933}
