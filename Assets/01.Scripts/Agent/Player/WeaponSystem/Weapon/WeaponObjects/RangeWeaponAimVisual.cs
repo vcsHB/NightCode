@@ -12,7 +12,19 @@ namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
         {
 
             _aimPoint.SetAimPoint(targetTrm.position);
+
+            _lineRenderer.SetPosition(0, transform.position);
+            _lineRenderer.SetPosition(1, targetTrm.position);
+
         }
+
+        public void SetAimEnable(bool value)
+        {
+            _lineRenderer.enabled = value;
+            _aimPoint.SetAimPointEnable(value);
+        }
+
+
 
 
     }

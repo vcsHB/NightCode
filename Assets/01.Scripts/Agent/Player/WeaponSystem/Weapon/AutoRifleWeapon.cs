@@ -13,7 +13,9 @@ namespace Agents.Players.WeaponSystem.Weapon
         [SerializeField] private RangeWeaponAimVisual _rangeWeaponVisual;
         [SerializeField] private TargetDetector _targetDetector;
         [SerializeField] private float _fireTerm = 0.1f;
-        [SerializeField] 
+        [SerializeField] private int _fireAmount = 5;
+        private int _currentFireAmount = 0;
+
         private float _lastFireTime;
         private bool _isShooting;
         private Collider2D _targetCollider;
@@ -28,25 +30,39 @@ namespace Agents.Players.WeaponSystem.Weapon
         private void HandleRemoveRope()
         {
             _isShooting = false;
+            _rangeWeaponVisual.SetAimEnable(false);
         }
 
         public override void HandleAttack()
         {
             _isShooting = true;
+            _currentFireAmount = 0;
         }
-        
+
         private void Update()
         {
             if (_isShooting)
             {
-                _targetCollider = _targetDetector.DetectTarget();
-                if (_targetCollider == null) return;
-                Vector2 direction = _targetCollider.transform.position - transform.position;
 
+                _targetCollider = _targetDetector.DetectTarget();
+                if (_targetCollider == null)
+                {
+                    HandleRemoveRope();
+                    return;
+                }
+                _rangeWeaponVisual.SetAimEnable(true);
+                Vector2 direction = _targetCollider.transform.position - transform.position;
+                _rangeWeaponVisual.SetAimToTarget(_targetCollider.transform);
                 if (_lastFireTime + _fireTerm < Time.time)
                 {
                     _shooter.SetDirection(direction);
                     _shooter.FireProjectile();
+                    _currentFireAmount++;
+                    _lastFireTime = Time.time;
+                    if (_currentFireAmount >= _fireAmount)
+                    {
+                        HandleRemoveRope();
+                    }
                 }
             }
         }
