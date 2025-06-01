@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
@@ -13,7 +14,26 @@ namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
             _targetCollider = Physics2D.OverlapCircle(transform.position, _targetDetectRadius, _targetLayer);
             return _targetCollider;
         }
-        
+
+        public Collider2D[] DetectAllTargets()
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _targetDetectRadius, _targetLayer);
+            return colliders;
+
+        }
+
+       
+        public Collider2D[] DetectTargetsSorted()
+        {
+            var hits = Physics2D.OverlapCircleAll(transform.position, _targetDetectRadius, _targetLayer);
+
+            var sortedHits = hits
+                .OrderBy(hit => Vector2.SqrMagnitude(hit.transform.position - transform.position))
+                .ToArray();
+
+            return sortedHits;
+        }
+
         public Collider2D DetectClosestTarget()
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _targetDetectRadius, _targetLayer);

@@ -33,6 +33,7 @@ namespace Agents.Players
         [SerializeField] private float _castRadius = 0.4f;
         [SerializeField] private float _shootRadius = 12f;
         [SerializeField] private LayerMask _wallLayer;
+        [SerializeField] private LayerMask _magnetLayer;
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private LayerMask _ignoreLayer;
 
@@ -56,13 +57,8 @@ namespace Agents.Players
             _player = agent as Player;
         }
 
-        public void AfterInit()
-        {
-        }
-
-        public void Dispose()
-        {
-        }
+        public void AfterInit() { }
+        public void Dispose() { }
 
         private void FixedUpdate()
         {
@@ -81,6 +77,8 @@ namespace Agents.Players
 
             _isTargeted = isTargetDetected;
             _targetTrm = null;
+            _grabTarget = null;
+
             if (_isTargeted)
             {
                 RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, boxHit.distance, _ignoreLayer);
@@ -93,18 +91,22 @@ namespace Agents.Players
 
                 _targetPos = boxHit.point;
                 _targetTrm = boxHit.collider.transform;
-                if (boxHit.collider.TryGetComponent(out IGrabable grabTarget))
+
+                // Magnet Layer에서 GrabTarget 보정
+                Collider2D[] magnetHits = Physics2D.OverlapCircleAll(_targetPos, _castRadius, _magnetLayer);
+                foreach (var col in magnetHits)
                 {
-                    _targetPos = grabTarget.GetTransform.position;
-                    if (_grabTarget != grabTarget)
+                    if (col.TryGetComponent(out IGrabable grabTarget))
                     {
-                        grabTarget.OnAimEntered();
+                        _targetPos = grabTarget.GetTransform.position;
+                        if (_grabTarget != grabTarget)
+                        {
+                            grabTarget.OnAimEntered();
+                        }
+                        _grabTarget = grabTarget;
+                        break; // 가장 가까운 GrabTarget 하나만 사용
                     }
-                    _grabTarget = grabTarget;
                 }
-            }
-            else
-            {
             }
 
             InvokeGrabDataEvent();
