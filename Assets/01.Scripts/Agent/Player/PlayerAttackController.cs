@@ -6,6 +6,7 @@ namespace Agents.Players
     {
         [SerializeField] private PlayerWeaponListSO _weaponListSO;
         [SerializeField] private PlayerWeaponSO _weaponSO;
+        
         private Player _player;
         private PlayerWeapon _weapon;
         public void Initialize(Agent agent)

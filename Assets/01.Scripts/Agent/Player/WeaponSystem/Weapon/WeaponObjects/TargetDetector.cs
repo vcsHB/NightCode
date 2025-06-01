@@ -1,18 +1,38 @@
 using UnityEngine;
+
 namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
 {
-
     public class TargetDetector : MonoBehaviour
     {
-        private Collider2D _targetCollider;
-
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private float _targetDetectRadius;
+        private Collider2D _targetCollider;
 
         public Collider2D DetectTarget()
         {
             _targetCollider = Physics2D.OverlapCircle(transform.position, _targetDetectRadius, _targetLayer);
             return _targetCollider;
+        }
+        
+        public Collider2D DetectClosestTarget()
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _targetDetectRadius, _targetLayer);
+
+            Collider2D closest = null;
+            float minDistance = float.MaxValue;
+
+            Vector2 currentPos = transform.position;
+            foreach (var collider in colliders)
+            {
+                float distance = Vector2.Distance(currentPos, collider.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closest = collider;
+                }
+            }
+
+            return closest;
         }
     }
 }

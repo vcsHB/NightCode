@@ -1,14 +1,14 @@
-using System;
 using Agents.Players.WeaponSystem.Weapon.WeaponObjects;
 using Combat.CombatObjects.ProjectileManage;
-using ObjectPooling;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Agents.Players.WeaponSystem.Weapon
 {
 
     public class AutoRifleWeapon : PlayerWeapon
     {
+        public UnityEvent OnFireEvent;
         [SerializeField] private ProjectileShooter _shooter;
         [SerializeField] private RangeWeaponAimVisual _rangeWeaponVisual;
         [SerializeField] private TargetDetector _targetDetector;
@@ -44,7 +44,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             if (_isShooting)
             {
 
-                _targetCollider = _targetDetector.DetectTarget();
+                _targetCollider = _targetDetector.DetectClosestTarget();
                 if (_targetCollider == null)
                 {
                     HandleRemoveRope();
@@ -57,6 +57,7 @@ namespace Agents.Players.WeaponSystem.Weapon
                 {
                     _shooter.SetDirection(direction);
                     _shooter.FireProjectile();
+                    OnFireEvent?.Invoke();
                     _currentFireAmount++;
                     _lastFireTime = Time.time;
                     if (_currentFireAmount >= _fireAmount)
