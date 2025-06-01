@@ -18,7 +18,6 @@ namespace EffectSystem
         protected Health _ownerHealth;
         protected Transform _ownerTrm;
 
-        
         public EffectState(Agent agent, bool isResist)
         {
             _owner = agent;

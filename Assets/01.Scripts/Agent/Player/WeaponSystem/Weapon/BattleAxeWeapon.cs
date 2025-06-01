@@ -56,14 +56,10 @@ namespace Agents.Players.WeaponSystem.Weapon
             Collider2D[] targets = _targetDetector.DetectTargetsSorted();
             for (int i = 0; i < targets.Length; i++)
             {
-                Vector2 direction = targets[i].transform.position - transform.position;
-                print("Direction:" + direction);
-            }
-            for (int i = 0; i < targets.Length; i++)
-            {
                 if (i > _throwAmount) break;
                 BattleAxe axe = GetAxe();
                 if (axe == null) return;
+                
                 axe.transform.position = transform.position;
                 Vector2 direction = targets[i].transform.position - transform.position;
                 axe.Throw(direction.normalized);

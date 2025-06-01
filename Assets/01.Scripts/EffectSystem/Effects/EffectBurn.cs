@@ -15,7 +15,7 @@ namespace EffectSystem
             base.UpdateBySecond();
             _ownerHealth.ApplyDamage(new CombatData()
             {
-                damage = level,
+                damage = level * 0.5f,
                 type = AttackType.Heat
             });
         }
