@@ -9,6 +9,7 @@ namespace ObjectManage
         public Transform GetTransform => transform;
         //private SpriteRenderer _aimedMarkRenderer;
         private Health _ownerHealth;
+        [SerializeField] private bool _disableInDead = true;
         private Collider2D _collider;
         private AimMagnetPointVisual _aimMagnetVisual;
         private bool _isVisualExist;
@@ -18,7 +19,7 @@ namespace ObjectManage
             _collider = GetComponent<Collider2D>();
             _aimMagnetVisual = GetComponentInChildren<AimMagnetPointVisual>();
             _isVisualExist = _aimMagnetVisual != null;
-            if (_ownerHealth != null)
+            if (_disableInDead && _ownerHealth != null)
                 _ownerHealth.OnDieEvent.AddListener(HandleOwnerDie);
         }
 

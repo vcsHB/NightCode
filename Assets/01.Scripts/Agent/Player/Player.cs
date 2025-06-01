@@ -11,7 +11,6 @@ namespace Agents.Players
         protected PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
 
-        public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
         [field: SerializeField] public Transform RopeHolder { get; private set; }
         public bool CanCharacterChange { get; set; } = true;
@@ -24,9 +23,7 @@ namespace Agents.Players
         {
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
-            HealthCompo = GetComponent<Health>();
             HealthCompo.OnHealthChangedEvent.AddListener(HandlePlayerHit);
-            HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             InitState();
         }

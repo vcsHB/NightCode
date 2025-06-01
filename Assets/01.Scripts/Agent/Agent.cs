@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Combat;
 using Core.EventSystem;
 using UnityEngine;
 
@@ -11,12 +12,15 @@ namespace Agents
         public event Action OnDieEvent;
         [field: SerializeField] public GameEventChannelSO EventChannel { get; protected set; }
 
+        public Health HealthCompo { get; protected set; }
         public bool IsDead { get; protected set; }
         private Dictionary<Type, IAgentComponent> _components = new Dictionary<Type, IAgentComponent>();
 
         protected virtual void Awake()
         {
             EventChannel = Instantiate(EventChannel);
+            HealthCompo = GetComponent<Health>();
+            HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             AddComponentToDictionary();
             ComponentInitialize();
