@@ -13,6 +13,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         private Queue<RocketProjectile> _rocketPool = new();
         private Transform _targetTrm;
         private bool _isAiming;
+        [SerializeField] private Transform _aimDirectionMarkerTrm;
 
 
         public override void Initialize(Player player)
@@ -31,7 +32,6 @@ namespace Agents.Players.WeaponSystem.Weapon
 
         private void HandleRopeShoot()
         {
-            _rangeWeaponVisual.SetAimEnable(true);
             _isAiming = true;
 
         }
@@ -44,8 +44,13 @@ namespace Agents.Players.WeaponSystem.Weapon
                 if (target == null)
                 {
                     _targetTrm = null;
+                    _rangeWeaponVisual.SetAimEnable(false);
+                    return;
                 }
+                _rangeWeaponVisual.SetAimEnable(true);
                 _targetTrm = target.transform;
+                Vector2 direction = _targetTrm.position - transform.position;
+                _aimDirectionMarkerTrm.right = direction;
                 _rangeWeaponVisual.SetAimToTarget(_targetTrm);
 
             }
@@ -69,6 +74,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             RocketProjectile rocket = _rocketPool.Count > 0 ?
                 _rocketPool.Dequeue() :
                 Instantiate(_rocketPrefab);
+            rocket.SetActive(true);
             rocket.OnRocketReturnEvent += HandleRocketDestroy;
             return rocket;
 
@@ -77,6 +83,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         private void HandleRocketDestroy(RocketProjectile rocket)
         {
             rocket.OnRocketReturnEvent -= HandleRocketDestroy;
+            rocket.SetActive(false);
             _rocketPool.Enqueue(rocket);
         }
     }

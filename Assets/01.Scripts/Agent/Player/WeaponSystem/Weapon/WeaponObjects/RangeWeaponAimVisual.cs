@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
 {
 
     public class RangeWeaponAimVisual : MonoBehaviour
     {
+        public UnityEvent OnAimEnableEvent;
+        public UnityEvent OnAimDisableEvent;
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private RangeWeaponAimPoint _aimPoint;
 
@@ -20,12 +23,14 @@ namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
 
         public void SetAimEnable(bool value)
         {
+            if (value)
+                OnAimEnableEvent?.Invoke();
+            else
+                OnAimDisableEvent?.Invoke();
+
             _lineRenderer.enabled = value;
             _aimPoint.SetAimPointEnable(value);
         }
-
-
-
 
     }
 }
