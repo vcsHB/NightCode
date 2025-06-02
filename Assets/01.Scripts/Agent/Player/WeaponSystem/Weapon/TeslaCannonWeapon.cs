@@ -12,6 +12,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         }
         public override void HandleAttack()
         {
+                
         }
     }
 }

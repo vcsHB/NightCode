@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Agents.Players.WeaponSystem.Weapon.WeaponObjects;
 using UnityEngine;

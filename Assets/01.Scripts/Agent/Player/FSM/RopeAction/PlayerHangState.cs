@@ -7,7 +7,6 @@ namespace Agents.Players.FSM
 {
     public class PlayerHangState : PlayerRopeState
     {
-        protected bool _canUseTurbo = true;
 
         protected bool _isGroundCheck = true;
         protected FeedbackCreateEventData _turboCreateFeedback = new FeedbackCreateEventData("Turbo");
@@ -23,7 +22,8 @@ namespace Agents.Players.FSM
             _isGroundCheck = true;
             _player.PlayerInput.TurboEvent += HandleUseTurbo;
             _player.PlayerInput.PullEvent += HandlePull;
-            
+
+            _mover.ResetTurboCount();
             _animationTrigger.HandleRopeShoot();
             _renderer.SetLockRotation(false);
             _aimController.SetOrbitVisual(true);
@@ -73,7 +73,6 @@ namespace Agents.Players.FSM
             _player.PlayerInput.TurboEvent -= HandleUseTurbo;
             _player.PlayerInput.PullEvent -= HandlePull;
 
-            _canUseTurbo = true;
             _mover.CanManualMove = true;
             _aimController.SetOrbitVisual(false);
             _player.EventChannel.RaiseEvent(_turboFinishFeedback);
@@ -86,7 +85,7 @@ namespace Agents.Players.FSM
         protected virtual void HandleUseTurbo()
         {
             if (!_player.IsActive) return;
-            if (!_canUseTurbo) return;
+            if (!_mover.CanUseTurbo) return;
 
             ForceUseTurbo();
 
@@ -97,7 +96,7 @@ namespace Agents.Players.FSM
             _aimController.RefreshHangingDirection();
             _animationTrigger.HandleTurboEvent();
             _mover.UseTurbo(_aimController.HangingDirection);
-            _canUseTurbo = false;
+            
             _player.EventChannel.RaiseEvent(_turboCreateFeedback);
         }
 

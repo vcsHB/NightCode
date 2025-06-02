@@ -14713,7 +14713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6810b9549881174aaa9f278ba8636d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _agentRenderer: {fileID: 6979900618268750490}
+  _agentRenderer: {fileID: 0}
   _ownerRenderer: {fileID: 6072080972751860290}
   _colorGradient:
     serializedVersion: 2
@@ -15171,7 +15171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6810b9549881174aaa9f278ba8636d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _agentRenderer: {fileID: 6979900618268750490}
+  _agentRenderer: {fileID: 0}
   _ownerRenderer: {fileID: 6072080972751860290}
   _colorGradient:
     serializedVersion: 2
@@ -15270,8 +15270,8 @@ GameObject:
   - component: {fileID: 6053630939810569208}
   - component: {fileID: 6072080972751860290}
   - component: {fileID: 8503373881623752349}
-  - component: {fileID: 6979900618268750490}
-  - component: {fileID: 8214483219408227347}
+  - component: {fileID: 219137286796505828}
+  - component: {fileID: 5737299084152811522}
   m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
@@ -15371,7 +15371,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6979900618268750490
+--- !u!114 &219137286796505828
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15380,7 +15380,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4834582128868428138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 602cfb30a4e1da14d9d87804b56ac9a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cdb687fee2dc3b47ad5dba00d93bd1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <FacingDirection>k__BackingField: 1
@@ -15395,7 +15395,7 @@ MonoBehaviour:
   <ClimbParam>k__BackingField: {fileID: 11400000, guid: 71c121d3b49b14d41a5bff50ee88fea9, type: 2}
   <EnterParam>k__BackingField: {fileID: 11400000, guid: 783ff1433dd39f443a08e4f956697783, type: 2}
   <ExitParam>k__BackingField: {fileID: 11400000, guid: 239eabc2d567c6446bf8a20346432868, type: 2}
---- !u!114 &8214483219408227347
+--- !u!114 &5737299084152811522
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15404,7 +15404,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4834582128868428138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47639d97c0356ba4989c222538a091f5, type: 3}
+  m_Script: {fileID: 11500000, guid: a748cf3ba88572c458ddcda97954f4ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnGroundPullStartEvent:
@@ -15422,7 +15422,6 @@ MonoBehaviour:
   OnRopeRemoveEvent:
     m_PersistentCalls:
       m_Calls: []
-  _attackController: {fileID: 0}
 --- !u!1 &5093164592791961379
 GameObject:
   m_ObjectHideFlags: 0
@@ -20936,7 +20935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6810b9549881174aaa9f278ba8636d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _agentRenderer: {fileID: 6979900618268750490}
+  _agentRenderer: {fileID: 219137286796505828}
   _ownerRenderer: {fileID: 6072080972751860290}
   _colorGradient:
     serializedVersion: 2
@@ -25965,10 +25964,6 @@ PrefabInstance:
       propertyPath: _currentWeapon
       value: 
       objectReference: {fileID: 11400000, guid: e0395bc786c3b634792a89e7f89f7ed4, type: 2}
-    - target: {fileID: 1926010573900675907, guid: 25269c85edf1f6e43958fbb8c761b63f, type: 3}
-      propertyPath: _ownerRenderer
-      value: 
-      objectReference: {fileID: 6979900618268750490}
     - target: {fileID: 3334132504642776816, guid: 25269c85edf1f6e43958fbb8c761b63f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

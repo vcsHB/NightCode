@@ -240,7 +240,7 @@ MonoBehaviour:
         m_CallState: 2
   _flyDistance: 40
   _flySpeed: 60
-  _rotationSpeed: 2000
+  _rotationSpeed: -1000
   _returnThreshold: 0.3
 --- !u!1 &3489654066216051023
 GameObject:
@@ -268,7 +268,7 @@ Transform:
   m_GameObject: {fileID: 3489654066216051023}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalPosition: {x: 0.9, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -319,11 +319,11 @@ TrailRenderer:
   m_SortingLayerID: -282882171
   m_SortingLayer: 4
   m_SortingOrder: -1
-  m_Time: 0.2
+  m_Time: 0.4
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.2
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -350,8 +350,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 1, b: 0.8124628, a: 1}
-      key1: {r: 0, g: 1, b: 0.8094719, a: 0.9818458}
+      key0: {r: 0, g: 1, b: 0.8124628, a: 0.41568628}
+      key1: {r: 0, g: 1, b: 0.8094719, a: 0.34509805}
       key2: {r: 0, g: 1, b: 0.6853483, a: 0.1254902}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -375,7 +375,7 @@ TrailRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 3
       m_NumAlphaKeys: 3
     numCornerVertices: 0
@@ -385,7 +385,7 @@ TrailRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.03
   m_MaskInteraction: 0
   m_Autodestruct: 0
   m_Emitting: 1
