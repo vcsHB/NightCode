@@ -27,8 +27,7 @@ namespace Chipset
         private List<Vector2Int> _chipsetSlotOffset;
 
         public RectTransform RectTrm => transform as RectTransform;
-        public RectTransform ParentRectTrm => transform.parent as RectTransform;
-        public Vector2 ParentSize => new Vector2(ParentRectTrm.rect.width, ParentRectTrm.rect.height);
+        public Vector2 ScreenSize => new Vector2(Screen.width, Screen.height);
 
         private void Awake()
         {
@@ -124,7 +123,7 @@ namespace Chipset
         }
 
         public void SetPosition(Vector2 anchoredPosition)
-            => RectTrm.anchoredPosition = anchoredPosition + (ParentSize / 2);
+            => RectTrm.anchoredPosition = anchoredPosition + (ScreenSize / 2);
 
         public void SetPrevPosition(List<Vector2Int> prev) => _prevPositions = prev;
 

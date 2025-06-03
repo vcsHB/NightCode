@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2493730217292762186}
   - component: {fileID: 8730617902062851930}
+  - component: {fileID: 754370051762334500}
   - component: {fileID: 6658872941320388787}
   - component: {fileID: 3597387249973883542}
-  - component: {fileID: 5908286860764499018}
   m_Layer: 5
   m_Name: ChipsetInventorySlot
   m_TagString: Untagged
@@ -47,6 +47,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62451989087342465}
   m_CullTransparentMesh: 1
+--- !u!225 &754370051762334500
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62451989087342465}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &6658872941320388787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,15 +106,3 @@ MonoBehaviour:
   _chipsetNotInsertableColor: {r: 0.8207547, g: 0.2264361, b: 0.2206746, a: 1}
   _selectionColor: {r: 0.8867924, g: 0.6877372, b: 0.17150229, a: 1}
   _disableAlpha: 0.1
---- !u!225 &5908286860764499018
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 62451989087342465}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
