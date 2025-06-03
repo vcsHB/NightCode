@@ -6,7 +6,7 @@ namespace Agents.Players.FSM
 
     public class PlayerSwingState : PlayerState
     {
-        protected float _duration = 0.45f;
+        protected float _duration = 0.8f;
         //private Stat _playerDashPower;
         //private Stat _playerJumpPower;
         protected float _currentRollingTime;

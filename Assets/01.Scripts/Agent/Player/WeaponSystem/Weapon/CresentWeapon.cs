@@ -1,6 +1,7 @@
 using System;
 using Combat.Casters;
 using UnityEngine;
+using DG.Tweening;
 namespace Agents.Players.WeaponSystem.Weapon
 {
 
@@ -8,6 +9,7 @@ namespace Agents.Players.WeaponSystem.Weapon
     {
         [SerializeField] private float _attackDuration = 1.5f;
         [SerializeField] private SpriteRenderer _attackGuideVisual;
+        [SerializeField] private float _guideScaleTweenDuration = 0.15f;
         [SerializeField] private TrailRenderer _trailRenderer;
         private Caster _caster;
         private bool _isAttackEnabled;
@@ -34,7 +36,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         public override void HandleAttack()
         {
             _isAttackEnabled = true;
-            _attackGuideVisual.enabled = true;
+            _attackGuideVisual.transform.DOScale(Vector3.one, _guideScaleTweenDuration);
             _trailRenderer.Clear();
             _trailRenderer.emitting = true;
             _currentAttackTime = 0f;
@@ -62,7 +64,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         private void SetDisableWeapon()
         {
             _isAttackEnabled = false;
-            _attackGuideVisual.enabled = false;
+            _attackGuideVisual.transform.DOScale(Vector3.zero, _guideScaleTweenDuration);
             _trailRenderer.emitting = false;
         }
     }

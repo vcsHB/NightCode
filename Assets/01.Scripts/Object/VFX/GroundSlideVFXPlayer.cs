@@ -1,11 +1,9 @@
-using System.Collections;
 using ObjectPooling;
 using UnityEngine;
-
-namespace ObjectManage
+namespace ObjectManage.VFX
 {
 
-    public class VFXPlayer : MonoBehaviour, IPoolable
+    public class GroundSlideVFXPlayer : MonoBehaviour, IPoolable
     {
         [field: SerializeField] public PoolingType type { get; set; }
 
@@ -14,9 +12,10 @@ namespace ObjectManage
         [SerializeField] private ParticleSystem _vfx;
         [SerializeField] private float _lifeTime = 2f;
 
-        public void Play()
+        public void Play(float xDirection)
         {
             _vfx.Play();
+            _vfx.transform.localScale = new Vector3(xDirection, 1f, 1f);
             Invoke(nameof(HandleOverLifeTime), _lifeTime);
         }
 
@@ -30,5 +29,4 @@ namespace ObjectManage
             _vfx.Clear();
         }
     }
-
 }

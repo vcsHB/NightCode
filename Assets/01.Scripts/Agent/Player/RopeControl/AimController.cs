@@ -137,7 +137,7 @@ namespace Agents.Players
                         newPosition, _clampDuration));
             }
             else
-                _aimGroupController.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint);
+                _aimGroupController.SetWireEnable(true, _anchorPosition, _currentAimData.distanceToPoint - 3f);
             KatanaSlashVFXPlayer vfx = PoolManager.Instance.Pop(PoolingType.RopeAnchoredVFX) as KatanaSlashVFXPlayer;
             vfx.SetGradient(_gradient);
             vfx.SlashLerp(transform.position, _anchorPosition, _anchorDistance * 0.05f);

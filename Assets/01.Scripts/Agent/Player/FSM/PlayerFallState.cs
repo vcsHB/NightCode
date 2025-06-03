@@ -13,6 +13,7 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
+            //_mover.StopImmediately();
             _mover.ClampVelocityWithMoveSpeed();
         }
 

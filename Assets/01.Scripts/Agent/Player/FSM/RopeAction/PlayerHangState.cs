@@ -1,6 +1,8 @@
 using System;
 using Agents.Animate;
 using CameraControllers;
+using ObjectManage.VFX;
+using ObjectPooling;
 using UnityEngine;
 
 namespace Agents.Players.FSM
@@ -9,6 +11,9 @@ namespace Agents.Players.FSM
     {
 
         protected bool _isGroundCheck = true;
+        private float _slideVelocity = 15f;
+        private float _slideTerm = 0.1f;
+        private float _nextSlideTime;
         protected FeedbackCreateEventData _turboCreateFeedback = new FeedbackCreateEventData("Turbo");
         protected FeedbackFinishEventData _turboFinishFeedback = new FeedbackFinishEventData("Turbo");
         public PlayerHangState(Player player, PlayerStateMachine stateMachine, AnimParamSO animParam) : base(player, stateMachine, animParam)
@@ -58,12 +63,31 @@ namespace Agents.Players.FSM
             if (_isGroundCheck)
             {
 
-                if (_mover.IsGroundDetected() && _aimController.HangingDirection.y < 0)
+                if (_mover.IsGroundDetected())
                 {
-                    _aimController.RemoveWire();
-                    _stateMachine.ChangeState("Fall");
+                    if (_mover.Velocity.magnitude > _slideVelocity)
+                    {
+                        if (_nextSlideTime < Time.time)
+                        {
+                            GroundSlide();
+                        }
+                    }
+                    if (_aimController.HangingDirection.y < 0)
+                    {
+                        _aimController.RemoveWire();
+                        _stateMachine.ChangeState("Fall");
+                    }
+
                 }
             }
+        }
+
+        private void GroundSlide()
+        {
+            _nextSlideTime = Time.time + UnityEngine.Random.Range(0f, _slideTerm);
+            GroundSlideVFXPlayer vfx = PoolManager.Instance.Pop(PoolingType.GroundSlideVFX) as GroundSlideVFXPlayer;
+            vfx.transform.position = _mover.GroundCheckerPosition;
+            vfx.Play(_renderer.FacingDirection);
         }
 
         public override void Exit()
@@ -96,7 +120,7 @@ namespace Agents.Players.FSM
             _aimController.RefreshHangingDirection();
             _animationTrigger.HandleTurboEvent();
             _mover.UseTurbo(_aimController.HangingDirection);
-            
+
             _player.EventChannel.RaiseEvent(_turboCreateFeedback);
         }
 
