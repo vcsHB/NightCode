@@ -7,6 +7,8 @@ namespace EffectSystem
 {
     public class AgentEffectController : MonoBehaviour, IEffectable, IAgentComponent
     {
+        public event Action<EffectStateTypeEnum> OnEffectStartEvent;
+        public event Action<EffectStateTypeEnum> OnEffectOverEvent;
         public Dictionary<EffectStateTypeEnum, EffectState> effectDictionary = new Dictionary<EffectStateTypeEnum, EffectState>();
         protected Agent _owner;
         protected float _currentTime = 0f;
@@ -36,6 +38,8 @@ namespace EffectSystem
                 {
                     EffectState effect = Activator.CreateInstance(t, _owner, false) as EffectState;
                     effectDictionary.Add(effectEnum, effect);
+                    effect.type = effectEnum;
+                    
                 }
                 catch (Exception ex)
                 {
@@ -81,11 +85,13 @@ namespace EffectSystem
         public virtual void ApplyEffect(EffectStateTypeEnum type, float duration, int level, float percent = 1f)
         {
             effectDictionary[type].Start(level, duration, percent);
+            OnEffectStartEvent?.Invoke(type);
         }
 
         public virtual void RemoveEffect(EffectStateTypeEnum type)
         {
             effectDictionary[type].Over();
+            OnEffectOverEvent?.Invoke(type);
         }
 
         public EffectState GetEffectState(EffectStateTypeEnum type)

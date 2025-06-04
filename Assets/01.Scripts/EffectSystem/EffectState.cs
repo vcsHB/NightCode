@@ -9,11 +9,13 @@ namespace EffectSystem
     {
         public event Action<int, int> OnUpdateEvent;
         public event Action OnOverEvent;
+        public event Action<EffectStateTypeEnum> OnEffectOverTypeEvent;
         public bool isResist;
         public bool enabled;
         public int level;
         public float duration;
-        
+
+        public EffectStateTypeEnum type;
         protected Agent _owner;
         protected Health _ownerHealth;
         protected Transform _ownerTrm;
@@ -55,6 +57,7 @@ namespace EffectSystem
             level = 0;
             duration = 0f;
             OnOverEvent?.Invoke();
+            OnEffectOverTypeEvent?.Invoke(type);
         }
 
 
