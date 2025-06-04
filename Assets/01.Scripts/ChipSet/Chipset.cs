@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -24,6 +25,7 @@ namespace Chipset
         private Vector2Int _selectedSlotOffset;
         private Vector2 _offset;
         private bool _isDraging = false;
+        private bool _isForcePointerDown = false;
         private List<Vector2Int> _chipsetSlotOffset;
 
         public RectTransform RectTrm => transform as RectTransform;
@@ -59,6 +61,13 @@ namespace Chipset
                     Rotate();
                 }
             }
+
+            if(_isForcePointerDown && Input.GetMouseButtonUp(0))
+            {
+                OnPointerUp(Vector2Int.zero);
+                _isForcePointerDown = false;
+            }
+
         }
 
         private void Rotate()
@@ -88,6 +97,20 @@ namespace Chipset
         }
 
         #region Events 
+
+        public void ForceOnPointerDown(Vector2Int position, PointerEventData data)
+        {
+            for (int i = 0; i < _slots.Length; ++i)
+            {
+                if (_slots[i].SlotPosition == position)
+                {
+                    ExecuteEvents.Execute(_slots[i].gameObject,
+                        data, ExecuteEvents.pointerDownHandler);
+
+                    _isForcePointerDown = true;
+                }
+            }
+        }
 
         public void OnPointerDown(Vector2Int position)
         {

@@ -1,3 +1,4 @@
+using Agents;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,11 +12,13 @@ namespace Chipset
         private Chipset _assignedChipset;
         private ChipsetInventory _inventory;
         private float _scaleUpDuration = 0.3f;
+        private Canvas _canvas;
 
         public RectTransform RectTrm => transform as RectTransform;
 
         public void Init(ChipsetInventory inventory, Chipset chipset)
         {
+            _canvas = GetComponentInParent<Canvas>();
             _inventory = inventory;
             _assignedChipset = chipset;
             _assignedChipset.RectTrm.localScale = Vector3.zero;
@@ -43,7 +46,17 @@ namespace Chipset
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            _assignedChipset.OnPointerDown(_assignedChipset.info.chipsetSize[0]);
+            Camera uiCamera = _canvas.worldCamera;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _assignedChipset.ParentRectTrm,
+                Input.mousePosition,
+                uiCamera,
+                out Vector2 localPoint
+            );
+
+            _assignedChipset.RectTrm.localPosition = localPoint;
+
+            _assignedChipset.ForceOnPointerDown(Vector2Int.zero, eventData);
             _assignedChipset.RectTrm.DOScale(1, _scaleUpDuration);
             _icon.gameObject.SetActive(false);
 
