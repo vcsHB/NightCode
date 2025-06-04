@@ -30,12 +30,12 @@ namespace ObjectManage.VFX
             _trailRenderer.colorGradient = gradient;
         }
 
-        public void Slash(Vector2 centerPos, Vector2 direction)
+        public void Slash(Vector2 centerPos, Vector2 direction, float slashSize = 0f)
         {
             _trailRenderer.enabled = false;
             direction.Normalize();
             transform.position = centerPos;
-            Vector2 movement = direction * _slashSize;
+            Vector2 movement = direction * (Mathf.Approximately(slashSize, 0f) ? _slashSize : slashSize);
             _trailTrm.localPosition = -movement;
             _trailRenderer.enabled = true;
             _trailTrm.DOLocalMove(movement, _slashDuration).OnComplete(() => StartCoroutine(SlashOverCoroutine()));
