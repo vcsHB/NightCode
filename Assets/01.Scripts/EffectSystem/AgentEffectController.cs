@@ -37,9 +37,10 @@ namespace EffectSystem
                 try
                 {
                     EffectState effect = Activator.CreateInstance(t, _owner, false) as EffectState;
+                    effect.OnEffectOverTypeEvent += HandleEffectOver;
                     effectDictionary.Add(effectEnum, effect);
                     effect.type = effectEnum;
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -48,7 +49,10 @@ namespace EffectSystem
             }
         }
 
-
+        private void HandleEffectOver(EffectStateTypeEnum type)
+        {
+            OnEffectOverEvent?.Invoke(type);
+        }
 
         protected virtual void Update()
         {

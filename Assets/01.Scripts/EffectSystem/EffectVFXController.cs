@@ -10,40 +10,26 @@ namespace EffectSystem
         private AgentEffectController _effectController;
         private void Awake()
         {
-            _effectController = GetComponent<AgentEffectController>();
+            _effectController = transform.parent.GetComponent<AgentEffectController>();
             _effectController.OnEffectStartEvent += StartVFX;
-            _effectController.OnEffectStartEvent += StopVFX;
+            _effectController.OnEffectOverEvent += StopVFX;
         }
 
         public void StartVFX(EffectStateTypeEnum effectType)
         {
-            int index = GetIndexFromFlag(effectType);
+            if (effectType == EffectStateTypeEnum.None) return;
+
+            int index = (int)effectType - 1;
             _effectBurstVFXs[index].Play();
             _effectLoopVFXs[index].Play();
         }
 
         public void StopVFX(EffectStateTypeEnum effectType)
         {
-            int index = GetIndexFromFlag(effectType);
+            if (effectType == EffectStateTypeEnum.None) return;
+            int index = (int)effectType - 1;
             _effectLoopVFXs[index].Stop();
         }
 
-        int GetIndexFromFlag(EffectStateTypeEnum effect)
-        {
-            if (effect == EffectStateTypeEnum.None)
-                throw new ArgumentException("Effect cannot be None");
-
-            int value = (int)effect;
-
-            if ((value & (value - 1)) != 0)
-                throw new ArgumentException("Multiple flags are set; only single flags are allowed.");
-
-            return (int)Mathf.Log(value);
-        }
-
-        private EffectStateTypeEnum GetEffectByIndex(int index)
-        {
-            return (EffectStateTypeEnum)(1 << index);
-        }
     }
 }
