@@ -6,10 +6,12 @@ namespace Core.Attribute
     public class ShowIfAttribute : PropertyAttribute
     {
         public string ConditionFieldName;
+        public bool Invert;
 
-        public ShowIfAttribute(string conditionFieldName)
+        public ShowIfAttribute(string conditionFieldName, bool invert = false)
         {
-            this.ConditionFieldName = conditionFieldName;
+            ConditionFieldName = conditionFieldName;
+            Invert = invert;
         }
     }
 }
