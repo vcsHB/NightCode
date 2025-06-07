@@ -12,6 +12,7 @@ namespace Map
 
     public class MapGraph : MonoBehaviour
     {
+        public event Action<MapNodeSO> OnSelectNodeEvent;
         public MapGraphSO mapInfo;
         public MapNode nodePrefab;
 
@@ -41,11 +42,17 @@ namespace Map
                 {
                     MapNode node = Instantiate(nodePrefab, _nodeParent);
                     node.RectTrm.anchoredPosition = new Vector2(i * _xOffset, _heights[map[i].Count - 1].positions[j]);
+                    node.onSelectNode += HandleSelectNode;
                     node.Init(map[i][j]);
                     nodeDic.Add(map[i][j], node);
                 }
             }
             ConnectNode();
+        }
+
+        private void HandleSelectNode(MapNodeSO data)
+        {
+            OnSelectNodeEvent?.Invoke(data);
         }
 
         private void ConnectNode()
