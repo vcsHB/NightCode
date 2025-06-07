@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Chipset
 {
@@ -20,6 +22,13 @@ namespace Chipset
             Init();
         }
 
+        private void Update()
+        {
+            //For Debuging
+            if (Keyboard.current.lKey.wasPressedThisFrame)
+                Save();
+        }
+
         public void Init()
         {
             _inventory = new Dictionary<CharacterEnum, ChipsetInventory>();
@@ -29,7 +38,11 @@ namespace Chipset
             {
                 _inventory.Add((CharacterEnum)i, inventoryList[i]);
                 inventoryList[i].Init();
-                inventoryList[i].gameObject.SetActive(false);
+            }
+            Load();
+            for (int i = 0; i < inventoryList.Length; i++)
+            {
+                inventoryList[i].Dispose();
             }
 
             _container.Init();
@@ -51,20 +64,32 @@ namespace Chipset
             inventorySave = new ChipsetInventorySave();
             inventorySave.openInventory = openInventory;
 
-            foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
                 ChipsetInventory inventory = _inventory[character];
-                List<ChipsetSave> chipsetInfos = new List<ChipsetSave>();
-                
-                //inventory.
-                
-                //chipsetInfos.Add();
+                inventorySave.SetChipsets(character, inventory.GetInventoryData());
             }
+
+            string json = JsonUtility.ToJson(inventorySave);
+            File.WriteAllText(_path, json);
         }
 
         public void Load()
         {
+            if (File.Exists(_path) == false)
+            {
+                Save();
+                return;
+            }
 
+            string json = File.ReadAllText(_path);
+            inventorySave = JsonUtility.FromJson<ChipsetInventorySave>(json);
+
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                ChipsetInventory inventory = _inventory[character];
+                inventory.SetInventoryData(inventorySave.GetChipsets(character), inventorySave.openInventory);
+            }
         }
     }
 
@@ -90,12 +115,27 @@ namespace Chipset
             }
             return null;
         }
+        public void SetChipsets(CharacterEnum character, List<ChipsetSave> inventoryData)
+        {
+            switch (character)
+            {
+                case CharacterEnum.An:
+                    anChipset = inventoryData;
+                    break;
+                case CharacterEnum.JinLay:
+                    jinLayChipset = inventoryData;
+                    break;
+                case CharacterEnum.Bina:
+                    binaChipset = inventoryData;
+                    break;
+            }
+        }
     }
 
     [Serializable]
     public struct ChipsetSave
     {
-        public int chipsetId;
+        public ushort chipsetId;
         public Vector2Int center;
         public int rotate;
     }

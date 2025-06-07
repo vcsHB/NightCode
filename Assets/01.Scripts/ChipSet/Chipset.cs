@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Chipset
 {
@@ -19,10 +22,14 @@ namespace Chipset
 
         private CanvasGroup _canvasGroup;
 
+        private Vector2Int _centerPosition;
+        private int _rotation;
+
         private ChipsetSlot[] _slots;
         private Dictionary<Vector2Int, Vector2> _slotPositionDic;
-        private List<Vector2Int> _prevPositions;            //0,0 위치와 회전 저장으로 교체
-        
+        private Vector2Int _prevPosition;
+        private int _prevRotate;
+
         private Vector2Int _selectedSlotOffset;
         private Vector2 _offset;
 
@@ -31,11 +38,11 @@ namespace Chipset
 
         #region Property Field
 
+        public int Rotation => _rotation;
         public bool IsForcePointerDown => _isForcePointerDown;
         public RectTransform RectTrm => transform as RectTransform;
         public RectTransform ParentRectTrm => transform.parent as RectTransform;
-        public Vector2 ParentSize => new Vector2(ParentRectTrm.rect.width, ParentRectTrm.rect.height);
-        public List<Vector2Int> PrevPositions => _prevPositions;
+        private Vector2 ParentSize => new Vector2(ParentRectTrm.rect.width, ParentRectTrm.rect.height);
 
         #endregion
 
@@ -72,7 +79,7 @@ namespace Chipset
         {
             if (_isDraging)
             {
-                Vector2 offset = _slotPositionDic[_selectedSlotOffset] + _offset;
+                Vector2 offset = ClockWise(_slotPositionDic[_selectedSlotOffset] + _offset, _rotation);
                 RectTrm.anchoredPosition = (Vector2)Input.mousePosition - offset;
 
                 if (info.isRotatable && Keyboard.current.rKey.wasPressedThisFrame)
@@ -84,28 +91,44 @@ namespace Chipset
 
         private void Rotate()
         {
+            if (++_rotation > 3) _rotation -= 4;
             transform.Rotate(new Vector3(0, 0, -90));
-            List<Vector2> positions = _slotPositionDic.Values.ToList();
-
-            _slotPositionDic.Clear();
-            _selectedSlotOffset = new Vector2Int(_selectedSlotOffset.y, -_selectedSlotOffset.x);
-            _offset = new Vector2(_offset.y, -_offset.x);
-
-            for (int i = 0; i < _slots.Length; i++)
-            {
-                //CW
-                Vector2Int newOffset = new Vector2Int(_slots[i].SlotPosition.y, -_slots[i].SlotPosition.x);
-                _slotPositionDic.Add(newOffset, new Vector2(positions[i].y, -positions[i].x));
-                _slots[i].SetPosition(newOffset);
-            }
-
-            if (_prevPositions != null)
-            {
-                for (int i = 0; i < _prevPositions.Count; i++)
-                    _prevPositions[i] = new Vector2Int(_prevPositions[i].y, -_prevPositions[i].x);
-            }
-
             onRotate?.Invoke();
+        }
+
+        private Vector2Int ClockWise(Vector2Int position, int rotateCnt)
+        {
+            int cnt = rotateCnt % 4;
+
+            switch (cnt)
+            {
+                case 0:
+                    return position;
+                case 1:
+                    return new Vector2Int(position.y, -position.x);
+                case 2:
+                    return -position;
+                case 3:
+                    return new Vector2Int(-position.y, position.x);
+            }
+            return Vector2Int.zero;
+        }
+        private Vector2 ClockWise(Vector2 position, int rotateCnt)
+        {
+            int cnt = rotateCnt % 4;
+
+            switch (cnt)
+            {
+                case 0:
+                    return position;
+                case 1:
+                    return new Vector2(position.y, -position.x);
+                case 2:
+                    return -position;
+                case 3:
+                    return new Vector2(-position.y, position.x);
+            }
+            return Vector2.zero;
         }
 
         #region Events 
@@ -152,7 +175,7 @@ namespace Chipset
 
         #endregion
 
-        public Vector2Int GetSelectOffset() => _selectedSlotOffset;
+        public Vector2Int GetSelectOffset() => ClockWise(_selectedSlotOffset, _rotation);
 
 
         public List<Vector2Int> GetOffsets()
@@ -162,20 +185,40 @@ namespace Chipset
             for (int i = 0; i < _slots.Length; i++)
             {
                 Vector2Int offset = _slots[i].SlotPosition - _selectedSlotOffset;
-                offsets.Add(offset);
+                offsets.Add(ClockWise(offset, _rotation));
             }
 
             return offsets;
         }
 
         public void SetPosition(Vector2 anchoredPosition)
-            => RectTrm.anchoredPosition = anchoredPosition + (ParentSize / 2);
+        {
+            RectTrm.anchoredPosition = anchoredPosition + (ParentRectTrm.sizeDelta / 2);
+        }
 
-        public void SetPrevPosition(List<Vector2Int> prev) => _prevPositions = prev;
+        public void SetPrevPosition(Vector2Int center, int rotate)
+        {
+            _selectedSlotOffset = Vector2Int.zero;
+            _prevPosition = center;
+            _prevRotate = rotate;
+        }
 
         public void SetActive(bool isEnable)
         {
             gameObject.SetActive(isEnable);
+        }
+
+        public Vector2Int GetPrevPosition()
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * _prevRotate));
+            _rotation = _prevRotate;
+            return _prevPosition;
+        }
+
+        public void SetRotation(int rotation)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * rotation));
+            _rotation = rotation;
         }
     }
 }

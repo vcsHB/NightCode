@@ -17,6 +17,7 @@ namespace Chipset
         [SerializeField] private RectTransform _chipsetInfoParent;
         private Dictionary<Chipset, ChipsetInfo> _chipsetInfos;
         private Chipset _chipsetTemp;
+
         public void Init()
         {
             _chipsetInfos = new Dictionary<Chipset, ChipsetInfo>();
@@ -63,9 +64,10 @@ namespace Chipset
         private void SetAssignChipset()
         {
             if (inventory.SelectedChipset == null || inventory.SelectedChipset.IsForcePointerDown) return;
-            inventory.SelectedChipset.SetPrevPosition(null);
+            
             AddChipset(inventory.SelectedChipset.info);
             inventory.RemoveChipset(inventory.SelectedChipset, true);
+            inventory.OnPointerDownChipset(null);
         }
     }
 
