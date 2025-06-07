@@ -19,6 +19,7 @@ namespace Agents.Players.FSM
             _mover.IsWallDetected();
             _renderer.FlipController(_mover.WallDirection);
             base.Enter();
+            _animationTrigger.HandleWallHold();
             _player.PlayerInput.JumpEvent += HandleWallJump;
             _player.PlayerInput.MovementEvent += HandleMove;
         }

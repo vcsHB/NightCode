@@ -11,6 +11,8 @@ namespace Agents.Players
         public UnityEvent OnRopeTurboEvent;
         public UnityEvent OnRopeShootEvent;
         public UnityEvent OnRopeRemoveEvent;
+        public UnityEvent OnGroundLandEvent;
+        public UnityEvent OnWallHoldEvent;
 
         public void HandleGroundPullStart()
         {
@@ -36,6 +38,16 @@ namespace Agents.Players
             OnRopeRemoveEvent?.Invoke();
         }
 
+        public void HandleGroundLand()
+        {
+            OnGroundLandEvent?.Invoke();
+        }
+
+        public void HandleWallHold()
+        {
+            OnWallHoldEvent?.Invoke();
+        }
+        
 
     }
 }

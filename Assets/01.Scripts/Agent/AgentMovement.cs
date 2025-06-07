@@ -16,7 +16,7 @@ namespace Agents
         protected Rigidbody2D _rigidCompo;
         public Rigidbody2D RigidCompo => _rigidCompo;
         public Vector2 Velocity { get; protected set; }
-
+        public Vector2 GroundCheckerPosition => _groundCheckTrm.position;        
         protected float _originalgravity;
         [field: SerializeField] public bool CanManualMove { get; set; } = true;
 

@@ -20,6 +20,9 @@ namespace Agents.Players
         private Player _player;
         private float _movementY;
 
+        private int _maxTurboCount = 1;
+        private int _currentTurboCount = 0;
+        public bool CanUseTurbo => _currentTurboCount < _maxTurboCount;
         public int jumpCount = 1;
         public bool CanJump => jumpCount > 0;
         private PlayerRenderer _playerRenderer;
@@ -73,7 +76,7 @@ namespace Agents.Players
         {
             hangingDirection.Normalize();
             Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)hangingDirection * 10, Color.magenta, 2f);
-
+            _currentTurboCount++;
             Vector2 rotatedDirection = new Vector2(-hangingDirection.y, hangingDirection.x);
             rotatedDirection.Normalize();
 
@@ -87,6 +90,16 @@ namespace Agents.Players
             //Debug.DrawLine(_player.transform.position, _player.transform.position + (Vector3)result, Color.magenta, 2f);
 
             SetVelocity(result * _turboPower);
+        }
+
+        public void ResetTurboCount()
+        {
+            _currentTurboCount = 0;
+        }
+
+        public void AddTurboCount(int amount)
+        {
+            _maxTurboCount += amount;
         }
 
 
