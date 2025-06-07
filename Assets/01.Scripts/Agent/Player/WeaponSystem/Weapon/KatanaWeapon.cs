@@ -7,6 +7,7 @@ namespace Agents.Players.WeaponSystem.Weapon
     public class KatanaWeapon : PlayerWeapon
     {
         [SerializeField] private float _attackDuration = 1.5f;
+        [SerializeField] private int _bonusTurboUseCount = 1;
         [SerializeField] private SpriteRenderer _attackGuideVisual;
         private Caster _caster;
         private bool _isAttackEnabled;
@@ -23,6 +24,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             base.Initialize(player);
             _animationTrigger.OnRopeTurboEvent.AddListener(HandleAttack);
             _animationTrigger.OnRopeRemoveEvent.AddListener(HandleRopeRemove);
+            player.GetCompo<PlayerMovement>().AddTurboCount(_bonusTurboUseCount);
         }
 
         private void HandleRopeRemove()

@@ -1,4 +1,6 @@
 using Agents.Animate;
+using ObjectManage.VFX;
+using ObjectPooling;
 using UnityEngine;
 namespace Agents.Players.FSM
 {
@@ -15,11 +17,12 @@ namespace Agents.Players.FSM
         {
             base.Enter();
             _renderer.SetLockRotation(true);
-            if(_aimController.IsShoot)
+            if (_aimController.IsShoot)
                 _aimController.RemoveWire();
+            _animationTrigger.HandleGroundLand();
             _player.PlayerInput.JumpEvent += HandleJump;
             _player.PlayerInput.TurboEvent += HandleDash;
-            
+
         }
 
 
@@ -50,8 +53,17 @@ namespace Agents.Players.FSM
 
         private void HandleJump()
         {
-            if(_mover.CanJump)
+            if (_mover.CanJump)
                 _stateMachine.ChangeState("Jump");
+        }
+
+        protected override void HandleShootEvent()
+        {
+            if (!_player.IsActive) return;
+            GroundSlideVFXPlayer vfx = PoolManager.Instance.Pop(PoolingType.GroundShootVFX) as GroundSlideVFXPlayer;
+            vfx.transform.position = _mover.GroundCheckerPosition;
+            vfx.Play(_renderer.FacingDirection);
+            base.HandleShootEvent();
         }
     }
 }

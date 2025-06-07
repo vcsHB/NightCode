@@ -1,3 +1,4 @@
+using Agents;
 using Combat;
 using Combat.CombatObjects.ProjectileManage;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.Events;
 namespace ObjectManage.Obstacles
 {
 
-    public class WallTurret : MonoBehaviour
+    public class WallTurret : Agent
     {
         public UnityEvent OnFireEvent;
         [SerializeField] private ProjectileShooter _shooter;
@@ -36,8 +37,9 @@ namespace ObjectManage.Obstacles
         [SerializeField] private bool _isActive = true;
         private Health _healthCompo;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _healthCompo = GetComponent<Health>();
             _collider = GetComponent<Collider2D>();
             _healthCompo.OnDieEvent.AddListener(HandleDie);

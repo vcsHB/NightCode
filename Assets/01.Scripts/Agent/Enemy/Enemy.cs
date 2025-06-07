@@ -15,15 +15,12 @@ namespace Agents.Enemies
         protected string _enemyName;
 
         public string EnemyName => _enemyName;
-        public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
 
         protected override void Awake()
         {
-            HealthCompo = GetComponent<Health>();
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
-            HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             _btAgent = GetComponent<BehaviorGraphAgent>();
         }

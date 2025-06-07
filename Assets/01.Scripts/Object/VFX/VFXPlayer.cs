@@ -17,13 +17,11 @@ namespace ObjectManage
         public void Play()
         {
             _vfx.Play();
-
-            StartCoroutine(PlayCoroutine());
+            Invoke(nameof(HandleOverLifeTime), _lifeTime);
         }
 
-        private IEnumerator PlayCoroutine()
+        private void HandleOverLifeTime()
         {
-            yield return new WaitForSeconds(_lifeTime);
             PoolManager.Instance.Push(this);
         }
 
