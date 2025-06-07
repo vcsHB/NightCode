@@ -54,11 +54,11 @@ namespace Chipset
             foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
                 ChipsetInventory inventory = _inventory[character];
-                List<ChipsetInfo> chipsetInfos = new List<ChipsetInfo>();
+                List<ChipsetSave> chipsetInfos = new List<ChipsetSave>();
                 
-                inventory.
+                //inventory.
                 
-                chipsetInfos.Add();
+                //chipsetInfos.Add();
             }
         }
 
@@ -73,11 +73,11 @@ namespace Chipset
     {
         public List<Vector2Int> openInventory;
 
-        public List<ChipsetInfo> anChipset;
-        public List<ChipsetInfo> jinLayChipset;
-        public List<ChipsetInfo> binaChipset;
+        public List<ChipsetSave> anChipset;
+        public List<ChipsetSave> jinLayChipset;
+        public List<ChipsetSave> binaChipset;
 
-        public List<ChipsetInfo> GetChipsets(CharacterEnum character)
+        public List<ChipsetSave> GetChipsets(CharacterEnum character)
         {
             switch (character)
             {
@@ -93,7 +93,7 @@ namespace Chipset
     }
 
     [Serializable]
-    public struct ChipsetInfo
+    public struct ChipsetSave
     {
         public int chipsetId;
         public Vector2Int center;

@@ -223,7 +223,7 @@ namespace Chipset
         public void InsertChipset(Vector2Int centerPosition, int rotate, Chipset chipset)
         {
             onInsertChipset?.Invoke();
-            chipset.GetOffsets()
+            chipset.GetOffsets();
         }
 
         private void RemoveChipset()
