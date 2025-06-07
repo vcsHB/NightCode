@@ -168,7 +168,7 @@ namespace Office
             {
                 slots.ForEach(slot =>
                 {
-                    if (slot.characterType == CharacterEnum.Cross)
+                    if (slot.characterType == CharacterEnum.Bina)
                     {
                         slot.RectTransform.anchoredPosition = formationTrm[1].anchoredPosition;
                         slot.enabled = false;

@@ -8,7 +8,7 @@ namespace Map
     [CreateAssetMenu(menuName = "SO/Map/MapInfo")]
     public class MapSO : ScriptableObject
     {
-        [Header("end node is excepted")]
+        [Header("start and end node is excepted")]
         public int depth;
         public List<LevelInfo> levelInfo;
         
@@ -27,33 +27,25 @@ namespace Map
     [Serializable]
     public struct LevelInfo
     {
-        public List<BranchInfo> branchInfo;
         public List<NodeInfo> nodeInfo;
-        public List<Vector2Int> difficulty;
-        public bool fixedNode;
-        [Condition(nameof(fixedNode), true)] public NodeType fixedNodeType;
-    }
-
-    [Serializable]
-    public struct BranchInfo
-    {
-        public BranchType branchType;
-        [Condition(nameof(branchType), BranchType.Devide)] public int devideCount;
-        [Tooltip("Will be devide by 10")]
-        public int ratio;
+        public List<NodeType> existNodeTypes;
+        public Vector2Int difficultyRange;
+        public bool isFixedNode;
+        [Condition(nameof(isFixedNode), true)] public MapNodeSO fixedNode;
     }
 
     [Serializable]
     public struct NodeInfo
     {
-        public NodeType nodeType;
-        public int nodeRatio;
+        public BranchType branchType;
+        public int ratio;
+        [Condition("branchType", BranchType.Divide)]public int divideCount;
     }
 
     public enum BranchType
     {
         Keep,
         Merge,
-        Devide
+        Divide
     }
 }
