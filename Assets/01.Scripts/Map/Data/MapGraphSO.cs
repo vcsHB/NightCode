@@ -11,7 +11,6 @@ namespace Map
     {
         public StartNodeSO startNode;
         public BossNodeSO bossNode;
-        //보스 노드
 
         [Space]
         public List<MapSO> maps = new();
@@ -22,7 +21,7 @@ namespace Map
         public List<ShopNodeSO> shopNodes = new();
 
 
-        private List<MapNodeSO>[] _nodes;
+        private List<MapNodeSO>[] _nodeMap;
 
 
         public MapNodeSO GetRandomNode(NodeType nodeType, Vector2Int difficultyRange)
@@ -70,119 +69,124 @@ namespace Map
         {
             MapSO selectedMap = maps[Random.Range(0, maps.Count)];
 
-            //무조건 10개로 할래요
-            BranchInfo[,] branchField = new BranchInfo[selectedMap.depth, 10];
+            List<int>[] linkedMap = GenerateNode(selectedMap);
+            ConnectNode(linkedMap);
+
+            return _nodeMap;
+        }
+
+        private List<int>[] GenerateNode(MapSO selectedMap)
+        {
+            List<int>[] branchMap = new List<int>[selectedMap.depth];
+            _nodeMap = new List<MapNodeSO>[selectedMap.depth + 1];
+
+            _nodeMap[0] = new List<MapNodeSO>(1) { startNode.Instantiate() };
+            _nodeMap[^1] = new List<MapNodeSO>(1) { bossNode.Instantiate() };
+            _nodeMap[0][0].nextNodes = new List<MapNodeSO>();
+            _nodeMap[^1][0].nextNodes = new List<MapNodeSO>();
 
             for (int i = 0; i < selectedMap.depth; i++)
             {
-                LevelInfo currentLevelInfo = selectedMap.levelInfo[i];
-                List<BranchInfo> branchInfos = new List<BranchInfo>();
-                currentLevelInfo.branchInfo.ForEach(branch =>
+                LevelInfo currentLevel = selectedMap.levelInfo[i];
+                List<MapNodeSO> mapNodes = new List<MapNodeSO>();
+                List<NodeInfo> nodeInfoList = new List<NodeInfo>();
+                List<int> linkedCount = new List<int>();
+
+                int currentNodeCount = _nodeMap[i].Count;
+                int nextNodeCount = currentNodeCount;
+
+                int totalRatio = 0;
+                currentLevel.nodeInfo.ForEach(info => totalRatio += info.ratio);
+                int repeat = currentNodeCount / totalRatio;
+
+                for (int j = 0; j < repeat; j++)
+                    currentLevel.nodeInfo.ForEach(info => nodeInfoList.Add(info));
+
+                List<NodeInfo> temp = currentLevel.nodeInfo.ToList();
+                RandomUtility.Shuffle(temp);
+
+                for (int j = 0; j < currentNodeCount % totalRatio; j++)
+                    nodeInfoList.Add(temp[j]);
+
+                RandomUtility.Shuffle(nodeInfoList);
+                nodeInfoList.ForEach(info =>
                 {
-                    for (int i = 0; i < branch.ratio; i++)
+                    if (info.branchType == BranchType.Keep)
                     {
-                        branchInfos.Add(branch);
+                        linkedCount.Add(1);
+                    }
+                    else if (info.branchType == BranchType.Divide)
+                    {
+                        linkedCount.Add(info.divideCount);
+                        nextNodeCount += (info.divideCount - 1);
+                    }
+                    else if (info.branchType == BranchType.Merge)
+                    {
+                        linkedCount.Add(-1);
+                        --nextNodeCount;
                     }
                 });
-                RandomUtility.Shuffle(branchInfos);
 
-                for (int j = 0; j < 10; j++)
-                    branchField[i, j] = branchInfos[j];
+                branchMap[i] = linkedCount;
+                if (i == selectedMap.depth - 1) continue;
+
+                for (int j = 0; j < nextNodeCount; j++)
+                {
+                    LevelInfo nextLevel = selectedMap.levelInfo[i + 1];
+                    NodeType randomNode = RandomUtility.GetRandomInList(nextLevel.existNodeTypes);
+                    mapNodes.Add(GetRandomNode(randomNode, nextLevel.difficultyRange));
+                    mapNodes[^1].nextNodes = new List<MapNodeSO>();
+                }
+
+                _nodeMap[i + 1] = mapNodes;
             }
 
-            int startIndex = Random.Range(0, 10);
-            _nodes = new List<MapNodeSO>[selectedMap.depth + 1];
-            MapNodeSO startNode = Generate(0, startIndex, branchField, selectedMap);
-
-            for(int i = 0; i < _nodes.Length; i++)
-            {
-                Debug.Log(_nodes[i].Count);
-            }
-
-            return _nodes;
+            return branchMap;
         }
 
-
-        public MapNodeSO Generate(int depth, int height, BranchInfo[,] branchField, MapSO selectedMap)
+        private void ConnectNode(List<int>[] linkMap)
         {
-            if (depth == selectedMap.depth)
+            for (int i = 1; i < _nodeMap.Length; i++)
             {
-                if (_nodes[depth] == null)
+                int process = 0;
+                for (int j = 0; j < _nodeMap[i - 1].Count; j++)
                 {
-                    _nodes[depth] = new List<MapNodeSO>();
-                    _nodes[depth].Add(bossNode.Instantiate());
-                }
-                return _nodes[depth][0];
-            }
+                    int linkedCount = linkMap[i - 1][j];
 
-            if (_nodes[depth] == null) _nodes[depth] = new List<MapNodeSO>();
-            LevelInfo level = selectedMap.levelInfo[depth];
-            MapNodeSO currentNode;
-
-            if (depth == 0) currentNode = startNode.Instantiate();
-            else
-            {
-                Vector2Int difficultyRange = level.difficulty[height];
-
-                if (level.fixedNode)
-                {
-                    currentNode = GetRandomNode(level.fixedNodeType, difficultyRange);
-                }
-                else
-                {
-                    currentNode = GetRandomNode(level.nodeInfo, difficultyRange);
-                }
-            }
-
-            int newHeight;
-            List<int> values = new List<int>(3) { -1, 0, 1 };
-            _nodes[depth].Add(currentNode);
-
-            switch (branchField[depth, height].branchType)
-            {
-                case BranchType.Keep:
+                    if (linkedCount == 1) // Keep
                     {
-                        newHeight = height + RandomUtility.GetRandomInList<int>(values);
-                        if (newHeight < 0) newHeight = 9;
-                        if (newHeight >= 10) newHeight = 0;
-
-                        currentNode.nextNodes.Add(Generate(depth + 1, newHeight, branchField, selectedMap));
+                        _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process++]);
+                        process = Mathf.Clamp(process, 0, _nodeMap[i].Count - 1);
                     }
-                    break;
-                case BranchType.Devide:
+                    else if (linkedCount > 1) // Divide
                     {
-                        List<int> heightDiffrents = RandomUtility.GetRandomsInListNotDuplicated<int>(values, branchField[depth, height].devideCount);
-                        for (int i = 0; i < branchField[depth, height].devideCount; i++)
+                        for (int k = 0; k < linkedCount; k++)
                         {
-                            newHeight = height + heightDiffrents[i];
-                            if (newHeight < 0) newHeight = 9;
-                            if (newHeight >= 10) newHeight = 0;
-
-                            MapNodeSO map = Generate(depth + 1, newHeight, branchField, selectedMap);
-                            
-                            if(currentNode.nextNodes.Contains(map) == false)
-                                currentNode.nextNodes.Add(map);
+                            _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process++]);
+                            process = Mathf.Clamp(process, 0, _nodeMap[i].Count - 1);
                         }
                     }
-                    break;
-                case BranchType.Merge:
+                    else if (linkedCount < 0) // Merge
                     {
-                        newHeight = height + RandomUtility.GetRandomInList<int>(values);
-                        if (newHeight < 0) newHeight = 9;
-                        if (newHeight >= 10) newHeight = 0;
-
-                        MapNodeSO nextNode = Generate(depth + 1, newHeight, branchField, selectedMap);
-                        Debug.Log(_nodes[depth].Count);
-                        if (_nodes[depth].Count > 0)
-                            _nodes[depth][^1].nextNodes.Add(nextNode);
-
-                        currentNode.nextNodes.Add(nextNode);
+                        // 병합은 여러 노드가 하나로 모이는 구조이므로, process가 범위를 벗어나지 않게 체크
+                        if (process == 0)
+                        {
+                            _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process]);
+                        }
+                        else if (process >= _nodeMap[i].Count)
+                        {
+                            _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process - 1]);
+                        }
+                        else
+                        {
+                            int isLinkedUp = Random.Range(0, 2);
+                            int idx = isLinkedUp == 0 ? process : process - 1;
+                            idx = Mathf.Clamp(idx, 0, _nodeMap[i - 1].Count);
+                            _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][idx]);
+                        }
                     }
-                    break;
+                }
             }
-
-            Debug.Log($"{depth} | {currentNode.nextNodes.Count}");
-            return currentNode;
         }
     }
 }

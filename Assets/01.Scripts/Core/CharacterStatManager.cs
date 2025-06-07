@@ -32,15 +32,15 @@ namespace StatSystem
 
             katanaStat = ScriptableObject.Instantiate(katanaStat);
             for (int i = 0; i < katanaStat.statList.Count; i++) katanaStat.statList[i] = ScriptableObject.Instantiate(katanaStat.statList[i]);
-            StatGroup.Add(CharacterEnum.Katana, katanaStat);
+            StatGroup.Add(CharacterEnum.An, katanaStat);
 
             cresentBladeStat = ScriptableObject.Instantiate(cresentBladeStat);
             for (int i = 0; i < cresentBladeStat.statList.Count; i++) cresentBladeStat.statList[i] = ScriptableObject.Instantiate(cresentBladeStat.statList[i]);
-            StatGroup.Add(CharacterEnum.CrecentBlade, cresentBladeStat);
+            StatGroup.Add(CharacterEnum.JinLay, cresentBladeStat);
 
             crossStat = ScriptableObject.Instantiate(crossStat);
             for (int i = 0; i < crossStat.statList.Count; i++) crossStat.statList[i] = ScriptableObject.Instantiate(crossStat.statList[i]);
-            StatGroup.Add(CharacterEnum.Cross, crossStat);
+            StatGroup.Add(CharacterEnum.Bina, crossStat);
         }
 
         public bool TryGetStat(CharacterEnum character, StatusEnumType stat, out StatSO statSO)

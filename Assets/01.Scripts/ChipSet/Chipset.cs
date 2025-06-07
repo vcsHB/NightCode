@@ -21,20 +21,39 @@ namespace Chipset
 
         private ChipsetSlot[] _slots;
         private Dictionary<Vector2Int, Vector2> _slotPositionDic;
-        private List<Vector2Int> _prevPositions;
+        private List<Vector2Int> _prevPositions;            //0,0 위치와 회전 저장으로 교체
+        
         private Vector2Int _selectedSlotOffset;
         private Vector2 _offset;
+
         private bool _isDraging = false;
         private bool _isForcePointerDown = false;
-        private List<Vector2Int> _chipsetSlotOffset;
 
+        #region Property Field
+
+        public bool IsForcePointerDown => _isForcePointerDown;
         public RectTransform RectTrm => transform as RectTransform;
         public RectTransform ParentRectTrm => transform.parent as RectTransform;
         public Vector2 ParentSize => new Vector2(ParentRectTrm.rect.width, ParentRectTrm.rect.height);
+        public List<Vector2Int> PrevPositions => _prevPositions;
+
+        #endregion
+
 
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
+            SlotInitialize();
+        }
+
+        private void Update()
+        {
+            ChipsetDrag();
+            CheckForceMouseUp();
+        }
+
+        private void SlotInitialize()
+        {
             _slots = new ChipsetSlot[info.chipsetSize.Count];
             _slotPositionDic = new Dictionary<Vector2Int, Vector2>();
 
@@ -49,25 +68,18 @@ namespace Chipset
             }
         }
 
-        private void Update()
+        private void ChipsetDrag()
         {
             if (_isDraging)
             {
                 Vector2 offset = _slotPositionDic[_selectedSlotOffset] + _offset;
                 RectTrm.anchoredPosition = (Vector2)Input.mousePosition - offset;
 
-                if (Keyboard.current.rKey.wasPressedThisFrame && info.isRotatable)
+                if (info.isRotatable && Keyboard.current.rKey.wasPressedThisFrame)
                 {
                     Rotate();
                 }
             }
-
-            if(_isForcePointerDown && Input.GetMouseButtonUp(0))
-            {
-                OnPointerUp(Vector2Int.zero);
-                _isForcePointerDown = false;
-            }
-
         }
 
         private void Rotate()
@@ -104,11 +116,21 @@ namespace Chipset
             {
                 if (_slots[i].SlotPosition == position)
                 {
+                    // Spread event to chipset slot
                     ExecuteEvents.Execute(_slots[i].gameObject,
                         data, ExecuteEvents.pointerDownHandler);
 
                     _isForcePointerDown = true;
                 }
+            }
+        }
+
+        private void CheckForceMouseUp()
+        {
+            if (_isForcePointerDown && Input.GetMouseButtonUp(0))
+            {
+                OnPointerUp(Vector2Int.zero);
+                _isForcePointerDown = false;
             }
         }
 
@@ -151,6 +173,9 @@ namespace Chipset
 
         public void SetPrevPosition(List<Vector2Int> prev) => _prevPositions = prev;
 
-        public List<Vector2Int> GetPrevPositions() => _prevPositions;
+        public void SetActive(bool isEnable)
+        {
+            gameObject.SetActive(isEnable);
+        }
     }
 }

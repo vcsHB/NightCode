@@ -39,7 +39,6 @@ namespace Map
             {
                 for (int j = 0; j < map[i].Count; j++)
                 {
-                    Debug.Log($"{i} {j} {map[i][j]}");
                     MapNode node = Instantiate(nodePrefab, _nodeParent);
                     node.RectTrm.anchoredPosition = new Vector2(i * _xOffset, _heights[map[i].Count - 1].positions[j]);
                     node.Init(map[i][j]);
@@ -57,7 +56,6 @@ namespace Map
                 {
                     map[i][j].nextNodes.ForEach(next =>
                     {
-                        Debug.Log(next);
                         nodeDic[map[i][j]].ConnectEdge(nodeDic[next]);
                     });
                 }

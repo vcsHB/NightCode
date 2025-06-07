@@ -14,11 +14,11 @@ namespace Chipset
 
         public bool IsEnableSlot => _isEnableSlot;
 
-        public void CheckChipsetInsertable(bool isEnable, bool insertable)
+        public void SetChipsetSlotState(bool isSelected, bool canInsert)
         {
-            if (isEnable)
+            if (isSelected)
             {
-                _image.color = insertable ? _chipsetInsertableColor : _chipsetNotInsertableColor;
+                _image.color = canInsert ? _chipsetInsertableColor : _chipsetNotInsertableColor;
             }
             else
             {

@@ -1,5 +1,6 @@
 using Agents;
 using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ namespace Chipset
 {
     public class ChipsetInfo : MonoBehaviour, IPointerDownHandler
     {
+        public event Action<Chipset> onInsertChipset;
         [SerializeField] private Image _icon;
         private Chipset _assignedChipset;
         private ChipsetInventory _inventory;
@@ -16,9 +18,13 @@ namespace Chipset
 
         public RectTransform RectTrm => transform as RectTransform;
 
-        public void Init(ChipsetInventory inventory, Chipset chipset)
+        private void Awake()
         {
             _canvas = GetComponentInParent<Canvas>();
+        }
+
+        public void Init(ChipsetInventory inventory, Chipset chipset)
+        {
             _inventory = inventory;
             _assignedChipset = chipset;
             _assignedChipset.RectTrm.localScale = Vector3.zero;
@@ -26,8 +32,10 @@ namespace Chipset
 
         public void OnInsertChipset()
         {
-            Destroy(gameObject);
+            onInsertChipset?.Invoke(_assignedChipset);
             RemoveAction();
+
+            Destroy(gameObject);
         }
 
         public void OnReturnChipset()

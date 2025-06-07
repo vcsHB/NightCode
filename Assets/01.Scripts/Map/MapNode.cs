@@ -1,5 +1,3 @@
-using Core.Attribute;
-using DG.Tweening;
 using GGM.UI;
 using System;
 using System.Collections.Generic;
@@ -18,11 +16,14 @@ namespace Map
         [SerializeField] private List<Image> _coloredImages;
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _nodeName;
-        [SerializeField] private NodeEdge _leftEdge, _rightEdge;
+        [SerializeField] private Transform _leftEdge, _rightEdge;
+        [SerializeField] private UILineRenderer _edgePrefab;
         private MapNodeSO _nodeInfo;
+        private Color _nodeColor;
 
         public RectTransform RectTrm => transform as RectTransform;
-        public NodeEdge LeftEdge => _leftEdge;
+        public Transform LeftEdge => _leftEdge;
+        public Color NodeColor => _nodeColor;
 
 
         public void Init(MapNodeSO nodeInfo)
@@ -31,22 +32,29 @@ namespace Map
             _icon.sprite = nodeInfo.icon;
             _nodeName.SetText(nodeInfo.displayName);
             _coloredImages.ForEach(img => img.color = nodeInfo.color);
+            _nodeColor = nodeInfo.color;
             _completePanel.SetActive(false);
         }
 
         public void ConnectEdge(MapNode target)
         {
-            RectTransform from = _rightEdge.edgeObject.transform as RectTransform;
-            RectTransform to = target.LeftEdge.edgeObject.transform as RectTransform;
+            RectTransform to = _rightEdge as RectTransform;
+            RectTransform from = target.LeftEdge as RectTransform;
 
-            Vector2 diff = target.RectTrm.anchoredPosition - RectTrm.anchoredPosition;
-            diff -= (from.anchoredPosition - RectTrm.anchoredPosition) * 2;
+            Vector2 diff = RectTrm.anchoredPosition - target.RectTrm.anchoredPosition;
+            diff -= from.anchoredPosition;
+            diff += to.anchoredPosition;
 
-            _rightEdge.edgeLine.points = new Vector2[4];
-            _rightEdge.edgeLine.points[0] = Vector2.zero;
-            _rightEdge.edgeLine.points[1] = new Vector2(diff.x / 2, 0);
-            _rightEdge.edgeLine.points[2] = new Vector2(diff.x / 2, diff.y);
-            _rightEdge.edgeLine.points[3] = diff;
+            UILineRenderer lineRenderer = Instantiate(_edgePrefab, target.LeftEdge);
+            lineRenderer.SetMaterial(lineRenderer.material);
+
+            lineRenderer.SetColor(NodeColor, target.NodeColor);
+
+            lineRenderer.points = new Vector2[4];
+            lineRenderer.points[0] = diff;
+            lineRenderer.points[1] = new Vector2(diff.x - (diff.x * 0.2f), diff.y);
+            lineRenderer.points[2] = new Vector2(diff.x * 0.2f, 0);
+            lineRenderer.points[3] = Vector2.zero;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -69,6 +77,14 @@ namespace Map
     public struct NodeEdge
     {
         public GameObject edgeObject;
-        public UILineRenderer edgeLine;
+        public List<UILineRenderer> edgeLine;
+
+        public void AddEdge(UILineRenderer lineRenderer)
+        {
+            if (edgeLine == null)
+                edgeLine = new List<UILineRenderer>();
+
+            edgeLine.Add(lineRenderer);
+        }
     }
 }
