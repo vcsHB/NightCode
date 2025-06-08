@@ -15,7 +15,7 @@ namespace Map
         public Color color;
 
         [Space]
-        public int difficulty;
+        public StageDifficultySO difficulty;
 
         [HideInInspector] public List<MapNodeSO> nextNodes = new List<MapNodeSO>();
         //MAP
