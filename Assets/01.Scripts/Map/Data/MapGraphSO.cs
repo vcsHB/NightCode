@@ -41,18 +41,18 @@ namespace Map
                     return bossNode;
                 case NodeType.Combat:
                     var combats = combatNodes.Where(node =>
-                    Mathf.Abs(node.difficulty - difficultyRange.x) >= 0
-                    && Mathf.Abs(difficultyRange.y - node.difficulty) >= 0).ToList();
+                    Mathf.Abs(node.difficulty.level - difficultyRange.x) >= 0
+                    && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
                     return RandomUtility.GetRandomInList(combats).Instantiate();
                 case NodeType.Encounter:
                     var encounters = combatNodes.Where(node =>
-                    Mathf.Abs(node.difficulty - difficultyRange.x) >= 0
-                    && Mathf.Abs(difficultyRange.y - node.difficulty) >= 0).ToList();
+                    Mathf.Abs(node.difficulty.level - difficultyRange.x) >= 0
+                    && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
                     return RandomUtility.GetRandomInList(encounters).Instantiate();
                 case NodeType.Shop:
                     var shops = combatNodes.Where(node =>
-                    Mathf.Abs(node.difficulty - difficultyRange.x) >= 0
-                    && Mathf.Abs(difficultyRange.y - node.difficulty) >= 0).ToList();
+                    Mathf.Abs(node.difficulty.level - difficultyRange.x) >= 0
+                    && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
                     return RandomUtility.GetRandomInList(shops).Instantiate();
             }
 
@@ -168,7 +168,7 @@ namespace Map
                     }
                     else if (linkedCount < 0) // Merge
                     {
-                        // º´ÇÕÀº ¿©·¯ ³ëµå°¡ ÇÏ³ª·Î ¸ðÀÌ´Â ±¸Á¶ÀÌ¹Ç·Î, process°¡ ¹üÀ§¸¦ ¹þ¾î³ªÁö ¾Ê°Ô Ã¼Å©
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹Ç·ï¿½, processï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³ªï¿½ï¿½ ï¿½Ê°ï¿½ Ã¼Å©
                         if (process == 0)
                         {
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process]);
