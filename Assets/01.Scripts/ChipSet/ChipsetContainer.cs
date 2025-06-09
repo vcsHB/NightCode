@@ -9,19 +9,19 @@ namespace Chipset
 {
     public class ChipsetContainer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public List<ChipsetSO> containChipset;      //코드상에서 제어할 수 있도록 변경해야함
-        public ChipsetInventory inventory;          //나중에 3개로 늘려서 전환하는 방식으로 바꿔야함
+        public List<ChipsetSO> containChipset;
+        public ChipsetInventory inventory;
+
         [SerializeField] private ChipsetInfo _chipsetInfoPrefab;
         [Space]
         [SerializeField] private RectTransform _chipsetParent;
         [SerializeField] private RectTransform _chipsetInfoParent;
+
         private Dictionary<Chipset, ChipsetInfo> _chipsetInfos;
-        private Chipset _chipsetTemp;
 
         public void Init()
         {
             _chipsetInfos = new Dictionary<Chipset, ChipsetInfo>();
-            containChipset.ForEach(AddChipset);
         }
 
         public void SetInventory(ChipsetInventory inventory)
@@ -36,6 +36,7 @@ namespace Chipset
 
         public void AddChipset(ChipsetSO chipsetSO)
         {
+            containChipset.Add(chipsetSO);
             Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
             if (inventory != null) inventory.AddAssignedChipset(chipset);
 

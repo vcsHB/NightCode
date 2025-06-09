@@ -54,6 +54,7 @@ namespace Chipset
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            Debug.Log(_assignedChipset);
             Camera uiCamera = _canvas.worldCamera;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 _assignedChipset.ParentRectTrm,

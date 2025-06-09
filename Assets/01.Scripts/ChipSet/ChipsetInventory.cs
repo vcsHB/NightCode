@@ -65,9 +65,21 @@ namespace Chipset
                     _slots[x, y] = slotObj.GetComponent<ChipsetInventorySlot>();
 
                     _slots[x, y].SetPosition(position);
-                    _slots[x, y].SetEnableSlot(_openSlot.Contains(position));
                     _slots[x, y].onPointerEnter += OnPointerEnterHandler;
                     _slots[x, y].onPointerExit += OnPointerExitHandler;
+                }
+            }
+
+            SetOpenSlot();
+        }
+
+        private void SetOpenSlot()
+        {
+            for (int y = 0; y < _inventorySize.y; y++)
+            {
+                for (int x = 0; x < _inventorySize.x; x++)
+                {
+                    _slots[x, y].SetEnableSlot(_openSlot.Contains(new Vector2Int(x,y)));
                 }
             }
         }
@@ -90,9 +102,10 @@ namespace Chipset
                 chipset.onSelectChipset -= OnPointerDownChipset;
                 chipset.onPointerUpChipset -= OnPointerUpChipset;
             });
+            _assignedChipsets.Keys.ToList().ForEach(chipset => chipset.SetActive(false));
 
             _exsistingChipset.Clear();
-            _assignedChipsets.Keys.ToList().ForEach(chipset => chipset.SetActive(false));
+            _assignedChipsets.Clear();
             gameObject.SetActive(false);
         }
 
@@ -203,18 +216,12 @@ namespace Chipset
             }
             Vector2Int center = selectPosition + chipset.GetSelectOffset();
             _assignedChipsets.Add(chipset, (center, chipset.Rotation));
-            StartCoroutine(DelaySetPosition(chipset, selectPosition));
-        }
 
-        private IEnumerator DelaySetPosition(Chipset chipset, Vector2Int selectPosition)
-        {
-            yield return null;
-            yield return null;
-            yield return null;
             _selectedChipset = chipset;
             chipset.SetPosition(GetCenterPostion(selectPosition));
             _selectedChipset = null;
         }
+
 
         public void RemoveChipset(Chipset chipset, bool destroyChipset = false)
         {
@@ -229,6 +236,7 @@ namespace Chipset
         public List<ChipsetSave> GetInventoryData()
         {
             List<ChipsetSave> inventoryData = new List<ChipsetSave>();
+
             _assignedChipsets.Keys.ToList().ForEach(chipset =>
             {
                 ChipsetSave chipsetData = new ChipsetSave();
@@ -236,13 +244,16 @@ namespace Chipset
                 chipsetData.center = _assignedChipsets[chipset].center;
                 chipsetData.rotate = _assignedChipsets[chipset].rotate;
                 inventoryData.Add(chipsetData);
+                Debug.Log(chipsetData.chipsetId + " " + chipsetData.center);
             });
+
             return inventoryData;
         }
 
         public void SetInventoryData(List<ChipsetSave> inventoryData, List<Vector2Int> openSlot)
         {
             _openSlot = openSlot;
+            SetOpenSlot();
 
             inventoryData.ForEach(chipsetData =>
             {
