@@ -62,7 +62,6 @@ namespace EffectSystem
             {
                 if (effect.enabled)
                 {
-                    effect.Update();
                     if (isOneSecond)
                         effect.UpdateBySecond();
                 }
@@ -86,9 +85,9 @@ namespace EffectSystem
          * 효과 부여 메서드
          * </summary>
          */
-        public virtual void ApplyEffect(EffectStateTypeEnum type, float duration, int level, float percent = 1f)
+        public virtual void ApplyEffect(EffectStateTypeEnum type, int level, int stack, float percent = 1f)
         {
-            effectDictionary[type].Start(level, duration, percent);
+            effectDictionary[type].Start(level, stack, percent);
             OnEffectStartEvent?.Invoke(type);
         }
 

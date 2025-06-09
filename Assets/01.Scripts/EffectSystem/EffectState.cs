@@ -13,7 +13,8 @@ namespace EffectSystem
         public bool isResist;
         public bool enabled;
         public int level;
-        public float duration;
+        public int currentEffectStack;
+        public int stackBurstConditionLevel;
 
         public EffectStateTypeEnum type;
         protected Agent _owner;
@@ -29,33 +30,40 @@ namespace EffectSystem
         }
 
 
-        public virtual void Start(int level = 1, float duration = 10f, float percent = 1f)
+        public virtual void Start(int stack = 1, int level = 1, float percent = 1f)
         {
             if (this.level < level)
                 this.level = level;
-            if (this.duration < duration)
-                this.duration = duration;
-            enabled = true;
-        }
 
-        public virtual void Update()
-        {
-            duration -= Time.deltaTime;
-            OnUpdateEvent?.Invoke((int)duration, level);
-            if(duration <= 0)
-                Over();
+            if (stack > stackBurstConditionLevel)
+            {
+                ResetEffectStack();
+                OnBurstEffectStack();
+
+            }
+            enabled = true;
         }
 
         public virtual void UpdateBySecond()
         {
-            
+
+        }
+
+        protected virtual void OnBurstEffectStack()
+        {
+
+        }
+
+        protected virtual void ResetEffectStack()
+        {
+            level = 0;
+            currentEffectStack = 0;
+
         }
 
         public virtual void Over()
         {
             enabled = false;
-            level = 0;
-            duration = 0f;
             OnOverEvent?.Invoke();
             OnEffectOverTypeEvent?.Invoke(type);
         }

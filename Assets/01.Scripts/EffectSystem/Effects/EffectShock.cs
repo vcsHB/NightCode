@@ -20,7 +20,7 @@ namespace EffectSystem
             _enemyLayer = LayerMask.GetMask("Enemy");
         }
 
-        public override void Start(int level = 1, float duration = 10, float percent = 1f)
+        public override void Start(int stack = 1, int level = 1, float percent = 1f)
         {
             if (enabled)
             {
@@ -31,7 +31,7 @@ namespace EffectSystem
                 }
             }
 
-            base.Start(level, duration, percent);
+            base.Start(level, stack, percent);
         }
 
         public override void UpdateBySecond()

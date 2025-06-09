@@ -13,14 +13,9 @@ namespace EffectSystem
 			base.Over();
 		}
 
-		public override void Start(int level = 1, float duration = 10, float percent = 1f)
+		public override void Start(int stack = 1, int level = 1, float percent = 1f)
 		{
-			base.Start(level, duration);
-		}
-
-		public override void Update()
-		{
-			base.Update();
+			base.Start(level, stack);
 		}
 
 		public override void UpdateBySecond()
