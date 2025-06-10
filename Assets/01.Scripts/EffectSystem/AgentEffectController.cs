@@ -27,6 +27,11 @@ namespace EffectSystem
 
         private void Initialize()
         {
+            EffectState[] effects = GetComponentsInChildren<EffectState>();
+            foreach (EffectState item in effects)
+            {
+                
+            }
             foreach (EffectStateTypeEnum effectEnum in Enum.GetValues(typeof(EffectStateTypeEnum)))
             {
                 if (effectEnum == 0) continue;
@@ -60,7 +65,7 @@ namespace EffectSystem
             bool isOneSecond = _currentTime > 1f;
             foreach (EffectState effect in effectDictionary.Values)
             {
-                if (effect.enabled)
+                if (effect.isEffectEnabled)
                 {
                     if (isOneSecond)
                         effect.UpdateBySecond();
@@ -87,7 +92,7 @@ namespace EffectSystem
          */
         public virtual void ApplyEffect(EffectStateTypeEnum type, int level, int stack, float percent = 1f)
         {
-            effectDictionary[type].Start(level, stack, percent);
+            effectDictionary[type].Apply(level, stack, percent);
             OnEffectStartEvent?.Invoke(type);
         }
 

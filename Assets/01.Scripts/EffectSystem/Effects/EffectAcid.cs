@@ -5,10 +5,6 @@ namespace EffectSystem
 {
     public class EffectAcid : EffectState
     {
-        public EffectAcid(Agent agent, bool isResist) : base(agent, isResist)
-        {
-        }
-
         public override void UpdateBySecond()
         {
             base.UpdateBySecond();
@@ -17,6 +13,11 @@ namespace EffectSystem
                 damage = 2 * level,
                 type = AttackType.Effect
             });
+        }
+
+        protected override void SetEffectType()
+        {
+            EffectType = EffectStateTypeEnum.Acid;
         }
     }
 }

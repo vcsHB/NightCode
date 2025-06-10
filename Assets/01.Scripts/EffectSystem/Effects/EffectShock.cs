@@ -9,20 +9,23 @@ namespace EffectSystem
     {
         private readonly int _maxChainLinkAmount = 3;
         private readonly float _targetDetectRange = 20f;
-        private readonly Collider[] _targets;
-        private readonly LayerMask _enemyLayer;
+        private Collider[] _targets;
+        private LayerMask _enemyLayer;
         private bool _canChain;
         private bool _isChained;
 
-        public EffectShock(Agent agent, bool isResist) : base(agent, isResist)
+        public override void Initialize(Agent agent, bool isResist)
         {
+            base.Initialize(agent, isResist);
+            
             _targets = new Collider[10];
             _enemyLayer = LayerMask.GetMask("Enemy");
         }
+        
 
-        public override void Start(int stack = 1, int level = 1, float percent = 1f)
+        public override void Apply(int stack = 1, int level = 1, float percent = 1f)
         {
-            if (enabled)
+            if (isEffectEnabled)
             {
                 if (_canChain)
                 {
@@ -31,12 +34,12 @@ namespace EffectSystem
                 }
             }
 
-            base.Start(level, stack, percent);
+            base.Apply(level, stack, percent);
         }
 
         public override void UpdateBySecond()
         {
-            
+            EffectType = EffectStateTypeEnum.Shock;
         }
 
         private void ChainShock()
@@ -68,7 +71,7 @@ namespace EffectSystem
                     if (!shock._canChain)
                         continue;
 
-                    if (shock.enabled)
+                    if (shock.isEffectEnabled)
                     {
                         chained++;
                         // EnergySphereLaser laser = _owner.gameObject.Pop(EffectPoolType.EnergySphereLaserEffect, _ownerTrm.position + Vector3.up * 3, Quaternion.identity) as EnergySphereLaser;
@@ -81,6 +84,11 @@ namespace EffectSystem
                 }
 
             }
+        }
+
+        protected override void SetEffectType()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
