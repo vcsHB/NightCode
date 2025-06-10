@@ -17,7 +17,6 @@ namespace EffectSystem
         public int stackBurstConditionLevel;
         public EffectStateTypeEnum EffectType { get; protected set; }
 
-        public EffectStateTypeEnum type;
         protected Agent _owner;
         protected Health _ownerHealth;
         protected Transform _ownerTrm;
@@ -36,7 +35,7 @@ namespace EffectSystem
             this.isResist = isResist;
         }
 
-        protected abstract void SetEffectType();
+        public abstract void SetEffectType();
 
 
         public virtual void Apply(int stack = 1, int level = 1, float percent = 1f)
@@ -44,11 +43,10 @@ namespace EffectSystem
             if (this.level < level)
                 this.level = level;
 
-            if (stack > stackBurstConditionLevel)
+            currentEffectStack += stack;
+            if (currentEffectStack >= stackBurstConditionLevel)
             {
-                ResetEffectStack();
                 OnBurstEffectStack();
-
             }
             isEffectEnabled = true;
         }
@@ -63,24 +61,27 @@ namespace EffectSystem
 
         }
 
-        protected virtual void ResetEffectStack()
+        public virtual void ResetEffectStack()
         {
             level = 0;
             currentEffectStack = 0;
-
+            isEffectEnabled = false;
         }
 
         public virtual void Over()
         {
             isEffectEnabled = false;
+            ResetEffectStack();
             OnOverEvent?.Invoke();
-            OnEffectOverTypeEvent?.Invoke(type);
+            OnEffectOverTypeEvent?.Invoke(EffectType);
         }
 
-        protected void ReduceStack(int amount = 1)
+        protected virtual void ReduceStack(int amount = 1)
         {
             currentEffectStack -= amount;
         }
+        
+        //protected virtual void 
 
 
     }

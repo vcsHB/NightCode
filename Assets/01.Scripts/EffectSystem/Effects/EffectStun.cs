@@ -19,7 +19,7 @@ namespace EffectSystem
 			base.UpdateBySecond();
 		}
 
-		protected override void SetEffectType()
+		public override void SetEffectType()
 		{
 			EffectType = EffectStateTypeEnum.Repair;
 		}

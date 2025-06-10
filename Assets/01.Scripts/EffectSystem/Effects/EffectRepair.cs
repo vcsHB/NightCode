@@ -10,7 +10,7 @@ namespace EffectSystem
             _owner.HealthCompo.Restore(level);
         }
 
-        protected override void SetEffectType()
+        public override void SetEffectType()
         {
             EffectType = EffectStateTypeEnum.Repair;
         }

@@ -16,7 +16,7 @@ namespace StatSystem
         public string displayName;
         [SerializeField] private Sprite _icon;
         [SerializeField] private float _baseValue, _minValue, _maxValue;
-        public float buffDebuffValue = 0;       //UI ¸¸µé ¶§ ±¸ºÐÇÒ ¼ö ÀÖ°Ô
+        public float buffDebuffValue = 0;       //UI ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö°ï¿½
 
         private Dictionary<object, float> _modifyValueByKey = new Dictionary<object, float>();
         private List<float> _modifyValue = new List<float>();
@@ -104,6 +104,6 @@ namespace StatSystem
             }
         }
 
-        public virtual object Clone() => ScriptableObject.Instantiate(this);
+        public virtual object Clone() => Instantiate(this);
     }
 }
