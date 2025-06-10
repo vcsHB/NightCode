@@ -11,9 +11,9 @@ namespace Agents.Players.WeaponSystem.Weapon
         [SerializeField] private Caster _projectileParryCaster;
         private bool _isAttackEnabled;
 
-        public override void Initialize(Player player)
+        public override void Initialize(Player player, int cost)
         {
-            base.Initialize(player);
+            base.Initialize(player, cost);
             _animationTrigger.OnRopeShootEvent.AddListener(HandleRopeShoot);
             _animationTrigger.OnRopeRemoveEvent.AddListener(HandleRopeRemove);
             _animationTrigger.OnGroundPullArriveEvent.AddListener(HandleAttack);
@@ -29,7 +29,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             _isAttackEnabled = false;
         }
 
-        public override void HandleAttack()
+        protected override void Attack()
         {
             _attackCaster.Cast();
         }

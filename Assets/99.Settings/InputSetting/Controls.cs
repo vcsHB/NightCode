@@ -159,7 +159,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ece51998-2e92-4455-9ef3-f52e76520c31"",
-                    ""path"": ""<Keyboard>/alt"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",

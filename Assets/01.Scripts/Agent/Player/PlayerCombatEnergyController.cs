@@ -1,5 +1,4 @@
 using System;
-using ObjectManage.Obstacles;
 using UnityEngine;
 namespace Agents.Players
 {

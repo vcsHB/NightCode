@@ -17,9 +17,9 @@ namespace Agents.Players.WeaponSystem.Weapon
         private Queue<BattleAxe> _axePool = new();
         private int _currentAxeAmount;
 
-        public override void Initialize(Player player)
+        public override void Initialize(Player player, int cost)
         {
-            base.Initialize(player);
+            base.Initialize(player, cost);
             _animationTrigger.OnRopeTurboEvent.AddListener(HandleAttack);
             _currentAxeAmount = _throwAmount;
 
@@ -50,7 +50,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             _axePool.Enqueue(axe);
         }
 
-        public override void HandleAttack()
+        protected override void Attack()
         {
             if (_currentAxeAmount <= 0) return;
             Collider2D[] targets = _targetDetector.DetectTargetsSorted();

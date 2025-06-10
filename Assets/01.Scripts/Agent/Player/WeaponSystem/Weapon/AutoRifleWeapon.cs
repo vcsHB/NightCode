@@ -20,9 +20,9 @@ namespace Agents.Players.WeaponSystem.Weapon
         private bool _isShooting;
         private Collider2D _targetCollider;
 
-        public override void Initialize(Player player)
+        public override void Initialize(Player player, int cost)
         {
-            base.Initialize(player);
+            base.Initialize(player, cost);
             _animationTrigger.OnRopeTurboEvent.AddListener(HandleAttack);
             _animationTrigger.OnRopeRemoveEvent.AddListener(HandleRemoveRope);
         }
@@ -33,7 +33,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             _rangeWeaponVisual.SetAimEnable(false);
         }
 
-        public override void HandleAttack()
+        protected override void Attack()
         {
             _isShooting = true;
             _currentFireAmount = 0;
