@@ -9,6 +9,7 @@ namespace Agents.Players.SkillSystem
         public string skillDescription;
         public Sprite skillIcon;
         public int skillCostEnergy;
+        public float skillCooltime = 30f;
         
         public PlayerSkill skillPrefab;
 

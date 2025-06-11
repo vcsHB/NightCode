@@ -11188,6 +11188,7 @@ GameObject:
   - component: {fileID: 733894059}
   - component: {fileID: 733894058}
   - component: {fileID: 733894057}
+  - component: {fileID: 733894060}
   m_Layer: 0
   m_Name: VolumeManager
   m_TagString: Untagged
@@ -11247,6 +11248,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalVolume: {fileID: 2103095538}
+--- !u!114 &733894060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733894055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4af5282e1db69d439ea5b5741dc8bbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &818375995
 GameObject:
   m_ObjectHideFlags: 0
@@ -21755,37 +21768,6 @@ Transform:
   - {fileID: 924911045}
   - {fileID: 1347541548}
   m_Father: {fileID: 680171218}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1150134730
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1150134731}
-  m_Layer: 0
-  m_Name: KatanaSkill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1150134731
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150134730}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4108388, y: 9.930696, z: -0.47385243}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1178689198
 PrefabInstance:
@@ -98146,6 +98128,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b14a6cff8e33ff3419dfb9b4124e9287, type: 3}
+--- !u!1001 &8076489496074051629
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -7.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620573496936495499, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7887664023055051640, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
+      propertyPath: m_Name
+      value: KatanaSkill
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5108291935aa50941a0ab65bb2aa984e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -98170,4 +98209,4 @@ SceneRoots:
   - {fileID: 850952426}
   - {fileID: 870925304}
   - {fileID: 1036717956}
-  - {fileID: 1150134731}
+  - {fileID: 8076489496074051629}

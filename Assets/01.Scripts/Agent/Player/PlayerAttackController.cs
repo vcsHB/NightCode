@@ -34,8 +34,11 @@ namespace Agents.Players
             _weapon.Initialize(_player, _weaponSO.normalSkillCostEnergy);
 
             // # PlayerSkill Initialize
-            _skill = Instantiate(_weaponSO.skillSO.skillPrefab, transform);
-            _skill.Initialize(_player);
+            PlayerSkillSO skillSO = _weaponSO.skillSO;
+            if(skillSO == null || skillSO.skillPrefab == null) return;
+            
+            _skill = Instantiate(skillSO.skillPrefab, transform);
+            _skill.Initialize(_player, _weapon, skillSO.skillCostEnergy, skillSO.skillCooltime);
             _player.PlayerInput.OnUseEvent += _skill.HandleUseSkill;
         }
 
