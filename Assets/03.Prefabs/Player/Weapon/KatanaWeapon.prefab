@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6084067351833892387}
   - component: {fileID: 5113233312341702913}
-  - component: {fileID: 8691259448101632375}
+  - component: {fileID: 6737803537219795011}
   - component: {fileID: 275132580108502659}
   - component: {fileID: 9170506232557199504}
   m_Layer: 6
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1066206494333478400}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.3899994, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -60,7 +60,7 @@ MonoBehaviour:
   _targetMaxAmount: 3
   _gizmosColor: {r: 1, g: 0.45834017, b: 0, a: 1}
   _detectRadius: 3.5
---- !u!114 &8691259448101632375
+--- !u!114 &6737803537219795011
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1066206494333478400}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85a0be73c02b55e42aa26e86ba184cd4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3bc6d369ae345784c8da0bfb42854889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnCastSuccessEvent:
@@ -90,6 +90,7 @@ MonoBehaviour:
   _damage: 4
   _attackType: 1
   _invalidityResistance: 0
+  _agentStatus: {fileID: 0}
 --- !u!114 &275132580108502659
 MonoBehaviour:
   m_ObjectHideFlags: 0
