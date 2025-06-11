@@ -8,6 +8,8 @@ namespace Agents.Players
         public event Action<int, int> OnEnergyChangedEvent;
         [SerializeField] private int _currentEnergy;
         [SerializeField] private int _maxEnergy;
+        public int CurrentEnergy =>_currentEnergy;
+        public int MaxEnergy => _maxEnergy;
 
         public void Initialize(Agent agent)
         {

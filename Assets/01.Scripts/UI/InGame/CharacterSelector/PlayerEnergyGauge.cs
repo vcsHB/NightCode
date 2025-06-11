@@ -4,9 +4,10 @@ using UnityEngine.UI;
 namespace UI.InGame.GameUI.CharacterSelector
 {
 
-    public class PlayerHealthGauge : MonoBehaviour
+    public class PlayerEnergyGauge : MonoBehaviour
     {
-        [SerializeField] private Slider _healthGaugeSlider;
+
+        [SerializeField] private Slider _energyGaugeSlider;
         private CharacterSelectWindow _charatcerSelector;
         private Player _currentPlayer;
 
@@ -20,17 +21,18 @@ namespace UI.InGame.GameUI.CharacterSelector
         {
             if (_currentPlayer != null)
             {
-                _currentPlayer.HealthCompo.OnHealthChangedValueEvent -= HandleHealthChanged;
+                _currentPlayer.EnergyController.OnEnergyChangedEvent -= HandleEnergyChanged;
             }
+            print("asdasd");
             _currentPlayer = player;
-            player.HealthCompo.OnHealthChangedValueEvent += HandleHealthChanged;
-            HandleHealthChanged(player.HealthCompo.CurrentHealth, player.HealthCompo.MaxHealth);
+            player.EnergyController.OnEnergyChangedEvent += HandleEnergyChanged;
+            HandleEnergyChanged(player.EnergyController.CurrentEnergy, player.EnergyController.MaxEnergy);
         }
 
-        private void HandleHealthChanged(float current, float max)
+        private void HandleEnergyChanged(int current, int max)
         {
-            float ratio = current / max;
-            _healthGaugeSlider.value = ratio;
+            float ratio = (float)current / max;
+            _energyGaugeSlider.value = ratio;
         }
     }
 }
