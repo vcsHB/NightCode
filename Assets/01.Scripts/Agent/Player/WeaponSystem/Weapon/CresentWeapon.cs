@@ -21,9 +21,9 @@ namespace Agents.Players.WeaponSystem.Weapon
             _caster = GetComponentInChildren<Caster>();
             _damageCasterData = new();
         }
-        public override void Initialize(Player player)
+        public override void Initialize(Player player, int cost)
         {
-            base.Initialize(player);
+            base.Initialize(player, cost);
             _animationTrigger.OnRopeTurboEvent.AddListener(HandleAttack);
             _animationTrigger.OnRopeRemoveEvent.AddListener(HandleRopeRemove);
         }
@@ -33,7 +33,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             SetDisableWeapon();
         }
 
-        public override void HandleAttack()
+        protected override void Attack()
         {
             _isAttackEnabled = true;
             _attackGuideVisual.transform.DOScale(Vector3.one, _guideScaleTweenDuration);

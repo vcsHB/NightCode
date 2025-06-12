@@ -1,20 +1,14 @@
-using EffectSystem;
-using UnityEngine;
-
 namespace EffectSystem
 {
     public class EnemyEffectController : AgentEffectController
     {
 
-        public override void ApplyEffect(EffectStateTypeEnum type, float duration, int level, float percent = 1f)
+        public override void ApplyEffect(EffectStateTypeEnum type, int level, int stack, float percent = 1)
         {
-            if(type == 0) return;
-            // if(!effectDictionary[type].enabled)
-            //     _effectUI.GenerateSlot(type, effectDictionary[type]);
-            
-            base.ApplyEffect(type, duration, level);
-        
+            if (type == 0) return;
+            base.ApplyEffect(type, level, stack, percent);
         }
+
     }
 
 }

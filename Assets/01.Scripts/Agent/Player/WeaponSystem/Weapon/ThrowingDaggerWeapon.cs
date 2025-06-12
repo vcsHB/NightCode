@@ -13,9 +13,9 @@ namespace Agents.Players.WeaponSystem.Weapon
         private float _lastThrowTime;
         private int _currentThrowAmount = 0;
 
-        public override void Initialize(Player player)
+       public override void Initialize(Player player, int cost)
         {
-            base.Initialize(player);
+            base.Initialize(player, cost);
             _animationTrigger.OnRopeTurboEvent.AddListener(HandleAttack);
             _animationTrigger.OnGroundLandEvent.AddListener(HandleGroundLand);
         }
@@ -47,7 +47,7 @@ namespace Agents.Players.WeaponSystem.Weapon
         }
 
 
-        public override void HandleAttack()
+        protected override void Attack()
         {
             _isThrowing = true;
             _currentThrowAmount = 0;

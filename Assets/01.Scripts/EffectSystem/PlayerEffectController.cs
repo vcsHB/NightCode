@@ -1,4 +1,5 @@
-﻿using Agents;
+﻿using System;
+using Agents;
 using Agents.Players;
 using UnityEngine;
 
@@ -12,15 +13,20 @@ namespace EffectSystem
         {
             base.Initialize(agent);
             _player = _owner as Player;
+            _player.OnEnterEvent += HandlePlayerEnter;
 
         }
 
-        public override void ApplyEffect(EffectStateTypeEnum type, float duration, int level, float percent = 1f)
+        private void HandlePlayerEnter()
         {
-            if(type == 0) return;
-            
-            base.ApplyEffect(type, duration, level);
-            
+            // TODO
+            //VFX will be replayed later when the player enters
+        }
+
+        public override void ApplyEffect(EffectStateTypeEnum type, int level, int stack, float percent = 1)
+        {
+            if (type == 0) return;
+            base.ApplyEffect(type, level, stack, percent);
         }
     }
 }
