@@ -205,9 +205,7 @@ namespace Chipset
 
         public void SetActive(bool isEnable)
         {
-            Debug.Log("asdf");
-            if(isEnable == false) Destroy(gameObject);
-            //gameObject.SetActive(isEnable);
+            gameObject.SetActive(isEnable);
         }
 
         public Vector2Int GetPrevPosition()

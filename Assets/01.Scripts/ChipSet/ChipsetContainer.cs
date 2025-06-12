@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -19,9 +20,15 @@ namespace Chipset
 
         private Dictionary<Chipset, ChipsetInfo> _chipsetInfos;
 
-        public void Init()
+        public void Init(List<ChipsetSO> initializeChipset)
         {
             _chipsetInfos = new Dictionary<Chipset, ChipsetInfo>();
+            containChipset = new List<ChipsetSO>();
+
+            foreach(ChipsetSO chipsetSO in initializeChipset)
+            {
+                AddChipset(chipsetSO);
+            }
         }
 
         public void SetInventory(ChipsetInventory inventory)

@@ -38,8 +38,9 @@ namespace Chipset
 
         #region Initialize
 
-        public void Init()
+        public void Init(List<Vector2Int> openedInventory)
         {
+            _openSlot = openedInventory;
             _chipsets = new Chipset[_inventorySize.x, _inventorySize.y];
             InitSlot(_openSlot);
         }
@@ -79,7 +80,7 @@ namespace Chipset
             {
                 for (int x = 0; x < _inventorySize.x; x++)
                 {
-                    _slots[x, y].SetEnableSlot(_openSlot.Contains(new Vector2Int(x,y)));
+                    _slots[x, y].SetEnableSlot(_openSlot.Contains(new Vector2Int(x, y)));
                 }
             }
         }
@@ -95,7 +96,7 @@ namespace Chipset
             });
         }
 
-        public void Dispose()
+        public void DisableInventory()
         {
             _exsistingChipset.ForEach(chipset =>
             {
@@ -105,8 +106,13 @@ namespace Chipset
             _assignedChipsets.Keys.ToList().ForEach(chipset => chipset.SetActive(false));
 
             _exsistingChipset.Clear();
-            _assignedChipsets.Clear();
             gameObject.SetActive(false);
+        }
+
+        public void EnableInventory()
+        {
+            gameObject.SetActive(true);
+            _assignedChipsets.Keys.ToList().ForEach(chipset => chipset.SetActive(true));
         }
 
         #endregion
@@ -231,6 +237,7 @@ namespace Chipset
             if (destroyChipset) Destroy(chipset.gameObject);
         }
 
+
         #region Save&Load
 
         public List<ChipsetSave> GetInventoryData()
@@ -244,7 +251,6 @@ namespace Chipset
                 chipsetData.center = _assignedChipsets[chipset].center;
                 chipsetData.rotate = _assignedChipsets[chipset].rotate;
                 inventoryData.Add(chipsetData);
-                Debug.Log(chipsetData.chipsetId + " " + chipsetData.center);
             });
 
             return inventoryData;
@@ -263,6 +269,7 @@ namespace Chipset
                 _selectedChipset = chipsetInstance;
                 InsertChipset(chipsetData.center, chipsetInstance);
             });
+
             _selectedChipset = null;
         }
 
