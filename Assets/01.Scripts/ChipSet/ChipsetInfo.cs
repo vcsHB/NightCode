@@ -10,11 +10,13 @@ namespace Chipset
     public class ChipsetInfo : MonoBehaviour, IPointerDownHandler
     {
         public event Action<Chipset> onInsertChipset;
+
         [SerializeField] private Image _icon;
         private Chipset _assignedChipset;
         private ChipsetInventory _inventory;
         private float _scaleUpDuration = 0.3f;
         private Canvas _canvas;
+        private Tween _chipsetScaleTween;
 
         public RectTransform RectTrm => transform as RectTransform;
 
@@ -40,8 +42,12 @@ namespace Chipset
 
         public void OnReturnChipset()
         {
-            _icon.gameObject.SetActive(true);
+            _inventory.OnPointerDownChipset(null);
+
+            if (_chipsetScaleTween != null) _chipsetScaleTween.Kill();
             _assignedChipset.RectTrm.localScale = Vector3.zero;
+
+            _icon.gameObject.SetActive(true);
             RemoveAction();
         }
 
@@ -54,7 +60,6 @@ namespace Chipset
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Debug.Log(_assignedChipset);
             Camera uiCamera = _canvas.worldCamera;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 _assignedChipset.ParentRectTrm,
@@ -66,7 +71,11 @@ namespace Chipset
             _assignedChipset.RectTrm.localPosition = localPoint;
 
             _assignedChipset.ForceOnPointerDown(Vector2Int.zero, eventData);
-            _assignedChipset.RectTrm.DOScale(1, _scaleUpDuration);
+
+            if (_chipsetScaleTween != null && _chipsetScaleTween.active)
+                _chipsetScaleTween.Kill();
+            _chipsetScaleTween = _assignedChipset.RectTrm.DOScale(1, _scaleUpDuration);
+
             _icon.gameObject.SetActive(false);
 
             _inventory.onInsertChipset += OnInsertChipset;

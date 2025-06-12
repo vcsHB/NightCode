@@ -20,21 +20,17 @@ namespace Chipset
         protected override void Awake()
         {
             base.Awake();
+            chipsetTable.onSelectInventory += SelectInventory;
 
             Load();
             chipsetContainer.Init(inventorySave.containChipsets.ConvertAll(chipsetId => chipsetGroupSO.GetChipset(chipsetId)));
-            chipsetTable.onSelectInventory += SelectInventory;
-            chipsetTable.Init(inventorySave.openInventory);
+            chipsetTable.Init(inventorySave);
         }
 
         private void SelectInventory(CharacterEnum character)
         {
-            Save();
             ChipsetInventory selectedInventory = chipsetTable.GetInventory(character);
-            var chipsetDatas = inventorySave.GetChipsets(character);
-
             selectedInventory.EnableInventory();
-            selectedInventory.SetInventoryData(chipsetDatas, inventorySave.openInventory);
 
             chipsetContainer.SetInventory(selectedInventory);
         }
@@ -54,6 +50,7 @@ namespace Chipset
             File.WriteAllText(_path, json);
         }
 
+        [ContextMenu("Save")]
         public void Save()
         {
             if (inventorySave == null) inventorySave = new ChipsetInventorySave();

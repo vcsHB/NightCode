@@ -36,7 +36,7 @@ namespace Chipset
             this.inventory = inventory;
             _chipsetInfos.Keys.ToList().ForEach(chipset =>
             {
-                inventory.AddAssignedChipset(chipset);
+                inventory.AssignChipsetToInventory(chipset);
                 _chipsetInfos[chipset].Init(inventory, chipset);
             });
         }
@@ -45,7 +45,7 @@ namespace Chipset
         {
             containChipset.Add(chipsetSO);
             Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
-            if (inventory != null) inventory.AddAssignedChipset(chipset);
+            if (inventory != null) inventory.AssignChipsetToInventory(chipset);
 
             ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
             chipsetInfo.Init(inventory, chipset);
@@ -72,7 +72,7 @@ namespace Chipset
         private void SetAssignChipset()
         {
             if (inventory.SelectedChipset == null || inventory.SelectedChipset.IsForcePointerDown) return;
-            
+
             AddChipset(inventory.SelectedChipset.info);
             inventory.RemoveChipset(inventory.SelectedChipset, true);
             inventory.OnPointerDownChipset(null);

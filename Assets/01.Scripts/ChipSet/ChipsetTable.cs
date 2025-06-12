@@ -19,9 +19,9 @@ namespace Chipset
 
         public CharacterEnum SelectedCharacter => _selectedCharacter;
 
-        public void Init(List<Vector2Int> openedInventory)
+        public void Init(ChipsetInventorySave inventoryDatas)
         {
-            _openInventory = openedInventory;
+            _openInventory = inventoryDatas.openInventory;
             _inventory = new Dictionary<CharacterEnum, ChipsetInventory>();
             var inventoryList = GetComponentsInChildren<ChipsetInventory>();
 
@@ -29,9 +29,16 @@ namespace Chipset
             {
                 _inventory.Add((CharacterEnum)i, inventoryList[i]);
                 inventoryList[i].Init(_openInventory);
+                inventoryList[i].SetInventoryData(inventoryDatas.GetChipsets((CharacterEnum)i), _openInventory);
                 inventoryList[i].DisableInventory();
             }
+            StartCoroutine(DelayInitializeInventory());
+        }
 
+        private IEnumerator DelayInitializeInventory()
+        {
+            yield return null;
+            yield return null;
             SelectInventory(CharacterEnum.An);
         }
 
@@ -44,7 +51,7 @@ namespace Chipset
             if (prevInventory != null && _selectedCharacter != character)
                 prevInventory.DisableInventory();
 
-            _selectedCharacter = character; 
+            _selectedCharacter = character;
         }
 
         public List<Vector2Int> GetOpenedInventorySlots() => _openInventory;

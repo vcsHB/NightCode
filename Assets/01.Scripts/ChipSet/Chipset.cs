@@ -42,7 +42,6 @@ namespace Chipset
         public bool IsForcePointerDown => _isForcePointerDown;
         public RectTransform RectTrm => transform as RectTransform;
         public RectTransform ParentRectTrm => transform.parent as RectTransform;
-        private Vector2 ParentSize => new Vector2(ParentRectTrm.rect.width, ParentRectTrm.rect.height);
 
         #endregion
 
@@ -198,21 +197,22 @@ namespace Chipset
 
         public void SetPrevPosition(Vector2Int center, int rotate)
         {
-            _selectedSlotOffset = Vector2Int.zero;
+            //_selectedSlotOffset = Vector2Int.zero;
             _prevPosition = center;
             _prevRotate = rotate;
+        }
+
+        public Vector2Int GetPrevPosition()
+        {
+            _selectedSlotOffset = Vector2Int.zero;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * _prevRotate));
+            _rotation = _prevRotate;
+            return _prevPosition;
         }
 
         public void SetActive(bool isEnable)
         {
             gameObject.SetActive(isEnable);
-        }
-
-        public Vector2Int GetPrevPosition()
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * _prevRotate));
-            _rotation = _prevRotate;
-            return _prevPosition;
         }
 
         public void SetRotation(int rotation)
