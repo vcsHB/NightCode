@@ -16,6 +16,7 @@ namespace Map
         private MapGraph _mapGraph;
         private MapController _mapController;
         private MapNode _selectedNode;
+        private MapNode _prevSelectedNode;
 
         private void Awake()
         {
@@ -107,6 +108,7 @@ namespace Map
                 if (_mapController.IsCurrentPositionExsist(originPosition) == false)
                     originNode.SetSelectObjectEnable(false);
 
+
                 //이건 맵 이동을 완료시키는 뭔가 다른 무언가를 해서 그 쪽으로 이동 시켜야함
                 bool moveComplete = true;
                 foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
@@ -131,25 +133,29 @@ namespace Map
             if (node == null)
             {
                 _selectedNode = null;
+                _prevSelectedNode = null;
                 return;
             }
 
-            if (_selectedNode != null)
-            {
-                _selectedNode.NodeInfo.nextNodes.ForEach(nextNode =>
-                {
-                    MapNode nextMapNode = _mapGraph.GetNode(nextNode);
-                    if (nextMapNode != null) _selectedNode.SetConnectableLine(nextMapNode, false);
-                });
-            }
 
             if (node.Depth == _mapController.CurrentDepth)
             {
+                if (_prevSelectedNode != null)
+                {
+                    _prevSelectedNode.NodeInfo.nextNodes.ForEach(nextNode =>
+                    {
+                        MapNode nextMapNode = _mapGraph.GetNode(nextNode);
+                        if (nextMapNode != null) _prevSelectedNode.SetConnectableLine(nextMapNode, false);
+                    });
+                }
+
                 node.NodeInfo.nextNodes.ForEach(nextNode =>
                 {
                     MapNode nextMapNode = _mapGraph.GetNode(nextNode);
                     if (nextMapNode != null) node.SetConnectableLine(nextMapNode, true);
                 });
+
+                _prevSelectedNode = node;
             }
 
             _selectedNode = node;
