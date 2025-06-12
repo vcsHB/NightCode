@@ -14,6 +14,10 @@ namespace Agents.Players.WeaponSystem.Weapon
         [SerializeField] private TargetDetector _targetDetector;
         [SerializeField] private BattleAxe _battleAxePrefab;
         [SerializeField] private int _throwAmount = 1;
+        [Header("Skill Option Settings")]
+        [SerializeField] private float _speedMultiplier = 1f;
+        [SerializeField] private float _flyDistanceMultiplier = 1f;
+
         private Queue<BattleAxe> _axePool = new();
         private int _currentAxeAmount;
 
@@ -59,12 +63,26 @@ namespace Agents.Players.WeaponSystem.Weapon
                 if (i > _throwAmount) break;
                 BattleAxe axe = GetAxe();
                 if (axe == null) return;
-                
+
                 axe.transform.position = transform.position;
                 Vector2 direction = targets[i].transform.position - transform.position;
                 axe.Throw(direction.normalized);
+                axe.SetAxeSpeed(_speedMultiplier, _flyDistanceMultiplier);
                 OnAxeThrowEvent?.Invoke();
             }
+        }
+
+
+        public void ResetAxeSpeed()
+        {
+            _speedMultiplier = 1f;
+            _flyDistanceMultiplier = 1f;
+        }
+        
+        public void SetAxeSpeed(float newAxeFlySpeedMultuplier = 1f, float newAxeFlyDistanceMultiplier = 1f)
+        {
+            _speedMultiplier = newAxeFlySpeedMultuplier;
+            _flyDistanceMultiplier = newAxeFlyDistanceMultiplier;
         }
     }
 }
