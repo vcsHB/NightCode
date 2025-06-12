@@ -23,7 +23,6 @@ namespace UI.InGame.GameUI.CharacterSelector
             {
                 _currentPlayer.EnergyController.OnEnergyChangedEvent -= HandleEnergyChanged;
             }
-            print("asdasd");
             _currentPlayer = player;
             player.EnergyController.OnEnergyChangedEvent += HandleEnergyChanged;
             HandleEnergyChanged(player.EnergyController.CurrentEnergy, player.EnergyController.MaxEnergy);

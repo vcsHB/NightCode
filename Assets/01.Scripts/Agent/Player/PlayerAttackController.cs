@@ -1,5 +1,7 @@
+using System;
 using Agents.Players.SkillSystem;
 using Agents.Players.WeaponSystem;
+using Combat.SubWeaponSystem;
 using UnityEngine;
 namespace Agents.Players
 {
@@ -7,10 +9,12 @@ namespace Agents.Players
     {
         [SerializeField] private PlayerWeaponListSO _weaponListSO;
         [SerializeField] private PlayerWeaponSO _weaponSO;
+        public event Action<float, float> OnSkillCooltimeUpdateEvent;
 
         private Player _player;
         private PlayerWeapon _weapon;
         private PlayerSkill _skill;
+        public PlayerWeaponSO WeaponData => _weaponSO;
 
 
         public void Initialize(Agent agent)
@@ -35,13 +39,18 @@ namespace Agents.Players
 
             // # PlayerSkill Initialize
             PlayerSkillSO skillSO = _weaponSO.skillSO;
-            if(skillSO == null || skillSO.skillPrefab == null) return;
-            
+            if (skillSO == null || skillSO.skillPrefab == null) return;
+
             _skill = Instantiate(skillSO.skillPrefab, transform);
             _skill.Initialize(_player, _weapon, skillSO.skillCostEnergy, skillSO.skillCooltime);
             _player.PlayerInput.OnUseEvent += _skill.HandleUseSkill;
+            _skill.OnCooltimeUpdateEvent += HandleUpdateSkill;
         }
 
 
+        private void HandleUpdateSkill(float current, float max)
+        {
+            OnSkillCooltimeUpdateEvent?.Invoke(current, max);
+        }
     }
 }
