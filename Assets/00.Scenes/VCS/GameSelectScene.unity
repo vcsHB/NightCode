@@ -577,7 +577,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8689eee56eb12a14cb28b8e81313c452, type: 2}
   m_sharedMaterial: {fileID: 2602293823628100395, guid: 8689eee56eb12a14cb28b8e81313c452, type: 2}
@@ -1615,6 +1615,7 @@ GameObject:
   - component: {fileID: 206399132}
   - component: {fileID: 206399131}
   - component: {fileID: 206399134}
+  - component: {fileID: 206399135}
   m_Layer: 5
   m_Name: AgentSlot_Bina
   m_TagString: Untagged
@@ -1711,6 +1712,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chipsetTable: {fileID: 631928777}
   character: 2
+--- !u!225 &206399135
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206399129}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &209443662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2417,6 +2430,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 318673779}
   m_CullTransparentMesh: 1
+--- !u!1 &333247501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 333247502}
+  - component: {fileID: 333247503}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &333247502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333247501}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &333247503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333247501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 184d533c19b3809468a3382d03e38e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chipsetGroupSO: {fileID: 11400000, guid: 9a4cb1a9698daae40bccb2d5ea9ed52e, type: 2}
+  chipsetInitSO: {fileID: 11400000, guid: 9fddd973e5fc6c64f9ab8832f1d04724, type: 2}
+  chipsetContainer: {fileID: 1920831185}
+  chipsetTable: {fileID: 631928777}
 --- !u!1 &346789833
 GameObject:
   m_ObjectHideFlags: 0
@@ -2719,7 +2780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0.8784314}
+  m_Color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0.9411765}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2778,7 +2839,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354359250}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -3737,6 +3798,7 @@ GameObject:
   - component: {fileID: 481386441}
   - component: {fileID: 481386443}
   - component: {fileID: 481386444}
+  - component: {fileID: 481386445}
   m_Layer: 5
   m_Name: AgentSlot_An
   m_TagString: Untagged
@@ -3833,6 +3895,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chipsetTable: {fileID: 631928777}
   character: 0
+--- !u!225 &481386445
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481386439}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &495553719
 GameObject:
   m_ObjectHideFlags: 0
@@ -4958,8 +5032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce84e24d16a3ba41a163cc9ffdf97cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _container: {fileID: 1920831185}
-  openInventory: []
+  chipsetGruopSO: {fileID: 11400000, guid: 9a4cb1a9698daae40bccb2d5ea9ed52e, type: 2}
 --- !u!1 &663503896
 GameObject:
   m_ObjectHideFlags: 0
@@ -7898,7 +7971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chipsetGroup: {fileID: 11400000, guid: 9a4cb1a9698daae40bccb2d5ea9ed52e, type: 2}
-  _inventorySize: {x: 5, y: 6}
+  _inventorySize: {x: 8, y: 8}
   _slotPrefab: {fileID: 3597387249973883542, guid: 44000e6a49bc5b044b8bc8d50a25e5dc, type: 3}
   _slotParent: {fileID: 1703156607}
   _chipsetParent: {fileID: 631928773}
@@ -9084,7 +9157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chipsetGroup: {fileID: 11400000, guid: 9a4cb1a9698daae40bccb2d5ea9ed52e, type: 2}
-  _inventorySize: {x: 5, y: 6}
+  _inventorySize: {x: 8, y: 8}
   _slotPrefab: {fileID: 3597387249973883542, guid: 44000e6a49bc5b044b8bc8d50a25e5dc, type: 3}
   _slotParent: {fileID: 675085652}
   _chipsetParent: {fileID: 631928773}
@@ -9564,7 +9637,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8689eee56eb12a14cb28b8e81313c452, type: 2}
   m_sharedMaterial: {fileID: 2602293823628100395, guid: 8689eee56eb12a14cb28b8e81313c452, type: 2}
@@ -10663,7 +10736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chipsetGroup: {fileID: 11400000, guid: 9a4cb1a9698daae40bccb2d5ea9ed52e, type: 2}
-  _inventorySize: {x: 5, y: 6}
+  _inventorySize: {x: 8, y: 8}
   _slotPrefab: {fileID: 3597387249973883542, guid: 44000e6a49bc5b044b8bc8d50a25e5dc, type: 3}
   _slotParent: {fileID: 1755016111}
   _chipsetParent: {fileID: 631928773}
@@ -10690,6 +10763,7 @@ GameObject:
   - component: {fileID: 1387739070}
   - component: {fileID: 1387739069}
   - component: {fileID: 1387739072}
+  - component: {fileID: 1387739073}
   m_Layer: 5
   m_Name: AgentSlot_JinLay
   m_TagString: Untagged
@@ -10786,6 +10860,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chipsetTable: {fileID: 631928777}
   character: 1
+--- !u!225 &1387739073
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387739067}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1388875658
 GameObject:
   m_ObjectHideFlags: 0
@@ -14860,10 +14946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef72d476b4939144a650c560ebf03bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  containChipset:
-  - {fileID: 11400000, guid: 7e606ea7810919745be0409850c647a2, type: 2}
-  - {fileID: 11400000, guid: cf034000516c92b45ad1862df09a6139, type: 2}
-  - {fileID: 11400000, guid: cf034000516c92b45ad1862df09a6139, type: 2}
+  containChipset: []
   inventory: {fileID: 1369533324}
   _chipsetInfoPrefab: {fileID: 2722241358690329493, guid: 2d6437fa64301ca499d4853fcfd7120f, type: 3}
   _chipsetParent: {fileID: 631928773}
@@ -16357,6 +16440,7 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 333247502}
   - {fileID: 1401644005}
   - {fileID: 876554651}
   - {fileID: 1835513500}

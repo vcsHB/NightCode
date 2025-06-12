@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,8 +39,9 @@ namespace Chipset
 
         #region Initialize
 
-        public void Init()
+        public void Init(List<Vector2Int> openedInventory)
         {
+            _openSlot = openedInventory;
             _chipsets = new Chipset[_inventorySize.x, _inventorySize.y];
             InitSlot(_openSlot);
         }
@@ -65,62 +67,75 @@ namespace Chipset
                     _slots[x, y] = slotObj.GetComponent<ChipsetInventorySlot>();
 
                     _slots[x, y].SetPosition(position);
-                    _slots[x, y].SetEnableSlot(_openSlot.Contains(position));
                     _slots[x, y].onPointerEnter += OnPointerEnterHandler;
                     _slots[x, y].onPointerExit += OnPointerExitHandler;
                 }
             }
+
+            SetOpenSlot();
         }
 
-        public void InitChipset()
+        private void SetOpenSlot()
         {
-            _assignedChipsets.Keys.ToList().ForEach(chipset =>
+            for (int y = 0; y < _inventorySize.y; y++)
             {
-                chipset.SetActive(true);
-                chipset.onSelectChipset += OnPointerDownChipset;
-                chipset.onPointerUpChipset += OnPointerUpChipset;
-                _exsistingChipset.Add(chipset);
-            });
+                for (int x = 0; x < _inventorySize.x; x++)
+                {
+                    _slots[x, y].SetEnableSlot(_openSlot.Contains(new Vector2Int(x, y)));
+                }
+            }
         }
 
-        public void Dispose()
+        public void DisableInventory()
         {
             _exsistingChipset.ForEach(chipset =>
             {
                 chipset.onSelectChipset -= OnPointerDownChipset;
                 chipset.onPointerUpChipset -= OnPointerUpChipset;
             });
+            _assignedChipsets.Keys.ToList().ForEach(chipset => chipset.SetActive(false));
 
             _exsistingChipset.Clear();
-            _assignedChipsets.Keys.ToList().ForEach(chipset => chipset.SetActive(false));
             gameObject.SetActive(false);
         }
 
-        #endregion
-
-        public void AddAssignedChipset(Chipset chipset)
+        public void EnableInventory()
         {
-            chipset.SetActive(true);
-            chipset.onSelectChipset += OnPointerDownChipset;
-            chipset.onPointerUpChipset += OnPointerUpChipset;
-            _exsistingChipset.Add(chipset);
+            gameObject.SetActive(true);
+            StartCoroutine(DelaySetChipsetPosition());
         }
+
+        private IEnumerator DelaySetChipsetPosition()
+        {
+            yield return null;
+
+            _assignedChipsets.Keys.ToList().ForEach(chipset =>
+            {
+                chipset.SetActive(true);
+
+                Vector2Int center = _assignedChipsets[chipset].center;
+                chipset.SetPosition(TransformSlotPositionToCanvasPosition(center));
+            });
+        }
+
+        #endregion
 
         #region ChipsetEvents
 
         public void OnPointerDownChipset(Chipset chipset)
         {
+            _selectedChipset = chipset;
+
             if (chipset != null && _assignedChipsets.ContainsKey(chipset))
             {
                 chipset.info.chipsetSize.ForEach(offset =>
                 {
+                    Debug.Log(_assignedChipsets[chipset].center);
                     Vector2Int position = offset + _assignedChipsets[chipset].center;
                     _chipsets[position.x, position.y] = null;
                 });
                 chipset.SetPrevPosition(_assignedChipsets[chipset].center, _assignedChipsets[chipset].rotate);
             }
-
-            _selectedChipset = chipset;
         }
 
         public void OnPointerUpChipset()
@@ -140,7 +155,8 @@ namespace Chipset
                     ReturnChipsetToPrevPosition();
                 }
 
-                OnPointerExitHandler(_selectedSlot.SlotPosition);
+                _selections.ForEach(selected => _slots[selected.x, selected.y].SetChipsetSlotState(false, _canInsertChipset));
+                _selections.Clear();
             }
 
             _selectedChipset = null;
@@ -180,6 +196,14 @@ namespace Chipset
 
         #endregion
 
+        public void AssignChipsetToInventory(Chipset chipset)
+        {
+            chipset.SetActive(true);
+            chipset.onSelectChipset += OnPointerDownChipset;
+            chipset.onPointerUpChipset += OnPointerUpChipset;
+            _exsistingChipset.Add(chipset);
+        }
+
         private void ReturnChipsetToPrevPosition()
         {
             onReturnChipset?.Invoke();
@@ -197,61 +221,71 @@ namespace Chipset
                 Vector2Int position = selectPosition + offset;
                 _chipsets[position.x, position.y] = chipset;
             });
-            if (_assignedChipsets.ContainsKey(chipset))
-            {
-                _assignedChipsets.Remove(chipset);
-            }
-            Vector2Int center = selectPosition + chipset.GetSelectOffset();
-            _assignedChipsets.Add(chipset, (center, chipset.Rotation));
-            StartCoroutine(DelaySetPosition(chipset, selectPosition));
-        }
 
-        private IEnumerator DelaySetPosition(Chipset chipset, Vector2Int selectPosition)
-        {
-            yield return null;
-            yield return null;
-            yield return null;
+            if (_assignedChipsets.ContainsKey(chipset))
+                _assignedChipsets.Remove(chipset);
+
+            Vector2Int center = selectPosition - chipset.GetSelectOffset();
+            _assignedChipsets.Add(chipset, (center, chipset.Rotation));
+
+            if (_exsistingChipset.Contains(chipset))
+            {
+                _exsistingChipset.Remove(chipset);
+            }
+
             _selectedChipset = chipset;
             chipset.SetPosition(GetCenterPostion(selectPosition));
             _selectedChipset = null;
         }
+
 
         public void RemoveChipset(Chipset chipset, bool destroyChipset = false)
         {
             if (_assignedChipsets.ContainsKey(chipset))
                 _assignedChipsets.Remove(chipset);
 
+            if (_exsistingChipset.Contains(chipset))
+                _exsistingChipset.Remove(chipset);
+
             if (destroyChipset) Destroy(chipset.gameObject);
         }
+
 
         #region Save&Load
 
         public List<ChipsetSave> GetInventoryData()
         {
             List<ChipsetSave> inventoryData = new List<ChipsetSave>();
+
             _assignedChipsets.Keys.ToList().ForEach(chipset =>
             {
                 ChipsetSave chipsetData = new ChipsetSave();
                 chipsetData.chipsetId = chipset.info.id;
                 chipsetData.center = _assignedChipsets[chipset].center;
                 chipsetData.rotate = _assignedChipsets[chipset].rotate;
+
                 inventoryData.Add(chipsetData);
             });
+
             return inventoryData;
         }
 
         public void SetInventoryData(List<ChipsetSave> inventoryData, List<Vector2Int> openSlot)
         {
             _openSlot = openSlot;
+            SetOpenSlot();
 
             inventoryData.ForEach(chipsetData =>
             {
                 ChipsetSO chipsetSO = chipsetGroup.GetChipset(chipsetData.chipsetId);
                 Chipset chipsetInstance = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
                 chipsetInstance.SetRotation(chipsetData.rotate);
+                chipsetInstance.onSelectChipset += OnPointerDownChipset;
+                chipsetInstance.onPointerUpChipset += OnPointerUpChipset;
                 _selectedChipset = chipsetInstance;
                 InsertChipset(chipsetData.center, chipsetInstance);
             });
+
             _selectedChipset = null;
         }
 
@@ -261,7 +295,6 @@ namespace Chipset
 
         private Vector2 GetCenterPostion(Vector2Int selectedPosition)
         {
-            Debug.Log(_selectedChipset);
             Vector2Int center = selectedPosition - _selectedChipset.GetSelectOffset();
             Vector2 centerPosition = TransformSlotPositionToCanvasPosition(center);
 

@@ -1,40 +1,30 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Linq;
 
 namespace Map
 {
-    [Serializable]
-    public struct HeightInfo
-    {
-        public List<float> positions;
-    }
-
     public class MapGraph : MonoBehaviour
     {
-        public event Action<MapNodeSO> OnSelectNodeEvent;
+        public event Action<MapNodeSO> OnClickNodeEvent;
+        public event Action<MapNode> OnPointerUpNodeEvent;
         public MapGraphSO mapInfo;
         public MapNode nodePrefab;
 
         [SerializeField] private List<HeightInfo> _heights;
         [SerializeField] private float _xOffset;
+        [SerializeField] private Transform _nodeParent;
+        [SerializeField] private Transform _lineParent;
 
-        private List<(int, int)> _visit;
         private List<MapNodeSO>[] map;
         private Dictionary<MapNodeSO, MapNode> nodeDic;
 
-        [SerializeField] private Transform _nodeParent;
-
-        private void Awake()
-        {
-            Init();
-        }
-
         public void Init()
         {
-            _visit = new List<(int, int)>();
-            map = mapInfo.GenerateMap();
             nodeDic = new Dictionary<MapNodeSO, MapNode>();
+            map = mapInfo.GenerateMap();
 
             for (int i = 0; i < map.Length; i++)
             {
@@ -43,16 +33,23 @@ namespace Map
                     MapNode node = Instantiate(nodePrefab, _nodeParent);
                     node.RectTrm.anchoredPosition = new Vector2(i * _xOffset, _heights[map[i].Count - 1].positions[j]);
                     node.onSelectNode += HandleSelectNode;
-                    node.Init(map[i][j]);
+                    node.onPointerEnter += HandleSelectCharacterIcon;
+                    node.Init(map[i][j], i, j);
                     nodeDic.Add(map[i][j], node);
                 }
             }
+
             ConnectNode();
         }
 
         private void HandleSelectNode(MapNodeSO data)
         {
-            OnSelectNodeEvent?.Invoke(data);
+            OnClickNodeEvent?.Invoke(data);
+        }
+
+        private void HandleSelectCharacterIcon(MapNode node)
+        {
+            OnPointerUpNodeEvent?.Invoke(node);
         }
 
         private void ConnectNode()
@@ -63,10 +60,24 @@ namespace Map
                 {
                     map[i][j].nextNodes.ForEach(next =>
                     {
-                        nodeDic[map[i][j]].ConnectEdge(nodeDic[next]);
+                        nodeDic[map[i][j]].ConnectEdge(nodeDic[next], _lineParent);
                     });
                 }
             }
         }
+
+        public MapNode GetNode(Vector2Int position) => nodeDic[map[position.x][position.y]];
+
+        public MapNode GetNode(MapNodeSO nextNode)
+        {
+            if(nodeDic.TryGetValue(nextNode, out MapNode node)) return node;
+            return null;
+        }
+    }
+
+    [Serializable]
+    public struct HeightInfo
+    {
+        public List<float> positions;
     }
 }

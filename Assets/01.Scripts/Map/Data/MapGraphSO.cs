@@ -23,6 +23,20 @@ namespace Map
 
         private List<MapNodeSO>[] _nodeMap;
 
+        public MapNodeSO GetNodeSO(int nodeId)
+        {
+            if (startNode.nodeId == nodeId) return startNode;
+            if (bossNode.nodeId == nodeId) return bossNode;
+
+            MapNodeSO node = combatNodes.Find(node => node.nodeId == nodeId);
+            if (node != null) return node;
+            node = encounterNodes.Find(node => node.nodeId == nodeId);
+            if (node != null) return node;
+            node = shopNodes.Find(node => node.nodeId == nodeId);
+            if (node != null) return node;
+
+            return null;
+        }
 
         public MapNodeSO GetRandomNode(NodeType nodeType, Vector2Int difficultyRange)
         {
@@ -155,6 +169,7 @@ namespace Map
 
                     if (linkedCount == 1) // Keep
                     {
+                        _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
                         _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process++]);
                         process = Mathf.Clamp(process, 0, _nodeMap[i].Count - 1);
                     }
@@ -162,19 +177,21 @@ namespace Map
                     {
                         for (int k = 0; k < linkedCount; k++)
                         {
+                            _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process++]);
                             process = Mathf.Clamp(process, 0, _nodeMap[i].Count - 1);
                         }
                     }
                     else if (linkedCount < 0) // Merge
                     {
-                        // ������ ���� ��尡 �ϳ��� ���̴� �����̹Ƿ�, process�� ������ ����� �ʰ� üũ
                         if (process == 0)
                         {
+                            _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process]);
                         }
                         else if (process >= _nodeMap[i].Count)
                         {
+                            _nodeMap[i][process - 1].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process - 1]);
                         }
                         else
@@ -182,6 +199,7 @@ namespace Map
                             int isLinkedUp = Random.Range(0, 2);
                             int idx = isLinkedUp == 0 ? process : process - 1;
                             idx = Mathf.Clamp(idx, 0, _nodeMap[i - 1].Count);
+                            _nodeMap[i][idx].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][idx]);
                         }
                     }
