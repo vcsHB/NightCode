@@ -1,6 +1,5 @@
 using Agents;
 using Agents.Players;
-using Core.StageController;
 using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
@@ -28,6 +27,7 @@ namespace Combat.PlayerTagSystem
         public event Action<Player, Player> OnPlayerChangedEvent;
         [Header("Essential Settings")]
         [SerializeField] private PlayerInput _playerInput;
+        [SerializeField] private PlayerGroupDataSO _playerGroupData;
         [SerializeField] private List<PlayerSO> _playerDatas;
         [SerializeField] internal List<Player> playerList;
         [SerializeField] private AimGroupController _aimGroup;
@@ -97,6 +97,9 @@ namespace Combat.PlayerTagSystem
 
         private void Initialize()
         {
+            // GetData;
+            //_playerGroupData.GetPlayerData(id)
+
             for (int i = 0; i < _playerDatas.Count; i++)
             {
                 Player playerCharacter = Instantiate(_playerDatas[i].playerPrefab, transform);

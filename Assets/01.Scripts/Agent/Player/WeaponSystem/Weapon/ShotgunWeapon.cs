@@ -12,13 +12,13 @@ namespace Agents.Players.WeaponSystem.Weapon
         [SerializeField] private ShotgunProjectileShooter _projectileShooter;
         [SerializeField] private TargetDetector _targetDetector;
 
-        public override void Initialize(Player player)
+        public override void Initialize(Player player, int cost)
         {
-            base.Initialize(player);
+            base.Initialize(player, cost);
             _animationTrigger.OnGroundPullArriveEvent.AddListener(HandleAttack);
         }
 
-        public override void HandleAttack()
+        protected override void Attack()
         {
             Collider2D target = _targetDetector.DetectClosestTarget();
             if (target == null)

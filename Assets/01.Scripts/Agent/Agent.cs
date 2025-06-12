@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Agents.Players;
 using Combat;
 using Core.EventSystem;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Agents
         [field: SerializeField] public GameEventChannelSO EventChannel { get; protected set; }
 
         public Health HealthCompo { get; protected set; }
+        public PlayerCombatEnergyController EnergyController { get; protected set; }
         public bool IsDead { get; protected set; }
         private Dictionary<Type, IAgentComponent> _components = new Dictionary<Type, IAgentComponent>();
 
@@ -25,6 +27,7 @@ namespace Agents
             AddComponentToDictionary();
             ComponentInitialize();
             AfterInit();
+            EnergyController = GetCompo<PlayerCombatEnergyController>();
         }
 
         private void AddComponentToDictionary()

@@ -4,28 +4,24 @@ namespace EffectSystem
 {
 	public class EffectStun : EffectState
 	{
-		public EffectStun(Agent agent, bool isResist) : base(agent, isResist)
-		{
-		}
-
 		public override void Over()
 		{
 			base.Over();
 		}
 
-		public override void Start(int level = 1, float duration = 10, float percent = 1f)
+		public override void Apply(int stack = 1, int level = 1, float percent = 1f)
 		{
-			base.Start(level, duration);
-		}
-
-		public override void Update()
-		{
-			base.Update();
+			base.Apply(level, stack);
 		}
 
 		public override void UpdateBySecond()
 		{
 			base.UpdateBySecond();
+		}
+
+		public override void SetEffectType()
+		{
+			EffectType = EffectStateTypeEnum.Repair;
 		}
 	}
 }

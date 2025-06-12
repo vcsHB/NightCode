@@ -1,31 +1,37 @@
 fileFormatVersion: 2
-guid: fcb6943ef686a314db684b5d6c0ecc4d
+guid: d8bfecb54d2c1f349a1b8c8ff4ebe83f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2590522081048681926
-    second: DUCKING_WEAPONS_0
+      213: -8035295632174863824
+    second: DUCKING_EFFECT_SLASH_0
   - first:
-      213: 7980018516589546700
-    second: DUCKING_WEAPONS_1
+      213: -8721178495267125055
+    second: DUCKING_EFFECT_SLASH_1
   - first:
-      213: -8484127104996869792
-    second: DUCKING_WEAPONS_2
+      213: -2938350315499758042
+    second: DUCKING_EFFECT_SLASH_2
   - first:
-      213: 8444974109804025970
-    second: DUCKING_WEAPONS_3
+      213: -725386365609068868
+    second: DUCKING_EFFECT_SLASH_3
   - first:
-      213: -1899895517646098394
-    second: DUCKING_WEAPONS_4
+      213: -5988118731798017252
+    second: DUCKING_EFFECT_SLASH_4
   - first:
-      213: -8041818707933533454
-    second: DUCKING_WEAPONS_5
+      213: -2549791021310858129
+    second: DUCKING_EFFECT_SLASH_5
   - first:
-      213: -2462632626010199661
-    second: DUCKING_WEAPONS_6
+      213: 1892963228606498182
+    second: DUCKING_EFFECT_SLASH_6
   - first:
-      213: -8379357475780191273
-    second: DUCKING_WEAPONS_7
+      213: 551382069280680581
+    second: DUCKING_EFFECT_SLASH_7
+  - first:
+      213: -4238374664668521331
+    second: DUCKING_EFFECT_SLASH_8
+  - first:
+      213: -877485091966578397
+    second: DUCKING_EFFECT_SLASH_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -69,7 +75,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
@@ -93,7 +99,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -134,100 +140,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DUCKING_WEAPONS_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 256
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a32a94874ed9c0cd0800000000000000
-      internalID: -2590522081048681926
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DUCKING_WEAPONS_1
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 256
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ccc0c569f88bebe60800000000000000
-      internalID: 7980018516589546700
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DUCKING_WEAPONS_2
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 128
-        width: 256
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 069f56d4953524a80800000000000000
-      internalID: -8484127104996869792
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DUCKING_WEAPONS_3
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 128
-        width: 256
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2785d30a533923570800000000000000
-      internalID: 8444974109804025970
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DUCKING_WEAPONS_4
+      name: DUCKING_EFFECT_SLASH_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
+        width: 128
         height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -237,19 +155,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 620f850c71732a5e0800000000000000
-      internalID: -1899895517646098394
+      spriteID: 03a28f20235ec7090800000000000000
+      internalID: -8035295632174863824
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DUCKING_WEAPONS_5
+      name: DUCKING_EFFECT_SLASH_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c8c3d68d5628f680800000000000000
+      internalID: -8721178495267125055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DUCKING_EFFECT_SLASH_2
       rect:
         serializedVersion: 2
         x: 256
         y: 0
-        width: 256
+        width: 128
         height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -259,19 +199,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2fae7851e78b56090800000000000000
-      internalID: -8041818707933533454
+      spriteID: 62edaf2c4f1e837d0800000000000000
+      internalID: -2938350315499758042
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DUCKING_WEAPONS_6
+      name: DUCKING_EFFECT_SLASH_3
       rect:
         serializedVersion: 2
-        x: 512
+        x: 384
         y: 0
-        width: 256
+        width: 128
         height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -281,30 +221,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 399ef5a9ca8f2ddd0800000000000000
-      internalID: -2462632626010199661
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DUCKING_WEAPONS_7
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 0
-        width: 256
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7db9b1285ca86bb80800000000000000
-      internalID: -8379357475780191273
+      spriteID: cb6b5f891f8eee5f0800000000000000
+      internalID: -725386365609068868
       vertices: []
       indices: 
       edges: []
@@ -313,7 +231,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: eb7b607587a5a54469306d6cd7ceaa51
+    spriteID: 240a68de2f031e4468290f76ffab5f4a
     internalID: 0
     vertices: []
     indices: 
@@ -323,14 +241,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      DUCKING_WEAPONS_0: -2590522081048681926
-      DUCKING_WEAPONS_1: 7980018516589546700
-      DUCKING_WEAPONS_2: -8484127104996869792
-      DUCKING_WEAPONS_3: 8444974109804025970
-      DUCKING_WEAPONS_4: -1899895517646098394
-      DUCKING_WEAPONS_5: -8041818707933533454
-      DUCKING_WEAPONS_6: -2462632626010199661
-      DUCKING_WEAPONS_7: -8379357475780191273
+      DUCKING_EFFECT_SLASH_0: -8035295632174863824
+      DUCKING_EFFECT_SLASH_1: -8721178495267125055
+      DUCKING_EFFECT_SLASH_2: -2938350315499758042
+      DUCKING_EFFECT_SLASH_3: -725386365609068868
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
