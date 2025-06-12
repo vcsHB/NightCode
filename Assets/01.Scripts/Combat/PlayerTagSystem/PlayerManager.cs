@@ -1,6 +1,5 @@
 using Agents;
 using Agents.Players;
-using Core.StageController;
 using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
@@ -100,7 +99,7 @@ namespace Combat.PlayerTagSystem
         {
             // GetData;
             //_playerGroupData.GetPlayerData(id)
-            
+
             for (int i = 0; i < _playerDatas.Count; i++)
             {
                 Player playerCharacter = Instantiate(_playerDatas[i].playerPrefab, transform);

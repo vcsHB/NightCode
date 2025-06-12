@@ -1,7 +1,6 @@
 using System;
 using Agents.Players.SkillSystem;
 using Agents.Players.WeaponSystem;
-using Combat.SubWeaponSystem;
 using UnityEngine;
 namespace Agents.Players
 {
@@ -22,9 +21,7 @@ namespace Agents.Players
             _player = agent as Player;
             SetWeaponSO(_weaponSO); // Debug; => Connect SaveData
         }
-        public void AfterInit()
-        {
-        }
+        public void AfterInit() { }
 
         public void Dispose()
         {

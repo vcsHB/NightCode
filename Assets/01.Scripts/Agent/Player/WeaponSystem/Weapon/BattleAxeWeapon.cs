@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Agents.Players.WeaponSystem.Weapon.WeaponObjects;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 namespace Agents.Players.WeaponSystem.Weapon
 {
@@ -70,13 +68,6 @@ namespace Agents.Players.WeaponSystem.Weapon
                 axe.SetAxeSpeed(_speedMultiplier, _flyDistanceMultiplier);
                 OnAxeThrowEvent?.Invoke();
             }
-        }
-
-
-        public void ResetAxeSpeed()
-        {
-            _speedMultiplier = 1f;
-            _flyDistanceMultiplier = 1f;
         }
         
         public void SetAxeSpeed(float newAxeFlySpeedMultuplier = 1f, float newAxeFlyDistanceMultiplier = 1f)
