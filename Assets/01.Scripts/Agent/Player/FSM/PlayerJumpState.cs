@@ -19,7 +19,6 @@ namespace Agents.Players.FSM
             base.Enter();
             if (_mover.jumpCount == 1)
             {
-                Debug.Log("두번째 쩜프");
                 _renderer.SetParam(_stateAnimParam, false);
                 _renderer.SetParam(_renderer.SwingParam, true);
 
