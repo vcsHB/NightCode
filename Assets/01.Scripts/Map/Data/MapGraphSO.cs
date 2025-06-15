@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 using Random = UnityEngine.Random;
@@ -79,14 +80,16 @@ namespace Map
             return GetRandomNode(randomNode, difficultyRange);
         }
 
-        public List<MapNodeSO>[] GenerateMap()
+        public MapInfo GenerateMap()
         {
             MapSO selectedMap = maps[Random.Range(0, maps.Count)];
+            MapInfo mapInfo = new MapInfo();
 
             List<int>[] linkedMap = GenerateNode(selectedMap);
-            ConnectNode(linkedMap);
+            mapInfo.map = _nodeMap;
+            mapInfo.connections = ConnectNode(linkedMap);
 
-            return _nodeMap;
+            return mapInfo;
         }
 
         private List<int>[] GenerateNode(MapSO selectedMap)
@@ -158,39 +161,47 @@ namespace Map
             return branchMap;
         }
 
-        private void ConnectNode(List<int>[] linkMap)
+        private List<List<Vector2Int>>[] ConnectNode(List<int>[] linkMap)
         {
+            List<List<Vector2Int>>[] connections = new List<List<Vector2Int>>[linkMap.Length];
+
             for (int i = 1; i < _nodeMap.Length; i++)
             {
                 int process = 0;
+                List<List<Vector2Int>> levelConnection = new List<List<Vector2Int>>();
                 for (int j = 0; j < _nodeMap[i - 1].Count; j++)
                 {
                     int linkedCount = linkMap[i - 1][j];
-
                     if (linkedCount == 1) // Keep
                     {
+                        levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process) });
                         _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
                         _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process++]);
                         process = Mathf.Clamp(process, 0, _nodeMap[i].Count - 1);
                     }
                     else if (linkedCount > 1) // Divide
                     {
+                        List<Vector2Int> connection = new List<Vector2Int>();
                         for (int k = 0; k < linkedCount; k++)
                         {
+                            connection.Add(new Vector2Int(i, process));
                             _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process++]);
                             process = Mathf.Clamp(process, 0, _nodeMap[i].Count - 1);
                         }
+                        levelConnection.Add(connection);
                     }
                     else if (linkedCount < 0) // Merge
                     {
                         if (process == 0)
                         {
+                            levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process) });
                             _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process]);
                         }
                         else if (process >= _nodeMap[i].Count)
                         {
+                            levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process - 1) });
                             _nodeMap[i][process - 1].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process - 1]);
                         }
@@ -199,12 +210,17 @@ namespace Map
                             int isLinkedUp = Random.Range(0, 2);
                             int idx = isLinkedUp == 0 ? process : process - 1;
                             idx = Mathf.Clamp(idx, 0, _nodeMap[i - 1].Count);
+                            levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, idx) });
                             _nodeMap[i][idx].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][idx]);
                         }
                     }
+
+                    connections[i - 1] = levelConnection;
                 }
             }
+
+            return connections;
         }
     }
 }

@@ -1,36 +1,50 @@
-using System;
+using Core;
 using DG.Tweening;
 using Map;
+using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace UI.NodeViewScene.StageSelectionUIs
 {
     public class StageSelectionPanel : MonoBehaviour, IWindowPanel
     {
+        public event Action OnSelectMap;
+
         [Header("UI Setting")]
         [SerializeField] private float _enablePosition = -10f;
         [SerializeField] private float _disablePosition = 500f;
         [SerializeField] private float _tweenDuration = 0.4f;
 
         [Header("Info View Setting")]
-        [SerializeField] private MapGraph _mapGraph;
+        [SerializeField] private MapController _mapController;
+        [SerializeField] private SelectButton _selectButton;
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private DifficultyDisplayer _difficultyDisplayer;
         [SerializeField] private ColoringImage[] _colorImages;
 
+        private MapNode _selectedNode;
         private RectTransform _rectTrm;
         private Tween _currentTween;
 
         private void Awake()
         {
             _rectTrm = GetComponent<RectTransform>();
-            if (_mapGraph != null)
+            if (_mapController != null)
             {
-                _mapGraph.OnClickNodeEvent += HandleSelectMapNode;
+                _mapController.OnClickNodeEvent += HandleSelectMapNode;
             }
+            _selectButton.OnClickEvent += SelectMap;
+        }
+
+        private void SelectMap()
+        {
+            //_mapController.SetCompleteNode(_selectedNode.Position);  //이건 나중에 씬 로딩할 때 받아서 해야함
+            _mapController.SaveEnterStage(_selectedNode);
+            SceneManager.LoadScene(SceneName.InGameScene);
+            //씬 로딩
         }
 
         public void Open()
@@ -45,13 +59,17 @@ namespace UI.NodeViewScene.StageSelectionUIs
             _currentTween = _rectTrm.DOAnchorPosX(_disablePosition, _tweenDuration);
         }
 
-        private void HandleSelectMapNode(MapNodeSO data)
+        private void HandleSelectMapNode(MapNode data)
         {
+            if (data.characterIcons.Count == 0 || data.IsComplete || data.characterIcons[0].IsMoved == false) return;
+
+            //if(data.)
+            _selectedNode = data;
             _currentTween?.Kill();
 
             _currentTween = DOTween.Sequence()
                 .Append(_rectTrm.DOAnchorPosX(_disablePosition, _tweenDuration))
-                .AppendCallback(() => SetDataView(data))
+                .AppendCallback(() => SetDataView(data.NodeInfo))
                 .Append(_rectTrm.DOAnchorPosX(_enablePosition, _tweenDuration));
         }
 

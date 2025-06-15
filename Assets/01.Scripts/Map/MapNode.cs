@@ -11,10 +11,10 @@ namespace Map
 {
     public class MapNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
-        public event Action<MapNodeSO> onSelectNode;
+        public event Action<MapNode> onSelectNode;
         public event Action<MapNode> onPointerEnter;
 
-        [SerializeField] private GameObject _completePanel;
+        [SerializeField] private CanvasGroup _completePanel;
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _nodeName;
         [SerializeField] private Transform _leftEdge, _rightEdge;
@@ -28,21 +28,27 @@ namespace Map
         [SerializeField] private UILineRenderer _edgePrefab;
 
         private Dictionary<MapNode, UILineRenderer> _connectionLines;
-        private bool _isComplete = false;
         private int _depth, _height;
         private MapNodeSO _nodeInfo;
         private Color _nodeColor;
-        
+
+        private bool _isComplete = false;
+        public List<Vector2Int> nextPositions;
+        [HideInInspector] public List<MapCharacterIcon> characterIcons;
+
+
+        #region PropertyRegion
+
         public int Height => _height;
         public int Depth => _depth;
         public Vector2Int Position => new Vector2Int(_depth, _height);
         public RectTransform CharacterIconParent => _characterIcon;
-
-        #region PropertyRegion
         public MapNodeSO NodeInfo => _nodeInfo;
         public RectTransform RectTrm => transform as RectTransform;
         public Transform LeftEdge => _leftEdge;
         public Color NodeColor => _nodeColor;
+        public bool IsComplete => _isComplete;
+
         #endregion
 
         public void Init(MapNodeSO nodeInfo, int depth, int height)
@@ -52,17 +58,17 @@ namespace Map
             _nodeName.SetText(nodeInfo.displayName);
             _coloredImages.ForEach(img => img.color = nodeInfo.color);
             _nodeColor = nodeInfo.color;
-            _completePanel.SetActive(false);
             _depth = depth;
             _height = height;
 
+            characterIcons = new List<MapCharacterIcon>();
             _leftEdge.gameObject.SetActive(nodeInfo.prevNodes.Count > 0);
             _rightEdge.gameObject.SetActive(nodeInfo.nextNodes.Count > 0);
         }
 
         public void ConnectEdge(MapNode target, Transform lineParent)
         {
-            if(_connectionLines == null) _connectionLines = new Dictionary<MapNode, UILineRenderer>();
+            if (_connectionLines == null) _connectionLines = new Dictionary<MapNode, UILineRenderer>();
             RectTransform to = _rightEdge as RectTransform;
             RectTransform from = target.LeftEdge as RectTransform;
 
@@ -90,7 +96,8 @@ namespace Map
         public void CompleteNode()
         {
             _isComplete = true;
-            _completePanel.SetActive(true);
+            _completePanel.alpha = 1f;
+            _completePanel.blocksRaycasts = true;
         }
 
         public void SetConnectionLine(MapNode to, bool isEnable)
@@ -103,11 +110,21 @@ namespace Map
             _connectionLines[to].SetConnectable(isEnable);
         }
 
+        public void AddIcon(MapCharacterIcon icon) => characterIcons.Add(icon);
+        public void RemoveIcon(MapCharacterIcon icon)
+        {
+            if (characterIcons.Contains(icon))
+            {
+                characterIcons.Remove(icon);
+            }
+        }
+
         #region EventRegion
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            onSelectNode?.Invoke(_nodeInfo);
+            if (_selectedObject.activeSelf == false) return;
+            onSelectNode?.Invoke(this);
         }
 
         public void OnPointerExit(PointerEventData eventData)

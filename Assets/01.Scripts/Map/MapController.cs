@@ -7,57 +7,126 @@ namespace Map
 {
     public class MapController : MonoBehaviour
     {
-        public Dictionary<CharacterEnum, Vector2Int> characterOriginPosition;
-        public Dictionary<CharacterEnum, Vector2Int> characterCurrentPosition;
+        public event Action<MapNode> OnClickNodeEvent;
+        public MapGraphSO mapGraphSO;
+        public MapNode nodePrefab;
+
+        [SerializeField] private List<HeightInfo> _heights;
+        [SerializeField] private float _xOffset;
+        [SerializeField] private Transform _nodeParent;
+        [SerializeField] private Transform _lineParent;
+
         private string _path = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private MapSave _save;
+
+        private MapGraph _mapGraph;
+        private MapCharacterController _characterController;
+
+        #region Property
 
         public int CurrentChapter { get; private set; }
         public int CurrentDepth { get; private set; }
 
-        public Vector2Int GetCharacterOriginPosition(CharacterEnum character)
-            => characterOriginPosition[character];
+        #endregion
 
-        public Vector2Int GetCharcterCurrentPosition(CharacterEnum character)
-            => characterCurrentPosition[character];
 
-        public bool IsCharacterMoved(CharacterEnum character)
-            => characterOriginPosition[character] != characterCurrentPosition[character];
-
-        public bool IsCurrentPositionExsist(Vector2Int position) 
-            => characterCurrentPosition.ContainsValue(position);
-
-        public bool CheckConnectionExsist(Vector2Int from, Vector2Int to)
+        private void Awake()
         {
-            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
-            {
-                if (characterOriginPosition[character] == from && 
-                    characterCurrentPosition[character] == to)
-                {
-                    return true;
-                }
-            }
-            return false;
+            _mapGraph = new MapGraph();
+            _characterController = GetComponent<MapCharacterController>();
+
+            Load();
+            GenerateNode();
+            _characterController.Init(_mapGraph);
+            _save.completedNodes.ForEach(SetCompleteNode);
+            SetCompleteNode(Vector2Int.zero);
         }
 
         public void Init()
         {
             CurrentDepth = 0;
-            characterOriginPosition = new Dictionary<CharacterEnum, Vector2Int>();
-            characterCurrentPosition = new Dictionary<CharacterEnum, Vector2Int>();
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                characterOriginPosition.Add(character, Vector2Int.zero);
-                characterCurrentPosition.Add(character, Vector2Int.zero);
+                _mapGraph.characterOriginPosition.Add(character, Vector2Int.zero);
+                _mapGraph.characterCurrentPosition.Add(character, Vector2Int.zero);
             }
             SaveMapSeed(UnityEngine.Random.Range(0, 1000000));
         }
 
-        public void MoveCharacter(CharacterEnum character, Vector2Int position)
+        #region MapGenerate
+
+        private void GenerateNode()
         {
-            characterCurrentPosition[character] = position;
+            if (_save == null) Load();
+            UnityEngine.Random.InitState(_save.seed);
+
+            MapInfo mapInfo = mapGraphSO.GenerateMap();
+            int depth = mapInfo.map.Length;
+
+            List<MapNode>[] nodes = new List<MapNode>[depth];
+
+            for (int i = 0; i < depth; i++)
+            {
+                int height = mapInfo.map[i].Count;
+                List<MapNode> nodeList = new List<MapNode>();
+                for (int j = 0; j < height; j++)
+                {
+                    MapNode node = Instantiate(nodePrefab, _nodeParent);
+                    nodeList.Add(node);
+
+                    float x = i * _xOffset;
+                    float y = _heights[height - 1].positions[j];
+                    node.RectTrm.anchoredPosition = new Vector2(x, y);
+
+                    if (i < mapInfo.connections.Length) node.nextPositions = mapInfo.connections[i][j];
+                    node.onSelectNode += HandleSelectNode;
+                    node.onPointerEnter += HandleSelectCharacterIcon;
+                    node.Init(mapInfo.map[i][j], i, j);
+                }
+                nodes[i] = nodeList;
+            }
+
+            ConnectNode(nodes);
+            _mapGraph.Init(nodes);
         }
 
+        private void ConnectNode(List<MapNode>[] nodes)
+        {
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                for (int j = 0; j < nodes[i].Count; j++)
+                {
+                    nodes[i][j].nextPositions.ForEach(next =>
+                    {
+                        MapNode nextNode = nodes[next.x][next.y];
+                        nodes[i][j].ConnectEdge(nextNode, _lineParent);
+                    });
+                }
+            }
+        }
+
+        private void HandleSelectNode(MapNode data)
+        {
+            bool isCompleteMove = true;
+            foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                if (_characterController.GetIcon(character).IsMoved == false)
+                {
+                    isCompleteMove = false;
+                    break;
+                }
+            }
+            if (isCompleteMove == false) return;
+
+            OnClickNodeEvent?.Invoke(data);
+        }
+
+        private void HandleSelectCharacterIcon(MapNode node)
+        {
+            _characterController.HandleSelectCharacterIcon(node);
+        }
+
+        #endregion
 
         #region Save&Load
 
@@ -68,18 +137,19 @@ namespace Map
             Save();
         }
 
-        public void AddCompleteNode(Vector2Int nodePosition)
+        public void SetCompleteNode(Vector2Int nodePosition)
         {
-            if (_save == null) _save = new MapSave();
+            _mapGraph.GetNode(nodePosition).CompleteNode();
 
-            if (_save.completedNodes == null) _save.completedNodes = new List<Vector2Int>();
-            _save.completedNodes.Add(nodePosition);
-        }
+            bool isComplete = true;
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                Vector2Int position = _mapGraph.GetCharcterCurrentPosition(character);
+                if (_mapGraph.GetNode(position).IsComplete == false) isComplete = false;
+            }
 
-        public int GetSeed()
-        {
-            if (_save == null) Load();
-            return _save.seed;
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+                _characterController.GetIcon(character).SetCompleteCurrentLevel(isComplete);
         }
 
         public List<Vector2Int> GetCompleteNodes()
@@ -95,7 +165,7 @@ namespace Map
             _save.characterPositions = new List<Vector2Int>();
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                _save.characterPositions.Add(characterCurrentPosition[character]);
+                _save.characterPositions.Add(_mapGraph.GetCharcterCurrentPosition(character));
             }
 
             string json = JsonUtility.ToJson(_save, true);
@@ -108,26 +178,39 @@ namespace Map
             {
                 Init();
                 Save();
-                UnityEngine.Random.InitState(_save.seed);
                 return false;
             }
 
             string json = File.ReadAllText(_path);
             _save = JsonUtility.FromJson<MapSave>(json);
-            characterOriginPosition = new Dictionary<CharacterEnum, Vector2Int>();
-            characterCurrentPosition = new Dictionary<CharacterEnum, Vector2Int>();
 
             CurrentDepth = int.MaxValue;
             for (int i = 0; i < _save.characterPositions.Count; i++)
             {
-                characterOriginPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
-                characterCurrentPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
+                _mapGraph.characterOriginPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
+                _mapGraph.characterCurrentPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
                 CurrentDepth = _save.characterPositions[i].x;
             }
 
-            UnityEngine.Random.InitState(_save.seed);
+            if(_save.isEnteredStageClear)
+            {
+                _save.isEnteredStageClear = false;
+                _save.completedNodes.Add(_save.enterStagePosition);
+            }
+
             return true;
         }
+
+        public void SaveEnterStage(MapNode node)
+        {
+            if (_save == null) _save = new MapSave();
+            _save.enterStageId = node.NodeInfo.nodeId;      // 인게임에서 맵 불러오기 위한
+            _save.enterStagePosition = node.Position;       // 맵 선택 씬에서 진행중인 씬 확을 위한
+            _save.completedNodes.Add(node.Position);        // 이건 임시인 나중에 인게임에서 넘어올때 isEnterStageClear true로 해주고 넘기면 클리어된걸로 판정함
+            Save();
+        }
+
+
 
         #endregion
     }
@@ -136,30 +219,24 @@ namespace Map
     public class MapSave
     {
         public int seed;
-        public int _currentChapter;
+
+        public int currentChapter;
+        public int enterStageId;
+        public Vector2Int enterStagePosition;
+        public bool isEnteredStageClear = false;
+
         public List<Vector2Int> characterPositions;
         public List<Vector2Int> completedNodes;
+
 
         public MapSave()
         {
             seed = 0;
-            _currentChapter = 0;
+            currentChapter = 0;
+            enterStageId = 0;
             characterPositions = new List<Vector2Int>();
             completedNodes = new List<Vector2Int>();
         }
-    }
-
-    [Serializable]
-    public class LevelSave
-    {
-        public List<NodeSave> nodeSave;
-    }
-
-    [Serializable]
-    public class NodeSave
-    {
-        public int nodeId;
-        public List<Vector2Int> connections;
     }
 }
 
