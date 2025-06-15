@@ -46,9 +46,9 @@ namespace Agents.Players
                 else if (Mathf.Abs(_movementX) > 0f)
                     _rigidCompo.linearVelocity = new Vector2(xVelocity, _rigidCompo.linearVelocity.y);
             }
-            OnMovement?.Invoke(new Vector2(xVelocity, 0));
             ClampVelocity();
             Velocity = _rigidCompo.linearVelocity;
+            OnMovement?.Invoke(Velocity);
         }
 
         public void ClampVelocity()
