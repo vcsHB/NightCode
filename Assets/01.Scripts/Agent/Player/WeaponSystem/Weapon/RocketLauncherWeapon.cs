@@ -15,9 +15,9 @@ namespace Agents.Players.WeaponSystem.Weapon
         [SerializeField] private Transform _aimDirectionMarkerTrm;
 
 
-        public override void Initialize(Player player)
+        public override void Initialize(Player player, int cost)
         {
-            base.Initialize(player);
+            base.Initialize(player, cost);
             _animationTrigger.OnRopeTurboEvent.AddListener(HandleAttack);
             _animationTrigger.OnRopeShootEvent.AddListener(HandleRopeShoot);
             _animationTrigger.OnRopeRemoveEvent.AddListener(HandleRopeRemove);
@@ -55,7 +55,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             }
         }
 
-        public override void HandleAttack()
+        protected override void Attack()
         {
 
             if (!_isAiming || _targetTrm == null)

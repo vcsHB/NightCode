@@ -16,6 +16,12 @@ namespace StatSystem
         {
             _owner = agent;
             InitializeStatDictionary();
+            IStatUsable[] statUsables = _owner.transform.GetComponentsInChildren<IStatUsable>();
+
+            for (int i = 0; i < statUsables.Length; i++)
+            {
+                statUsables[i].Initialize(this);
+            }
 
         }
         public void AfterInit() { }

@@ -1,14 +1,27 @@
 using System;
-using ObjectManage.Obstacles;
 using UnityEngine;
 namespace Agents.Players
 {
 
-    public class PlayerCombatEnergyController : MonoBehaviour
+    public class PlayerCombatEnergyController : MonoBehaviour, IAgentComponent
     {
         public event Action<int, int> OnEnergyChangedEvent;
         [SerializeField] private int _currentEnergy;
         [SerializeField] private int _maxEnergy;
+        public int CurrentEnergy =>_currentEnergy;
+        public int MaxEnergy => _maxEnergy;
+
+        public void Initialize(Agent agent)
+        {
+        }
+
+        public void AfterInit()
+        {
+        }
+
+        public void Dispose()
+        {
+        }
 
         public void SetEnergyData(int current, int max)
         {
@@ -40,5 +53,7 @@ namespace Agents.Players
             _currentEnergy = Mathf.Clamp(_currentEnergy, 0, _maxEnergy);
             OnEnergyChangedEvent?.Invoke(_currentEnergy, _maxEnergy);
         }
+
+
     }
 }

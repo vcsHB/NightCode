@@ -15,20 +15,31 @@ namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
         [SerializeField] private float _flySpeed = 10f;
         [SerializeField] private float _rotationSpeed = 360f; // degrees per second
         [SerializeField] private float _returnThreshold = 0.3f;
+        [Header("Skill Option Settings")]
+        [SerializeField] private float _speedMultiplier = 1f;
+        [SerializeField] private float _flyDistanceMultiplier = 1f;
+
         public bool IsAxeActive { get; private set; }
         private Caster _caster;
+
         private Transform _originOwnerTrm;
         private Transform _visualTrm;
-
+        private SpriteRenderer _visualRenderer;
+        private readonly Color _defaultColor = Color.white;
+        private readonly Color _overheatColor = Color.red;
         private Vector2 _startPosition;
         private Vector2 _direction;
         private bool _isReturning = false;
         private bool _isFlying = false;
 
+
+
         private void Awake()
         {
             _caster = GetComponentInChildren<Caster>();
+            //_damageCaster = _caster.transform.GetComponent<DamageCaster>();
             _visualTrm = transform.Find("Visual");
+            _visualRenderer = _visualTrm.GetComponent<SpriteRenderer>();
         }
 
         public void Initialize(Transform owner)
@@ -60,10 +71,10 @@ namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
             CastAxe();
             if (!_isReturning)
             {
-                transform.position += (Vector3)(_direction * _flySpeed * Time.deltaTime);
+                transform.position += (Vector3)(_direction * _flySpeed * Time.deltaTime * _speedMultiplier);
 
                 float distance = Vector2.Distance(_startPosition, transform.position);
-                if (distance >= _flyDistance)
+                if (distance >= _flyDistance * _flyDistanceMultiplier)
                 {
                     _isReturning = true;
                     OnTargetArriveEvent?.Invoke();
@@ -73,7 +84,7 @@ namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
             else
             {
                 Vector2 returnDir = (Vector2)_originOwnerTrm.position - (Vector2)transform.position;
-                transform.position += (Vector3)(returnDir.normalized * _flySpeed * Time.deltaTime);
+                transform.position += (Vector3)(returnDir.normalized * _flySpeed * Time.deltaTime * _speedMultiplier);
 
                 if (returnDir.magnitude < _returnThreshold)
                 {
@@ -87,6 +98,13 @@ namespace Agents.Players.WeaponSystem.Weapon.WeaponObjects
             }
         }
 
+
+        public void SetAxeSpeed(float newAxeFlySpeedMultuplier = 1f, float newAxeFlyDistanceMultiplier = 1f)
+        {
+            _speedMultiplier = newAxeFlySpeedMultuplier;
+            _flyDistanceMultiplier = newAxeFlyDistanceMultiplier;
+            _visualRenderer.color = newAxeFlyDistanceMultiplier > 1f ? _overheatColor : _defaultColor;
+        }
         private void CastAxe()
         {
             _caster.Cast();

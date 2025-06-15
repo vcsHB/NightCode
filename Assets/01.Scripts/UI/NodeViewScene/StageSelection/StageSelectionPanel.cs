@@ -29,7 +29,7 @@ namespace UI.NodeViewScene.StageSelectionUIs
             _rectTrm = GetComponent<RectTransform>();
             if (_mapGraph != null)
             {
-                _mapGraph.OnSelectNodeEvent += HandleSelectMapNode;
+                _mapGraph.OnClickNodeEvent += HandleSelectMapNode;
             }
         }
 

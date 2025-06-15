@@ -17,6 +17,7 @@ namespace Map
         [Space]
         public StageDifficultySO difficulty;
 
+        [HideInInspector] public List<MapNodeSO> prevNodes = new List<MapNodeSO>();
         [HideInInspector] public List<MapNodeSO> nextNodes = new List<MapNodeSO>();
         //MAP
 

@@ -13,40 +13,39 @@ namespace EffectSystem
         protected Agent _owner;
         protected float _currentTime = 0f;
 
-
-
         public virtual void Initialize(Agent agent)
         {
             _owner = agent;
-            Initialize();
+            
         }
 
         public void AfterInit() { }
 
         public void Dispose() { }
 
-        private void Initialize()
+
+        private void Start()
         {
-            foreach (EffectStateTypeEnum effectEnum in Enum.GetValues(typeof(EffectStateTypeEnum)))
+            InitializeEffects();
+
+        }
+
+        private void InitializeEffects()
+        {
+            EffectState[] effects = GetComponentsInChildren<EffectState>();
+            foreach (EffectState effect in effects)
             {
-                if (effectEnum == 0) continue;
+                effect.SetEffectType();
+                if (effect.EffectType == EffectStateTypeEnum.None) return;
 
-                string typeName = effectEnum.ToString();
-                Type t = Type.GetType($"EffectSystem.Effect{typeName}");
-
-                try
+                if (effectDictionary.TryAdd(effect.EffectType, effect))
                 {
-                    EffectState effect = Activator.CreateInstance(t, _owner, false) as EffectState;
+                    effect.Initialize(_owner, false);
                     effect.OnEffectOverTypeEvent += HandleEffectOver;
-                    effectDictionary.Add(effectEnum, effect);
-                    effect.type = effectEnum;
 
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"Effect Controller : no Effect found [ {typeName} ] - {ex.Message}");
                 }
             }
+
         }
 
         private void HandleEffectOver(EffectStateTypeEnum type)
@@ -60,9 +59,8 @@ namespace EffectSystem
             bool isOneSecond = _currentTime > 1f;
             foreach (EffectState effect in effectDictionary.Values)
             {
-                if (effect.enabled)
+                if (effect.isEffectEnabled)
                 {
-                    effect.Update();
                     if (isOneSecond)
                         effect.UpdateBySecond();
                 }
@@ -86,16 +84,22 @@ namespace EffectSystem
          * 효과 부여 메서드
          * </summary>
          */
-        public virtual void ApplyEffect(EffectStateTypeEnum type, float duration, int level, float percent = 1f)
+        public virtual void ApplyEffect(EffectStateTypeEnum type, int level, int stack, float percent = 1f)
         {
-            effectDictionary[type].Start(level, duration, percent);
-            OnEffectStartEvent?.Invoke(type);
+            if (effectDictionary.TryGetValue(type, out EffectState effect))
+            {
+                effect.Apply(level, stack, percent);
+                OnEffectStartEvent?.Invoke(type);
+            }
         }
 
         public virtual void RemoveEffect(EffectStateTypeEnum type)
         {
-            effectDictionary[type].Over();
-            OnEffectOverEvent?.Invoke(type);
+            if (effectDictionary.TryGetValue(type, out EffectState effect))
+            {
+                effect.Over();
+                OnEffectOverEvent?.Invoke(type);
+            }
         }
 
         public EffectState GetEffectState(EffectStateTypeEnum type)

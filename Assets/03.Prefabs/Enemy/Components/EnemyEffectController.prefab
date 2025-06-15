@@ -1,5 +1,90 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4663853007975285682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 167471061348054360}
+  - component: {fileID: 815570881391944494}
+  - component: {fileID: 6310611629864222792}
+  - component: {fileID: 2394643179346551250}
+  m_Layer: 8
+  m_Name: Effects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &167471061348054360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4663853007975285682}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6376974132460869880}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &815570881391944494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4663853007975285682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d79b1cbdb66b4e0eb4b4719768f7c911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isResist: 0
+  isEffectEnabled: 0
+  level: 0
+  currentEffectStack: 0
+  stackBurstConditionLevel: 0
+--- !u!114 &6310611629864222792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4663853007975285682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dd088540de64c0da873ff4eda5aed18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isResist: 0
+  isEffectEnabled: 0
+  level: 0
+  currentEffectStack: 0
+  stackBurstConditionLevel: 0
+--- !u!114 &2394643179346551250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4663853007975285682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8cf2b3a0b3d45d1b5e4d3450049dbf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isResist: 0
+  isEffectEnabled: 0
+  level: 0
+  currentEffectStack: 0
+  stackBurstConditionLevel: 0
 --- !u!1 &8791045354700459097
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,6 +116,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4185402426947785901}
+  - {fileID: 167471061348054360}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &512827187824933834
@@ -59,11 +145,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6843383853887571180, guid: dc2c0a341802ecc4c8f20744bf9ee328, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.96
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6843383853887571180, guid: dc2c0a341802ecc4c8f20744bf9ee328, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6843383853887571180, guid: dc2c0a341802ecc4c8f20744bf9ee328, type: 3}
       propertyPath: m_LocalPosition.z

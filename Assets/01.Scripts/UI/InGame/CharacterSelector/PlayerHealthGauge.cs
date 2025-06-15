@@ -1,6 +1,4 @@
-using System;
 using Agents.Players;
-using UI.InGame.GameUI.CharacterSelector;
 using UnityEngine;
 using UnityEngine.UI;
 namespace UI.InGame.GameUI.CharacterSelector
@@ -10,7 +8,7 @@ namespace UI.InGame.GameUI.CharacterSelector
     {
         [SerializeField] private Slider _healthGaugeSlider;
         private CharacterSelectWindow _charatcerSelector;
-        private Player _previousPlayer;
+        private Player _currentPlayer;
 
         private void Start()
         {
@@ -20,11 +18,11 @@ namespace UI.InGame.GameUI.CharacterSelector
 
         private void HandleCharacterSelect(Player player)
         {
-            if (_previousPlayer != null)
+            if (_currentPlayer != null)
             {
-                _previousPlayer.HealthCompo.OnHealthChangedValueEvent -= HandleHealthChanged;
+                _currentPlayer.HealthCompo.OnHealthChangedValueEvent -= HandleHealthChanged;
             }
-
+            _currentPlayer = player;
             player.HealthCompo.OnHealthChangedValueEvent += HandleHealthChanged;
             HandleHealthChanged(player.HealthCompo.CurrentHealth, player.HealthCompo.MaxHealth);
         }

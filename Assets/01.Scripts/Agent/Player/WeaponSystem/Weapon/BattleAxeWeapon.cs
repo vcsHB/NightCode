@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Agents.Players.WeaponSystem.Weapon.WeaponObjects;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 namespace Agents.Players.WeaponSystem.Weapon
 {
@@ -14,12 +12,16 @@ namespace Agents.Players.WeaponSystem.Weapon
         [SerializeField] private TargetDetector _targetDetector;
         [SerializeField] private BattleAxe _battleAxePrefab;
         [SerializeField] private int _throwAmount = 1;
+        [Header("Skill Option Settings")]
+        [SerializeField] private float _speedMultiplier = 1f;
+        [SerializeField] private float _flyDistanceMultiplier = 1f;
+
         private Queue<BattleAxe> _axePool = new();
         private int _currentAxeAmount;
 
-        public override void Initialize(Player player)
+        public override void Initialize(Player player, int cost)
         {
-            base.Initialize(player);
+            base.Initialize(player, cost);
             _animationTrigger.OnRopeTurboEvent.AddListener(HandleAttack);
             _currentAxeAmount = _throwAmount;
 
@@ -50,7 +52,7 @@ namespace Agents.Players.WeaponSystem.Weapon
             _axePool.Enqueue(axe);
         }
 
-        public override void HandleAttack()
+        protected override void Attack()
         {
             if (_currentAxeAmount <= 0) return;
             Collider2D[] targets = _targetDetector.DetectTargetsSorted();
@@ -59,12 +61,19 @@ namespace Agents.Players.WeaponSystem.Weapon
                 if (i > _throwAmount) break;
                 BattleAxe axe = GetAxe();
                 if (axe == null) return;
-                
+
                 axe.transform.position = transform.position;
                 Vector2 direction = targets[i].transform.position - transform.position;
                 axe.Throw(direction.normalized);
+                axe.SetAxeSpeed(_speedMultiplier, _flyDistanceMultiplier);
                 OnAxeThrowEvent?.Invoke();
             }
+        }
+        
+        public void SetAxeSpeed(float newAxeFlySpeedMultuplier = 1f, float newAxeFlyDistanceMultiplier = 1f)
+        {
+            _speedMultiplier = newAxeFlySpeedMultuplier;
+            _flyDistanceMultiplier = newAxeFlyDistanceMultiplier;
         }
     }
 }

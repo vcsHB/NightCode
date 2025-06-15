@@ -15,7 +15,7 @@ namespace Combat.Casters
         public event Action<CombatData> OnCastCombatDataEvent;
         [SerializeField] protected float _damage;
         [SerializeField] protected AttackType _attackType;
-        [SerializeField] private bool _invalidityResistance;
+        [SerializeField] protected bool _invalidityResistance;
 
         public virtual void Cast(Collider2D target)
         {
@@ -32,10 +32,15 @@ namespace Combat.Casters
                 };
                 if (hit.ApplyDamage(data))
                 {
-                    OnCastCombatDataEvent?.Invoke(data);
-                    OnCastSuccessEvent?.Invoke();
+                    InvokeCastEvent(ref data);
                 }
             }
+        }
+
+        protected void InvokeCastEvent(ref CombatData data)
+        {
+            OnCastCombatDataEvent?.Invoke(data);
+            OnCastSuccessEvent?.Invoke();
         }
 
         public void HandleSetData(CasterData data)

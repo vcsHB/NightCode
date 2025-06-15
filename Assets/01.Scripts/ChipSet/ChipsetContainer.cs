@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,19 +10,25 @@ namespace Chipset
 {
     public class ChipsetContainer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public List<ChipsetSO> containChipset;      //코드상에서 제어할 수 있도록 변경해야함
-        public ChipsetInventory inventory;          //나중에 3개로 늘려서 전환하는 방식으로 바꿔야함
+        public List<ChipsetSO> containChipset;
+        public ChipsetInventory inventory;
+
         [SerializeField] private ChipsetInfo _chipsetInfoPrefab;
         [Space]
         [SerializeField] private RectTransform _chipsetParent;
         [SerializeField] private RectTransform _chipsetInfoParent;
-        private Dictionary<Chipset, ChipsetInfo> _chipsetInfos;
-        private Chipset _chipsetTemp;
 
-        public void Init()
+        private Dictionary<Chipset, ChipsetInfo> _chipsetInfos;
+
+        public void Init(List<ChipsetSO> initializeChipset)
         {
             _chipsetInfos = new Dictionary<Chipset, ChipsetInfo>();
-            containChipset.ForEach(AddChipset);
+            containChipset = new List<ChipsetSO>();
+
+            foreach(ChipsetSO chipsetSO in initializeChipset)
+            {
+                AddChipset(chipsetSO);
+            }
         }
 
         public void SetInventory(ChipsetInventory inventory)
@@ -29,15 +36,16 @@ namespace Chipset
             this.inventory = inventory;
             _chipsetInfos.Keys.ToList().ForEach(chipset =>
             {
-                inventory.AddAssignedChipset(chipset);
+                inventory.AssignChipsetToInventory(chipset);
                 _chipsetInfos[chipset].Init(inventory, chipset);
             });
         }
 
         public void AddChipset(ChipsetSO chipsetSO)
         {
+            containChipset.Add(chipsetSO);
             Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
-            if (inventory != null) inventory.AddAssignedChipset(chipset);
+            if (inventory != null) inventory.AssignChipsetToInventory(chipset);
 
             ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
             chipsetInfo.Init(inventory, chipset);
@@ -64,7 +72,7 @@ namespace Chipset
         private void SetAssignChipset()
         {
             if (inventory.SelectedChipset == null || inventory.SelectedChipset.IsForcePointerDown) return;
-            
+
             AddChipset(inventory.SelectedChipset.info);
             inventory.RemoveChipset(inventory.SelectedChipset, true);
             inventory.OnPointerDownChipset(null);

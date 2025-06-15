@@ -9,134 +9,54 @@ namespace Chipset
 {
     public class ChipsetTable : MonoBehaviour
     {
-        private ChipsetInventory _selectedInventory;
-        public ChipsetContainer _container;
-        public Dictionary<CharacterEnum, ChipsetInventory> _inventory;
-        public List<Vector2Int> openInventory;
+        public event Action<CharacterEnum> onSelectInventory;
 
-        private string _path = Path.Combine(Application.dataPath, "Save/Chipset.json");
-        private ChipsetInventorySave inventorySave;
+        public ChipsetGruopSO chipsetGruopSO;
+        private Dictionary<CharacterEnum, ChipsetInventory> _inventory;
+        private CharacterEnum _selectedCharacter;
 
-        private void Awake()
+        private List<Vector2Int> _openInventory;
+
+        public CharacterEnum SelectedCharacter => _selectedCharacter;
+
+        public void Init(ChipsetInventorySave inventoryDatas)
         {
-            Init();
-        }
-
-        private void Update()
-        {
-            //For Debuging
-            if (Keyboard.current.lKey.wasPressedThisFrame)
-                Save();
-        }
-
-        public void Init()
-        {
+            _openInventory = inventoryDatas.openInventory;
             _inventory = new Dictionary<CharacterEnum, ChipsetInventory>();
             var inventoryList = GetComponentsInChildren<ChipsetInventory>();
 
             for (int i = 0; i < inventoryList.Length; i++)
             {
                 _inventory.Add((CharacterEnum)i, inventoryList[i]);
-                inventoryList[i].Init();
+                inventoryList[i].Init(_openInventory);
+                inventoryList[i].SetInventoryData(inventoryDatas.GetChipsets((CharacterEnum)i), _openInventory);
+                inventoryList[i].DisableInventory();
             }
-            Load();
-            for (int i = 0; i < inventoryList.Length; i++)
-            {
-                inventoryList[i].Dispose();
-            }
+            StartCoroutine(DelayInitializeInventory());
+        }
 
-            _container.Init();
+        private IEnumerator DelayInitializeInventory()
+        {
+            yield return null;
+            yield return null;
             SelectInventory(CharacterEnum.An);
         }
 
         public void SelectInventory(CharacterEnum character)
         {
-            if (_selectedInventory != null) _selectedInventory.Dispose();
-            _inventory[character].gameObject.SetActive(true);
-            _selectedInventory = _inventory[character];
-            _selectedInventory.InitChipset();
+            onSelectInventory?.Invoke(character);
 
-            _container.SetInventory(_selectedInventory);
+            ChipsetInventory prevInventory = GetInventory(_selectedCharacter);
+
+            if (prevInventory != null && _selectedCharacter != character)
+                prevInventory.DisableInventory();
+
+            _selectedCharacter = character;
         }
 
-        public void Save()
-        {
-            inventorySave = new ChipsetInventorySave();
-            inventorySave.openInventory = openInventory;
+        public List<Vector2Int> GetOpenedInventorySlots() => _openInventory;
 
-            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
-            {
-                ChipsetInventory inventory = _inventory[character];
-                inventorySave.SetChipsets(character, inventory.GetInventoryData());
-            }
-
-            string json = JsonUtility.ToJson(inventorySave);
-            File.WriteAllText(_path, json);
-        }
-
-        public void Load()
-        {
-            if (File.Exists(_path) == false)
-            {
-                Save();
-                return;
-            }
-
-            string json = File.ReadAllText(_path);
-            inventorySave = JsonUtility.FromJson<ChipsetInventorySave>(json);
-
-            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
-            {
-                ChipsetInventory inventory = _inventory[character];
-                inventory.SetInventoryData(inventorySave.GetChipsets(character), inventorySave.openInventory);
-            }
-        }
-    }
-
-    [Serializable]
-    public struct ChipsetInventorySave
-    {
-        public List<Vector2Int> openInventory;
-
-        public List<ChipsetSave> anChipset;
-        public List<ChipsetSave> jinLayChipset;
-        public List<ChipsetSave> binaChipset;
-
-        public List<ChipsetSave> GetChipsets(CharacterEnum character)
-        {
-            switch (character)
-            {
-                case CharacterEnum.An:
-                    return anChipset;
-                case CharacterEnum.JinLay:
-                    return jinLayChipset;
-                case CharacterEnum.Bina:
-                    return binaChipset;
-            }
-            return null;
-        }
-        public void SetChipsets(CharacterEnum character, List<ChipsetSave> inventoryData)
-        {
-            switch (character)
-            {
-                case CharacterEnum.An:
-                    anChipset = inventoryData;
-                    break;
-                case CharacterEnum.JinLay:
-                    jinLayChipset = inventoryData;
-                    break;
-                case CharacterEnum.Bina:
-                    binaChipset = inventoryData;
-                    break;
-            }
-        }
-    }
-
-    [Serializable]
-    public struct ChipsetSave
-    {
-        public ushort chipsetId;
-        public Vector2Int center;
-        public int rotate;
+        public ChipsetInventory GetInventory(CharacterEnum character)
+            => _inventory[character];
     }
 }

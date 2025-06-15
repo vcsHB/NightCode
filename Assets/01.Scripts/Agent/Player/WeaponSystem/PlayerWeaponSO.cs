@@ -12,6 +12,7 @@ namespace Agents.Players.WeaponSystem
         [TextArea]
         public string weaponDescription;
         public Sprite weaponIcon;
+        public Color weaponColor;
         [Header("Normal Skill")]
         public int normalSkillCostEnergy;
         public string normalSkillName;
