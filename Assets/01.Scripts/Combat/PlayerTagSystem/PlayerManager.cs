@@ -30,6 +30,7 @@ namespace Combat.PlayerTagSystem
         [SerializeField] private PlayerInput _playerInput;
         [SerializeField] private PlayerGroupDataSO _playerGroupData;
         [SerializeField] private List<PlayerSO> _playerDatas;
+        public List<PlayerSO> PlayerDatas => _playerDatas;
         [SerializeField] internal List<Player> playerList;
         [SerializeField] private AimGroupController _aimGroup;
         [SerializeField] private AlertGroup _alertGroup;
@@ -83,7 +84,6 @@ namespace Combat.PlayerTagSystem
         {
             Initialize();
             _playerInput.OnCharacterChangeEvent += Change;
-            _playerSubWeaponManager.SetSubWeapon(null, CurrentPlayer);
             //OnAllPlayerDieEvent.AddListener(StageManager.Instance.LoadCurrentScene);
             //OnAllPlayerDieEvent.AddListener(StageManager.Instance.ReloadCurrentScene);
         }

@@ -6,24 +6,20 @@ namespace Agents.Players.ChipsetSystem
 
     public class PlayerChipsetController : MonoBehaviour, IAgentComponent
     {
-        [SerializeField] private ChipsetGruopSO _chipsetGroupData;
-        private Dictionary<ushort, ChipsetFunction> _chipsetFunctions = new();
+        private List<ChipsetFunction> _chipsets;
 
-
-        public void SetChipsetData(ushort[] chipsetId)
+        private Player _owner;
+        public void AddChipsetFunction(ChipsetSO data)
         {
-            for (int i = 0; i < chipsetId.Length; i++)
-            {
-                ChipsetSO data = _chipsetGroupData.GetChipset(chipsetId[i]);
-                ChipsetFunction function = Instantiate(data.chipsetFunctionPrefab, transform);
-                _chipsetFunctions.Add(chipsetId[i], function);
-
-            }
+            ChipsetFunction function = Instantiate(data.chipsetFunctionPrefab, transform);
+            function.Initialize(_owner);
+            _chipsets.Add(function);
+            
         }
 
         public void Initialize(Agent agent)
         {
-
+            _owner = agent as Player;
         }
         public void AfterInit()
         {
