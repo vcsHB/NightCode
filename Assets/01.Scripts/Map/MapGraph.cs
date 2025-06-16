@@ -1,78 +1,57 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Linq;
 
 namespace Map
 {
-    public class MapGraph : MonoBehaviour
+    public class MapGraph
     {
-        public event Action<MapNodeSO> OnClickNodeEvent;
-        public event Action<MapNode> OnPointerUpNodeEvent;
-        public MapGraphSO mapInfo;
-        public MapNode nodePrefab;
+        public Dictionary<CharacterEnum, Vector2Int> characterOriginPosition
+            = new Dictionary<CharacterEnum, Vector2Int>();
+        public Dictionary<CharacterEnum, Vector2Int> characterCurrentPosition
+            = new Dictionary<CharacterEnum, Vector2Int>();
+        private List<MapNode>[] _nodeMap;
 
-        [SerializeField] private List<HeightInfo> _heights;
-        [SerializeField] private float _xOffset;
-        [SerializeField] private Transform _nodeParent;
-        [SerializeField] private Transform _lineParent;
-
-        private List<MapNodeSO>[] map;
-        private Dictionary<MapNodeSO, MapNode> nodeDic;
-
-        public void Init()
+        public void Init(List<MapNode>[] nodes)
         {
-            nodeDic = new Dictionary<MapNodeSO, MapNode>();
-            map = mapInfo.GenerateMap();
+            _nodeMap = nodes;
+        }
 
-            for (int i = 0; i < map.Length; i++)
+        public void MoveCharacter(CharacterEnum character, Vector2Int position)
+        {
+            characterCurrentPosition[character] = position;
+        }
+
+        #region Getter
+
+        public Vector2Int GetCharacterOriginPosition(CharacterEnum character)
+            => characterOriginPosition[character];
+
+        public Vector2Int GetCharcterCurrentPosition(CharacterEnum character)
+            => characterCurrentPosition[character];
+
+        public bool IsCharacterMoved(CharacterEnum character)
+            => characterOriginPosition[character] != characterCurrentPosition[character];
+
+        public bool IsCurrentPositionExsist(Vector2Int position)
+            => characterCurrentPosition.ContainsValue(position);
+
+        public bool CheckConnectionExsist(Vector2Int from, Vector2Int to)
+        {
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                for (int j = 0; j < map[i].Count; j++)
+                if (characterOriginPosition[character] == from &&
+                    characterCurrentPosition[character] == to)
                 {
-                    MapNode node = Instantiate(nodePrefab, _nodeParent);
-                    node.RectTrm.anchoredPosition = new Vector2(i * _xOffset, _heights[map[i].Count - 1].positions[j]);
-                    node.onSelectNode += HandleSelectNode;
-                    node.onPointerEnter += HandleSelectCharacterIcon;
-                    node.Init(map[i][j], i, j);
-                    nodeDic.Add(map[i][j], node);
+                    return true;
                 }
             }
-
-            ConnectNode();
+            return false;
         }
+        public MapNode GetNode(Vector2Int position)
+            => _nodeMap[position.x][position.y];
 
-        private void HandleSelectNode(MapNodeSO data)
-        {
-            OnClickNodeEvent?.Invoke(data);
-        }
-
-        private void HandleSelectCharacterIcon(MapNode node)
-        {
-            OnPointerUpNodeEvent?.Invoke(node);
-        }
-
-        private void ConnectNode()
-        {
-            for (int i = 0; i < map.Length; i++)
-            {
-                for (int j = 0; j < map[i].Count; j++)
-                {
-                    map[i][j].nextNodes.ForEach(next =>
-                    {
-                        nodeDic[map[i][j]].ConnectEdge(nodeDic[next], _lineParent);
-                    });
-                }
-            }
-        }
-
-        public MapNode GetNode(Vector2Int position) => nodeDic[map[position.x][position.y]];
-
-        public MapNode GetNode(MapNodeSO nextNode)
-        {
-            if(nodeDic.TryGetValue(nextNode, out MapNode node)) return node;
-            return null;
-        }
+        #endregion
     }
 
     [Serializable]
