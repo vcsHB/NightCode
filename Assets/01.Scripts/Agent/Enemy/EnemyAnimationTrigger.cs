@@ -11,7 +11,8 @@ namespace Agents.Enemies
 
         public void Attack1()
         {
-            _attackController.Attack();
+            if (_attackController != null)
+                _attackController.Attack();
         }
 
         public void HandleDetectTarget()

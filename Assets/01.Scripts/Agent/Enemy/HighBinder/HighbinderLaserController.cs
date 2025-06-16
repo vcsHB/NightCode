@@ -17,7 +17,6 @@ namespace Agents.Enemies.Highbinders
             base.HandleDetectTarget();
             _isUpdateDirection = true;
             _aimLine.SetLineEnable(true);
-            Debug.Log("asdasd");
         }
         private void Update()
         {

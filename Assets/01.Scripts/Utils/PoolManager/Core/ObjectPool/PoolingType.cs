@@ -2,6 +2,6 @@ namespace ObjectPooling
 {
     public enum PoolingType
     {
-        AfterShadowEffect,BloodEffect,WallTurretProjectile,GunBullet,KatanaSlashVFX,PlayerBullet,BulletHitVFX,RopeAnchoredVFX,RobotDebrisVFX,DashVFX,ExplosionVFX,ElectricVFX,GroundSlideVFX,GroundShootVFX,
+        AfterShadowEffect,BloodEffect,EnemyLaserProjectile,GunBullet,KatanaSlashVFX,PlayerBullet,BulletHitVFX,RopeAnchoredVFX,RobotDebrisVFX,DashVFX,ExplosionVFX,ElectricVFX,GroundSlideVFX,GroundShootVFX,
     }
 }
