@@ -92,7 +92,7 @@ namespace Combat.PlayerTagSystem
         private void OnDestroy()
         {
             _playerInput.OnCharacterChangeEvent -= Change;
-
+            _playerInput.ResetAllSubscription();
         }
 
         private void Initialize()
