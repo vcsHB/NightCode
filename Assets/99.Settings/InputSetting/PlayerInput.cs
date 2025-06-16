@@ -64,6 +64,21 @@ namespace InputManage
 
         #endregion
 
+        public void ResetAllSubscription()
+        {
+            OnAttackEvent = null;
+            OnShootEvent = null;
+            OnShootRopeEvent = null;
+            OnUseEvent = null;
+            OnUseCancelEvent = null;
+            OnRemoveRopeEvent = null;
+            JumpEvent = null;
+            PullEvent = null;
+            TurboEvent = null; 
+            OnCharacterChangeEvent = null;
+            OnInteractEvent = null;
+        }
+
         private void OnEnable()
         {
             if (_controls == null)
