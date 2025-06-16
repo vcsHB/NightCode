@@ -19,10 +19,8 @@ namespace Core.DataControl
 
         protected override void Awake()
         {
-             base.Awake();
+            base.Awake();
             Load();
-
-            GetCharacters().ForEach(character => Debug.Log(character));
         }
 
         public MapNodeSO GetCurrentMap()
@@ -35,9 +33,9 @@ namespace Core.DataControl
         {
             List<CharacterEnum> characters = new List<CharacterEnum>();
 
-            foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                if(_mapSave.characterPositions[(int)character] == _mapSave.enterStagePosition)
+                if (_mapSave.characterPositions[(int)character] == _mapSave.enterStagePosition)
                 {
                     characters.Add(character);
                 }
@@ -45,11 +43,11 @@ namespace Core.DataControl
             return characters;
         }
 
-        public List<ChipsetSO> GetChipset(CharacterEnum character)
+        public ChipsetSO[] GetChipset(CharacterEnum character)
         {
-            if(_chipsetSave == null) Load();
+            if (_chipsetSave == null) Load();
             return _chipsetSave.GetChipsets(character).
-                ConvertAll(save => chipsetGroup.GetChipset(save.chipsetId));
+                ConvertAll(save => chipsetGroup.GetChipset(save.chipsetId)).ToArray();
         }
 
         public void CompleteMap()
