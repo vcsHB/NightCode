@@ -16,7 +16,16 @@ namespace EffectSystem
         public virtual void Initialize(Agent agent)
         {
             _owner = agent;
-            
+            _owner.OnDieEvent += HandleOwnerDie;
+        }
+
+        private void HandleOwnerDie()
+        {
+            foreach (var effect in effectDictionary)
+            {
+                effect.Value.ResetEffectStack();
+                OnEffectOverEvent?.Invoke(effect.Value.EffectType);
+            }
         }
 
         public void AfterInit() { }

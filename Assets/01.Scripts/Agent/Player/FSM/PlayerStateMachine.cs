@@ -26,6 +26,11 @@ namespace Agents.Players.FSM
             playerRenderer = _player.GetCompo<PlayerRenderer>();
         }
 
+        ~PlayerStateMachine()
+        {
+            CurrentState.Exit();
+        }
+
 
         public virtual void Initialize(string firstState)
         {
@@ -40,7 +45,7 @@ namespace Agents.Players.FSM
             AddState("SlideDown", "PlayerSlideDown", playerRenderer.SlideDownParam);
             AddState("HoldingWall", "PlayerHoldingWall", playerRenderer.HoldWallParam);
             AddState("Climb", "PlayerClimb", playerRenderer.ClimbParam);
-            
+
             AddState("Hang", "PlayerHang", playerRenderer.HangParam);
             AddState("Swing", "PlayerSwing", playerRenderer.SwingParam);
 

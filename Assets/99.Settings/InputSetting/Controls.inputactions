@@ -60,15 +60,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ChangeTag",
-                    "type": "Button",
-                    "id": "5a091f3c-eb85-48a8-a3ac-56a970e8ac59",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "7c7296a1-4089-4346-963a-323bd257e4bd",
@@ -76,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChcratcerChange",
+                    "type": "Button",
+                    "id": "485a79cf-2c49-458a-8843-fe965621f7e9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -180,17 +180,6 @@
                 },
                 {
                     "name": "",
-                    "id": "c729bac9-505b-4e17-89ff-0f555621af83",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ChangeTag",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f1b35ca1-a7d0-429f-84ff-eb34c52ec94f",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -208,6 +197,50 @@
                     "processors": "",
                     "groups": ";KeyMouse",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bfac3e54-d317-42a8-8050-def165badffc",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyMouse",
+                    "action": "ChcratcerChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "844bb0cc-ea1d-4c44-9eb6-4b224824707f",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChcratcerChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e5c6b6b-9625-4a01-b46a-869d72b16d0b",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChcratcerChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74323505-0b07-42a1-9f5f-5b5f20c536ba",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChcratcerChange",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
