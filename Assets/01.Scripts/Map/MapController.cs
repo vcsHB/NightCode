@@ -109,7 +109,7 @@ namespace Map
         {
             //움직이지 않은 캐릭터가 있는지 확인
             bool isCompleteMove = true;
-            foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
                 if (_characterController.GetIcon(character).IsCompleteCurerntLevel == false) break;
                 if (_characterController.GetIcon(character).IsMoved == false)
@@ -189,16 +189,20 @@ namespace Map
             CurrentDepth = int.MaxValue;
             for (int i = 0; i < _save.characterPositions.Count; i++)
             {
-                _mapGraph.characterOriginPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
-                _mapGraph.characterCurrentPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
+                if (_save.isFailStageClear == false)
+                {
+                    _mapGraph.characterOriginPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
+                    _mapGraph.characterCurrentPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
+                }
                 CurrentDepth = _save.characterPositions[i].x;
             }
 
-            if(_save.isEnteredStageClear)
+            if (_save.isEnteredStageClear)
             {
-                _save.isEnteredStageClear = false;
                 _save.completedNodes.Add(_save.enterStagePosition);
             }
+            _save.isEnteredStageClear = false;
+            _save.isFailStageClear = false;
 
             return true;
         }
@@ -225,6 +229,7 @@ namespace Map
         public int enterStageId;
         public Vector2Int enterStagePosition;
         public bool isEnteredStageClear = false;
+        public bool isFailStageClear = false;
 
         public List<Vector2Int> characterPositions;
         public List<Vector2Int> completedNodes;

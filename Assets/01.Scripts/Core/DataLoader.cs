@@ -21,8 +21,6 @@ namespace Core.DataControl
         {
              base.Awake();
             Load();
-
-            GetCharacters().ForEach(character => Debug.Log(character));
         }
 
         public MapNodeSO GetCurrentMap()
