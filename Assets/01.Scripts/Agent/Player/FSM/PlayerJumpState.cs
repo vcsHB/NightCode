@@ -17,7 +17,13 @@ namespace Agents.Players.FSM
         public override void Enter()
         {
             base.Enter();
-            _mover.jumpCount --;
+            if (_mover.jumpCount == 1)
+            {
+                _renderer.SetParam(_stateAnimParam, false);
+                _renderer.SetParam(_renderer.SwingParam, true);
+
+            }
+            _mover.jumpCount--;
             Vector2 jumpPower = new Vector2(0, _jumpPower.Value);
             _mover.StopYVelocity();
             _player.EventChannel.RaiseEvent(new FeedbackCreateEventData("Jump"));
@@ -29,12 +35,17 @@ namespace Agents.Players.FSM
         public override void Exit()
         {
             _mover.OnMovement -= HandleVelocityChnage;
+            _renderer.SetParam(_renderer.SwingParam, false);
             base.Exit();
+        }
+        public override void UpdateState()
+        {
+            CheckWallAndHold();
         }
 
         private void HandleVelocityChnage(Vector2 velocity)
         {
-            if (velocity.y < 0)
+            if (velocity.y < -1f)
             {
                 _stateMachine.ChangeState("Fall");
             }

@@ -130,7 +130,6 @@ namespace Chipset
             {
                 chipset.info.chipsetSize.ForEach(offset =>
                 {
-                    Debug.Log(_assignedChipsets[chipset].center);
                     Vector2Int position = offset + _assignedChipsets[chipset].center;
                     _chipsets[position.x, position.y] = null;
                 });

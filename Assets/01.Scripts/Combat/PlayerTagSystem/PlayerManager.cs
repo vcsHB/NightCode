@@ -92,7 +92,7 @@ namespace Combat.PlayerTagSystem
         private void OnDestroy()
         {
             _playerInput.OnCharacterChangeEvent -= Change;
-
+            _playerInput.ResetAllSubscription();
         }
 
         private void Initialize()
@@ -117,72 +117,87 @@ namespace Combat.PlayerTagSystem
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
 
         }
-        public void Change()
+        public void Change(int index)
         {
-            Change(false);
+            Change(index, false);
         }
         /// <summary>
         /// Change Character Func
         /// </summary>
-        public void Change(bool isForece = false)
+        public void Change(int index, bool isForce = false)
         {
-            if (!isForece)
+            if (!isForce && _currentCooltime < _changeCooltime) return;
+            if (index == _currentPlayerIndex || index < 0 || index >= playerList.Count) return;
+            if (!playerList[index].IsDead && CurrentPlayer.CanCharacterChange)
             {
-                if (_currentCooltime < _changeCooltime) return;
+                _currentCooltime = 0f;
+                StartCoroutine(ChangeCoroutine(index));
             }
-            if (_currentPlayerIndex < 0) return;
-            _currentCooltime = 0f;
-
-            if (CurrentPlayer.CanCharacterChange)
-                StartCoroutine(ChangeCoroutine());
         }
 
-        private IEnumerator ChangeCoroutine()
+        public void ChangeNextPlayer(bool isForce = false)
         {
-            Transform prevPlayerTrm = CurrentPlayer.transform;
-            Vector2 changePosition = prevPlayerTrm.position;
+            if (!isForce && _currentCooltime < _changeCooltime) return;
+            if (_currentPlayerIndex < 0) return;
 
-            Player prevPlayer = CurrentPlayer;
-
-            int prevIndex = _currentPlayerIndex;
-            for (int i = 0; i < playerList.Count; i++)
+            int nextIndex = FindNextAvailablePlayerIndex();
+            if (nextIndex == _currentPlayerIndex)
             {
-
-                _currentPlayerIndex = (_currentPlayerIndex + 1) % playerList.Count; // index change -> character Change
-                if (!CurrentPlayer.IsDead)
-                    break;
-            }
-            if (prevIndex == _currentPlayerIndex)
-            {
-
                 if (IsAllRetire)
                 {
                     OnAllPlayerDieEvent?.Invoke();
                     Debug.Log("All Player die");
                 }
-                yield break;
+                return;
             }
 
-            float direction = prevPlayer.GetCompo<AgentRenderer>().FacingDirection;
+            if (CurrentPlayer.CanCharacterChange)
+            {
+                _currentCooltime = 0f;
+                StartCoroutine(ChangeCoroutine(nextIndex));
+            }
+        }
+
+        /// <summary>
+        /// 실제 플레이어 전환 처리
+        /// </summary>
+        private IEnumerator ChangeCoroutine(int targetIndex)
+        {
+            Transform prevPlayerTrm = CurrentPlayer.transform;
+            Vector2 changePosition = prevPlayerTrm.position;
+            float direction = CurrentPlayer.GetCompo<AgentRenderer>().FacingDirection;
+
+            Player prevPlayer = CurrentPlayer;
+
             prevPlayer.ExitCharacter();
             prevPlayer.SetActive(false);
-            OnPlayerChangedEvent?.Invoke(prevPlayer, CurrentPlayer);
+
+            _currentPlayerIndex = targetIndex;
+
             yield return new WaitForSeconds(0.2f);
+
+            OnPlayerChangedEvent?.Invoke(prevPlayer, CurrentPlayer);
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
-            SetPlayerSubWeaponUI();
             CurrentPlayer.transform.position = changePosition;
-            //CurrentPlayer.transform.rotation = prevRotation;
             CurrentPlayer.GetCompo<AgentRenderer>().FlipController(direction);
 
             SetPlayer(CurrentPlayer);
-
-            //CurrentPlayer.SetIdleEnter();
-            //CurrentPlayer.SetActive(true);
-            //HUDController.Instance.SetFollowTarget(CurrentPlayer.transform);
-            //CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
-            //_aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
-
             _aimGroup.SetAimColor(CurrentPlayerData.personalColor);
+        }
+
+        /// <summary>
+        /// 현재 플레이어 인덱스를 기준으로 다음 사용 가능한 플레이어 인덱스를 반환
+        /// </summary>
+        private int FindNextAvailablePlayerIndex()
+        {
+            int startIndex = _currentPlayerIndex;
+            for (int i = 1; i < playerList.Count; i++)
+            {
+                int index = (startIndex + i) % playerList.Count;
+                if (!playerList[index].IsDead)
+                    return index;
+            }
+            return _currentPlayerIndex;
         }
 
         private void SetPlayer(Player newCharacter)
@@ -194,18 +209,9 @@ namespace Combat.PlayerTagSystem
             _aimGroup.SetAnchorOwner(newCharacter.RigidCompo, newCharacter.RopeHolder);
         }
 
-
-
-        private void SetPlayerSubWeaponUI(Player player = null)
-        {
-            if (player == null)
-                player = CurrentPlayer;
-
-        }
-
         private void HandlePlayerDie()
         {
-            Change(true);
+            ChangeNextPlayer(true);
             OnPlayerDieEvent?.Invoke();
         }
 

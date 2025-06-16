@@ -66,52 +66,90 @@ namespace Agents.Players
             _mousePos = Camera.main.ScreenToWorldPoint(_player.PlayerInput.MousePosition);
             _direction = _mousePos - (Vector2)transform.position;
 
+            bool targetUpdated = false;
 
             RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, _shootRadius, _wallLayer | _targetLayer);
-            bool isTargetDetected = boxHit.collider != null;
-            if (!_isTargeted && isTargetDetected && _grabTarget != null)
-            {
-                _grabTarget.OnAimExited();
-                _grabTarget = null;
-            }
-
-            _isTargeted = isTargetDetected;
-            _targetTrm = null;
-            _grabTarget = null;
-
-            if (_isTargeted)
+            if (boxHit.collider != null)
             {
                 RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, boxHit.distance, _ignoreLayer);
-                if (ignoreHit.collider != null)
+                if (ignoreHit.collider == null)
                 {
-                    _isTargeted = false;
-                    InvokeAimDataEvent();
-                    return;
+                    _isTargeted = true;
+                    _targetPos = boxHit.point;
+                    _targetTrm = boxHit.collider.transform;
+                    targetUpdated = true;
+                }
+            }
+            RaycastHit2D magnetHit = Physics2D.CircleCast(transform.position, _castRadius, _direction.normalized, _shootRadius, _magnetLayer);
+            if (magnetHit.collider != null && magnetHit.collider.TryGetComponent(out IGrabable grabTarget))
+            {
+                if (_grabTarget != grabTarget)
+                {
+                    _grabTarget?.OnAimExited();
+                    grabTarget.OnAimEntered();
                 }
 
-                _targetPos = boxHit.point;
-                _targetTrm = boxHit.collider.transform;
+                _grabTarget = grabTarget;
+                _targetPos = grabTarget.GetTransform.position;
+                _targetTrm = grabTarget.GetTransform;
+                _isTargeted = true;
+                targetUpdated = true;
+            }
 
-                // Magnet Layer에서 GrabTarget 보정
-                Collider2D[] magnetHits = Physics2D.OverlapCircleAll(_targetPos, _castRadius, _magnetLayer);
-                foreach (var col in magnetHits)
+            if (!targetUpdated)
+            {
+                bool shouldClear = false;
+
+                if (_grabTarget != null)
                 {
-                    if (col.TryGetComponent(out IGrabable grabTarget))
+                    if (ShouldClearTarget(_grabTarget.GetTransform.position))
                     {
-                        _targetPos = grabTarget.GetTransform.position;
-                        if (_grabTarget != grabTarget)
-                        {
-                            grabTarget.OnAimEntered();
-                        }
-                        _grabTarget = grabTarget;
-                        break; // 가장 가까운 GrabTarget 하나만 사용
+                        _grabTarget.OnAimExited();
+                        _grabTarget = null;
+                        shouldClear = true;
                     }
+                    else
+                    {
+                        _targetPos = _grabTarget.GetTransform.position;
+                        _targetTrm = _grabTarget.GetTransform;
+                        _isTargeted = true;
+                    }
+                }
+
+                if (_targetTrm != null && !shouldClear)
+                {
+                    if (ShouldClearTarget(_targetTrm.position))
+                    {
+                        _targetTrm = null;
+                        shouldClear = true;
+                    }
+                    else
+                    {
+                        _targetPos = _targetTrm.position;
+                        _isTargeted = true;
+                    }
+                }
+
+                if (shouldClear)
+                {
+                    _isTargeted = false;
                 }
             }
 
             InvokeGrabDataEvent();
             InvokeAimDataEvent();
+        }
 
+        private bool ShouldClearTarget(Vector2 targetPos)
+        {
+            float dist = Vector2.Distance(transform.position, targetPos);
+            if (dist > _shootRadius)
+                return true;
+
+            Vector2 toTargetDir = (targetPos - (Vector2)transform.position).normalized;
+            float dot = Vector2.Dot(_direction.normalized, toTargetDir);
+
+            return dot <= 0f;
         }
 
         private void InvokeAimDataEvent()

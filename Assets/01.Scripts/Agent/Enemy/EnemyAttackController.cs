@@ -6,15 +6,19 @@ namespace Agents.Enemies
     public abstract class EnemyAttackController : MonoBehaviour, IAgentComponent
     {
         public UnityEvent OnAttackEvent;
+
+        public event System.Action OnAttackEndEvent;
         [SerializeField] protected bool _enable;
         protected BlackboardVariable<Transform> _targetVariable;
         protected Transform _targetTrm;
         protected float _lastAttackTime;
         protected Enemy _owner;
+        protected EnemyAnimationTrigger _animTrigger;
 
         protected virtual void Start()
         {
             _targetVariable = _owner.GetVariable<Transform>("Target");
+            _animTrigger.OnTargetDetectEvent.AddListener(HandleDetectTarget);
         }
 
         public void SetEnable(bool value)
@@ -37,10 +41,21 @@ namespace Agents.Enemies
         }
 
         public abstract void Attack();
+        public virtual void HandleDetectTarget()
+        {
+
+        }
+
+        protected void InvokeAttackEnd()
+        {
+            OnAttackEndEvent?.Invoke();
+        }
+
 
         public void Initialize(Agent agent)
         {
             _owner = agent as Enemy;
+            _animTrigger = _owner.GetCompo<EnemyAnimationTrigger>();
         }
 
         public void AfterInit()

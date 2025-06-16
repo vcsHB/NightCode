@@ -17,9 +17,12 @@ namespace Map
 
         private CharacterEnum _character;
         private bool _isMoved = false;
+        private bool _isCompleteCurerntLevel = true;
 
         private RectTransform RectTrm => transform as RectTransform;
         public CharacterEnum Character => _character;
+        public bool IsMoved => _isMoved;
+        public bool IsCompleteCurerntLevel => _isCompleteCurerntLevel;
 
 
         private void Awake()
@@ -42,7 +45,7 @@ namespace Map
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (_isMoved) return;
+            if (_isMoved || _isCompleteCurerntLevel == false) return;
             if (eventData.button == PointerEventData.InputButton.Left)
             {
                 RectTrm.anchoredPosition = eventData.position + _offset;
@@ -51,7 +54,7 @@ namespace Map
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (_isMoved) return;
+            if (_isMoved || _isCompleteCurerntLevel == false) return;
             if (eventData.button == PointerEventData.InputButton.Left)
             {
                 _canvasGroup.interactable = true;
@@ -95,5 +98,6 @@ namespace Map
         }
 
         public void SetMoved(bool isMoved) => _isMoved = isMoved;
+        public void SetCompleteCurrentLevel(bool isComplete) => _isCompleteCurerntLevel = isComplete;
     }
 }
