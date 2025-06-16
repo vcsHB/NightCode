@@ -61,7 +61,9 @@ namespace UI.NodeViewScene.StageSelectionUIs
 
         private void HandleSelectMapNode(MapNode data)
         {
-            if (data.characterIcons.Count == 0 || data.IsComplete || data.characterIcons[0].IsMoved == false) return;
+            
+            if (data.characterIcons.Count == 0 || data.IsComplete || 
+                (data.characterIcons[0].IsMoved == false && data.characterIcons[0].IsCompleteCurerntLevel)) return;
 
             //if(data.)
             _selectedNode = data;

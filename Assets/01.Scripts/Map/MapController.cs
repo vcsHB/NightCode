@@ -107,9 +107,11 @@ namespace Map
 
         private void HandleSelectNode(MapNode data)
         {
+            //움직이지 않은 캐릭터가 있는지 확인
             bool isCompleteMove = true;
             foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
+                if (_characterController.GetIcon(character).IsCompleteCurerntLevel == false) break;
                 if (_characterController.GetIcon(character).IsMoved == false)
                 {
                     isCompleteMove = false;
@@ -206,7 +208,6 @@ namespace Map
             if (_save == null) _save = new MapSave();
             _save.enterStageId = node.NodeInfo.nodeId;      // 인게임에서 맵 불러오기 위한
             _save.enterStagePosition = node.Position;       // 맵 선택 씬에서 진행중인 씬 확을 위한
-            _save.completedNodes.Add(node.Position);        // 이건 임시인 나중에 인게임에서 넘어올때 isEnterStageClear true로 해주고 넘기면 클리어된걸로 판정함
             Save();
         }
 

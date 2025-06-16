@@ -1,5 +1,6 @@
 using Chipset;
 using Map;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -20,12 +21,28 @@ namespace Core.DataControl
         {
              base.Awake();
             Load();
+
+            GetCharacters().ForEach(character => Debug.Log(character));
         }
 
         public MapNodeSO GetCurrentMap()
         {
             if (_mapSave == null) Load();
             return mapGraph.GetNodeSO(_mapSave.enterStageId);
+        }
+
+        public List<CharacterEnum> GetCharacters()
+        {
+            List<CharacterEnum> characters = new List<CharacterEnum>();
+
+            foreach(CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                if(_mapSave.characterPositions[(int)character] == _mapSave.enterStagePosition)
+                {
+                    characters.Add(character);
+                }
+            }
+            return characters;
         }
 
         public List<ChipsetSO> GetChipset(CharacterEnum character)
