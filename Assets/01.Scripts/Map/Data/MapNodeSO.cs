@@ -1,4 +1,5 @@
 using Core.Attribute;
+using QuestSystem.LevelSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace Map
 
         [Space]
         public StageDifficultySO difficulty;
+        public LevelMap levelPrefab;
 
         [HideInInspector] public List<MapNodeSO> prevNodes = new List<MapNodeSO>();
         [HideInInspector] public List<MapNodeSO> nextNodes = new List<MapNodeSO>();

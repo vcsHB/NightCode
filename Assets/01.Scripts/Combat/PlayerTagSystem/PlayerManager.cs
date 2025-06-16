@@ -1,5 +1,6 @@
 using Agents;
 using Agents.Players;
+using Core.DataControl;
 using HUDSystem;
 using InputManage;
 using ObjectManage.Rope;
@@ -35,6 +36,10 @@ namespace Combat.PlayerTagSystem
         [SerializeField] private int _currentPlayerIndex = 0;
         [SerializeField] private CharacterSelectWindow _characterSelectWindow;
         [SerializeField] private PlayerSubWeaponManager _playerSubWeaponManager;
+
+        [Header("Loader Settings")]
+        [SerializeField] private MapLoader _mapLoader;
+
         public Player CurrentPlayer => playerList[_currentPlayerIndex];
         public Transform CurrentPlayerTrm => CurrentPlayer.transform;
         public PlayerSO CurrentPlayerData => _playerDatas[_currentPlayerIndex];
@@ -98,7 +103,14 @@ namespace Combat.PlayerTagSystem
         private void Initialize()
         {
             // GetData;
-            //_playerGroupData.GetPlayerData(id)
+
+            var characterInfo = DataLoader.Instance.GetCharacters();
+
+            for (int i = 0; i < characterInfo.Count; i++)
+            {
+                _playerDatas.Add(_playerGroupData.GetPlayerData((int)characterInfo[i]));
+            }
+
 
             for (int i = 0; i < _playerDatas.Count; i++)
             {
@@ -116,7 +128,9 @@ namespace Combat.PlayerTagSystem
             SetPlayer(CurrentPlayer);
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
 
+            CurrentPlayerTrm.position = _mapLoader.CurrentLevel.StartPos;
         }
+
         public void Change(int index)
         {
             Change(index, false);
