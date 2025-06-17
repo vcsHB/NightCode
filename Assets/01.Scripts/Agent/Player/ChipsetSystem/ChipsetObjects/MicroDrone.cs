@@ -26,7 +26,7 @@ namespace Agents.Players.ChipsetSystem.ChipsetObjects
 
         public void SetFollowTarget(Transform followTarget)
         {
-            
+            _followTarget = followTarget;
         }
 
 

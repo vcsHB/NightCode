@@ -62,7 +62,8 @@ namespace Combat
         public void Restore(float amount)
         {
             _currentHealth += amount;
-            HandleHealthChanged();
+            if (gameObject.activeInHierarchy)
+                HandleHealthChanged();
 
         }
 

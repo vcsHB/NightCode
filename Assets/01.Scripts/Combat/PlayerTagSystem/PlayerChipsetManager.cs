@@ -28,7 +28,9 @@ namespace Combat.PlayerTagSystem
             // ChipsetController List Init
             foreach (var player in PlayerList)
             {
-                _playerChipsetControllers.Add(player.GetCompo<PlayerChipsetController>());
+                PlayerChipsetController controller = player.GetCompo<PlayerChipsetController>();
+                _playerChipsetControllers.Add(controller);
+                controller.Initialize(_environmentData);
             }
 
             // 각 플레이어 데이터에 대해 칩셋 로드 및 적용
@@ -40,7 +42,7 @@ namespace Combat.PlayerTagSystem
                 {
                     if (chipset.chipsetType == ChipsetType.Personal)
                     {
-                        _playerChipsetControllers[i].AddChipsetFunction(chipset); 
+                        _playerChipsetControllers[i].AddChipsetFunction(chipset);
                     }
                     else // Global
                     {
