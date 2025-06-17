@@ -20,6 +20,7 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
             _button = GetComponent<Button>();
             _button.onClick.AddListener(HandleSelectWeapon);
         }
+
         public void Initialize(PlayerWeaponSO weaponData)// Data of weapon is using by other Character
         {
             _data = weaponData;
@@ -27,6 +28,34 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
             _weaponImage.SetNativeSize();
             _weaponNameText.text = _data.weaponName;
         }
+
+        public void SetSelectionPanel()
+        {
+            _selectionPanel.alpha = 1;
+            _selectionPanel.blocksRaycasts = true;
+
+            _otherCharacterSelectionPanel.alpha = 0;
+            _otherCharacterSelectionPanel.blocksRaycasts = false;
+        }
+
+        public void SetOtherCharacterSelectionPanel()
+        {
+            _selectionPanel.alpha = 0;
+            _selectionPanel.blocksRaycasts = false;
+
+            _otherCharacterSelectionPanel.alpha = 1;
+            _otherCharacterSelectionPanel.blocksRaycasts = true;
+        }
+
+        public void UnSetSelectionPanel()
+        {
+            _selectionPanel.alpha = 0;
+            _selectionPanel.blocksRaycasts = false;
+
+            _otherCharacterSelectionPanel.alpha = 0;
+            _otherCharacterSelectionPanel.blocksRaycasts = false;
+        }
+
 
         private void HandleSelectWeapon()
         {

@@ -8,13 +8,12 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
     {
         [SerializeField] private WeaponDetailPanel _weaponDetailPanel;
         [SerializeField] private WeaponInfoPanel _weaponInfoPanel;
-        [SerializeField] private WeaponDataGroup _debugData;
+
+        private CharacterEnum _selectedCharacter;
+
         private void Awake()
         {
             _weaponInfoPanel.OnWeaponSelectEvent += HandleWeaponSelect;
-
-            // Debug Code
-            InitializeData(_debugData);
         }
 
         private void HandleWeaponSelect(PlayerWeaponSO data)
@@ -27,5 +26,12 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
             _weaponInfoPanel.InitializeData(dataGroup);
         }
 
+        public void SelectCharacter(CharacterEnum characterEnum)
+        {
+            _selectedCharacter = characterEnum;
+            _weaponInfoPanel.SelectCharacter(_selectedCharacter);
+
+
+        }
     }
 }

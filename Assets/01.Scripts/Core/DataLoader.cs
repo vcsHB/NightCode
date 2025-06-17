@@ -1,3 +1,4 @@
+using Agents.Players.WeaponSystem;
 using Chipset;
 using Map;
 using System;
@@ -13,14 +14,24 @@ namespace Core.DataControl
         public ChipsetGruopSO chipsetGroup;
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private static string _chipsetSavePath = Path.Combine(Application.dataPath, "Save/Chipset.json");
+        private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
 
         private MapSave _mapSave;
         private ChipsetInventorySave _chipsetSave;
+        private CharacterSave _characterSave;
+
+        public int Credit => _characterSave.credit;
 
         protected override void Awake()
         {
             base.Awake();
             Load();
+        }
+
+        public void AddCredit(int amount)
+        {
+            _characterSave.credit += amount;
+            Save();
         }
 
         public MapNodeSO GetCurrentMap()
@@ -57,6 +68,14 @@ namespace Core.DataControl
         public void CompleteMap()
         {
             _mapSave.isEnteredStageClear = true;
+            _mapSave.isFailStageClear = false;
+            Save();
+        }
+
+        public void FailMap()
+        {
+            _mapSave.isEnteredStageClear = false;
+            _mapSave.isFailStageClear = true;
             Save();
         }
 
@@ -64,15 +83,39 @@ namespace Core.DataControl
         {
             string mapJson = File.ReadAllText(_mapSavePath);
             string chipsetJson = File.ReadAllText(_chipsetSavePath);
+            string characterJson = File.ReadAllText(_characterSavePath);
 
             _mapSave = JsonUtility.FromJson<MapSave>(mapJson);
             _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(chipsetJson);
+            _characterSave = JsonUtility.FromJson<CharacterSave>(characterJson);
         }
 
         public void Save()
         {
-            string json = JsonUtility.ToJson(_mapSave);
-            File.WriteAllText(_mapSavePath, json);
+            string mapJson = JsonUtility.ToJson(_mapSave);
+            string chipsetJson = JsonUtility.ToJson(_chipsetSave);
+            string characterJson = JsonUtility.ToJson(_characterSave);
+
+            File.WriteAllText(_mapSavePath, mapJson);
+            File.WriteAllText(_chipsetSavePath, chipsetJson);
+            File.WriteAllText(_characterSavePath, characterJson);
+        }
+
+        public void AddChipset(ushort id)
+        {
+            _chipsetSave.containChipsets.Add(id);
+            Save();
+        }
+
+        public void AddWeapon(int id)
+        {
+            _characterSave.containWeaponId.Add(id);
+            Save();
+        }
+
+        public bool IsWeaponExstist(int id)
+        {
+            return _characterSave.containWeaponId.Contains(id);
         }
     }
 }
