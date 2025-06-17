@@ -10,7 +10,11 @@ namespace Chipset
 {
     public class ChipsetContainer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        public ChipsetGruopSO chipsetGroup;
+        [Space]
+        public List<ushort> usedGlobalChipsetId;
         public List<ChipsetSO> containChipset;
+        public List<Chipset> chipsetInstanceContainer;
         public ChipsetInventory inventory;
 
         [SerializeField] private ChipsetInfo _chipsetInfoPrefab;
@@ -24,10 +28,34 @@ namespace Chipset
         {
             _chipsetInfos = new Dictionary<Chipset, ChipsetInfo>();
             containChipset = new List<ChipsetSO>();
+            chipsetInstanceContainer = new List<Chipset>();
 
-            foreach(ChipsetSO chipsetSO in initializeChipset)
+            foreach (ChipsetSO chipsetSO in initializeChipset)
             {
                 AddChipset(chipsetSO);
+            }
+        }
+
+        public void OnChangeInventory(List<int> chipsetIndex)
+        {
+            foreach (var chipset in _chipsetInfos.Keys)
+            {
+                Destroy(_chipsetInfos[chipset].gameObject);
+            }
+            _chipsetInfos.Clear();
+
+            for (int i = 0; i < chipsetInstanceContainer.Count; i++)
+            {
+                if (chipsetIndex.Contains(i))
+                {
+                    chipsetInstanceContainer[i].transform.localScale = Vector3.one;
+                    continue;
+                }
+
+                ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
+                chipsetInfo.Init(inventory, chipsetInstanceContainer[i]);
+                chipsetInfo.onInsertChipset += OnInsertChipset;
+                _chipsetInfos.Add(chipsetInstanceContainer[i], chipsetInfo);
             }
         }
 
@@ -39,12 +67,17 @@ namespace Chipset
                 inventory.AssignChipsetToInventory(chipset);
                 _chipsetInfos[chipset].Init(inventory, chipset);
             });
+
+            OnChangeInventory(inventory.GetInventoryData().ConvertAll(save => save.chipsetindex));
         }
 
         public void AddChipset(ChipsetSO chipsetSO)
         {
-            containChipset.Add(chipsetSO);
             Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
+            chipset.SetIndex(containChipset.Count);
+
+            containChipset.Add(chipsetSO);
+            chipsetInstanceContainer.Add(chipset);
             if (inventory != null) inventory.AssignChipsetToInventory(chipset);
 
             ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
@@ -55,6 +88,9 @@ namespace Chipset
 
         private void OnInsertChipset(Chipset chipset)
         {
+            if (chipset.info.isGlobalChipset)
+                containChipset.Remove(chipset.info);
+
             _chipsetInfos[chipset].onInsertChipset -= OnInsertChipset;
             _chipsetInfos.Remove(chipset);
         }
@@ -71,11 +107,17 @@ namespace Chipset
 
         private void SetAssignChipset()
         {
-            if (inventory.SelectedChipset == null || inventory.SelectedChipset.IsForcePointerDown) return;
+            if (inventory.SelectedChipsetIndex == -1) return;
 
-            AddChipset(inventory.SelectedChipset.info);
-            inventory.RemoveChipset(inventory.SelectedChipset, true);
-            inventory.OnPointerDownChipset(null);
+            Chipset chipset = ChipsetManager.Instance.GetChipset(inventory.SelectedChipsetIndex);
+            if (chipset.IsForcePointerDown) return;
+
+            if (chipset.info.isGlobalChipset == false)
+                containChipset.Remove(chipset.info);
+
+            AddChipset(chipset.info);
+            inventory.RemoveChipset(inventory.SelectedChipsetIndex);
+            inventory.OnPointerDownChipset(-1);
         }
     }
 

@@ -47,7 +47,11 @@ namespace Core.DataControl
         {
             if (_chipsetSave == null) Load();
             return _chipsetSave.GetChipsets(character).
-                ConvertAll(save => chipsetGroup.GetChipset(save.chipsetId)).ToArray();
+                ConvertAll(save => 
+                {
+                    ushort chipsetId = _chipsetSave.containChipsets[save.chipsetindex];
+                    return chipsetGroup.GetChipset(chipsetId);
+                }).ToArray();
         }
 
         public void CompleteMap()

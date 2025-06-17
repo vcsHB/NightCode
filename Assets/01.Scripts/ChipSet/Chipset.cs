@@ -13,7 +13,7 @@ namespace Chipset
 {
     public class Chipset : MonoBehaviour
     {
-        public event Action<Chipset> onSelectChipset;
+        public event Action<int> onSelectChipset;
         public event Action onPointerUpChipset;
         public event Action onRotate;
 
@@ -35,6 +35,7 @@ namespace Chipset
 
         private bool _isDraging = false;
         private bool _isForcePointerDown = false;
+        private int _index;
 
         #region Property Field
 
@@ -162,7 +163,7 @@ namespace Chipset
             _selectedSlotOffset = position;
             _canvasGroup.blocksRaycasts = false;
             _isDraging = true;
-            onSelectChipset?.Invoke(this);
+            onSelectChipset?.Invoke(_index);
         }
 
         public void OnPointerUp(Vector2Int position)
@@ -219,6 +220,11 @@ namespace Chipset
         {
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * rotation));
             _rotation = rotation;
+        }
+
+        public void SetIndex(int index)
+        {
+            _index = index;
         }
     }
 }

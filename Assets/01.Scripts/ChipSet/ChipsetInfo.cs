@@ -1,6 +1,7 @@
 using Agents;
 using DG.Tweening;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -30,6 +31,7 @@ namespace Chipset
             _inventory = inventory;
             _assignedChipset = chipset;
             _assignedChipset.RectTrm.localScale = Vector3.zero;
+            _icon.sprite = chipset.info.icon;
         }
 
         public void OnInsertChipset()
@@ -42,7 +44,7 @@ namespace Chipset
 
         public void OnReturnChipset()
         {
-            _inventory.OnPointerDownChipset(null);
+            _inventory.OnPointerDownChipset(-1);
 
             if (_chipsetScaleTween != null) _chipsetScaleTween.Kill();
             _assignedChipset.RectTrm.localScale = Vector3.zero;

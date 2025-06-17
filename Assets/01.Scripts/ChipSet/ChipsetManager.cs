@@ -17,6 +17,14 @@ namespace Chipset
         private string _path = Path.Combine(Application.dataPath, "Save/Chipset.json");
         private ChipsetInventorySave inventorySave;
 
+        #region Property
+
+        public List<Chipset> ContainChipsets => chipsetContainer.chipsetInstanceContainer;
+        public Chipset GetChipset(int chipsetIndex)
+            => ContainChipsets[chipsetIndex];
+
+        #endregion
+
         protected override void Awake()
         {
             base.Awake();
@@ -126,7 +134,7 @@ namespace Chipset
     [Serializable]
     public struct ChipsetSave
     {
-        public ushort chipsetId;
+        public int chipsetindex;
         public Vector2Int center;
         public int rotate;
     }
