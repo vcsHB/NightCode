@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7222532734001226899}
   - component: {fileID: 1665106724800630422}
   - component: {fileID: 4927535934233463152}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 8073243363547169715}
   - component: {fileID: 8318090957017222233}
   - component: {fileID: 4697402750492265127}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: EnemyLaserProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,17 +268,17 @@ MonoBehaviour:
         m_CallState: 2
   _projectileData:
     direction: {x: 0, y: 0}
-    speed: 0
+    speed: 80
     lifeTime: 50
     canPenetrate: 1
     canDestroy: 0
-    damage: 0
+    damage: 10
   <type>k__BackingField: 2
   _destroyVFXType: 6
   _canDamagedReflect: 0
   _defaultTargetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _reflectTargetLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 813518036508038280}
   - component: {fileID: 2499988333961837916}
   - component: {fileID: 3920465369324163882}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Caster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -363,10 +363,10 @@ MonoBehaviour:
   _offset: {x: 0, y: 0}
   _targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _targetMaxAmount: 2
   _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
-  _detectRadius: 0.4
+  _detectRadius: 0.63
 --- !u!114 &3920465369324163882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,5 +383,5 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _damage: 10
-  _attackType: 2
+  _attackType: 1
   _invalidityResistance: 0

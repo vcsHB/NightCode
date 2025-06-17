@@ -24,5 +24,8 @@ namespace Combat.PlayerTagSystem
             }
         }
 
+        public void AfterInit()
+        {
+        }
     }
 }
