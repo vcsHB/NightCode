@@ -5,10 +5,10 @@ using Dialog.Animation;
 using UnityEngine;
 namespace Agents.Players.ChipsetSystem
 {
-   
+
     public class PlayerChipsetController : MonoBehaviour, IAgentComponent
     {
-        private List<ChipsetFunction> _chipsets;
+        private List<ChipsetFunction> _chipsets = new();
         private EnvironmentData _environmentData;
 
         private Player _owner;

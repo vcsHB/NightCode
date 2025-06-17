@@ -11,6 +11,7 @@ namespace StatSystem
         Health = 2,
         Attack = 3,
         Healing = 4,
-        AutoRecovery = 5
+        AutoRecovery = 5,
+        MaxEnergy
     }
 }

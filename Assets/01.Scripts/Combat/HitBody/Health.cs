@@ -23,13 +23,16 @@ namespace Combat
         private bool _isDie;
         public bool IsDead => _isDie;
         private StatSO _healthStat;
+        private Agent _owner;
 
         public void Initialize()
         {
-
-            _maxHealth = _healthStat.Value;
-            _healthStat.OnValuechange += HandleHealthChanged;
-            FillHealthMax();
+            if (_healthStat != null)
+            {
+                _maxHealth = _healthStat.Value;
+                _currentHealth = MaxHealth;
+                _healthStat.OnValuechange += HandleHealthChanged;
+            }
         }
 
         private void HandleHealthChanged(StatSO stat, float currentValue, float prevValue)
@@ -59,7 +62,8 @@ namespace Combat
         public void Restore(float amount)
         {
             _currentHealth += amount;
-            HandleHealthChanged();
+            if (gameObject.activeInHierarchy)
+                HandleHealthChanged();
 
         }
 
@@ -92,11 +96,16 @@ namespace Combat
 
         public void Initialize(Agent agent)
         {
-            _healthStat = agent.GetCompo<AgentStatus>().GetStat(StatusEnumType.Health);
+            _owner = agent;
         }
 
         public void AfterInit()
         {
+            AgentStatus status = _owner.GetCompo<AgentStatus>();
+            if (status != null)
+            {
+                _healthStat = status.GetStat(StatusEnumType.Health);
+            }
         }
 
         public void Dispose()
