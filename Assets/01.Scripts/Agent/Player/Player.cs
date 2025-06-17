@@ -81,7 +81,7 @@ namespace Agents.Players
 
         protected void HandlePlayerHit()
         {
-            _stateMachine.ChangeState("Swing");
+            //_stateMachine.ChangeState("Swing");
         }
 
         public void SetStartDisable(bool value) => _startDisable = value;
