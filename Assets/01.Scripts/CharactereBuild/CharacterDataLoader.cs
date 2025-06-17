@@ -50,7 +50,7 @@ namespace Core.DataControl
 
             for (int i = 0; i < 3; i++)
             {
-                _characterSave.charcterData[i].weaponId = _weaponDataGroup.GetWeaponData((CharacterEnum)i).id;
+                _characterSave.charcterData[i].weaponId = _weaponDataGroup.GetWeaponData(i).id;
             }
 
 

@@ -113,7 +113,7 @@ namespace Core.DataControl
             Save();
         }
 
-        public bool IsWeaponExstist(int id)
+        public bool IsWeaponExist(int id)
         {
             return _characterSave.containWeaponId.Contains(id);
         }

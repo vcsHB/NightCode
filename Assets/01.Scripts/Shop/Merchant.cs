@@ -23,7 +23,7 @@ namespace Shop
 
             for (int i = 0; i < displayStands.Count; i++)
             {
-                if (goods[i].goodsType == GoodsType.Weapon && DataLoader.Instance.IsWeaponExstist(goods[i].id)) continue;
+                if (goods[i].goodsType == GoodsType.Weapon && DataLoader.Instance.IsWeaponExist(goods[i].id)) continue;
                 displayStands[i].SetGoods(goods[i]);
             }
         }

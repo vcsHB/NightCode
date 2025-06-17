@@ -19,17 +19,17 @@ namespace Shop
 
         public ShopGoodsSO shopGoods;
 
-        private bool isGoodsExsist = true;
+        private bool isGoodsExist;
         private GameObject goodsSprite;
 
         public void SetGoods(ShopGoodsSO shopGoods)
         {
             this.shopGoods = shopGoods;
-
+            isGoodsExist = true;
             StringBuilder text = new StringBuilder();
             text.Append($"{shopGoods.cost} <color=white>");
 
-            switch(shopGoods.goodsType)
+            switch (shopGoods.goodsType)
             {
                 case GoodsType.Chipset:
                     ChipsetSO chispetSO = chipsetGroup.GetChipset((ushort)shopGoods.id);
@@ -40,7 +40,7 @@ namespace Shop
                     text.Append($"{weaponSO.weaponName}");
                     break;
                 case GoodsType.Heal:
-                    text.Append($"¼ö¸®Å¶ ( + {shopGoods.id} )");
+                    text.Append($"F.I.X KIT ( + {shopGoods.id} )");
                     break;
             }
 
@@ -50,7 +50,7 @@ namespace Shop
 
         public void BuyGoods()
         {
-            if (isGoodsExsist == false) return;
+            if (isGoodsExist == false) return;
             if (DataLoader.Instance.Credit < shopGoods.cost) return;
 
             switch (shopGoods.goodsType)
@@ -66,7 +66,7 @@ namespace Shop
                     break;
             }
 
-            isGoodsExsist = false;
+            isGoodsExist = false;
             textObject.gameObject.SetActive(false);
             CreditCollector.Instance.UseCredit(shopGoods.cost);
             Destroy(goodsSprite);
@@ -74,13 +74,13 @@ namespace Shop
 
         public void OnEnter()
         {
-            if (isGoodsExsist == false || shopGoods == null) return;
+            if (isGoodsExist == false || shopGoods == null) return;
             textObject.gameObject.SetActive(true);
         }
 
         public void OnExit()
         {
-            if (isGoodsExsist == false || shopGoods == null) return;
+            if (isGoodsExist == false || shopGoods == null) return;
             textObject.gameObject.SetActive(false);
         }
     }

@@ -23,7 +23,7 @@ namespace ObjectManage.GimmickObjects.Logics
 
         private void Update()
         {
-            if(_isTriggered && _doorOpenTime + _doorCloseDelay < Time.time)
+            if (_isTriggered && _doorOpenTime + _doorCloseDelay < Time.time)
             {
                 OnTriggerDisable();
             }
@@ -31,6 +31,7 @@ namespace ObjectManage.GimmickObjects.Logics
 
         public bool ApplyDamage(CombatData data)
         {
+            if (_isTriggered) return false;
             _isTriggered = true;
             Debug.Log(_isTriggered);
             _doorOpenTime = Time.time;
