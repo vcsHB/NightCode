@@ -44,5 +44,9 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
             _weaponSelectionPanel.InitializeData(dataGroup);
         }
 
+        public void SelectCharacter(CharacterEnum character)
+        {
+            _weaponSelectionPanel.SelectCharacter(character);
+        }
     }
 }
