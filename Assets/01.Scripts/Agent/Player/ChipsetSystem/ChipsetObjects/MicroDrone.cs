@@ -10,13 +10,19 @@ namespace Agents.Players.ChipsetSystem.ChipsetObjects
         [SerializeField] private Transform _followTarget;
         [SerializeField] private float _followSpeed = 5f;
         [SerializeField] private float _followDeadzone = 0.5f;
-
+        [SerializeField] private float _angleClamp = 20f;
         [Header("Attack Settings")]
         [SerializeField] private TargetDetector _targetDetector;
         [SerializeField] private float _attackTerm = 1f;
         [SerializeField] private ProjectileShooter _projectileShooter;
-
+        private SpriteRenderer _visualRenderer;
+        private readonly int _angleHash = Shader.PropertyToID("_Angle");
         private float _attackTimer;
+
+        private void Awake()
+        {
+            _visualRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
 
         private void Update()
         {
@@ -36,7 +42,7 @@ namespace Agents.Players.ChipsetSystem.ChipsetObjects
 
             Vector2 direction = _followTarget.position - transform.position;
             float distance = direction.magnitude;
-
+            _visualRenderer.material.SetFloat(_angleHash, Mathf.Clamp(direction.x, -_angleClamp, _angleClamp));
             if (distance <= _followDeadzone) return;
 
             // 감속 처리
