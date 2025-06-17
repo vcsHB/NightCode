@@ -6,13 +6,18 @@ using Core.DataControl;
 using UnityEngine;
 namespace Combat.PlayerTagSystem
 {
+    public class EnvironmentData
+    {
+        public int charatcerAmount;
 
+    }
     public class PlayerChipsetManager : MonoBehaviour, IPlayerSubManager
     {
         [SerializeField] private ChipsetGruopSO _chipsetGroupData;
         private PlayerManager _playerManager;
         private List<PlayerChipsetController> _playerChipsetControllers = new();
         private List<Player> PlayerList => _playerManager.playerList;
+        private EnvironmentData _environmentData;
 
         public void AfterInit()
         {
@@ -48,6 +53,10 @@ namespace Combat.PlayerTagSystem
         public void Initialize(PlayerManager playerManager)
         {
             _playerManager = playerManager;
+            _environmentData = new EnvironmentData()
+            {
+                charatcerAmount = _playerManager.PlayerDatas.Count
+            };
 
         }
 

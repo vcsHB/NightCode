@@ -122,6 +122,10 @@ namespace Combat.PlayerTagSystem
                 playerCharacter.SetStartDisable(i != 0);
                 playerCharacter.OnDieEvent += HandlePlayerDie;
             }
+            foreach (var subManager in _subManagers)
+            {
+                subManager.Value.AfterInit();
+            }
 
             CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
             _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
