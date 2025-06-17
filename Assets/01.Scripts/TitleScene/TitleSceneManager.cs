@@ -13,14 +13,14 @@ namespace TitleScene
 
         public void HandleStart()
         {
-            StageManager.Instance.LoadCurrentScene();
+            //StageManager.Instance.LoadCurrentScene();
             //SceneManager.LoadScene(_startConnectSceneName);
         }
 
         public void HandleStartBoss()
         {
-            StageManager.Instance.currentStage = _bossStage;
-            StageManager.Instance.LoadScene();
+            // StageManager.Instance.currentStage = _bossStage;
+            // StageManager.Instance.LoadScene();
         }
 
         public void ResetData()
@@ -38,7 +38,7 @@ namespace TitleScene
             }
             else
             {
-                Debug.Log("¹ÖµÊ");
+                Debug.Log("ï¿½Öµï¿½");
             }
         }
 
