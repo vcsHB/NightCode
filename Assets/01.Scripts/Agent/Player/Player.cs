@@ -27,8 +27,9 @@ namespace Agents.Players
 
             InitState();
         }
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             StateMachine.StartState();
 
             if (_startDisable) gameObject.SetActive(false);

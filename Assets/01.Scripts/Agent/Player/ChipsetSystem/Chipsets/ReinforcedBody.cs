@@ -15,7 +15,8 @@ namespace Agents.Players.ChipsetSystem
             base.Initialize(owner, enviromentData);
             _health = owner.HealthCompo;
             healthStat = _status.GetStat(StatusEnumType.Health);
-            healthStat.AddModifier(_increaseAmount);
+            Debug.Log("_increaseAmount:" + _increaseAmount);
+            healthStat.AddBuffDebuff(this, _increaseAmount);
         }
 
     }
