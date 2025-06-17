@@ -19,9 +19,5 @@ namespace Dialog.SituationControl
             _playerInput.SetEnabledAllStatus();
         }
 
-        public void GoToTitle()
-        {
-            StageManager.Instance.GoToTitle();
-        }
     }
 }
