@@ -2,6 +2,7 @@ using Agents.Players.WeaponSystem;
 using Chipset;
 using Combat.PlayerTagSystem;
 using Core.DataControl;
+using System;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Shop
 {
     public class DisplayStand : MonoBehaviour
     {
+        public event Action onBuyGoods;
         public ChipsetGruopSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
 
@@ -66,6 +68,7 @@ namespace Shop
                     break;
             }
 
+            onBuyGoods?.Invoke();
             isGoodsExist = false;
             textObject.gameObject.SetActive(false);
             CreditCollector.Instance.UseCredit(shopGoods.cost);
