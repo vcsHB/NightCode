@@ -51,6 +51,9 @@ namespace Map
         public MapNode GetNode(Vector2Int position)
             => _nodeMap[position.x][position.y];
 
+        public bool IsCharacterExsists(CharacterEnum character)
+            => characterCurrentPosition.ContainsKey(character);
+
         #endregion
     }
 
