@@ -14944,18 +14944,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7815970587858334096}
-        m_TargetAssemblyTypeName: Agents.Players.AimController, Assembly-CSharp
-        m_MethodName: RemoveWire
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   OnDieEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -15058,7 +15046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponListSO: {fileID: 11400000, guid: 55b2c27ca9ca3bd41b8f8cef0968a30f, type: 2}
-  _weaponSO: {fileID: 11400000, guid: f91aad9024271a24e92fba8af33510ff, type: 2}
+  _weaponSO: {fileID: 11400000, guid: 38d84fb612b614742b159c4c6c1e7df7, type: 2}
 --- !u!114 &8777678497591056494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15128,6 +15116,9 @@ MonoBehaviour:
     _isUseOverride: 0
     _overrideBaseValue: 0
   - _stat: {fileID: 11400000, guid: 655faec49df7d2443b3cbb8f93f96595, type: 2}
+    _isUseOverride: 0
+    _overrideBaseValue: 0
+  - _stat: {fileID: 11400000, guid: 0db427e2f796d224297834039fa4fecf, type: 2}
     _isUseOverride: 0
     _overrideBaseValue: 0
 --- !u!1 &4197820437373514982
@@ -26476,17 +26467,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7207847292406125900, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
   m_PrefabInstance: {fileID: 7043422557452988378}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7815970587858334096 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 993224764997181002, guid: 8d7f7b81f5d8b6748bb45c97e7dd74f0, type: 3}
-  m_PrefabInstance: {fileID: 7043422557452988378}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be10c405370acd4385538a9e083dc51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7779158372361429248
 PrefabInstance:
   m_ObjectHideFlags: 0

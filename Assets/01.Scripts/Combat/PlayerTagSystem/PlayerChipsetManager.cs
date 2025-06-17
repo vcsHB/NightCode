@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Agents.Players;
 using Agents.Players.ChipsetSystem;
@@ -8,7 +9,9 @@ namespace Combat.PlayerTagSystem
 {
     public class EnvironmentData
     {
+        public Action OnCharacterAmountChangedEvent;
         public int charatcerAmount;
+        public int currentAliveCharacterAmount;
 
     }
     public class PlayerChipsetManager : MonoBehaviour, IPlayerSubManager
@@ -18,13 +21,16 @@ namespace Combat.PlayerTagSystem
         private List<PlayerChipsetController> _playerChipsetControllers = new();
         private List<Player> PlayerList => _playerManager.playerList;
         private EnvironmentData _environmentData;
+        private int _currentLeftPlayerAmount;
 
         public void AfterInit()
         {
             // ChipsetController List Init
             foreach (var player in PlayerList)
             {
-                _playerChipsetControllers.Add(player.GetCompo<PlayerChipsetController>());
+                PlayerChipsetController controller = player.GetCompo<PlayerChipsetController>();
+                _playerChipsetControllers.Add(controller);
+                controller.Initialize(_environmentData);
             }
 
             // 각 플레이어 데이터에 대해 칩셋 로드 및 적용
@@ -49,13 +55,22 @@ namespace Combat.PlayerTagSystem
             }
         }
 
+        private void HandlePlayerRetire()
+        {
+            _environmentData.currentAliveCharacterAmount--;
+            _environmentData.OnCharacterAmountChangedEvent?.Invoke();
+        }
 
         public void Initialize(PlayerManager playerManager)
         {
             _playerManager = playerManager;
+
+            _currentLeftPlayerAmount = _playerManager.PlayerDatas.Count;
+            _playerManager.OnPlayerDieEvent.AddListener(HandlePlayerRetire);
             _environmentData = new EnvironmentData()
             {
-                charatcerAmount = _playerManager.PlayerDatas.Count
+                charatcerAmount = _currentLeftPlayerAmount,
+                currentAliveCharacterAmount = _currentLeftPlayerAmount
             };
 
         }

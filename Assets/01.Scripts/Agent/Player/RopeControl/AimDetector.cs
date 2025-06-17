@@ -66,22 +66,40 @@ namespace Agents.Players
             _mousePos = Camera.main.ScreenToWorldPoint(_player.PlayerInput.MousePosition);
             _direction = _mousePos - (Vector2)transform.position;
 
-            bool targetUpdated = false;
+            _isTargeted = false;
+            _targetTrm = null;
 
-            RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, _shootRadius, _wallLayer | _targetLayer);
-            if (boxHit.collider != null)
+            float maxDistance = _shootRadius;
+
+            // 레이캐스트
+            RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, maxDistance, _ignoreLayer);
+            RaycastHit2D wallHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, maxDistance, _wallLayer);
+            RaycastHit2D magnetHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, maxDistance, _magnetLayer);
+            RaycastHit2D targetHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, maxDistance, _targetLayer);
+
+            // 거리 초기화
+            float ignoreDist = ignoreHit.collider ? ignoreHit.distance : Mathf.Infinity;
+            float wallDist = wallHit.collider ? wallHit.distance : Mathf.Infinity;
+            float magnetDist = magnetHit.collider ? magnetHit.distance : Mathf.Infinity;
+            float targetDist = targetHit.collider ? targetHit.distance : Mathf.Infinity;
+
+            // 가장 가까운 hit 찾기
+            float closest = Mathf.Min(ignoreDist, wallDist, magnetDist, targetDist);
+
+            if (closest == ignoreDist)
             {
-                RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, boxHit.distance, _ignoreLayer);
-                if (ignoreHit.collider == null)
-                {
-                    _isTargeted = true;
-                    _targetPos = boxHit.point;
-                    _targetTrm = boxHit.collider.transform;
-                    targetUpdated = true;
-                }
+                ClearTarget(); // 무시
             }
-            RaycastHit2D magnetHit = Physics2D.CircleCast(transform.position, _castRadius, _direction.normalized, _shootRadius, _magnetLayer);
-            if (magnetHit.collider != null && magnetHit.collider.TryGetComponent(out IGrabable grabTarget))
+            else if (closest == wallDist)
+            {
+                _grabTarget?.OnAimExited();
+                _grabTarget = null;
+
+                _isTargeted = true;
+                _targetTrm = wallHit.transform;
+                _targetPos = wallHit.point;
+            }
+            else if (closest == magnetDist && magnetHit.collider.TryGetComponent(out IGrabable grabTarget))
             {
                 if (_grabTarget != grabTarget)
                 {
@@ -90,66 +108,38 @@ namespace Agents.Players
                 }
 
                 _grabTarget = grabTarget;
-                _targetPos = grabTarget.GetTransform.position;
-                _targetTrm = grabTarget.GetTransform;
                 _isTargeted = true;
-                targetUpdated = true;
+                _targetTrm = grabTarget.GetTransform;
+                _targetPos = grabTarget.GetTransform.position;
             }
-
-            if (!targetUpdated)
+            else if (closest == targetDist)
             {
-                bool shouldClear = false;
+                _grabTarget?.OnAimExited();
+                _grabTarget = null;
 
-                if (_grabTarget != null)
-                {
-                    if (ShouldClearTarget(_grabTarget.GetTransform.position))
-                    {
-                        _grabTarget.OnAimExited();
-                        _grabTarget = null;
-                        shouldClear = true;
-                    }
-                    else
-                    {
-                        _targetPos = _grabTarget.GetTransform.position;
-                        _targetTrm = _grabTarget.GetTransform;
-                        _isTargeted = true;
-                    }
-                }
-
-                if (_targetTrm != null && !shouldClear)
-                {
-                    if (ShouldClearTarget(_targetTrm.position))
-                    {
-                        _targetTrm = null;
-                        shouldClear = true;
-                    }
-                    else
-                    {
-                        _targetPos = _targetTrm.position;
-                        _isTargeted = true;
-                    }
-                }
-
-                if (shouldClear)
-                {
-                    _isTargeted = false;
-                }
+                _isTargeted = true;
+                _targetTrm = targetHit.transform;
+                _targetPos = targetHit.point;
+            }
+            else
+            {
+                ClearTarget(); // 아무것도 없음
             }
 
             InvokeGrabDataEvent();
             InvokeAimDataEvent();
         }
 
-        private bool ShouldClearTarget(Vector2 targetPos)
+        private void ClearTarget()
         {
-            float dist = Vector2.Distance(transform.position, targetPos);
-            if (dist > _shootRadius)
-                return true;
+            if (_grabTarget != null)
+            {
+                _grabTarget.OnAimExited();
+                _grabTarget = null;
+            }
 
-            Vector2 toTargetDir = (targetPos - (Vector2)transform.position).normalized;
-            float dot = Vector2.Dot(_direction.normalized, toTargetDir);
-
-            return dot <= 0f;
+            _isTargeted = false;
+            _targetTrm = null;
         }
 
         private void InvokeAimDataEvent()

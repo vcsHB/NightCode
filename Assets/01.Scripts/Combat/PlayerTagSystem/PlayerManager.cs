@@ -122,10 +122,7 @@ namespace Combat.PlayerTagSystem
                 playerCharacter.SetStartDisable(i != 0);
                 playerCharacter.OnDieEvent += HandlePlayerDie;
             }
-            foreach (var subManager in _subManagers)
-            {
-                subManager.Value.AfterInit();
-            }
+            Invoke(nameof(AfterInit), 2f);
 
             CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
             _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
@@ -133,7 +130,20 @@ namespace Combat.PlayerTagSystem
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
 
             if (!_mapLoader.useDebugMode)
-                CurrentPlayerTrm.position = _mapLoader.CurrentLevel.StartPos;
+            {
+
+                for (int i = 0; i < playerList.Count; i++)
+                {
+                    playerList[i].transform.position = _mapLoader.CurrentLevel.StartPos;
+                }
+            }
+        }
+        private void AfterInit()
+        {
+            foreach (var subManager in _subManagers)
+            {
+                subManager.Value.AfterInit();
+            }
         }
 
         public void Change(int index)

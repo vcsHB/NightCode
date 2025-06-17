@@ -27,7 +27,13 @@ namespace Agents
             AddComponentToDictionary();
             ComponentInitialize();
             AfterInit();
+            HealthCompo.Initialize();
             EnergyController = GetCompo<PlayerCombatEnergyController>();
+        }
+
+        protected virtual void Start()
+        {
+
         }
 
         private void AddComponentToDictionary()

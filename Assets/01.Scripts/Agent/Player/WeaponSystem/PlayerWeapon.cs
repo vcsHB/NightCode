@@ -5,6 +5,7 @@ namespace Agents.Players.WeaponSystem
     // It works for Normal Attack
     public abstract class PlayerWeapon : MonoBehaviour
     {
+        public event Action OnAttackSuccessEvent;
         protected Player _player;
         protected PlayerAnimationTrigger _animationTrigger;
         protected PlayerCombatEnergyController _energyController;
@@ -30,6 +31,11 @@ namespace Agents.Players.WeaponSystem
             _energyController = _player.GetCompo<PlayerCombatEnergyController>();
             Cost = cost;
 
+        }
+
+        protected void InvokeAttackSuccess()
+        {
+            OnAttackSuccessEvent?.Invoke();
         }
     }
 }
