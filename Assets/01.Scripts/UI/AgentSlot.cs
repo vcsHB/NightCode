@@ -26,15 +26,20 @@ namespace UI
             _canvasGroup = GetComponent<CanvasGroup>();
             _isRetired = !characterController.MapGraph.IsCharacterExsists(character);
             retirePanel.SetActive(_isRetired);
+            if (_isRetired) _canvasGroup.alpha = 1;
         }
 
         public void SetSelection(bool isSelected)
         {
             if (_isRetired) return;
-
-            if(isSelected) chipsetTable.SelectInventory(character);
+            if (_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
             _canvasGroup.alpha = isSelected ? _selectionAlpha : _unSelectionAlpha;
-            OnSelectCharacter?.Invoke(character);
+
+            if (isSelected)
+            {
+                chipsetTable.SelectInventory(character);
+                OnSelectCharacter?.Invoke(character);
+            }
         }
 
         public void OnPointerClick(PointerEventData eventData)
