@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Agents.Players;
 using Agents.Players.ChipsetSystem;
@@ -8,7 +9,9 @@ namespace Combat.PlayerTagSystem
 {
     public class EnvironmentData
     {
+        public Action OnCharacterAmountChangedEvent;
         public int charatcerAmount;
+        public int currentAliveCharacterAmount;
 
     }
     public class PlayerChipsetManager : MonoBehaviour, IPlayerSubManager
@@ -18,6 +21,7 @@ namespace Combat.PlayerTagSystem
         private List<PlayerChipsetController> _playerChipsetControllers = new();
         private List<Player> PlayerList => _playerManager.playerList;
         private EnvironmentData _environmentData;
+        private int _currentLeftPlayerAmount;
 
         public void AfterInit()
         {
@@ -36,7 +40,7 @@ namespace Combat.PlayerTagSystem
                 {
                     if (chipset.chipsetType == ChipsetType.Personal)
                     {
-                        _playerChipsetControllers[i].AddChipsetFunction(chipset);
+                        _playerChipsetControllers[i].AddChipsetFunction(chipset); 
                     }
                     else // Global
                     {
@@ -49,13 +53,22 @@ namespace Combat.PlayerTagSystem
             }
         }
 
+        private void HandlePlayerRetire()
+        {
+            _environmentData.currentAliveCharacterAmount--;
+            _environmentData.OnCharacterAmountChangedEvent?.Invoke();
+        }
 
         public void Initialize(PlayerManager playerManager)
         {
             _playerManager = playerManager;
+
+            _currentLeftPlayerAmount = _playerManager.PlayerDatas.Count;
+            _playerManager.OnPlayerDieEvent.AddListener(HandlePlayerRetire);
             _environmentData = new EnvironmentData()
             {
-                charatcerAmount = _playerManager.PlayerDatas.Count
+                charatcerAmount = _currentLeftPlayerAmount,
+                currentAliveCharacterAmount = _currentLeftPlayerAmount
             };
 
         }

@@ -17,11 +17,5 @@ namespace Agents.Players.ChipsetSystem
             _status = _owner.GetCompo<AgentStatus>();
 
         }
-
-        
-
-
-
-
     }
 }
