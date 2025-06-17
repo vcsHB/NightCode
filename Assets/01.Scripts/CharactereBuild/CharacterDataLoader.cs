@@ -92,6 +92,7 @@ namespace Core.DataControl
     {
         public List<CharacterData> charcterData;
         public List<int> containWeaponId;
+        public int credit;
 
         public CharacterSave()
         {

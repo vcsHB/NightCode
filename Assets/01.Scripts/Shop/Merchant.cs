@@ -1,0 +1,31 @@
+using Core.DataControl;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Shop
+{
+    public class Merchant : MonoBehaviour
+    {
+        public List<ShopGoodsSO> exsistGoods;
+
+        public int standCount = 3;
+        public List<DisplayStand> displayStands;
+
+
+        public void Awake()
+        {
+            Init();
+        }
+
+        private void Init()
+        {
+            List<ShopGoodsSO> goods = RandomUtility.GetRandomsInListNotDuplicated(exsistGoods, displayStands.Count);
+
+            for (int i = 0; i < displayStands.Count; i++)
+            {
+                if (goods[i].goodsType == GoodsType.Weapon && DataLoader.Instance.IsWeaponExstist(goods[i].id)) continue;
+                displayStands[i].SetGoods(goods[i]);
+            }
+        }
+    }
+}

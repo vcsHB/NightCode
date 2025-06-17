@@ -18,12 +18,20 @@ namespace Core.DataControl
 
         private MapSave _mapSave;
         private ChipsetInventorySave _chipsetSave;
-        private CharacterSave _weaponData;
+        private CharacterSave _characterSave;
+
+        public int Credit => _characterSave.credit;
 
         protected override void Awake()
         {
             base.Awake();
             Load();
+        }
+
+        public void AddCredit(int amount)
+        {
+            _characterSave.credit += amount;
+            Save();
         }
 
         public MapNodeSO GetCurrentMap()
@@ -60,6 +68,14 @@ namespace Core.DataControl
         public void CompleteMap()
         {
             _mapSave.isEnteredStageClear = true;
+            _mapSave.isFailStageClear = false;
+            Save();
+        }
+
+        public void FailMap()
+        {
+            _mapSave.isEnteredStageClear = false;
+            _mapSave.isFailStageClear = true;
             Save();
         }
 
@@ -71,18 +87,35 @@ namespace Core.DataControl
 
             _mapSave = JsonUtility.FromJson<MapSave>(mapJson);
             _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(chipsetJson);
-            _weaponData = JsonUtility.FromJson<CharacterSave>(characterJson);
+            _characterSave = JsonUtility.FromJson<CharacterSave>(characterJson);
         }
 
         public void Save()
         {
             string mapJson = JsonUtility.ToJson(_mapSave);
             string chipsetJson = JsonUtility.ToJson(_chipsetSave);
-            string characterJson = JsonUtility.ToJson(_weaponData);
+            string characterJson = JsonUtility.ToJson(_characterSave);
 
             File.WriteAllText(_mapSavePath, mapJson);
             File.WriteAllText(_chipsetSavePath, chipsetJson);
             File.WriteAllText(_characterSavePath, characterJson);
+        }
+
+        public void AddChipset(ushort id)
+        {
+            _chipsetSave.containChipsets.Add(id);
+            Save();
+        }
+
+        public void AddWeapon(int id)
+        {
+            _characterSave.containWeaponId.Add(id);
+            Save();
+        }
+
+        public bool IsWeaponExstist(int id)
+        {
+            return _characterSave.containWeaponId.Contains(id);
         }
     }
 }
