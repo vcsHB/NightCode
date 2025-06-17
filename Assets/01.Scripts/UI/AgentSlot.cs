@@ -2,12 +2,14 @@ using Chipset;
 using Map;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace UI
 {
     public class AgentSlot : MonoBehaviour, IPointerClickHandler
     {
+        public UnityEvent<CharacterEnum> SelectCharacterEvent;
         public event Action<CharacterEnum> OnSelectCharacter;
 
         public MapController characterController;
@@ -39,6 +41,7 @@ namespace UI
             {
                 chipsetTable.SelectInventory(character);
                 OnSelectCharacter?.Invoke(character);
+                SelectCharacterEvent?.Invoke(character);
             }
         }
 

@@ -102,7 +102,7 @@ namespace Chipset
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (inventory.SelectedChipsetIndex != -1) _dragPanel.alpha = 0;
+            _dragPanel.alpha = 0;
             inventory.onReturnChipset -= SetAssignChipset;
         }
 
@@ -124,6 +124,7 @@ namespace Chipset
 
             inventory.RemoveChipset(inventory.SelectedChipsetIndex);
             inventory.OnPointerDownChipset(-1);
+            _dragPanel.alpha = 0;
         }
     }
 

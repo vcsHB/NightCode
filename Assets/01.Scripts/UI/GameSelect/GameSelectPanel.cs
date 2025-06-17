@@ -1,10 +1,13 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace UI.GameSelectScene
 {
     public class GameSelectPanel : MonoBehaviour, IWindowPanel
     {
+        public UnityEvent onClose;
+
         private CanvasGroup _canvasGroup;
         private Tween _openTween;
 
@@ -16,6 +19,7 @@ namespace UI.GameSelectScene
             _openTween = _canvasGroup.DOFade(0f, _duration);
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
+            onClose?.Invoke();
         }
 
         public void Open()

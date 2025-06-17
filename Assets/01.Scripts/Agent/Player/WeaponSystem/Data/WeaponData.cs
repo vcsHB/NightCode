@@ -4,6 +4,12 @@ namespace Agents.Players.WeaponSystem
     public class WeaponData
     {
         public int id;
-        public bool isEnabled;
+        public int selectedCharacter;
+
+        public WeaponData(int id, int character)
+        {
+            this.id = id;
+            this.selectedCharacter = character;
+        }
     }
 }

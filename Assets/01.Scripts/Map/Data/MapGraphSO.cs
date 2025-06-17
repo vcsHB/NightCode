@@ -60,12 +60,12 @@ namespace Map
                     && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
                     return RandomUtility.GetRandomInList(combats).Instantiate();
                 case NodeType.Encounter:
-                    var encounters = combatNodes.Where(node =>
+                    var encounters = encounterNodes.Where(node =>
                     Mathf.Abs(node.difficulty.level - difficultyRange.x) >= 0
                     && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
                     return RandomUtility.GetRandomInList(encounters).Instantiate();
                 case NodeType.Shop:
-                    var shops = combatNodes.Where(node =>
+                    var shops = shopNodes.Where(node =>
                     Mathf.Abs(node.difficulty.level - difficultyRange.x) >= 0
                     && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
                     return RandomUtility.GetRandomInList(shops).Instantiate();
