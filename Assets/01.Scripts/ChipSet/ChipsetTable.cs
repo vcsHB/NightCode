@@ -14,7 +14,6 @@ namespace Chipset
         public ChipsetGruopSO chipsetGruopSO;
         private Dictionary<CharacterEnum, ChipsetInventory> _inventory;
         private CharacterEnum _selectedCharacter;
-
         private List<Vector2Int> _openInventory;
 
         public CharacterEnum SelectedCharacter => _selectedCharacter;

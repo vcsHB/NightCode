@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace UI.GameSelectScene.CharacterSetting
@@ -28,7 +27,7 @@ namespace UI.GameSelectScene.CharacterSetting
         {
             foreach (var slot in _agentSlots)
             {
-                if(slot.character != character) 
+                if (slot.character != character)
                     slot.SetSelection(false);
             }
         }
