@@ -3,6 +3,7 @@ using QuestSystem.LevelSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Map
 {
     public abstract class MapNodeSO : ScriptableObject

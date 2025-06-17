@@ -28,6 +28,7 @@ namespace Agents.Enemies
     public enum EnemyType
     {
         None,
-        DummyShooter
+        DummyShooter,
+        LaserShooter,
     }
 }

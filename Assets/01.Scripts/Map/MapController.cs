@@ -24,6 +24,7 @@ namespace Map
 
         #region Property
 
+        public MapGraph MapGraph => _mapGraph;
         public int CurrentChapter { get; private set; }
         public int CurrentDepth { get; private set; }
 

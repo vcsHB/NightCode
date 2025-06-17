@@ -37,6 +37,8 @@ namespace Map
 
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
+                if (_mapGraph.IsCharacterExsists(character) == false) continue;
+
                 Vector2Int position = _mapGraph.GetCharacterOriginPosition(character);
                 MapNode node = _mapGraph.GetNode(position);
                 node.SetSelectObjectEnable(true);
