@@ -213,7 +213,8 @@ namespace Chipset
 
         public void SetActive(bool isEnable)
         {
-            gameObject.SetActive(isEnable);
+            if(isEnable) transform.localScale = Vector3.one;
+            else transform.localScale = Vector3.zero;
         }
 
         public void SetRotation(int rotation)

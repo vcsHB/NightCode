@@ -131,7 +131,6 @@ namespace Chipset
 
         public void OnPointerDownChipset(int chipsetIndex)
         {
-            Debug.Log(chipsetIndex);
             _selectedChipsetIndex = chipsetIndex;
 
             if (chipsetIndex != -1 && _assignedChipsets.ContainsKey(chipsetIndex))
@@ -208,6 +207,11 @@ namespace Chipset
 
         public void AssignChipsetToInventory(Chipset chipset)
         {
+            if(_exsistingChipset.Contains(chipset))
+            {
+                chipset.SetActive(true);
+                return;
+            }
             chipset.SetActive(true);
             chipset.onSelectChipset += OnPointerDownChipset;
             chipset.onPointerUpChipset += OnPointerUpChipset;
@@ -239,11 +243,6 @@ namespace Chipset
 
             Vector2Int center = selectPosition - chipset.GetSelectOffset();
             _assignedChipsets.Add(chipsetIndex, (center, chipset.Rotation));
-
-            if (_exsistingChipset.Contains(chipset))
-            {
-                _exsistingChipset.Remove(chipset);
-            }
 
             _selectedChipsetIndex = chipsetIndex;
             chipset.SetPosition(GetCenterPostion(selectPosition));
