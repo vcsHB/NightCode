@@ -128,7 +128,8 @@ namespace Combat.PlayerTagSystem
             SetPlayer(CurrentPlayer);
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
 
-            CurrentPlayerTrm.position = _mapLoader.CurrentLevel.StartPos;
+            if (!_mapLoader.useDebugMode)
+                CurrentPlayerTrm.position = _mapLoader.CurrentLevel.StartPos;
         }
 
         public void Change(int index)
