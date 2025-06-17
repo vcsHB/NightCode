@@ -8,11 +8,12 @@ namespace Core.DataControl
     {
         private MapNodeSO _currentMap;
         private LevelMap levelInstance;
-
+        public bool useDebugMode;
         public LevelMap CurrentLevel => levelInstance;
 
         private void Awake()
         {
+            if (useDebugMode) return;
             _currentMap = DataLoader.Instance.GetCurrentMap();
 
             if (_currentMap == null)

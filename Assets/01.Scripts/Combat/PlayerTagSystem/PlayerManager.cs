@@ -129,9 +129,13 @@ namespace Combat.PlayerTagSystem
             SetPlayer(CurrentPlayer);
             _characterSelectWindow.SelectCharacter(CurrentPlayerData.id);
 
-            for (int i = 0; i < playerList.Count; i++)
+            if (!_mapLoader.useDebugMode)
             {
-                playerList[i].transform.position = _mapLoader.CurrentLevel.StartPos;
+
+                for (int i = 0; i < playerList.Count; i++)
+                {
+                    playerList[i].transform.position = _mapLoader.CurrentLevel.StartPos;
+                }
             }
         }
         private void AfterInit()
