@@ -37,6 +37,10 @@ namespace Combat.PlayerTagSystem
             _subWeaponPanel.SetWeapon(currentController.SubWeaponSO);
 
         }
+
+        public void AfterInit()
+        {
+        }
     }
 }
 
