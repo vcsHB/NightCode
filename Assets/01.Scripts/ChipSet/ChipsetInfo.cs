@@ -8,9 +8,11 @@ using UnityEngine.UI;
 
 namespace Chipset
 {
-    public class ChipsetInfo : MonoBehaviour, IPointerDownHandler
+    public class ChipsetInfo : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public event Action<Chipset> onInsertChipset;
+        public event Action<ChipsetSO> onEnter;
+        public event Action onExit;
 
         [SerializeField] private Image _icon;
         private Chipset _assignedChipset;
@@ -82,6 +84,16 @@ namespace Chipset
 
             _inventory.onInsertChipset += OnInsertChipset;
             _inventory.onReturnChipset += OnReturnChipset;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            onExit?.Invoke();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            onEnter?.Invoke(_assignedChipset.info);
         }
     }
 }
