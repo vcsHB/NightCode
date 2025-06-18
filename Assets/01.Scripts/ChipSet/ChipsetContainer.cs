@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Chipset
 {
     public class ChipsetContainer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        public UnityEvent<ChipsetSO> SetExplain;
+        public UnityEvent UnSetExplain;
+
         public ChipsetGruopSO chipsetGroup;
         [Space]
         public List<int> usedGlobalChipsetIndex;
@@ -52,6 +56,8 @@ namespace Chipset
                 ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
                 chipsetInfo.Init(inventory, chipsetInstanceContainer[i]);
                 chipsetInfo.onInsertChipset += OnInsertChipset;
+                chipsetInfo.onEnter += HandleSetExplain;
+                chipsetInfo.onExit += HandleUnSetExplain;
                 _chipsetInfos.Add(chipsetInstanceContainer[i], chipsetInfo);
             }
         }
@@ -74,6 +80,8 @@ namespace Chipset
         {
             Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
             chipset.SetIndex(containChipset.Count);
+            chipset.SetExplain += HandleSetExplain;
+            chipset.UnSetExplain += HandleUnSetExplain;
 
             containChipset.Add(chipsetSO);
             chipsetInstanceContainer.Add(chipset);
@@ -82,7 +90,19 @@ namespace Chipset
             ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
             chipsetInfo.Init(inventory, chipset);
             chipsetInfo.onInsertChipset += OnInsertChipset;
+            chipsetInfo.onEnter += HandleSetExplain;
+            chipsetInfo.onExit += HandleUnSetExplain;
             _chipsetInfos.Add(chipset, chipsetInfo);
+        }
+
+        private void HandleSetExplain(ChipsetSO chipset)
+        {
+            SetExplain?.Invoke(chipset);
+        }
+
+        private void HandleUnSetExplain()
+        {
+            UnSetExplain?.Invoke();
         }
 
         private void OnInsertChipset(Chipset chipset)
@@ -120,6 +140,8 @@ namespace Chipset
             ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
             chipsetInfo.Init(inventory, chipset);
             chipsetInfo.onInsertChipset += OnInsertChipset;
+            chipsetInfo.onEnter += HandleSetExplain;
+            chipsetInfo.onExit += HandleUnSetExplain;
             _chipsetInfos.Add(chipset, chipsetInfo);
 
             inventory.RemoveChipset(inventory.SelectedChipsetIndex);
