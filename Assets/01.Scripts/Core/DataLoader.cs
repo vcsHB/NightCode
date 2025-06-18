@@ -12,6 +12,7 @@ namespace Core.DataControl
     {
         public MapGraphSO mapGraph;
         public ChipsetGruopSO chipsetGroup;
+        public PlayerWeaponListSO weaponList;
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private static string _chipsetSavePath = Path.Combine(Application.dataPath, "Save/Chipset.json");
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
@@ -52,6 +53,11 @@ namespace Core.DataControl
                 }
             }
             return characters;
+        }
+
+        public PlayerWeaponSO GetWeapon(CharacterEnum character)
+        {
+            return weaponList.GetWeapon(_characterSave.charcterData[(int)character].weaponId);
         }
 
         public ChipsetSO[] GetChipset(CharacterEnum character)

@@ -1,7 +1,9 @@
+using Core.DataControl;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace Map
 {
@@ -15,6 +17,7 @@ namespace Map
         [SerializeField] private float _xOffset;
         [SerializeField] private Transform _nodeParent;
         [SerializeField] private Transform _lineParent;
+        [SerializeField] private CharacterDataLoader _characterDataLoader;
 
         private string _path = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private MapSave _save;
@@ -112,6 +115,7 @@ namespace Map
             bool isCompleteMove = true;
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
+                if (_mapGraph.IsCharacterExsists(character) == false) continue;
                 if (_characterController.GetIcon(character).IsCompleteCurerntLevel == false) break;
                 if (_characterController.GetIcon(character).IsMoved == false)
                 {
@@ -147,12 +151,20 @@ namespace Map
             bool isComplete = true;
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                Vector2Int position = _mapGraph.GetCharcterCurrentPosition(character);
-                if (_mapGraph.GetNode(position).IsComplete == false) isComplete = false;
+                if (_mapGraph.IsCharacterExsists(character))
+                {
+                    Vector2Int position = _mapGraph.GetCharcterCurrentPosition(character);
+                    if (_mapGraph.GetNode(position).IsComplete == false) isComplete = false;
+                }
             }
 
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
-                _characterController.GetIcon(character).SetCompleteCurrentLevel(isComplete);
+            {
+                if (_mapGraph.IsCharacterExsists(character))
+                {
+                    _characterController.GetIcon(character).SetCompleteCurrentLevel(isComplete);
+                }
+            }
         }
 
         public List<Vector2Int> GetCompleteNodes()
@@ -190,12 +202,18 @@ namespace Map
             CurrentDepth = int.MaxValue;
             for (int i = 0; i < _save.characterPositions.Count; i++)
             {
-                if (_save.isFailStageClear == false)
+                CurrentDepth = Mathf.Min(CurrentDepth, _save.characterPositions[i].x);
+                if (_save.isFailStageClear && _save.characterPositions[i] == _save.enterStagePosition)
                 {
-                    _mapGraph.characterOriginPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
-                    _mapGraph.characterCurrentPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
+                    PlayerDead((CharacterEnum)i);
                 }
-                CurrentDepth = _save.characterPositions[i].x;
+                else if(_save.characterPositions[i] == -Vector2Int.one)
+                {
+                    PlayerDead((CharacterEnum)i);
+                }
+
+                _mapGraph.characterOriginPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
+                _mapGraph.characterCurrentPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
             }
 
             if (_save.isEnteredStageClear)
@@ -204,7 +222,7 @@ namespace Map
             }
             _save.isEnteredStageClear = false;
             _save.isFailStageClear = false;
-
+            _characterDataLoader.Init();
             return true;
         }
 
@@ -216,6 +234,11 @@ namespace Map
             Save();
         }
 
+        private void PlayerDead(CharacterEnum character)
+        {
+            _save.characterPositions[(int)character] = -Vector2Int.one;
+            _characterDataLoader.PlayerDead(character);
+        }
 
 
         #endregion

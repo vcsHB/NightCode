@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace UI.GameSelectScene.CharacterSetting
         private List<AgentSlot> _agentSlots;
         private Dictionary<CharacterEnum, AgentSlot> _agentSlotDictionary;
 
-        private void Awake()
+        private void Start()
         {
             _agentSlots = GetComponentsInChildren<AgentSlot>().ToList();
             _agentSlotDictionary = new Dictionary<CharacterEnum, AgentSlot>();
@@ -20,7 +21,14 @@ namespace UI.GameSelectScene.CharacterSetting
                 _agentSlots[i].OnSelectCharacter += HandleSelectCharacter;
             }
 
-            _agentSlotDictionary[CharacterEnum.An].SetSelection(true);
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                if (_agentSlotDictionary[character].isRetired == false)
+                {
+                    _agentSlotDictionary[character].SetSelection(true);
+                    break;
+                }
+            }
         }
 
         private void HandleSelectCharacter(CharacterEnum character)

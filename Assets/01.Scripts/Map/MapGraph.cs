@@ -52,7 +52,9 @@ namespace Map
             => _nodeMap[position.x][position.y];
 
         public bool IsCharacterExsists(CharacterEnum character)
-            => characterCurrentPosition.ContainsKey(character);
+        {
+            return characterCurrentPosition[character] != -Vector2Int.one;
+        }
 
         #endregion
     }

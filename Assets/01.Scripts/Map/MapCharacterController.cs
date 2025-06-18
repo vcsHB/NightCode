@@ -31,8 +31,11 @@ namespace Map
             bool isComplete = true;
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                Vector2Int position = _mapGraph.GetCharcterCurrentPosition(character);
-                if (_mapGraph.GetNode(position).IsComplete == false) isComplete = false;
+                if (_mapGraph.IsCharacterExsists(character))
+                {
+                    Vector2Int position = _mapGraph.GetCharcterCurrentPosition(character);
+                    if (_mapGraph.GetNode(position).IsComplete == false) isComplete = false;
+                }
             }
 
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
