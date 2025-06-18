@@ -57,7 +57,11 @@ namespace Core.DataControl
 
         public void Save()
         {
-            if (_characterSave == null) InitializeData();
+            if (_characterSave == null)
+            {
+                Load();
+                return;
+            };
 
             string json = JsonUtility.ToJson(_characterSave, true);
             File.WriteAllText(_path, json);
