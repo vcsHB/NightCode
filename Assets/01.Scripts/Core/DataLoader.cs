@@ -13,6 +13,8 @@ namespace Core.DataControl
     public class DataLoader : MonoSingleton<DataLoader>
     {
         public UnityEvent onLoad;
+        public CharacterDataInitializeSO characterInitialize;
+        public ChipsetInitializeSO chipsetInitialize;
 
         public MapGraphSO mapGraph;
         public ChipsetGruopSO chipsetGroup;
@@ -28,6 +30,7 @@ namespace Core.DataControl
         private UserData _userData;
 
         public int Credit => _characterSave.credit;
+
 
         protected override void Awake()
         {
@@ -100,26 +103,95 @@ namespace Core.DataControl
         {
             onLoad?.Invoke();
 
-            Dictionary<string, Action<string>> loadActions = new()
+            if (File.Exists(_mapSavePath) == false)
             {
-                { _mapSavePath,         json => _mapSave = JsonUtility.FromJson<MapSave>(json) ?? null },
-                { _chipsetSavePath,     json => _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(json) ?? null },
-                { _characterSavePath,   json => _characterSave = JsonUtility.FromJson<CharacterSave>(json) ?? null },
-                { _userDataSavePath,    json => _userData = JsonUtility.FromJson<UserData>(json) ?? new UserData() },
-            };
+                _mapSave = new MapSave();
 
-            foreach (var entry in loadActions)
+                string json = JsonUtility.ToJson(_mapSave);
+                File.WriteAllText(_mapSavePath, json);
+            }
+            else
             {
-                string path = entry.Key;
+                string mapJson = File.ReadAllText(_mapSavePath);
+                _mapSave = JsonUtility.FromJson<MapSave>(mapJson);
+            }
 
-                if (!File.Exists(path))
+            if (File.Exists(_chipsetSavePath) == false)
+            {
+                _chipsetSave = new ChipsetInventorySave();
+
+                _chipsetSave.openInventory = chipsetInitialize.openInventory;
+                _chipsetSave.containChipsets = chipsetInitialize.containChipsets.ConvertAll(Chipset => Chipset.id);
+
+                _chipsetSave.anChipset = new List<ChipsetSave>();
+                _chipsetSave.jinLayChipset = new List<ChipsetSave>();
+                _chipsetSave.binaChipset = new List<ChipsetSave>();
+
+                string json = JsonUtility.ToJson(_chipsetSave);
+                File.WriteAllText(_chipsetSavePath, json);
+            }
+            else
+            {
+                string chipsetJson = File.ReadAllText(_chipsetSavePath);
+                _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(chipsetJson);
+            }
+
+            if (File.Exists(_characterSavePath) == false)
+            {
+                _characterSave = new CharacterSave();
+
+                _characterSave.charcterData[(int)CharacterEnum.An].weaponId = characterInitialize.anInitializeWeapon.id;
+                _characterSave.charcterData[(int)CharacterEnum.JinLay].weaponId = characterInitialize.jinInitializeWeapon.id;
+                _characterSave.charcterData[(int)CharacterEnum.Bina].weaponId = characterInitialize.binaInitializeWeapon.id;
+
+                for (int i = 0; i < 3; i++)
                 {
-                    File.WriteAllText(path, "{}");
+                    _characterSave.charcterData[i].health = 100;
+                    _characterSave.containWeaponId.Add(_characterSave.charcterData[i].weaponId);
                 }
 
-                string json = File.ReadAllText(path);
-                entry.Value(json);
+                string json = JsonUtility.ToJson(_characterSave);
+                File.WriteAllText(_characterSavePath, json);
             }
+            else
+            {
+                string characterJson = File.ReadAllText(_characterSavePath);
+                _characterSave = JsonUtility.FromJson<CharacterSave>(characterJson);
+            }
+
+            if (File.Exists(_userDataSavePath) == false)
+            {
+                _userData = new UserData();
+
+                string json = JsonUtility.ToJson(_userData);
+                File.WriteAllText(_userDataSavePath, json);
+            }
+            else
+            {
+                string userDataJson = File.ReadAllText(_userDataSavePath);
+                _userData = JsonUtility.FromJson<UserData>(userDataJson);
+            }
+
+            //Dictionary<string, Action<string>> loadActions = new()
+            //{
+            //    { _mapSavePath,         json => _mapSave = JsonUtility.FromJson<MapSave>(json) ?? null },
+            //    { _chipsetSavePath,     json => _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(json) ?? null },
+            //    { _characterSavePath,   json => _characterSave = JsonUtility.FromJson<CharacterSave>(json) ?? null },
+            //    { _userDataSavePath,    json => _userData = JsonUtility.FromJson<UserData>(json) ?? new UserData() },
+            //};
+
+            //foreach (var entry in loadActions)
+            //{
+            //    string path = entry.Key;
+
+            //    if (!File.Exists(path))
+            //    {
+            //        File.WriteAllText(path, "{}");
+            //    }
+
+            //    string json = File.ReadAllText(path);
+            //    entry.Value(json);
+            //}
         }
 
         public void Save()
