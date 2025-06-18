@@ -77,6 +77,7 @@ namespace Map
             diff += to.anchoredPosition;
 
             UILineRenderer lineRenderer = Instantiate(_edgePrefab, target.LeftEdge);
+            lineRenderer.rectTransform.anchoredPosition = Vector3.zero;
             lineRenderer.SetMaterial(lineRenderer.material);
 
             lineRenderer.SetColor(NodeColor, target.NodeColor);
@@ -87,7 +88,7 @@ namespace Map
             lineRenderer.points[2] = new Vector2(diff.x * 0.2f, 0);
             lineRenderer.points[3] = Vector2.zero;
 
-            lineRenderer.transform.parent = lineParent;
+            //lineRenderer.transform.parent = lineParent;
             _connectionLines.Add(target, lineRenderer);
         }
 
