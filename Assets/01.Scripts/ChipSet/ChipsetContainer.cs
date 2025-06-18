@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Chipset
 {
     public class ChipsetContainer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        public UnityEvent<ChipsetSO> SetExplain;
+        public UnityEvent UnSetExplain;
+
         public ChipsetGruopSO chipsetGroup;
         [Space]
         public List<int> usedGlobalChipsetIndex;
@@ -74,6 +78,8 @@ namespace Chipset
         {
             Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
             chipset.SetIndex(containChipset.Count);
+            chipset.SetExplain += HandleSetExplain;
+            chipset.UnSetExplain += HandelUnSetExplain;
 
             containChipset.Add(chipsetSO);
             chipsetInstanceContainer.Add(chipset);
@@ -83,6 +89,16 @@ namespace Chipset
             chipsetInfo.Init(inventory, chipset);
             chipsetInfo.onInsertChipset += OnInsertChipset;
             _chipsetInfos.Add(chipset, chipsetInfo);
+        }
+
+        private void HandleSetExplain(ChipsetSO chipset)
+        {
+            SetExplain?.Invoke(chipset);
+        }
+
+        private void HandelUnSetExplain()
+        {
+            UnSetExplain?.Invoke();
         }
 
         private void OnInsertChipset(Chipset chipset)

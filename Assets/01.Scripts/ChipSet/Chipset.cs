@@ -1,18 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace Chipset
 {
     public class Chipset : MonoBehaviour
     {
+        public event Action<ChipsetSO> SetExplain;
+        public event Action UnSetExplain;
         public event Action<int> onSelectChipset;
         public event Action onPointerUpChipset;
         public event Action onRotate;
@@ -44,6 +41,7 @@ namespace Chipset
         public RectTransform RectTrm => transform as RectTransform;
         public RectTransform ParentRectTrm => transform.parent as RectTransform;
 
+
         #endregion
 
 
@@ -72,7 +70,19 @@ namespace Chipset
                 _slots[i].SetPosition(info.chipsetSize[i]);
                 _slots[i].onPointerDown += OnPointerDown;
                 _slots[i].onPointerUp += OnPointerUp;
+                _slots[i].onPointerEnter += HandleSetExplain;
+                _slots[i].onPointerExit += HandleUnSetExplain;
             }
+        }
+
+        private void HandleUnSetExplain(Vector2Int position)
+        {
+            UnSetExplain?.Invoke();
+        }
+
+        private void HandleSetExplain(Vector2Int position)
+        {
+            SetExplain?.Invoke(info);
         }
 
         private void ChipsetDrag()
@@ -213,7 +223,7 @@ namespace Chipset
 
         public void SetActive(bool isEnable)
         {
-            if(isEnable) transform.localScale = Vector3.one;
+            if (isEnable) transform.localScale = Vector3.one;
             else transform.localScale = Vector3.zero;
         }
 
