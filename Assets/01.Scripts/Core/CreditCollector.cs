@@ -5,7 +5,7 @@ namespace Core.DataControl
 {
     public class CreditCollector : MonoSingleton<CreditCollector>
     {
-        public int multiplyer = 1;
+        public int multiplier = 1;
         public TextMeshProUGUI creditText;
 
         private void Start()
@@ -23,7 +23,7 @@ namespace Core.DataControl
 
         public void CollectCredit(int amount)
         {
-            DataLoader.Instance.AddCredit(amount * multiplyer);
+            DataLoader.Instance.AddCredit(amount * multiplier);
             creditText.SetText($"{DataLoader.Instance.Credit}");
         }
 
