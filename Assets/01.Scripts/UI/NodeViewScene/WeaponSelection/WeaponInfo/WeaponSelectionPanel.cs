@@ -50,6 +50,11 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
         {
             for (int i = 0; i < _slotList.Count; i++)
             {
+                if (_weaponDataGroup.weaponDatas.Length <= i) 
+                {
+                    _slotList[i].UnSetSelectionPanel();
+                    continue;
+                }
                 int weaponSelectCharacter = _weaponDataGroup.weaponDatas[i].selectedCharacter;
 
                 if (weaponSelectCharacter == -1)
