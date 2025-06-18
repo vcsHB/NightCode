@@ -102,9 +102,9 @@ namespace Core.DataControl
 
             Dictionary<string, Action<string>> loadActions = new()
             {
-                { _mapSavePath,         json => _mapSave = JsonUtility.FromJson<MapSave>(json) ?? new MapSave() },
-                { _chipsetSavePath,     json => _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(json) ?? new ChipsetInventorySave() },
-                { _characterSavePath,   json => _characterSave = JsonUtility.FromJson<CharacterSave>(json) ?? new CharacterSave() },
+                { _mapSavePath,         json => _mapSave = JsonUtility.FromJson<MapSave>(json) ?? null },
+                { _chipsetSavePath,     json => _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(json) ?? null },
+                { _characterSavePath,   json => _characterSave = JsonUtility.FromJson<CharacterSave>(json) ?? null },
                 { _userDataSavePath,    json => _userData = JsonUtility.FromJson<UserData>(json) ?? new UserData() },
             };
 
