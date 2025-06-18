@@ -7,10 +7,20 @@ namespace ObjectManage.GimmickObjects
 {
     public class GoalPosition : MonoBehaviour
     {
+        public GameObject interactIcon;
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        public void Enter()
         {
-            //일단 바로 넘어가게 해여
+            interactIcon.SetActive(true);
+        }
+
+        public void Exit()
+        {
+            interactIcon.SetActive(false);
+        }
+
+        public void ClearGame()
+        {
             DataLoader.Instance.CompleteMap();
             SceneManager.LoadScene(SceneName.MapSelectScene);
         }
