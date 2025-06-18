@@ -269,7 +269,7 @@ namespace Chipset
                 Chipset chipset = ChipsetManager.Instance.GetChipset(chipsetIndex);
 
                 ChipsetSave chipsetData = new ChipsetSave();
-                chipsetData.chipsetindex = chipset.info.id;
+                chipsetData.chipsetindex = chipsetIndex;
                 chipsetData.center = _assignedChipsets[chipsetIndex].center;
                 chipsetData.rotate = _assignedChipsets[chipsetIndex].rotate;
 

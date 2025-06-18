@@ -15,7 +15,7 @@ namespace Core.DataControl
 
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.L))
+            if(Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.C))
             {
                 CollectCredit(100);
             }

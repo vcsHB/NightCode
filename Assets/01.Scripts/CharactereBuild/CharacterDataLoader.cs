@@ -19,7 +19,7 @@ namespace Core.DataControl
         private CharacterSave _characterSave;
         [SerializeField] private WeaponDataGroup _weaponDataGroup;
 
-        private void Awake()
+        public void Init()
         {
             Load();
             _weaponMainPanel = GetComponentInChildren<WeaponMainPanel>();
@@ -29,7 +29,9 @@ namespace Core.DataControl
 
             for (int i = 0; i < _characterSave.containWeaponId.Count; i++)
             {
-                WeaponData weaponData = new WeaponData(_characterSave.containWeaponId[i], i);
+                var characterData = _characterSave.charcterData.Find(data => data.weaponId == _characterSave.containWeaponId[i]);
+                int selected = _characterSave.charcterData.IndexOf(characterData);
+                WeaponData weaponData = new WeaponData(_characterSave.containWeaponId[i], selected);
                 _weaponDataGroup.weaponDatas[i] = weaponData;
             }
 
@@ -44,13 +46,16 @@ namespace Core.DataControl
 
         public void Save()
         {
-            if (_characterSave == null) Initialize();
+            if (_characterSave == null) InitializeData();
 
-            _characterSave.containWeaponId = _weaponDataGroup.weaponDatas.ToList().ConvertAll(data => data.id);
-
-            for (int i = 0; i < 3; i++)
+            if (_weaponDataGroup != null)
             {
-                _characterSave.charcterData[i].weaponId = _weaponDataGroup.GetWeaponData(i).id;
+                _characterSave.containWeaponId = _weaponDataGroup.weaponDatas.ToList().ConvertAll(data => data.id);
+
+                for (int i = 0; i < 3; i++)
+                {
+                    _characterSave.charcterData[i].weaponId = _weaponDataGroup.GetWeaponData(i).id;
+                }
             }
 
 
@@ -62,7 +67,7 @@ namespace Core.DataControl
         {
             if (File.Exists(_path) == false)
             {
-                Initialize();
+                InitializeData();
                 Save();
                 return;
             }
@@ -71,7 +76,7 @@ namespace Core.DataControl
             _characterSave = JsonUtility.FromJson<CharacterSave>(json);
         }
 
-        public void Initialize()
+        public void InitializeData()
         {
             _characterSave = new CharacterSave();
 
@@ -84,6 +89,17 @@ namespace Core.DataControl
                 _characterSave.charcterData[i].health = 100;
                 _characterSave.containWeaponId.Add(_characterSave.charcterData[i].weaponId);
             }
+        }
+
+        public void PlayerDead(CharacterEnum character)
+        {
+            if (_characterSave == null) Load();
+            if (_characterSave.containWeaponId.Contains(_characterSave.charcterData[(int)character].weaponId))
+            {
+                _characterSave.containWeaponId.Remove(_characterSave.charcterData[(int)character].weaponId);
+            }
+            string json = JsonUtility.ToJson(_characterSave, true);
+            File.WriteAllText(_path, json);
         }
     }
 
