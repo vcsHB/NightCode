@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Core.DataControl
 {
@@ -105,6 +106,14 @@ namespace Core.DataControl
             File.WriteAllText(_mapSavePath, mapJson);
             File.WriteAllText(_chipsetSavePath, chipsetJson);
             File.WriteAllText(_characterSavePath, characterJson);
+        }
+
+        public void AllPlayerDead()
+        {
+            File.Delete(_mapSavePath);
+            File.Delete(_chipsetSavePath);
+            File.Delete(_characterSavePath);
+            SceneManager.LoadScene(SceneName.CafeScene);
         }
 
         public void AddChipset(ushort id)

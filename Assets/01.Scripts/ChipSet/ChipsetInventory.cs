@@ -98,8 +98,7 @@ namespace Chipset
                 chipset.onSelectChipset -= OnPointerDownChipset;
                 chipset.onPointerUpChipset -= OnPointerUpChipset;
             });
-            _assignedChipsets.Keys.ToList().ForEach(chipsetIndex => 
-                    ChipsetManager.Instance.GetChipset(chipsetIndex).SetActive(false));
+            _assignedChipsets.Keys.ToList().ForEach(chipsetIndex => ChipsetManager.Instance.GetChipset(chipsetIndex).SetActive(false));
 
             _exsistingChipset.Clear();
             gameObject.SetActive(false);
@@ -175,8 +174,9 @@ namespace Chipset
 
         private void OnPointerEnterHandler(Vector2Int position)
         {
+            Debug.Log("¤±¤¤¤·¤©");
             _selectedSlot = _slots[position.x, position.y];
-            if (_selectedChipsetIndex == null)
+            if (_selectedChipsetIndex == -1)
             {
                 _selectedSlot.SetSelection(true);
             }
@@ -189,7 +189,7 @@ namespace Chipset
 
         private void OnPointerExitHandler(Vector2Int position)
         {
-            if (_selectedChipsetIndex == null)
+            if (_selectedChipsetIndex == -1)
             {
                 _slots[position.x, position.y].SetSelection(false);
             }
@@ -207,7 +207,7 @@ namespace Chipset
 
         public void AssignChipsetToInventory(Chipset chipset)
         {
-            if(_exsistingChipset.Contains(chipset))
+            if (_exsistingChipset.Contains(chipset))
             {
                 chipset.SetActive(true);
                 return;
@@ -288,9 +288,11 @@ namespace Chipset
             {
                 Chipset chipsetInstance = ChipsetManager.Instance.GetChipset(chipsetData.chipsetindex);
                 chipsetInstance.SetRotation(chipsetData.rotate);
+                chipsetInstance.onSelectChipset -= OnPointerDownChipset;
                 chipsetInstance.onSelectChipset += OnPointerDownChipset;
+                chipsetInstance.onPointerUpChipset -= OnPointerUpChipset;
                 chipsetInstance.onPointerUpChipset += OnPointerUpChipset;
-                _selectedChipsetIndex = chipsetData.chipsetindex;
+
                 InsertChipset(chipsetData.center, chipsetData.chipsetindex);
             });
 

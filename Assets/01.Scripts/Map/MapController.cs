@@ -238,6 +238,20 @@ namespace Map
         {
             _save.characterPositions[(int)character] = -Vector2Int.one;
             _characterDataLoader.PlayerDead(character);
+
+            bool isAllPlayerDead = true;
+            for(int i = 0; i < 3; i++)
+            {
+                if (_save.characterPositions[i] != -Vector2Int.one)
+                {
+                    isAllPlayerDead = false;
+                    break;
+                }
+            }
+            if(isAllPlayerDead)
+            {
+                DataLoader.Instance.AllPlayerDead();
+            }
         }
 
 
