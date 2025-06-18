@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using StatSystem;
+using UI;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,12 +14,12 @@ using UnityEditor;
 
 namespace Office.CharacterSkillTree
 {
-    public class SkillTree : OfficeUIParent
+    public class SkillTree : MonoBehaviour, IWindowPanel
     {
         public SkillTreeSO treeSO;
         public Dictionary<NodeSO, Node> nodeDic;
-        public CharacterEnum characterType;
         [SerializeField] private Node nodePf;
+        [SerializeField] private CoinIndicator _coinIndicator;
 
         public Transform nodeParent;
         public Transform edgeParent;
@@ -92,9 +94,10 @@ namespace Office.CharacterSkillTree
                 {
                     if (nodeParent.GetChild(j).TryGetComponent(out Node node))
                     {
-                        if (treeSO.nodes[i].id != node.NodeType.id) continue;
-
-                        nodeDic.Add(node.NodeType, node);
+                        if (treeSO.nodes[i] != node.NodeType) continue;
+                        nodeDic.Add(treeSO.nodes[i], node);
+                        node.onPointerEnter += _coinIndicator.SetIndicator;
+                        node.onPointerExit += _coinIndicator.Close;
                     }
                 }
             }
@@ -105,11 +108,8 @@ namespace Office.CharacterSkillTree
 
                 if (nodeDic.TryGetValue(nodeSO, out Node node))
                 {
-                    if (node.NodeType.id == 0)
-                    {
+                    if (nodeSO is StartNodeSO )
                         node.EnableNode(true);
-                    }
-                    node.Init(characterType);
                 }
             }
 
@@ -122,6 +122,10 @@ namespace Office.CharacterSkillTree
             }
         }
 
+        private void CalculateCoin()
+        {
+           
+        }
 
         public bool TryGetNode(NodeSO nodeSO, out Node node)
         {
@@ -154,7 +158,6 @@ namespace Office.CharacterSkillTree
         public TechTreeSave GetTreeSave()
         {
             TechTreeSave treeSave = new TechTreeSave();
-            treeSave.characterType = characterType;
             treeSave.openListGUID = new List<string>();
 
             treeSO.nodes.ForEach(node =>
@@ -170,12 +173,12 @@ namespace Office.CharacterSkillTree
 
         public void Load()
         {
-            TechTreeSave treeSave = SaveManager.Instance.GetStatValue(characterType);
-            treeSave.openListGUID.ForEach(openGUI =>
-            {
-                NodeSO node = treeSO.nodes.Find(node => node.guid == openGUI);
-                if (node != null) nodeDic[node].EnableNode(true);
-            });
+            //TechTreeSave treeSave = SaveManager.Instance.GetStatValue();
+            //treeSave.openListGUID.ForEach(openGUI =>
+            //{
+            //    NodeSO node = treeSO.nodes.Find(node => node.guid == openGUI);
+            //    if (node != null) nodeDic[node].EnableNode(true);
+            //});
         }
 
 
@@ -184,12 +187,12 @@ namespace Office.CharacterSkillTree
 
         #region UI
 
-        public override void OpenAnimation()
+        public void Open()
         {
             gameObject.SetActive(true);
         }
 
-        public override void CloseAnimation()
+        public void Close()
         {
             gameObject.SetActive(false);
         }

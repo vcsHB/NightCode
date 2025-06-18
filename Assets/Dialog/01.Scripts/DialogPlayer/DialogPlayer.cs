@@ -41,12 +41,21 @@ namespace Dialog
             ReadSingleLine();
         }
 
+        public virtual void SkipDialog()
+        {
+            _curReadingNode = null;
+            _readingNodeRoutine = null;
+            StopAllCoroutines();
+            EndDialog();
+        }
+
         public virtual void EndDialog()
         {
             _isReadingDialog = false;
             _curReadingNode = null;
             OnDialogEnd?.Invoke();
         }
+
 
         public virtual void ReadSingleLine()
         {
@@ -56,6 +65,7 @@ namespace Dialog
                 return;
             }
 
+            DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
             StartCoroutine(ReadingNodeRoutine());
             //DialogConditionManager.Instance.CountVisit(_curReadingNode.guid);
         }
@@ -67,7 +77,7 @@ namespace Dialog
 
         public virtual void SetTextOutDelay(float delay) => _textOutDelay = delay;
 
-        protected virtual  void Awake()
+        protected virtual void Awake()
         {
             _uiInputReader.OnSpaceEvent += HandleMoveToNextDialogue;
         }

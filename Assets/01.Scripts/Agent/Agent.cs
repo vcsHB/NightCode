@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Agents.Players;
+using Combat;
 using Core.EventSystem;
 using UnityEngine;
 
@@ -11,16 +13,27 @@ namespace Agents
         public event Action OnDieEvent;
         [field: SerializeField] public GameEventChannelSO EventChannel { get; protected set; }
 
+        public Health HealthCompo { get; protected set; }
+        public PlayerCombatEnergyController EnergyController { get; protected set; }
         public bool IsDead { get; protected set; }
         private Dictionary<Type, IAgentComponent> _components = new Dictionary<Type, IAgentComponent>();
 
         protected virtual void Awake()
         {
             EventChannel = Instantiate(EventChannel);
+            HealthCompo = GetComponent<Health>();
+            HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             AddComponentToDictionary();
             ComponentInitialize();
             AfterInit();
+            HealthCompo.Initialize();
+            EnergyController = GetCompo<PlayerCombatEnergyController>();
+        }
+
+        protected virtual void Start()
+        {
+
         }
 
         private void AddComponentToDictionary()
@@ -75,13 +88,6 @@ namespace Agents
             OnDieEvent?.Invoke();
         }
 
-        public virtual void HandleForceStun()
-        {
-            // 페링, 또는 추가 상태 이상시 스턴효과 구현
-            // 플레이어 : 미상
-            // 에너미 : Stun State강제 전환
-
-        }
 
     }
 

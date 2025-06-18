@@ -9,25 +9,26 @@ namespace Core.StageController
     {
         public event Action onCompleteOpenPanel;
         public event Action onCompletClosePanel;
-
+        [SerializeField] private float _sceneChangeIntervalDuration = 2f;
         private CanvasGroup _canvasGruop;
         private Tween _toggleTween;
 
-        private void Awake()
-        {
-            _canvasGruop = GetComponent<CanvasGroup>();
-        }
 
         public void Open()
         {
+            if(_canvasGruop == null)
+                _canvasGruop = GetComponent<CanvasGroup>();
+
             if (_toggleTween != null && _toggleTween.active)
                 _toggleTween.Kill();
 
             _canvasGruop.blocksRaycasts = true;
             _canvasGruop.interactable = true;
 
-            _toggleTween = _canvasGruop.DOFade(1f, 0.2f)
-                .OnComplete(() => onCompleteOpenPanel?.Invoke());
+            Sequence sequence = DOTween.Sequence().SetUpdate(true);
+            sequence.Append(_toggleTween = _canvasGruop.DOFade(1f, 0.2f));
+            sequence.AppendInterval(_sceneChangeIntervalDuration);
+            sequence.OnComplete(() => onCompleteOpenPanel?.Invoke());
         }
 
         public void Close()
@@ -36,6 +37,7 @@ namespace Core.StageController
                 _toggleTween.Kill();
 
             _toggleTween = _canvasGruop.DOFade(0f, 0.2f)
+                .SetUpdate(true)
                 .OnComplete(() =>
                 {
                     _canvasGruop.blocksRaycasts = false;

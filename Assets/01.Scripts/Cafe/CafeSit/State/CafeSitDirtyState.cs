@@ -5,7 +5,7 @@ namespace Base.Cafe
 {
     public class CafeSitDirtyState : CafeSitState
     {
-        private BasePlayer _player;
+        private AvatarPlayer _player;
 
 
         public CafeSitDirtyState(CafeSit cafeSit) : base(cafeSit)
@@ -14,13 +14,13 @@ namespace Base.Cafe
 
         public override void OnEnterState()
         {
-            _cafeSit.SetInteractIcon(ECafeSitIcon.CleanIcon, true);
+            //_cafeSit.SetInteractIcon(ECafeSitIcon.CleanIcon, true);
             _player = _cafeSit.Player;
         }
 
         public override void OnExitState()
         {
-            _cafeSit.SetInteractIcon(ECafeSitIcon.CleanIcon, false);
+            //_cafeSit.SetInteractIcon(ECafeSitIcon.CleanIcon, false);
             _player.RemoveClickProcessInteract(_cafeSit.CleanTable);
         }
 

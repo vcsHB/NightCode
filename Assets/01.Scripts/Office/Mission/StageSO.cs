@@ -13,9 +13,10 @@ namespace Core.StageController
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
 
-        [HideInInspector] public StageSO prevMission;
+        [HideInInspector] public StageSO prevStage;
         [HideInInspector] public StageSO nextStage;
 
+        public bool isFirstStage;
         public string displayStageName;
         public Sprite stageIcon;
         public string sceneName;

@@ -7,7 +7,7 @@ namespace Base
     {
         public event Action onCompleteMove;
 
-        private BasePlayer _player;
+        private AvatarPlayer _player;
         [SerializeField] private bool _flipOnMoveComplete;
         [SerializeField] private LookDirection _lookDirection;
 
@@ -15,7 +15,7 @@ namespace Base
         private const string _moveToTarget = "MoveToTarget";
 
         
-        public void MovePlayer(BasePlayer player)
+        public void MovePlayer(AvatarPlayer player)
         {
             _player = player;
             _player.SetMoveTarget(transform);

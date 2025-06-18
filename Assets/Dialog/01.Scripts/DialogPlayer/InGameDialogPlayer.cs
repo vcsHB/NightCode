@@ -1,34 +1,58 @@
+using SoundManage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace Dialog
 {
     [RequireComponent(typeof(AnimationPlayer))]
     public class InGameDialogPlayer : DialogPlayer
     {
-        private AnimationPlayer _animPlayer;
-        private PlayableDirector _director;
+        protected AnimationPlayer _animPlayer;
+        [SerializeField] protected DialogOption _option;
 
-        [SerializeField] private DialogOption _option;
+        protected Actor _currentActor;
+        protected Action _waitCompleteAction;
+        protected OptionNodeSO _optionTalk;
+        protected NodeSO _nextNode;
 
-        private Actor _currentActor;
-        private OptionNodeSO _optionTalk;
-        private NodeSO _nextNode;
+        private bool _isReadingNodeComplete = false;
 
         protected override void Awake()
         {
             base.Awake();
-            _director = GetComponent<PlayableDirector>();
             _animPlayer = GetComponent<AnimationPlayer>();
         }
 
+        private void Update()
+        {
+            if (_isReadingDialog == false) return;
+
+            if(_isReadingNodeComplete == false && GetInput())
+            {
+                StopCoroutine(_readingNodeRoutine);
+                _currentActor.ContentText.maxVisibleCharacters = _currentActor.ContentText.text.Length;
+
+                _isReadingNodeComplete = true;
+                _nextNode = (_curReadingNode as NormalNodeSO).nextNode;
+                _waitCompleteAction = _currentActor.OnCompleteNode;
+                StartCoroutine(WaitNodeRoutine(GetInput));
+            }
+        }
+
+        public override void SkipDialog()
+        {
+            
+            base.SkipDialog();
+
+        }
         #region Animation
 
-        private void LateUpdate()
+        protected void LateUpdate()
         {
             if (_curReadingNode is NormalNodeSO node && _isReadingDialog)
             {
@@ -36,7 +60,7 @@ namespace Dialog
             }
         }
 
-        private void InitNodeAnim(NodeSO node)
+        protected void InitNodeAnim(NodeSO node)
         {
             List<TagAnimation> anims = node.GetAllAnimations();
 
@@ -49,7 +73,7 @@ namespace Dialog
             });
         }
 
-        private void CompleteNodeAnim(NodeSO node)
+        protected void CompleteNodeAnim(NodeSO node)
         {
             List<TagAnimation> anims = node.GetAllAnimations();
             anims.ForEach((anim) => anim.Complete());
@@ -65,7 +89,7 @@ namespace Dialog
 
             if (_curReadingNode is NormalNodeSO node)
             {
-                DialogActorManager.Instance.TryGetActor(node.GetReaderName(), out _currentActor);
+                DialogActorManager.TryGetActor(node.GetReaderName(), out _currentActor);
             }
 
             _curReadingNode.startDialogEvent.ForEach(dialogEvent => dialogEvent.PlayEvent(this, _currentActor));
@@ -77,11 +101,6 @@ namespace Dialog
                 _currentActor?.personalTalkBubble.SetEnabled();
                 _readingNodeRoutine = StartCoroutine(ReadingNormalNodeRoutine(normal));
             }
-            else if(_curReadingNode is TimelineNodeSO timeline)
-            {
-                _director.Play(timeline.playable);
-                StartCoroutine(WaitNodeRoutine(() => _director.state != PlayState.Playing, null));
-            }
             else if (_curReadingNode is OptionNodeSO option)
             {
                 ReadingOptionNodeRoutine(option);
@@ -92,7 +111,7 @@ namespace Dialog
             }
         }
 
-        private IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
+        protected virtual IEnumerator ReadingNormalNodeRoutine(NormalNodeSO node)
         {
             TextMeshProUGUI tmp = _currentActor.ContentText;
 
@@ -100,25 +119,32 @@ namespace Dialog
             tmp.maxVisibleCharacters = 0;
             InitNodeAnim(node);
             _isReadingDialog = true;
+            _isReadingNodeComplete = false;
             while (tmp.maxVisibleCharacters < tmp.text.Length)
             {
                 if (tmp.text[tmp.maxVisibleCharacters++] == ' ') continue;
+
+                if (node.textOutSound != null)
+                    SoundController.Instance.PlaySound(node.textOutSound, _currentActor.target.position);
 
                 yield return new WaitForSeconds(_textOutDelay);
                 yield return new WaitUntil(() => stopReading == false);
             }
             _nextNode = node.nextNode;
-            StartCoroutine(WaitNodeRoutine(GetInput, _currentActor.OnCompleteNode));
+            _isReadingNodeComplete = true;
+            _waitCompleteAction = _currentActor.OnCompleteNode;
+            StartCoroutine(WaitNodeRoutine(GetInput));
+            
         }
 
-        private void ReadingOptionNodeRoutine(OptionNodeSO node)
+        protected virtual void ReadingOptionNodeRoutine(OptionNodeSO node)
         {
             InitNodeAnim(node);
             _option.SetOption(node, OnSelectOption);
             //StartCoroutine(WaitNodeRoutine(() => _optionSelected, null));
         }
 
-        private void OnSelectOption(Option option)
+        protected virtual void OnSelectOption(Option option)
         {
             _playingEndAnimation = false;
 
@@ -128,7 +154,7 @@ namespace Dialog
             ReadSingleLine();
         }
 
-        private void JudgementCondition(BranchNodeSO branch)
+        protected virtual void JudgementCondition(BranchNodeSO branch)
         {
             bool decision = branch.condition.Decision();
             _curReadingNode = branch.nextNodes[decision ? 0 : 1];
@@ -136,7 +162,7 @@ namespace Dialog
             ReadSingleLine();
         }
 
-        private IEnumerator WaitNodeRoutine(Func<bool> waitPredict, Action endAction)
+        protected virtual IEnumerator WaitNodeRoutine(Func<bool> waitPredict)
         {
             yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(waitPredict);
@@ -156,11 +182,11 @@ namespace Dialog
             _curReadingNode.endDialogEvent.ForEach(dialogEvent => dialogEvent.PlayEvent(this, _currentActor));
             yield return new WaitUntil(() => _curReadingNode.endDialogEvent.Exists(dialogEvent => dialogEvent.isCompleteEvent == false) == false);
 
-            endAction?.Invoke();
+            _waitCompleteAction?.Invoke();
             _curReadingNode = _nextNode;
             _isReadingDialog = false;
 
-            if(_optionTalk)
+            if (_optionTalk)
             {
                 _option.Close();
                 _optionTalk = null;

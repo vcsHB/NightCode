@@ -1,39 +1,53 @@
+using System;
+using Agents.Players.SkillSystem;
+using Agents.Players.WeaponSystem;
 using UnityEngine;
 namespace Agents.Players
 {
-    [System.Serializable]
-    public class AttackData
-    {   
-        public float movePower;
-        public float moveduration;
-    }
     public class PlayerAttackController : MonoBehaviour, IAgentComponent
     {
-        [SerializeField] private AttackData[] _attackDatas;
+        [SerializeField] private PlayerWeaponListSO _weaponListSO;
+        [SerializeField] private PlayerWeaponSO _weaponSO;
+        public event Action<float, float> OnSkillCooltimeUpdateEvent;
 
-        
+        private Player _player;
+        private PlayerWeapon _weapon;
+        private PlayerSkill _skill;
+        public PlayerWeaponSO WeaponData => _weaponSO;
 
-        public void AfterInit()
+
+        public void Initialize(Agent agent)
         {
+            _player = agent as Player;
+            SetWeaponSO(_weaponSO); // Debug; => Connect SaveData
         }
+        public void AfterInit() { }
 
         public void Dispose()
         {
         }
 
-        public void Initialize(Agent agent)
+        public void SetWeaponSO(PlayerWeaponSO data)
         {
+            // # PlayerWeapon Initialize
+            _weaponSO = data;
+            _weapon = Instantiate(_weaponSO.weaponPrefab, transform);
+            _weapon.Initialize(_player, _weaponSO.normalSkillCostEnergy);
+
+            // # PlayerSkill Initialize
+            PlayerSkillSO skillSO = _weaponSO.skillSO;
+            if (skillSO == null || skillSO.skillPrefab == null) return;
+
+            _skill = Instantiate(skillSO.skillPrefab, transform);
+            _skill.Initialize(_player, _weapon, skillSO.skillCostEnergy, skillSO.skillCooltime);
+            _player.PlayerInput.OnUseEvent += _skill.HandleUseSkill;
+            _skill.OnCooltimeUpdateEvent += HandleUpdateSkill;
         }
 
 
-        public AttackData GetAttackData(int index)
+        private void HandleUpdateSkill(float current, float max)
         {
-            if(index >= _attackDatas.Length)
-            {
-                Debug.LogWarning("AttackData Not Found : Index Range Over");
-                return null;
-            }
-            return _attackDatas[index];
+            OnSkillCooltimeUpdateEvent?.Invoke(current, max);
         }
     }
 }

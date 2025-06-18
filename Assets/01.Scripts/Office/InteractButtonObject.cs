@@ -5,7 +5,7 @@ namespace Base.Office
 {
     public class InteractButtonObject : BaseInteractiveObject
     {
-        public UnityEvent<BasePlayer> onInteract;
+        public UnityEvent<AvatarPlayer> onInteract;
 
         public override void OnPlayerInteract()
         {

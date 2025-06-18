@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -124,6 +125,24 @@ namespace GGM.UI
         {
             material = Instantiate(lineMaterial);
             material.SetColor("_TintColor", lineColor);
+        }
+
+        public void SetColor(Color startColor, Color endColor)
+        {
+            material.SetColor("_StartColor", startColor);
+            material.SetColor("_EndColor", endColor);
+        }
+
+        public void SetConnection(bool isTrue)
+        {
+            material.SetInt("_UseConnection", isTrue ? 1 : 0);
+            if (isTrue) transform.SetAsLastSibling();
+        }
+
+        public void SetConnectable(bool isEnable)
+        {
+            material.SetInt("_IsConnectable", isEnable ? 1 : 0); 
+            if (isEnable) transform.SetAsLastSibling();
         }
     }
 }

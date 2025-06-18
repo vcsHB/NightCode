@@ -8,7 +8,7 @@ namespace Dialog
     public class BranchNodeSO : NodeSO
     {
         public ConditionSO condition;
-        [HideInInspector] public List<NodeSO> nextNodes = new List<NodeSO>();
+        [HideInInspector] public List<NodeSO> nextNodes = new List<NodeSO>(2);
 
         public Action onChangeCondition;
 
@@ -16,6 +16,15 @@ namespace Dialog
         {
             List<TagAnimation> anims = new List<TagAnimation>();
             return anims;
+        }
+
+        private void OnEnable()
+        {
+            if (nextNodes.Count < 2)
+            {
+                nextNodes.Add(null);
+                nextNodes.Add(null);
+            }
         }
 
         private void OnValidate()

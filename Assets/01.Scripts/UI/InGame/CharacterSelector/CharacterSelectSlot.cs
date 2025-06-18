@@ -19,9 +19,10 @@ namespace UI.InGame.GameUI.CharacterSelector
         [SerializeField] private Image _healthGauge;
         [SerializeField] private Gradient _healthFillColorLevel;
         [SerializeField] private RetireSign _retireSign;
+        [SerializeField] private CharacterWeaponInfoPanel _weaponInfoPanel;
         [Header("Select Setting")]
-        [SerializeField] private float _unSelectPos;
-        [SerializeField] private float _selectPos;
+        [SerializeField] private Vector3 _defaultScale;
+        [SerializeField] private Vector3 _selectScale;
         [SerializeField] private float _tweenDuration;
         private RectTransform _rectTrm;
 
@@ -49,6 +50,9 @@ namespace UI.InGame.GameUI.CharacterSelector
             HandleHealthChange(ownerHealth.CurrentHealth, ownerHealth.MaxHealth);
             _characterNameText.text = playerSO.characterName;
             _player.HealthCompo.OnDieEvent.AddListener(HandleRetire);
+            PlayerAttackController attackController =  _player.GetCompo<PlayerAttackController>();
+            _weaponInfoPanel.Initialize(attackController.WeaponData);
+            attackController.OnSkillCooltimeUpdateEvent += _weaponInfoPanel.HandleRefreshCooltime;
 
         }
 
@@ -67,8 +71,15 @@ namespace UI.InGame.GameUI.CharacterSelector
 
         public void Select(bool value)
         {
-            _rectTrm.DOAnchorPosX(value ? _selectPos : _unSelectPos, _tweenDuration);
-
+            transform.DOScale(value ? _selectScale : _defaultScale, _tweenDuration);
+            if (value)
+            {
+                _weaponInfoPanel.Open();
+            }
+            else
+            {
+                _weaponInfoPanel.Close();
+            }
         }
 
     }

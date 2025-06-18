@@ -43,7 +43,14 @@ namespace Office.CharacterSkillTree
             DeleteElements(graphElements);
             graphViewChanged += OnGraphViewChanged;
 
-            if (_tree.nodes.Count == 0 || _tree.nodes[0] == null)
+            bool startNodeExsist = false;
+            _tree.nodes.ForEach(node =>
+            {
+                if (node is StartNodeSO) 
+                    startNodeExsist = true;
+            });
+
+            if (startNodeExsist == false)
             {
                 StartNodeSO node = _tree.CreateNode(typeof(StartNodeSO)) as StartNodeSO;
                 node.id = 0;
@@ -51,8 +58,10 @@ namespace Office.CharacterSkillTree
                 node.guid = GUID.Generate().ToString();
                 node.nextNodes = new List<NodeSO>();
 
-                if (_tree.nodes.Count == 0) _tree.nodes.Add(node);
-                if (_tree.nodes[0] == null) _tree.nodes[0] = node;
+                _tree.nodes.Add(node);
+
+                //if (_tree.nodes.Count == 0) _tree.nodes.Add(node);
+                //if (_tree.nodes[0] == null) _tree.nodes[0] = node;
             }
 
             //Create Node View

@@ -14,7 +14,7 @@ namespace Base.Cafe
         [SerializeField] private SpriteRenderer _iconRenderer;
         [SerializeField] private float _playerStandingOffset;
 
-        [SerializeField] private Sprite _onSitIcon, _requierFoodIcon, _dirtyIcon;
+        [SerializeField] private Sprite _onSitIcon, _requierFoodIcon, _talkIcon;
         private List<Sprite> _interactIcon;
 
         private bool _isGetFood;
@@ -22,7 +22,7 @@ namespace Base.Cafe
         private CafeSitStateMachine _stateMachine;
 
         public CafeCustomer AssingedCustomer { get; private set; }
-        public BasePlayer Player => _player;
+        public AvatarPlayer Player => _player;
         public bool IsInteractive => _isInteractive;
         public bool IsGetFood => _isGetFood;
 
@@ -32,26 +32,25 @@ namespace Base.Cafe
             _stateMachine = new CafeSitStateMachine();
             _stateMachine.AddState(ECafeSitState.Empty, new CafeSitEmptyState(this));
             _stateMachine.AddState(ECafeSitState.Wait, new CafeSitWaitState(this));
-            _stateMachine.AddState(ECafeSitState.Dirty, new CafeSitDirtyState(this));
             _stateMachine.ChangeState(ECafeSitState.Empty);
 
             _interactIcon = new List<Sprite>(3)
             {
                 _onSitIcon,
                 _requierFoodIcon,
-                _dirtyIcon
+                _talkIcon
             };
         }
 
 
-        //µ¥ÀÌÅÍ»ó ¼Õ´Ô ÇÒ´ç
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ ï¿½Õ´ï¿½ ï¿½Ò´ï¿½
         public void SetCustomer(CafeCustomer customer)
         {
             AssingedCustomer = customer;
             _isInteractive = customer.customerSO.isInteractiveCustomer;
         }
 
-        //°ÔÀÓ¿¡¼­ ¼Õ´Ô ÇÒ´ç
+        //ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ ï¿½Õ´ï¿½ ï¿½Ò´ï¿½
         public void CustomerSit()
         {
             _stateMachine.ChangeState(ECafeSitState.Wait);
@@ -69,7 +68,15 @@ namespace Base.Cafe
         private void OnCompleteServeByPlayer()
         {
             SetInteractIcon(ECafeSitIcon.FoodIcon, false);
-            AssingedCustomer.GetFood();
+
+            if (AssingedCustomer.customerSO.isClient)
+            {
+                AssingedCustomer.OnCompleteMiniGame(true);
+            }
+            else
+            {
+                AssingedCustomer.GetFood();
+            }
 
             _player.ServeFood();
             _player.onCompleteMove -= OnCompleteServeByPlayer;
@@ -84,13 +91,13 @@ namespace Base.Cafe
             //_isCustomerWaitingMenu = false;
         }
 
-        //¼Õ´ÔÀÌ ¶°³¯¶§
+        //ï¿½Õ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         public void LeaveCustomer()
         {
             if (AssingedCustomer == null) return;
 
             AssingedCustomer = null;
-            _stateMachine.ChangeState(ECafeSitState.Dirty);
+            _stateMachine.ChangeState(ECafeSitState.Empty);
         }
 
         public void CleanTable()
@@ -131,6 +138,6 @@ namespace Base.Cafe
     {
         OrderIcon,
         FoodIcon,
-        CleanIcon
+        InteractIcon
     }
 }

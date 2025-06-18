@@ -54,6 +54,9 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 512
+  _magnetLayer:
+    serializedVersion: 2
+    m_Bits: 16384
   _targetLayer:
     serializedVersion: 2
     m_Bits: 384
@@ -220,8 +223,8 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
-    textureScale: {x: 1, y: 1}
+    textureMode: 1
+    textureScale: {x: 0.05, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0

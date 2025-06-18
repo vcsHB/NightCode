@@ -1,5 +1,34 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7891261886687610562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
+  m_Name: NormalNodeSO
+  m_EditorClassIdentifier: 
+  guid: 1222c0afdb7b2b54b854bfc6303857cf
+  position: {x: 837.3388, y: 334.00003}
+  isFirstNode: 0
+  textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
+  startDialogEventSO: []
+  startDialogEvent: []
+  endDialogEventSO: []
+  endDialogEvent: []
+  reader: Jin
+  contents: "\uC13C\uD140 \uAE30\uC5C5\uC758 \uC9C0\uD558 \uC2DC\uC124\uC740 \uAF64\uB098
+    \uC624\uB79C \uAE30\uAC04 \uC0AC\uC6A9 \uB418\uC9C0 \uC54A\uC740 \uAC78\uB85C
+    \uC54C\uACE0 \uC788\uC5B4"
+  nodeDelay: 0
+  nextNode: {fileID: 4492835712039370688}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &-136516791147107859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,16 +42,18 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: 54c78e3f6357856489e3f75fac6d6472
-  position: {x: 590.5, y: 335}
+  position: {x: 550.5801, y: 335.17752}
   isFirstNode: 0
+  textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
   startDialogEventSO: []
   startDialogEvent: []
   endDialogEventSO: []
   endDialogEvent: []
-  reader: Player
-  contents: "\uC640 <Rainbow>\uC6A9\uC0AC</Rainbow>"
+  reader: Jin
+  contents: "\uC6B0\uC120 \uD558\uC218 \uCC98\uB9AC \uC2DC\uC124\uC758 \uC124\uACC4\uB3C4\uBD80\uD130
+    \uC5BB\uC73C\uB7EC \uAC00\uC790"
   nodeDelay: 0
-  nextNode: {fileID: 0}
+  nextNode: {fileID: -7891261886687610562}
   references:
     version: 2
     RefIds: []
@@ -41,6 +72,8 @@ MonoBehaviour:
   nodes:
   - {fileID: 136508466015393072}
   - {fileID: -136516791147107859}
+  - {fileID: -7891261886687610562}
+  - {fileID: 4492835712039370688}
 --- !u!114 &136508466015393072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54,17 +87,45 @@ MonoBehaviour:
   m_Name: NormalNodeSO
   m_EditorClassIdentifier: 
   guid: db62a140d45bb384da11e3de0dcd6b7c
-  position: {x: 299.5, y: 334.5}
+  position: {x: 296.6775, y: 333.67752}
   isFirstNode: 1
+  textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
   startDialogEventSO: []
   startDialogEvent: []
   endDialogEventSO: []
   endDialogEvent: []
   reader: Jin
-  contents: "\uB098\uB294 \uC774\uC138\uACC4\uC5D0\uC11C \uC628 \uB9E4\uC6B0 \uAC15\uB825\uD55C
-    \uC6A9\uC0AC\uB85C\uC368 <color=blue>(\uB354\uBCF4\uAE30)</color>"
+  contents: "\uADF8\uB798 \uC774\uBC88 \uC758\uB8B0 \uB0B4\uC6A9\uC740 \uD655\uC778\uD588\uC5B4"
   nodeDelay: 0
   nextNode: {fileID: -136516791147107859}
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &4492835712039370688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030378e15185f7041a92926a73b061f1, type: 3}
+  m_Name: NormalNodeSO
+  m_EditorClassIdentifier: 
+  guid: 762402efa0a690340807d0a1205af42a
+  position: {x: 1139.8387, y: 333.5}
+  isFirstNode: 0
+  textOutSound: {fileID: 11400000, guid: 6e5d476a0986eef4d999b413bbbf76e5, type: 2}
+  startDialogEventSO: []
+  startDialogEvent: []
+  endDialogEventSO: []
+  endDialogEvent: []
+  reader: Jin
+  contents: "\uCD95\uD558\uD574, \uCCAB \uC758\uB8B0\uB294 \uC26C\uC6B4 \uC758\uB8B0\uAC00
+    \uB418\uACA0\uC5B4"
+  nodeDelay: 0
+  nextNode: {fileID: 0}
   references:
     version: 2
     RefIds: []

@@ -1,11 +1,7 @@
-using Agents.Enemies.BT.Event;
 using Combat;
-using Core.EventSystem;
 using System;
 using Unity.Behavior;
 using UnityEngine;
-
-using Action = System.Action;
 
 namespace Agents.Enemies
 {
@@ -14,19 +10,17 @@ namespace Agents.Enemies
     {
         public Action<Enemy, string> OnDisableBody;
         [SerializeField] protected LayerMask _whatIsTarget;
+        [SerializeField] protected LayerMask _whatIsObstacle;
         protected BehaviorGraphAgent _btAgent;
         protected string _enemyName;
 
         public string EnemyName => _enemyName;
-        public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
 
         protected override void Awake()
         {
-            HealthCompo = GetComponent<Health>();
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
-            HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             _btAgent = GetComponent<BehaviorGraphAgent>();
         }
@@ -36,7 +30,7 @@ namespace Agents.Enemies
             _enemyName = name;
         }
 
-        
+
 
         public BlackboardVariable<T> GetVariable<T>(string variableName)
         {
@@ -58,6 +52,13 @@ namespace Agents.Enemies
         {
             Collider2D collider = Physics2D.OverlapCircle(transform.position, radius, _whatIsTarget);
             return collider != null ? collider.transform : null;
+        }
+
+        public Transform GetObstacleInDirection(Vector2 direction, float distance)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, distance, _whatIsObstacle);
+            return hit.transform;
+
         }
     }
 }

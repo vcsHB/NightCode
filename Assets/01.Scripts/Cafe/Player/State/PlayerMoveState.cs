@@ -4,15 +4,15 @@ using Agents.Animate;
 
 namespace Base
 {
-    public class PlayerMoveState : BaseEntityState
+    public class PlayerMoveState : AvatarEntityState
     {
 
-        private BasePlayer _player;
+        private AvatarPlayer _player;
         private BaseInput _input;
 
-        public PlayerMoveState(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public PlayerMoveState(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
-            _player = npc as BasePlayer;
+            _player = npc as AvatarPlayer;
             _input = _player.input;
         }
 

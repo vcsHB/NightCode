@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace Base
 {
-    public class PlayerIdleState : BaseEntityState
+    public class PlayerIdleState : AvatarEntityState
     {
-        private BasePlayer _player;
+        private AvatarPlayer _player;
         private BaseInput _input;
 
-        public PlayerIdleState(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public PlayerIdleState(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
-            _player = npc as BasePlayer;
+            _player = npc as AvatarPlayer;
             _input = _player.input;
         }
 

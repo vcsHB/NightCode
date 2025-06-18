@@ -10,7 +10,7 @@ namespace Dialog
     public class DialogSO : ScriptableObject
     {
         public List<NodeSO> nodes = new();
-
+        public NodeSO FirstNode => nodes.Find(node => node.isFirstNode);
 
 #if UNITY_EDITOR
         public NodeSO CreateNode(Type type)
@@ -60,6 +60,7 @@ namespace Dialog
 
             if (parent is BranchNodeSO branch)
             {
+                Debug.Log(index + " " + branch.nextNodes.Count);
                 branch.nextNodes[index] = nextNode;
                 return;
             }

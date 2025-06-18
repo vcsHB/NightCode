@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Base
 {
-    public class PlayerMoveToTargetState : BaseEntityState
+    public class PlayerMoveToTargetState : AvatarEntityState
     {
-        private BasePlayer _player;
-        public PlayerMoveToTargetState(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        private AvatarPlayer _player;
+        public PlayerMoveToTargetState(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
-            _player = npc as BasePlayer;
+            _player = npc as AvatarPlayer;
         }
 
         public override void UpdateState()

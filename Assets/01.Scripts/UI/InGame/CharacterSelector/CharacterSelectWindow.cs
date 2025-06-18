@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Agents.Players;
 using Combat.PlayerTagSystem;
@@ -9,15 +10,15 @@ namespace UI.InGame.GameUI.CharacterSelector
 
     public class CharacterSelectWindow : MonoBehaviour
     {
+        public event Action<Player> OnPlayerSelectEvent;
         [SerializeField] private CharacterSelectSlot _slotPrefab;
-        private VerticalLayoutGroup _layoutGroup;
         private RectTransform _contentTrm;
 
         private Dictionary<int, CharacterSelectSlot> _slotDictionary = new Dictionary<int, CharacterSelectSlot>();
+        private List<Player> _playerList = new();
 
         private void Awake()
         {
-            _layoutGroup = GetComponent<VerticalLayoutGroup>();
             _contentTrm = transform as RectTransform;
         }
 
@@ -26,6 +27,8 @@ namespace UI.InGame.GameUI.CharacterSelector
             CharacterSelectSlot slot = Instantiate(_slotPrefab, _contentTrm);
             slot.SetCharacterData(playerSO, player);
             _slotDictionary.Add(playerSO.id, slot);
+            _playerList.Add(player);
+            OnPlayerSelectEvent?.Invoke(player);
             LayoutRebuilder.MarkLayoutForRebuild(_contentTrm);
         }
 
@@ -36,6 +39,11 @@ namespace UI.InGame.GameUI.CharacterSelector
             {
                 DisableSelectAllCharacter(characterID);
                 slot.Select(true);
+                // for (int i = 0; i < _playerList.Count; i++)
+                // {
+                //     Debug.Log("ID: "+_playerList[i].ID);
+                // }
+                OnPlayerSelectEvent?.Invoke(_playerList.Find(a => a.ID == characterID));
             }
             else
             {

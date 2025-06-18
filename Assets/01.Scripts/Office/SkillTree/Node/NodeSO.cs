@@ -10,12 +10,13 @@ namespace Office.CharacterSkillTree
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
 
-        [HideInInspector] public int id;
-        [HideInInspector] public List<NodeSO> nextNodes;
-        [HideInInspector] public NodeSO prevNode;
+        public int id;
+        public List<NodeSO> nextNodes;
+        public NodeSO prevNode;
         public List<NodeSO> exceptNodes;
 
 
+        public string fileName;
         public string nodeName;
         [TextArea]
         public string explain;
@@ -26,7 +27,7 @@ namespace Office.CharacterSkillTree
         private void OnValidate()
         {
             onValueChange?.Invoke();
-            name = nodeName;
+            name = fileName;
             exceptNodes.ForEach(except => except.AddExcept(this));
 
             for(int i = 0; i < exceptNodes.Count - 1; i++)

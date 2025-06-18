@@ -11,6 +11,7 @@ namespace Base.Office
         [SerializeField] private InGameDialogPlayer _dialogPlayer;
         [SerializeField] private BaseInput _officeInput;
         [SerializeField] private OfficeNPCSO _dialog;
+        [SerializeField] private GameObject _essentialTalkIcon;
         private PlayerMoveTarget _moveTarget;
         private CameraFocuser _cameraFocus;
         private int _talkCount = 0;
@@ -26,7 +27,6 @@ namespace Base.Office
             _officeInput.DisableInput();
             _moveTarget.MovePlayer(_player);
             _moveTarget.onCompleteMove += StartReadDialog;
-            
         }
 
         private void StartReadDialog()
@@ -45,11 +45,17 @@ namespace Base.Office
             _cameraFocus.onCompleteFocus -= ReadDialogOnCompletFocus;
         }
 
+        private void CheckEssentialDialog()
+        {
+            bool isEssentialDialog = OfficeManager.Instance.office.essentialDialogs.Contains(_dialog.GetDialog(_talkCount));
+            _essentialTalkIcon.gameObject.SetActive(isEssentialDialog);
+        }
 
         private void OnCompleteDialog()
         {
             _officeInput.EnableInput();
             _cameraFocus.ResetFocus();
+            CheckEssentialDialog();
             _dialogPlayer.OnDialogEnd -= OnCompleteDialog;
         }
 
@@ -68,6 +74,9 @@ namespace Base.Office
         {
             _dialog = npcInfo;
             _talkCount = 0;
+
+
+            CheckEssentialDialog();
         }
     }
 }

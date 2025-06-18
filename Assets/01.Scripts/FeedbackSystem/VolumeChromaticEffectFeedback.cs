@@ -17,6 +17,8 @@ namespace FeedbackSystem
 
         public override void CreateFeedback()
         {
+            if(!gameObject.activeInHierarchy) return;
+            if(_controller == null) return;
             StartCoroutine(EffectCoroutine());
         }
         private IEnumerator EffectCoroutine()

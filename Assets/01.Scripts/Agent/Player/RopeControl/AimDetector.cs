@@ -33,6 +33,7 @@ namespace Agents.Players
         [SerializeField] private float _castRadius = 0.4f;
         [SerializeField] private float _shootRadius = 12f;
         [SerializeField] private LayerMask _wallLayer;
+        [SerializeField] private LayerMask _magnetLayer;
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private LayerMask _ignoreLayer;
 
@@ -56,13 +57,8 @@ namespace Agents.Players
             _player = agent as Player;
         }
 
-        public void AfterInit()
-        {
-        }
-
-        public void Dispose()
-        {
-        }
+        public void AfterInit() { }
+        public void Dispose() { }
 
         private void FixedUpdate()
         {
@@ -70,46 +66,80 @@ namespace Agents.Players
             _mousePos = Camera.main.ScreenToWorldPoint(_player.PlayerInput.MousePosition);
             _direction = _mousePos - (Vector2)transform.position;
 
+            _isTargeted = false;
+            _targetTrm = null;
 
-            RaycastHit2D boxHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, _shootRadius, _wallLayer | _targetLayer);
-            bool isTargetDetected = boxHit.collider != null;
-            if (!_isTargeted && isTargetDetected && _grabTarget != null)
+            float maxDistance = _shootRadius;
+
+            // 레이캐스트
+            RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, maxDistance, _ignoreLayer);
+            RaycastHit2D wallHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, maxDistance, _wallLayer);
+            RaycastHit2D magnetHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, maxDistance, _magnetLayer);
+            RaycastHit2D targetHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, maxDistance, _targetLayer);
+
+            // 거리 초기화
+            float ignoreDist = ignoreHit.collider ? ignoreHit.distance : Mathf.Infinity;
+            float wallDist = wallHit.collider ? wallHit.distance : Mathf.Infinity;
+            float magnetDist = magnetHit.collider ? magnetHit.distance : Mathf.Infinity;
+            float targetDist = targetHit.collider ? targetHit.distance : Mathf.Infinity;
+
+            // 가장 가까운 hit 찾기
+            float closest = Mathf.Min(ignoreDist, wallDist, magnetDist, targetDist);
+
+            if (closest == ignoreDist)
+            {
+                ClearTarget(); // 무시
+            }
+            else if (closest == wallDist)
+            {
+                _grabTarget?.OnAimExited();
+                _grabTarget = null;
+
+                _isTargeted = true;
+                _targetTrm = wallHit.transform;
+                _targetPos = wallHit.point;
+            }
+            else if (closest == magnetDist && magnetHit.collider.TryGetComponent(out IGrabable grabTarget))
+            {
+                if (_grabTarget != grabTarget)
+                {
+                    _grabTarget?.OnAimExited();
+                    grabTarget.OnAimEntered();
+                }
+
+                _grabTarget = grabTarget;
+                _isTargeted = true;
+                _targetTrm = grabTarget.GetTransform;
+                _targetPos = grabTarget.GetTransform.position;
+            }
+            else if (closest == targetDist)
+            {
+                _grabTarget?.OnAimExited();
+                _grabTarget = null;
+
+                _isTargeted = true;
+                _targetTrm = targetHit.transform;
+                _targetPos = targetHit.point;
+            }
+            else
+            {
+                ClearTarget(); // 아무것도 없음
+            }
+
+            InvokeGrabDataEvent();
+            InvokeAimDataEvent();
+        }
+
+        private void ClearTarget()
+        {
+            if (_grabTarget != null)
             {
                 _grabTarget.OnAimExited();
                 _grabTarget = null;
             }
 
-            _isTargeted = isTargetDetected;
+            _isTargeted = false;
             _targetTrm = null;
-            if (_isTargeted)
-            {
-                RaycastHit2D ignoreHit = Physics2D.CircleCast(transform.position, _castRadius, _direction, boxHit.distance, _ignoreLayer);
-                if (ignoreHit.collider != null)
-                {
-                    _isTargeted = false;
-                    InvokeAimDataEvent();
-                    return;
-                }
-
-                _targetPos = boxHit.point;
-                _targetTrm = boxHit.collider.transform;
-                if (boxHit.collider.TryGetComponent(out IGrabable grabTarget))
-                {
-                    _targetPos = grabTarget.GetTransform.position;
-                    if (_grabTarget != grabTarget)
-                    {
-                        grabTarget.OnAimEntered();
-                    }
-                    _grabTarget = grabTarget;
-                }
-            }
-            else
-            {
-            }
-
-            InvokeGrabDataEvent();
-            InvokeAimDataEvent();
-
         }
 
         private void InvokeAimDataEvent()

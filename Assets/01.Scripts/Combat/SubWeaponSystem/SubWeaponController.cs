@@ -37,30 +37,30 @@ namespace Combat.SubWeaponSystem
             _player = agent as Player;
             _player.GetCompo<AgentRenderer>();
 
-            _player.OnEnterEvent += HandlePlayerEnter;
-            _player.OnExitEvent += HandlePlayerExit;
+            // _player.OnEnterEvent += HandlePlayerEnter;
+            // _player.OnExitEvent += HandlePlayerExit;
 
         }
         public void AfterInit() { }
 
         public void Dispose()
         {
-            _player.OnEnterEvent -= HandlePlayerEnter;
-            _player.OnExitEvent -= HandlePlayerExit;
+            // _player.OnEnterEvent -= HandlePlayerEnter;
+            // _player.OnExitEvent -= HandlePlayerExit;
         }
 
         #endregion
 
-        private void HandlePlayerEnter()
-        {
-            _player.PlayerInput.OnUseEvent += UseWeapon;
-            _player.PlayerInput.OnUseCancelEvent += CancelWeapon;
-        }
-        private void HandlePlayerExit()
-        {
-            _player.PlayerInput.OnUseEvent -= UseWeapon;
-            _player.PlayerInput.OnUseCancelEvent -= CancelWeapon;
-        }
+        // private void HandlePlayerEnter()
+        // {
+        //     _player.PlayerInput.OnUseEvent += UseWeapon;
+        //     _player.PlayerInput.OnUseCancelEvent += CancelWeapon;
+        // }
+        // private void HandlePlayerExit()
+        // {
+        //     _player.PlayerInput.OnUseEvent -= UseWeapon;
+        //     _player.PlayerInput.OnUseCancelEvent -= CancelWeapon;
+        // }
 
         private void Update()
         {

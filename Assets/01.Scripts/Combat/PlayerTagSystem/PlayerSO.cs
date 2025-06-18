@@ -2,7 +2,7 @@ using Agents.Players;
 using UnityEngine;
 namespace Combat.PlayerTagSystem
 {
-    [CreateAssetMenu(menuName ="SO/PlayerManage/Player")]
+    [CreateAssetMenu(menuName = "SO/PlayerManage/Player")]
     public class PlayerSO : ScriptableObject
     {
         public int id;
@@ -11,6 +11,11 @@ namespace Combat.PlayerTagSystem
         public Color personalColor;
         public Player playerPrefab;
 
+        public void SetId(int newID)
+        {
+            id = newID;
+            playerPrefab.SetPersonalId(newID);
+        }
 
     }
 }

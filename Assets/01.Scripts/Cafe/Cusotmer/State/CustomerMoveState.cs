@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Base.Cafe
 {
-    public class CustomerMoveState : BaseEntityState
+    public class CustomerMoveState : AvatarEntityState
     {
-        private BaseEntity _entity;
+        private AvatarEntity _entity;
         
 
-        public CustomerMoveState(BaseEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
+        public CustomerMoveState(AvatarEntity npc, AnimParamSO animParamSO) : base(npc, animParamSO)
         {
             _entity = npc;
         }

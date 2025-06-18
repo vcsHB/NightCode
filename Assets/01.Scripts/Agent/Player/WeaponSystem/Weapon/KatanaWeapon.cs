@@ -1,0 +1,67 @@
+using System;
+using Combat.Casters;
+using UnityEngine;
+namespace Agents.Players.WeaponSystem.Weapon
+{
+
+    public class KatanaWeapon : PlayerWeapon
+    {
+        [SerializeField] private float _attackDuration = 1.5f;
+        [SerializeField] private int _bonusTurboUseCount = 1;
+        [SerializeField] private SpriteRenderer _attackGuideVisual;
+        private Caster _caster;
+        private bool _isAttackEnabled;
+        private DamageCasterData _damageCasterData;
+        private float _currentAttackTime = 0f;
+
+        private void Awake()
+        {
+            _caster = GetComponentInChildren<Caster>();
+            _damageCasterData = new();
+        }
+        public override void Initialize(Player player, int cost)
+        {
+            base.Initialize(player, cost);
+            _animationTrigger.OnRopeTurboEvent.AddListener(HandleAttack);
+            _animationTrigger.OnRopeRemoveEvent.AddListener(HandleRopeRemove);
+            player.GetCompo<PlayerMovement>().AddTurboCount(_bonusTurboUseCount);
+        }
+
+        private void HandleRopeRemove()
+        {
+            SetDisableWeapon();
+        }
+
+        protected override void Attack()
+        {
+            _isAttackEnabled = true;
+            _attackGuideVisual.enabled = true;
+            _currentAttackTime = 0f;
+        }
+
+        public void SetDamage(float damage)
+        {
+            _damageCasterData.damage = damage;
+            _caster.SendCasterData(_damageCasterData);
+        }
+
+        private void Update()
+        {
+            if (_isAttackEnabled)
+            {
+                _currentAttackTime += Time.deltaTime;
+                _caster.Cast();
+
+                if (_currentAttackTime > _attackDuration)
+                    SetDisableWeapon();
+            }
+
+        }
+
+        private void SetDisableWeapon()
+        {
+            _isAttackEnabled = false;
+            _attackGuideVisual.enabled = false;
+        }
+    }
+}

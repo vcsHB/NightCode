@@ -7,7 +7,7 @@ namespace Base.Office
 {
     public class OfficePlayer : MonoBehaviour
     {
-        public event Action OnInteract;
+    public event Action OnInteract;
         public BaseInput baseInput;
 
         [SerializeField] private AnimParamSO _moveParam;

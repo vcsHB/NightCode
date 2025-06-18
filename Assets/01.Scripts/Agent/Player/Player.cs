@@ -1,7 +1,6 @@
 using System;
 using Agents.Players.FSM;
 using Combat;
-using Core.EventSystem;
 using InputManage;
 using UnityEngine;
 namespace Agents.Players
@@ -12,7 +11,6 @@ namespace Agents.Players
         protected PlayerStateMachine _stateMachine;
         public PlayerStateMachine StateMachine => _stateMachine;
 
-        public Health HealthCompo { get; protected set; }
         public Rigidbody2D RigidCompo { get; protected set; }
         [field: SerializeField] public Transform RopeHolder { get; private set; }
         public bool CanCharacterChange { get; set; } = true;
@@ -20,19 +18,23 @@ namespace Agents.Players
         public event Action OnEnterEvent;
         public event Action OnExitEvent;
         private bool _startDisable;
+        [field: SerializeField] public int ID { get; private set; }
+        public void SetPersonalId(int id)
+        {
+            ID = id;
+        }
 
         protected override void Awake()
         {
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
-            HealthCompo = GetComponent<Health>();
             HealthCompo.OnHealthChangedEvent.AddListener(HandlePlayerHit);
-            HealthCompo.OnDieEvent.AddListener(HandleAgentDie);
 
             InitState();
         }
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             StateMachine.StartState();
 
             if (_startDisable) gameObject.SetActive(false);
@@ -58,6 +60,12 @@ namespace Agents.Players
             IsActive = value;
         }
 
+        public virtual void SetIdleEnter()
+        {
+            _stateMachine.ChangeState("Idle");
+            OnEnterEvent?.Invoke();
+
+        }
         public virtual void EnterCharacter()
         {
             _stateMachine.ChangeState("Enter");
@@ -79,7 +87,7 @@ namespace Agents.Players
 
         protected void HandlePlayerHit()
         {
-            _stateMachine.ChangeState("Swing");
+            //_stateMachine.ChangeState("Swing");
         }
 
         public void SetStartDisable(bool value) => _startDisable = value;

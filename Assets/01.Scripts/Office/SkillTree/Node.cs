@@ -1,10 +1,15 @@
+using Core.StageController;
 using GGM.UI;
+using MissionAdjust;
 using StatSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 namespace Office.CharacterSkillTree
 {
@@ -24,6 +29,8 @@ namespace Office.CharacterSkillTree
         private bool _isNodeEnable;
         private bool _isNodeActive = true;
         private Node _curEnableNode;
+        public event Action<int, List<NodeSO>> onPointerEnter;
+        public event Action onPointerExit;
 
         private Stack<Node> _prevNodes;
         private Stack<Node> _enabledNodes;
@@ -34,7 +41,6 @@ namespace Office.CharacterSkillTree
         private Coroutine _currentCancelRoutine;
 
         private CharacterEnum _characterType;
-        private readonly string CoinLackText = $"ÄÚÀÎÀÌ ºÎÁ·ÇÕ´Ï´Ù¤Ð¤Ð";
 
         #region Property
 
@@ -69,18 +75,21 @@ namespace Office.CharacterSkillTree
 
         #region EnableNode
 
-        //¼±ÅÃµÈ ³ëµåµéÀ» ÀüºÎ È°¼ºÈ­½ÃÄÑÁÖ´Â ÄÚ·çÆ¾
+        //ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ú·ï¿½Æ¾
         public IEnumerator StartEnableAllSelectedNodes()
         {
+            _enabledNodes = new Stack<Node>();
+            if (AdjustmentManager.Instance.CurrentPoint < GetPrevNodesCoin() || _isNodeActive == false || _isNodeEnable)
+                yield break;
+
             if (_cancelCoroutine != null)
                 StopCoroutine(_cancelCoroutine);
             if (_currentCancelRoutine != null)
                 StopCoroutine(_currentCancelRoutine);
 
-            GetPrevNodes();
-            _enabledNodes = new Stack<Node>();
 
-            //_prevNodes¿¡ È°¼ºÈ­ ½ÃÅ³ ³ëµåµéÀ» ¼øÂ÷ÀûÀ¸·Î ²¨³»¼­ È°¼ºÈ­½ÃÅ°±â ½Ãµµ
+
+            //_prevNodesï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½Å°ï¿½ï¿½ ï¿½Ãµï¿½
             while (_prevNodes.TryPop(out _curEnableNode))
             {
                 _currentEnableRoutine = StartCoroutine(_curEnableNode.EnableNodeRoutine());
@@ -88,8 +97,8 @@ namespace Office.CharacterSkillTree
                 yield return _currentEnableRoutine;
             }
 
-            //ÀüºÎ È°¼ºÈ­ ‰ç´Ù¸é, ÇÑ¹ø¿¡ µ¥ÀÌÅÍ»ó¿¡¼­ È°¼ºÈ­ ½ÃÄÑÁÖ±â
-            //Ãë¼ÒÇßÀ» ¶§ ÀüºÎ »ç¶óÁ®¾ßÇÏ±â ¶§¹®
+            //ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½Ù¸ï¿½, ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í»ó¿¡¼ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
             while (_enabledNodes.TryPop(out _curEnableNode))
             {
                 _curEnableNode.EnableNode();
@@ -122,19 +131,23 @@ namespace Office.CharacterSkillTree
 
         public void EnableNode(bool isLoading = false)
         {
+            if (isLoading == false)
+            {
+                //SaveManager.Instance.AddSaveStat(_characterType, NodeType);
+                AdjustmentManager.Instance.UsePoint(GetPrevNodesCoin());
+            }
             _isNodeEnable = true;
-            //ÀçÈ­ »ç¿ë
+            //ï¿½ï¿½È­ ï¿½ï¿½ï¿½
             //.Instance.(NodeType.requireCoin);
 
-            //fillAmount 1·Î ÃÊ±âÈ­
+            //fillAmount 1ï¿½ï¿½ ï¿½Ê±ï¿½È­
             _vertexFill.fillAmount = 1;
             _edgeFill.SetFillAmount(1);
 
             NodeType.exceptNodes.ForEach(exceptNode => techTree.GetNode(exceptNode.id).SetActive(false));
+            _exceptedNodes.Clear();
+            //ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-            //¾î¶² ½ºÅÈÀÌ ¿­·È´ÂÁö¸¸ ÀúÀå
-            if (isLoading == false)
-                SaveManager.Instance.AddSaveStat(_characterType, NodeType);
         }
 
         #endregion
@@ -182,26 +195,58 @@ namespace Office.CharacterSkillTree
         #endregion
 
 
-        private void GetPrevNodes()
+        private int GetPrevNodesCoin()
         {
             _prevNodes = new Stack<Node>();
             if (IsNodeEnable == false)
             {
-                int requireCoin = 0;
                 NodeSO curNode = _nodeType;
+                int requireCoin = curNode.requireCoin;
 
-                while (curNode != null && !techTree.GetNode(curNode.id).IsNodeEnable)
+                while (true)
                 {
-                    requireCoin += curNode.requireCoin;
                     _prevNodes.Push(techTree.GetNode(curNode.id));
 
                     curNode = curNode.prevNode;
+                    Node prevNode = techTree.GetNode(curNode.id);
+
+                    if (curNode == null || prevNode.IsNodeEnable || prevNode._isNodeActive == false || curNode is StartNodeSO)
+                        break;
+
+                    requireCoin += curNode.requireCoin;
                 }
 
                 //int coin = GameDataManager.Instance.Coin;
                 //_techTree.selectNodeEvent?.Invoke(coin, requireCoin);
+                return requireCoin;
             }
+            return 0;
         }
+
+        private List<NodeSO> GetPrevNodes()
+        {
+            List<NodeSO> nodeList = new List<NodeSO>();
+            if (IsNodeEnable == false)
+            {
+                NodeSO curNode = _nodeType;
+                nodeList.Add(curNode);
+
+                while (true)
+                {
+                    _prevNodes.Push(techTree.GetNode(curNode.id));
+
+                    curNode = curNode.prevNode;
+                    Node prevNode = techTree.GetNode(curNode.id);
+
+                    if (curNode == null || prevNode.IsNodeEnable || prevNode._isNodeActive == false || curNode is StartNodeSO)
+                        break;
+
+                    nodeList.Add(curNode);
+                }
+            }
+            return nodeList;
+        }
+
 
         public void SetActive(bool isActive)
         {
@@ -215,17 +260,13 @@ namespace Office.CharacterSkillTree
         private void ActiveNode()
         {
             _disablePanel.color = new Color(1f, 1f, 1f, 0f);
+            _isNodeActive = true;
         }
 
         private void UnActiveNode()
         {
             _disablePanel.color = new Color(0f, 0f, 0f, 0.9f);
-        }
-
-
-        public void Init(CharacterEnum characterType)
-        {
-            _characterType = characterType;
+            _isNodeActive = false;
         }
 
 
@@ -328,20 +369,38 @@ namespace Office.CharacterSkillTree
         #region InputRegion
 
 
+        private Queue<Node> _exceptedNodes = new Queue<Node>();
+
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (_isNodeActive == false) return;
-            if (eventData.button != PointerEventData.InputButton.Right) return;
+            if (_isNodeActive == false || _isNodeEnable) return;
 
+            List<NodeSO> prevNodes = GetPrevNodes();
+            onPointerEnter?.Invoke(GetPrevNodesCoin(), prevNodes);
 
+            prevNodes.ForEach(prev =>
+            {
+                prev.exceptNodes.ForEach(except =>
+                {
+                    Node exceptNode = techTree.GetNode(except.id);
+                    if (exceptNode._isNodeActive)
+                    {
+                        _exceptedNodes.Enqueue(exceptNode);
+                        exceptNode.SetActive(false);
+                    }
+                });
+            });
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_isNodeActive == false) return;
-            if (eventData.button != PointerEventData.InputButton.Right) return;
-            _prevNodes = new Stack<Node>();
+            //if (_isNodeActive == false || _isNodeEnable) return;
+            onPointerExit?.Invoke();
 
+            while(_exceptedNodes.TryDequeue(out Node exceptNode))
+            {
+                exceptNode.SetActive(true);
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)

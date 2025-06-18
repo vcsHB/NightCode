@@ -7,7 +7,8 @@ namespace Combat
     {
         Blunt = 0,
         Sharp,
-        Heat
+        Heat,
+        Effect
     }
     [System.Serializable]
     public struct CombatData

@@ -1,16 +1,16 @@
 using Dialog;
-using Dialog.SituationControl;
 using System;
-using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 namespace Base.Cafe
 {
-    public class CafeCustomer : BaseEntity
+    public class CafeCustomer : AvatarEntity
     {
         public CafeCustomerSO customerSO;
         public event Action onExitCafe;
+        public UnityEvent unitCompleteTalk;
 
         private InGameDialogPlayer _dialogPlayer;
         private OmeletRiceMiniGame _miniGame;
@@ -37,7 +37,7 @@ namespace Base.Cafe
             }
         }
 
-        //À½½ÄÀ» ¿äÃ»ÇßÀ» ¶§ => ¾É¾ÒÀ» ¶§
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ => ï¿½É¾ï¿½ï¿½ï¿½ ï¿½ï¿½
         public void RequireFood()
         {
             float direction = Mathf.Sign(_table.transform.position.x - transform.position.x);
@@ -62,7 +62,10 @@ namespace Base.Cafe
 
         public void OnCompleteMiniGame(bool isGood)
         {
-            _miniGame.onCompleteMiniGame -= OnCompleteMiniGame;
+            if (_miniGame != null)
+            {
+                _miniGame.onCompleteMiniGame -= OnCompleteMiniGame;
+            }
 
             if (customerSO.isInteractiveCustomer)
             {
@@ -77,12 +80,13 @@ namespace Base.Cafe
             }
         }
 
-        //À½½ÄÀ» ¹Þ¾ÒÀ» ¶§ => ¸Ô±â ½ÃÀÛ?
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ => ï¿½Ô±ï¿½ ï¿½ï¿½ï¿½ï¿½?
         public void OnGetFood()
         {
             _getFood = true;
             CafeManager.Instance.input.EnableInput();
             _foodGetTime = Time.time;
+            unitCompleteTalk?.Invoke();
             _dialogPlayer.OnDialogEnd -= OnGetFood;
         }
 
@@ -105,9 +109,10 @@ namespace Base.Cafe
         }
 
 
-        public void Init(CafeSit table, DialogSO talk)
+        public void Init(CafeSit table, CafeCustomerSO customerSO)
         {
             _table = table;
+            this.customerSO = customerSO;
             SetMoveTarget(table.customerPosition);
             _table.SetCustomer(this);
             onCompleteMove += RequireFood;

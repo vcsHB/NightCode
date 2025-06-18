@@ -1,3 +1,4 @@
+using Core.StageController;
 using InputManage;
 using UnityEngine;
 namespace Dialog.SituationControl
@@ -17,5 +18,6 @@ namespace Dialog.SituationControl
         {
             _playerInput.SetEnabledAllStatus();
         }
+
     }
 }

@@ -23,7 +23,7 @@ namespace Office
         private Sequence _openCloseSeq;
         private Vector2 screenPosition = new Vector2(Screen.width, Screen.height);
 
-        private void Awake()
+        protected override void Awake()
         {
             ChangeInitUI(true);
             background.anchoredPosition = new Vector2(0, screenPosition.y);

@@ -4,37 +4,8 @@ using UnityEngine;
 
 namespace Dialog
 {
-    public class DialogConditionManager : MonoBehaviour
+    public class DialogConditionManager : MonoSingleton<DialogConditionManager>
     {
-        #region Singleton
-
-        public static DialogConditionManager instance;
-        public static bool destroyed = false;
-
-        public static DialogConditionManager Instance
-        {
-            get
-            {
-                if (instance == null && !destroyed)
-                {
-                    instance = GameObject.FindAnyObjectByType<DialogConditionManager>();
-
-                    if (instance == null)
-                    {
-                        Debug.LogError("DialogConditionManager is not Exsist");
-                    }
-                }
-                return instance;
-            }
-        }
-
-        public void OnDestroy()
-        {
-            destroyed = true;
-        }
-
-        #endregion
-
         public Dictionary<string, int> visit = new Dictionary<string, int>();
         public int coin;
 

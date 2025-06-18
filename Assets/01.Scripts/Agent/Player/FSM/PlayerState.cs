@@ -86,15 +86,11 @@ namespace Agents.Players.FSM
             if (!_player.IsActive) return;
             if(!_aimController.IsShoot) return;
             _aimController.RemoveWire();
+            _animationTrigger.HandleRopeRemove();
             _player.StateMachine.ChangeState("Swing");
         }
 
-        private void HandleAttack()
-        {
-            if (!_player.IsActive) return;
-            _stateMachine.ChangeState("Attack");
-        }
-
+       
         protected bool CheckWallAndHold()
         {
             if(_mover.IsWallDetected())

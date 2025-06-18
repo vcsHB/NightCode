@@ -7,6 +7,7 @@ namespace Base.Office
     public class OfficeExitObject : BaseInteractiveObject
     {
         [SerializeField] private CharacterFormation _characterFormation;
+        [SerializeField] private OfficeNextStageWarningPanel _officeNextStageWarningPanel;
 
         public override void OnPlayerInteract()
         {
@@ -20,6 +21,14 @@ namespace Base.Office
 
         private void OnInteract()
         {
+            if(OfficeManager.Instance.office.CheckReadEssentialDialog() == false)
+            {
+                //필수 대화가 끝나지 않았습니다. 경고를 해주
+                _officeNextStageWarningPanel.Open();
+                Time.timeScale = 0;
+                return;
+            }
+
             _characterFormation.Init(StageManager.Instance.GetNextStage());
             _characterFormation.Open();
 

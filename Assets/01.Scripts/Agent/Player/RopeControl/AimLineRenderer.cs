@@ -21,6 +21,11 @@ namespace Agents.Players
         {
         }
 
+        public void SetAimLineEnable(bool value)
+        {
+            _lineRenderer.enabled = value;
+        }
+
 
         private void HandleAimLineRefresh(AimData data)
         {

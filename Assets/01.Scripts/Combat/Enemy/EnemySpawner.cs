@@ -25,7 +25,6 @@ namespace Agents.Enemies
                     q.Enqueue(enemy);
                 }
 
-                Debug.Log(pool.poolName);
                 _enemyDic.Add(pool.poolName, q);
             });
         }

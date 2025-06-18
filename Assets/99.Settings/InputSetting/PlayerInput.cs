@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace InputManage
 {
@@ -40,7 +41,8 @@ namespace InputManage
         public event Action JumpEvent;
         public event Action PullEvent;
         public event Action TurboEvent;
-        public event Action OnCharacterChangeEvent;
+        public event Action<int> OnCharacterChangeEvent;
+        public event Action OnInteractEvent;
         private Controls _controls;
         [SerializeField] private Vector2 _inputDirection;
         public Vector2 InputDirection
@@ -61,6 +63,21 @@ namespace InputManage
 
 
         #endregion
+
+        public void ResetAllSubscription()
+        {
+            OnAttackEvent = null;
+            OnShootEvent = null;
+            OnShootRopeEvent = null;
+            OnUseEvent = null;
+            OnUseCancelEvent = null;
+            OnRemoveRopeEvent = null;
+            JumpEvent = null;
+            PullEvent = null;
+            TurboEvent = null; 
+            OnCharacterChangeEvent = null;
+            OnInteractEvent = null;
+        }
 
         private void OnEnable()
         {
@@ -148,11 +165,7 @@ namespace InputManage
 
         public void OnChangeTag(InputAction.CallbackContext context)
         {
-            if (!playerInputStatus.change) return;
-            if (context.performed)
-            {
-                OnCharacterChangeEvent?.Invoke();
-            }
+
         }
 
         public void SetEnabledAllStatus()
@@ -168,6 +181,25 @@ namespace InputManage
 
         }
 
+        public void OnInteract(InputAction.CallbackContext context)
+        {
+            if (!playerInputStatus.use) return;
+            if (context.performed)
+            {
+                OnInteractEvent?.Invoke();
+            }
+
+        }
+
+        public void OnChcratcerChange(InputAction.CallbackContext context)
+        {
+            if (!playerInputStatus.change) return;
+            var keyControl = context.control as KeyControl;
+            if (keyControl == null) return;
+
+            // Digit1 = 41, need Binding Exception
+            OnCharacterChangeEvent?.Invoke((int)keyControl.keyCode - 41);
+        }
     }
 
 }

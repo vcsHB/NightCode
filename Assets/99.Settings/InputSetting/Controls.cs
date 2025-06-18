@@ -82,13 +82,22 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""ChangeTag"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
-                    ""id"": ""5a091f3c-eb85-48a8-a3ac-56a970e8ac59"",
+                    ""id"": ""7c7296a1-4089-4346-963a-323bd257e4bd"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChcratcerChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""485a79cf-2c49-458a-8843-fe965621f7e9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -150,7 +159,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ece51998-2e92-4455-9ef3-f52e76520c31"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyMouse"",
@@ -193,23 +202,67 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c729bac9-505b-4e17-89ff-0f555621af83"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ChangeTag"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f1b35ca1-a7d0-429f-84ff-eb34c52ec94f"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01d82b1b-81f6-4e26-a5ba-805692f97535"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyMouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bfac3e54-d317-42a8-8050-def165badffc"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyMouse"",
+                    ""action"": ""ChcratcerChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""844bb0cc-ea1d-4c44-9eb6-4b224824707f"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChcratcerChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e5c6b6b-9625-4a01-b46a-869d72b16d0b"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChcratcerChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74323505-0b07-42a1-9f5f-5b5f20c536ba"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChcratcerChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -483,7 +536,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Turbo = m_Player.FindAction("Turbo", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Mouse = m_Player.FindAction("Mouse", throwIfNotFound: true);
-        m_Player_ChangeTag = m_Player.FindAction("ChangeTag", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_ChcratcerChange = m_Player.FindAction("ChcratcerChange", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Esc = m_UI.FindAction("Esc", throwIfNotFound: true);
@@ -571,7 +625,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Turbo;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Mouse;
-    private readonly InputAction m_Player_ChangeTag;
+    private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_ChcratcerChange;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -582,7 +637,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Turbo => m_Wrapper.m_Player_Turbo;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Mouse => m_Wrapper.m_Player_Mouse;
-        public InputAction @ChangeTag => m_Wrapper.m_Player_ChangeTag;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @ChcratcerChange => m_Wrapper.m_Player_ChcratcerChange;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -610,9 +666,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Mouse.started += instance.OnMouse;
             @Mouse.performed += instance.OnMouse;
             @Mouse.canceled += instance.OnMouse;
-            @ChangeTag.started += instance.OnChangeTag;
-            @ChangeTag.performed += instance.OnChangeTag;
-            @ChangeTag.canceled += instance.OnChangeTag;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @ChcratcerChange.started += instance.OnChcratcerChange;
+            @ChcratcerChange.performed += instance.OnChcratcerChange;
+            @ChcratcerChange.canceled += instance.OnChcratcerChange;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -635,9 +694,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Mouse.started -= instance.OnMouse;
             @Mouse.performed -= instance.OnMouse;
             @Mouse.canceled -= instance.OnMouse;
-            @ChangeTag.started -= instance.OnChangeTag;
-            @ChangeTag.performed -= instance.OnChangeTag;
-            @ChangeTag.canceled -= instance.OnChangeTag;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @ChcratcerChange.started -= instance.OnChcratcerChange;
+            @ChcratcerChange.performed -= instance.OnChcratcerChange;
+            @ChcratcerChange.canceled -= instance.OnChcratcerChange;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -820,7 +882,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnTurbo(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnMouse(InputAction.CallbackContext context);
-        void OnChangeTag(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnChcratcerChange(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

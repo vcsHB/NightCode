@@ -15,6 +15,7 @@ namespace Agents.Enemies.Highbinders
             _shooter.FireProjectile();
             _shooter.SetDirection(direction + (Vector2)Random.insideUnitSphere);
             _shooter.FireProjectile();
+            InvokeAttackEnd();
         }
 
     }

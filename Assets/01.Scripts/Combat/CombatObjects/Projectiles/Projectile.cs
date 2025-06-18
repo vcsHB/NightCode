@@ -1,5 +1,6 @@
 using System;
 using Combat.Casters;
+using Core.Attribute;
 using ObjectManage;
 using ObjectPooling;
 using UnityEngine;
@@ -21,8 +22,8 @@ namespace Combat.CombatObjects.ProjectileManage
         [SerializeField] private PoolingType _destroyVFXType;
         [Header("Projectile Damage Reflect Setting")]
         [SerializeField] private bool _canDamagedReflect;
-        [SerializeField] private LayerMask _defaultTargetLayer;
-        [SerializeField] private LayerMask _reflectTargetLayer;
+        [ShowIf(nameof(_canDamagedReflect)), SerializeField] private LayerMask _defaultTargetLayer;
+        [ShowIf(nameof(_canDamagedReflect)), SerializeField] private LayerMask _reflectTargetLayer;
         private bool _isReflected;
 
         public GameObject ObjectPrefab => gameObject;
@@ -166,6 +167,7 @@ namespace Combat.CombatObjects.ProjectileManage
                     _isReflected = true;
                     _caster.SetTargetLayer(_reflectTargetLayer);
                     _currentLifeTime = 0f;
+                    _projectileData.speed *= 5f;
                     Shoot(-_projectileData.direction + UnityEngine.Random.insideUnitCircle);
                     return true;
                 }
