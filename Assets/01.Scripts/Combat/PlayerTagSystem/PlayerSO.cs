@@ -14,6 +14,7 @@ namespace Combat.PlayerTagSystem
         public void SetId(int newID)
         {
             id = newID;
+            playerPrefab.SetPersonalId(newID);
         }
 
     }

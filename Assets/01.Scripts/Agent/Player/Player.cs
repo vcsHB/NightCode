@@ -18,6 +18,11 @@ namespace Agents.Players
         public event Action OnEnterEvent;
         public event Action OnExitEvent;
         private bool _startDisable;
+        [field: SerializeField] public int ID { get; private set; }
+        public void SetPersonalId(int id)
+        {
+            ID = id;
+        }
 
         protected override void Awake()
         {

@@ -45,6 +45,7 @@ namespace Combat.PlayerTagSystem
         public Transform CurrentPlayerTrm => CurrentPlayer.transform;
         public PlayerSO CurrentPlayerData => _playerDatas[_currentPlayerIndex];
         public bool IsAllRetire => playerList.All(x => x.IsDead);
+        public bool useDebugMode;
 
         private Dictionary<Type, IPlayerSubManager> _subManagers = new Dictionary<Type, IPlayerSubManager>();
 
@@ -103,12 +104,14 @@ namespace Combat.PlayerTagSystem
         private void Initialize()
         {
             // GetData;
-
-            var characterInfo = DataLoader.Instance.GetCharacters();
-
-            for (int i = 0; i < characterInfo.Count; i++)
+            if (!useDebugMode)
             {
-                _playerDatas.Add(_playerGroupData.GetPlayerData((int)characterInfo[i]));
+                var characterInfo = DataLoader.Instance.GetCharacters();
+
+                for (int i = 0; i < characterInfo.Count; i++)
+                {
+                    _playerDatas.Add(_playerGroupData.GetPlayerData((int)characterInfo[i]));
+                }
             }
 
 
@@ -135,6 +138,8 @@ namespace Combat.PlayerTagSystem
                 for (int i = 0; i < playerList.Count; i++)
                 {
                     playerList[i].transform.position = _mapLoader.CurrentLevel.StartPos;
+                    //if (!useDebugMode)
+
                 }
             }
         }
