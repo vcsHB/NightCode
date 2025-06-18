@@ -38,7 +38,7 @@ namespace Chipset
         {
             yield return null;
             yield return null;
-            SelectInventory(CharacterEnum.An);
+            SelectInventory(_selectedCharacter);
         }
 
         public void SelectInventory(CharacterEnum character)
