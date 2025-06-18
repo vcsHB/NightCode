@@ -207,7 +207,7 @@ namespace Map
                 {
                     PlayerDead((CharacterEnum)i);
                 }
-                else if(_save.characterPositions[i] == -Vector2Int.one)
+                else if (_save.characterPositions[i] == -Vector2Int.one)
                 {
                     PlayerDead((CharacterEnum)i);
                 }
@@ -240,7 +240,7 @@ namespace Map
             _characterDataLoader.PlayerDead(character);
 
             bool isAllPlayerDead = true;
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 if (_save.characterPositions[i] != -Vector2Int.one)
                 {
@@ -248,7 +248,7 @@ namespace Map
                     break;
                 }
             }
-            if(isAllPlayerDead)
+            if (isAllPlayerDead)
             {
                 DataLoader.Instance.AllPlayerDead();
             }
@@ -278,7 +278,7 @@ namespace Map
             seed = 0;
             currentChapter = 0;
             enterStageId = 0;
-            characterPositions = new List<Vector2Int>();
+            characterPositions = new List<Vector2Int>(3) { Vector2Int.zero, Vector2Int.zero, Vector2Int.zero };
             completedNodes = new List<Vector2Int>();
         }
     }
