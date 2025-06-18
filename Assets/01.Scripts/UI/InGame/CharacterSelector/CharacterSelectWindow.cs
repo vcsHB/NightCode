@@ -39,7 +39,11 @@ namespace UI.InGame.GameUI.CharacterSelector
             {
                 DisableSelectAllCharacter(characterID);
                 slot.Select(true);
-                OnPlayerSelectEvent?.Invoke(_playerList[characterID]);
+                // for (int i = 0; i < _playerList.Count; i++)
+                // {
+                //     Debug.Log("ID: "+_playerList[i].ID);
+                // }
+                OnPlayerSelectEvent?.Invoke(_playerList.Find(a => a.ID == characterID));
             }
             else
             {

@@ -1,9 +1,9 @@
-using System;
 using Agents.Players.WeaponSystem;
 using Agents.Players.WeaponSystem.Weapon;
 using StatSystem;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace Agents.Players.SkillSystem
 {
 
@@ -26,12 +26,11 @@ namespace Agents.Players.SkillSystem
             player.OnExitEvent += HandleOverSkill;
             _gauntletWeapon = _playerWeapon as GauntletWeapon;
             _gauntletWeapon.OnAttackEvent.AddListener(HandleWeaponAttack);
-            Invoke(nameof(InitStatus), 0.5f);
+            Invoke(nameof(InitStatus), 1f);
         }
 
         private void InitStatus()
         {
-
             _agentStatus = _player.GetCompo<AgentStatus>();
             _damageStat = _agentStatus.GetStat(StatusEnumType.Attack);
         }
@@ -68,11 +67,15 @@ namespace Agents.Players.SkillSystem
 
         private void HandleOverSkill()
         {
-            _isSkillEnabled = false;
-            _damageStat.RemoveModifier(_bonusDamage);
-            _player.HealthCompo.SetResist(false);
-            _currentDuration = 0f;
-            OnSkillOverEvent?.Invoke();
+            if (_isSkillEnabled)
+            {
+                _isSkillEnabled = false;
+
+                _damageStat.RemoveModifier(_bonusDamage);
+                _player.HealthCompo.SetResist(false);
+                _currentDuration = 0f;
+                OnSkillOverEvent?.Invoke();
+            }
         }
     }
 }

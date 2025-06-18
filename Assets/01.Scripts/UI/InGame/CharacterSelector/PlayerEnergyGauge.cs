@@ -19,6 +19,8 @@ namespace UI.InGame.GameUI.CharacterSelector
 
         private void HandleCharacterSelect(Player player)
         {
+            if (player == null)
+                Debug.Log("?>??");
             if (_currentPlayer != null)
             {
                 _currentPlayer.EnergyController.OnEnergyChangedEvent -= HandleEnergyChanged;
