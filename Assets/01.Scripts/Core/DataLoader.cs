@@ -5,12 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Core.DataControl
 {
     public class DataLoader : MonoSingleton<DataLoader>
     {
+        public UnityEvent onLoad;
+
         public MapGraphSO mapGraph;
         public ChipsetGruopSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
@@ -88,6 +91,7 @@ namespace Core.DataControl
 
         public void Load()
         {
+            onLoad?.Invoke();
             string mapJson = File.ReadAllText(_mapSavePath);
             string chipsetJson = File.ReadAllText(_chipsetSavePath);
             string characterJson = File.ReadAllText(_characterSavePath);

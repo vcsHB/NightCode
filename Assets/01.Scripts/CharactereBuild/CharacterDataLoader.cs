@@ -44,20 +44,20 @@ namespace Core.DataControl
             _characterSave.charcterData[(int)character].weaponId = weaponId;
         }
 
+        public void SaveWeaponData()
+        {
+            _characterSave.containWeaponId = _weaponDataGroup.weaponDatas.ToList().ConvertAll(data => data.id);
+
+            for (int i = 0; i < 3; i++)
+            {
+                _characterSave.charcterData[i].weaponId = _weaponDataGroup.GetWeaponData(i).id;
+            }
+
+        }
+
         public void Save()
         {
             if (_characterSave == null) InitializeData();
-
-            if (_weaponDataGroup != null)
-            {
-                _characterSave.containWeaponId = _weaponDataGroup.weaponDatas.ToList().ConvertAll(data => data.id);
-
-                for (int i = 0; i < 3; i++)
-                {
-                    _characterSave.charcterData[i].weaponId = _weaponDataGroup.GetWeaponData(i).id;
-                }
-            }
-
 
             string json = JsonUtility.ToJson(_characterSave, true);
             File.WriteAllText(_path, json);
