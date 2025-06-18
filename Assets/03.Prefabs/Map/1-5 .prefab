@@ -1161,6 +1161,51 @@ Transform:
   - {fileID: 1702276670474954446}
   m_Father: {fileID: 5572191850288724819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4792760899914388848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 139863207963190814}
+  - component: {fileID: 7197985463284978813}
+  m_Layer: 0
+  m_Name: EnemySpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &139863207963190814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4792760899914388848}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5572191850288724819}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7197985463284978813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4792760899914388848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce57d19938ee4a14a8f3442b12752241, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolGroup: {fileID: 11400000, guid: 393edbc158bbd1f45bb611d62ed34997, type: 2}
 --- !u!1 &5042365696958032421
 GameObject:
   m_ObjectHideFlags: 0
@@ -11687,51 +11732,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraTransform: {fileID: 0}
   _parallaxMultiplier: 0.5
---- !u!1 &8579910597973435890
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6937572031458137524}
-  - component: {fileID: 175602965582927677}
-  m_Layer: 0
-  m_Name: Spawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6937572031458137524
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8579910597973435890}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5572191850288724819}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &175602965582927677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8579910597973435890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce57d19938ee4a14a8f3442b12752241, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolGroup: {fileID: 11400000, guid: 393edbc158bbd1f45bb611d62ed34997, type: 2}
 --- !u!1 &8643176130071403780
 GameObject:
   m_ObjectHideFlags: 0
@@ -79136,7 +79136,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5436042400009907752, guid: 0f5e48da608c37a48a0c159a88e9aa55, type: 3}
       insertIndex: 0
-      addedObject: {fileID: 6937572031458137524}
+      addedObject: {fileID: 139863207963190814}
     - targetCorrespondingSourceObject: {fileID: 5436042400009907752, guid: 0f5e48da608c37a48a0c159a88e9aa55, type: 3}
       insertIndex: 3
       addedObject: {fileID: 3422656575536642600}
@@ -79662,7 +79662,7 @@ PrefabInstance:
     - target: {fileID: 1667454067854245932, guid: e461b7c8f77fe9548bef089f010c3325, type: 3}
       propertyPath: _spawner
       value: 
-      objectReference: {fileID: 175602965582927677}
+      objectReference: {fileID: 7197985463284978813}
     - target: {fileID: 2022071557949561991, guid: e461b7c8f77fe9548bef089f010c3325, type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.7
