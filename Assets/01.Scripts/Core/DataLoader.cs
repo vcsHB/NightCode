@@ -30,7 +30,11 @@ namespace Core.DataControl
         private UserData _userData;
 
         public int Credit => _characterSave.credit;
-
+        
+        public void GoToMenu()
+        {
+            SceneManager.LoadScene(SceneName.TitleScene);
+        }
 
         protected override void Awake()
         {
