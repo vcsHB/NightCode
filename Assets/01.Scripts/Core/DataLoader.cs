@@ -20,10 +20,12 @@ namespace Core.DataControl
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private static string _chipsetSavePath = Path.Combine(Application.dataPath, "Save/Chipset.json");
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
+        private static string _userDataSavePath = Path.Combine(Application.dataPath, "Save/UserData.json");
 
         private MapSave _mapSave;
         private ChipsetInventorySave _chipsetSave;
         private CharacterSave _characterSave;
+        private UserData _userData;
 
         public int Credit => _characterSave.credit;
 
@@ -64,11 +66,16 @@ namespace Core.DataControl
             return weaponList.GetWeapon(_characterSave.charcterData[(int)character].weaponId);
         }
 
+        public UserData GetUserData()
+        {
+            return _userData;
+        }
+
         public ChipsetSO[] GetChipset(CharacterEnum character)
         {
             if (_chipsetSave == null) Load();
             return _chipsetSave.GetChipsets(character).
-                ConvertAll(save => 
+                ConvertAll(save =>
                 {
                     ushort chipsetId = _chipsetSave.containChipsets[save.chipsetindex];
                     return chipsetGroup.GetChipset(chipsetId);
@@ -92,13 +99,27 @@ namespace Core.DataControl
         public void Load()
         {
             onLoad?.Invoke();
-            string mapJson = File.ReadAllText(_mapSavePath);
-            string chipsetJson = File.ReadAllText(_chipsetSavePath);
-            string characterJson = File.ReadAllText(_characterSavePath);
 
-            _mapSave = JsonUtility.FromJson<MapSave>(mapJson);
-            _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(chipsetJson);
-            _characterSave = JsonUtility.FromJson<CharacterSave>(characterJson);
+            Dictionary<string, Action<string>> loadActions = new()
+            {
+                { _mapSavePath,         json => _mapSave = JsonUtility.FromJson<MapSave>(json) ?? new MapSave() },
+                { _chipsetSavePath,     json => _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(json) ?? new ChipsetInventorySave() },
+                { _characterSavePath,   json => _characterSave = JsonUtility.FromJson<CharacterSave>(json) ?? new CharacterSave() },
+                { _userDataSavePath,    json => _userData = JsonUtility.FromJson<UserData>(json) ?? new UserData() },
+            };
+
+            foreach (var entry in loadActions)
+            {
+                string path = entry.Key;
+
+                if (!File.Exists(path))
+                {
+                    File.WriteAllText(path, "{}");
+                }
+
+                string json = File.ReadAllText(path);
+                entry.Value(json);
+            }
         }
 
         public void Save()
@@ -106,16 +127,19 @@ namespace Core.DataControl
             string mapJson = JsonUtility.ToJson(_mapSave);
             string chipsetJson = JsonUtility.ToJson(_chipsetSave);
             string characterJson = JsonUtility.ToJson(_characterSave);
+            string userJson = JsonUtility.ToJson(_userData);
 
             File.WriteAllText(_mapSavePath, mapJson);
             File.WriteAllText(_chipsetSavePath, chipsetJson);
             File.WriteAllText(_characterSavePath, characterJson);
+            File.WriteAllText(_userDataSavePath, userJson);
         }
 
         public void AllPlayerDead()
         {
             File.Delete(_mapSavePath);
             File.Delete(_chipsetSavePath);
+            File.Delete(_characterSavePath);
             File.Delete(_characterSavePath);
             SceneManager.LoadScene(SceneName.CafeScene);
         }

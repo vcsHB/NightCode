@@ -1,3 +1,4 @@
+using Core.DataControl;
 using Core.StageController;
 using System.IO;
 using UnityEngine;
@@ -9,12 +10,18 @@ namespace TitleScene
     public class TitleSceneManager : MonoBehaviour
     {
         [SerializeField] private StageSO _bossStage;
+        [SerializeField] private string _startConnectSceneName = "CafeScene";
+        [SerializeField] private string _tutorialSceneName = "TutorialScene";
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
 
         public void HandleStart()
         {
-            //StageManager.Instance.LoadCurrentScene();
-            //SceneManager.LoadScene(_startConnectSceneName);
+            if (DataLoader.Instance.GetUserData().isClearTutorial)
+            {
+                SceneManager.LoadScene(_startConnectSceneName);
+            }
+            else
+                SceneManager.LoadScene(_tutorialSceneName);
         }
 
         public void HandleStartBoss()
@@ -25,7 +32,7 @@ namespace TitleScene
 
         public void ResetData()
         {
-            if(Directory.Exists(_folderPath))
+            if (Directory.Exists(_folderPath))
             {
                 string[] files = Directory.GetFiles(_folderPath);
 
