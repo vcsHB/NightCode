@@ -23,7 +23,9 @@ namespace UI
         private bool _isRetired;
         private CanvasGroup _canvasGroup;
 
-        private void Start()
+        public bool isRetired => _isRetired;
+
+        private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
             _isRetired = !characterController.MapGraph.IsCharacterExsists(character);
