@@ -56,6 +56,8 @@ namespace Chipset
                 ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
                 chipsetInfo.Init(inventory, chipsetInstanceContainer[i]);
                 chipsetInfo.onInsertChipset += OnInsertChipset;
+                chipsetInfo.onEnter += HandleSetExplain;
+                chipsetInfo.onExit += HandleUnSetExplain;
                 _chipsetInfos.Add(chipsetInstanceContainer[i], chipsetInfo);
             }
         }
@@ -79,7 +81,7 @@ namespace Chipset
             Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
             chipset.SetIndex(containChipset.Count);
             chipset.SetExplain += HandleSetExplain;
-            chipset.UnSetExplain += HandelUnSetExplain;
+            chipset.UnSetExplain += HandleUnSetExplain;
 
             containChipset.Add(chipsetSO);
             chipsetInstanceContainer.Add(chipset);
@@ -88,6 +90,8 @@ namespace Chipset
             ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
             chipsetInfo.Init(inventory, chipset);
             chipsetInfo.onInsertChipset += OnInsertChipset;
+            chipsetInfo.onEnter += HandleSetExplain;
+            chipsetInfo.onExit += HandleUnSetExplain;
             _chipsetInfos.Add(chipset, chipsetInfo);
         }
 
@@ -96,7 +100,7 @@ namespace Chipset
             SetExplain?.Invoke(chipset);
         }
 
-        private void HandelUnSetExplain()
+        private void HandleUnSetExplain()
         {
             UnSetExplain?.Invoke();
         }
@@ -136,6 +140,8 @@ namespace Chipset
             ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
             chipsetInfo.Init(inventory, chipset);
             chipsetInfo.onInsertChipset += OnInsertChipset;
+            chipsetInfo.onEnter += HandleSetExplain;
+            chipsetInfo.onExit += HandleUnSetExplain;
             _chipsetInfos.Add(chipset, chipsetInfo);
 
             inventory.RemoveChipset(inventory.SelectedChipsetIndex);
