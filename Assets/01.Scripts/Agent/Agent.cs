@@ -8,6 +8,10 @@ using UnityEngine;
 
 namespace Agents
 {
+    public struct Min
+    {
+
+    }
     public abstract class Agent : MonoBehaviour
     {
         public event Action OnDieEvent;

@@ -23,6 +23,12 @@ namespace Core.DataControl
             }
 
             levelInstance = Instantiate(_currentMap.levelPrefab);
+            levelInstance.Initialize();
+        }
+
+        private void Start()
+        {
+
         }
     }
 }
