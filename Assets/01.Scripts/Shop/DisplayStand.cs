@@ -34,15 +34,15 @@ namespace Shop
             switch (shopGoods.goodsType)
             {
                 case GoodsType.Chipset:
-                    ChipsetSO chispetSO = chipsetGroup.GetChipset((ushort)shopGoods.id);
+                    ChipsetSO chispetSO = chipsetGroup.GetChipset((ushort)shopGoods.chipsetSO.id);
                     text.Append($"{chispetSO.chipsetName}");
                     break;
                 case GoodsType.Weapon:
-                    PlayerWeaponSO weaponSO = weaponList.GetWeapon(shopGoods.id);
+                    PlayerWeaponSO weaponSO = weaponList.GetWeapon(shopGoods.weaponSO.id);
                     text.Append($"{weaponSO.weaponName}");
                     break;
                 case GoodsType.Heal:
-                    text.Append($"F.I.X KIT ( + {shopGoods.id} )");
+                    text.Append($"F.I.X KIT ( + {shopGoods.healAmount} )");
                     break;
             }
 
@@ -58,13 +58,13 @@ namespace Shop
             switch (shopGoods.goodsType)
             {
                 case GoodsType.Chipset:
-                    DataLoader.Instance.AddChipset((ushort)shopGoods.id);
+                    DataLoader.Instance.AddChipset((ushort)shopGoods.chipsetSO.id);
                     break;
                 case GoodsType.Weapon:
-                    DataLoader.Instance.AddWeapon(shopGoods.id);
+                    DataLoader.Instance.AddWeapon(shopGoods.weaponSO.id);
                     break;
                 case GoodsType.Heal:
-                    PlayerManager.Instance.playerList.ForEach(player => player.HealthCompo.Restore(shopGoods.id));
+                    PlayerManager.Instance.playerList.ForEach(player => player.HealthCompo.Restore(shopGoods.healAmount));
                     break;
             }
 

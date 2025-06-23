@@ -24,7 +24,10 @@ namespace Shop
 
             for (int i = 0; i < displayStands.Count; i++)
             {
-                if (goods[i].goodsType == GoodsType.Weapon && DataLoader.Instance.IsWeaponExist(goods[i].id)) continue;
+                if (goods[i].goodsType == GoodsType.Weapon)
+                    if (DataLoader.Instance.IsWeaponExist(goods[i].weaponSO.id))
+                        continue;
+                        
                 displayStands[i].SetGoods(goods[i]);
                 displayStands[i].onBuyGoods += BuyHandler;
             }
