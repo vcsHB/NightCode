@@ -68,6 +68,7 @@ namespace Core.DataControl
 
         public PlayerWeaponSO GetWeapon(CharacterEnum character)
         {
+            if (_characterSave.characterData[(int)character].isPlayerDead) return null;
             return weaponList.GetWeapon(_characterSave.characterData[(int)character].equipWeaponId);
         }
 
