@@ -12,6 +12,7 @@ namespace UI.InGame.GameUI.CharacterSelector
 
         public void Initialize(PlayerWeaponSO weaponData)
         {
+
             _weaponImage.sprite = weaponData.weaponIcon;
             _cooldownGaugeImage.color = weaponData.weaponColor;
             _skillIconImage.sprite = weaponData.skillSO.skillIcon;

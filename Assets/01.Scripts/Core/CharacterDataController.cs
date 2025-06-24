@@ -1,7 +1,9 @@
-﻿using Core.DataControl;
+﻿using Core;
+using Core.DataControl;
 using System.IO;
 using UI.GameSelectScene;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Map
 {
@@ -52,6 +54,11 @@ namespace Map
         {
             _characterSave = _loadHelper.Load();
             if (_characterSave.containWeaponList.Count <= 0) InitializeData();
+        }
+
+        public void LoadTitleScene()
+        {
+            SceneManager.LoadScene(SceneName.TitleScene);
         }
 
         private void InitializeData()
