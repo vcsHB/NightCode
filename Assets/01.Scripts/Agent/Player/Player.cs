@@ -9,6 +9,7 @@ namespace Agents.Players
     {
         [field: SerializeField] public PlayerInput PlayerInput { get; private set; }
         protected PlayerStateMachine _stateMachine;
+        public event Action OnPlayerGenerateEvent;
         public PlayerStateMachine StateMachine => _stateMachine;
 
         public Rigidbody2D RigidCompo { get; protected set; }
@@ -36,7 +37,7 @@ namespace Agents.Players
         {
             base.Start();
             StateMachine.StartState();
-
+            OnPlayerGenerateEvent?.Invoke();
             if (_startDisable) gameObject.SetActive(false);
         }
         private void OnDestroy()
