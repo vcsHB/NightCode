@@ -6,14 +6,18 @@ using System;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Shop
 {
     public class DisplayStand : MonoBehaviour
     {
+        public UnityEvent OnPurchaseEvent;
+
         public event Action onBuyGoods;
         public ChipsetGruopSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
+        [SerializeField] private DescriptionPanel _descriptionPanel;
 
         public TextMeshPro tmp;
         public GameObject textObject;
@@ -22,31 +26,39 @@ namespace Shop
         public ShopGoodsSO shopGoods;
 
         private bool isGoodsExist;
-        private GameObject goodsSprite;
-
+        private GoodsPreviewObject _goodsPreview;
+        [SerializeField] GoodsPreviewObject _defaultGoodsPreview;
+        public void SetEmptySlot()
+        {
+            _defaultGoodsPreview.gameObject.SetActive(true);
+        }
         public void SetGoods(ShopGoodsSO shopGoods)
         {
             this.shopGoods = shopGoods;
             isGoodsExist = true;
             StringBuilder text = new StringBuilder();
             text.Append($"{shopGoods.cost} <color=white>");
-
             switch (shopGoods.goodsType)
             {
                 case GoodsType.Chipset:
-                    ChipsetSO chispetSO = chipsetGroup.GetChipset((ushort)shopGoods.chipsetSO.id);
-                    text.Append($"{chispetSO.chipsetName}");
+                    ChipsetSO chipsetSO = chipsetGroup.GetChipset((ushort)shopGoods.chipsetSO.id);
+                    _descriptionPanel.SetContent(chipsetSO.chipsetName, chipsetSO.chipsetDescription);
+                    text.Append($"{chipsetSO.chipsetName}");
                     break;
                 case GoodsType.Weapon:
                     PlayerWeaponSO weaponSO = weaponList.GetWeapon(shopGoods.weaponSO.id);
+                    _descriptionPanel.SetContent(weaponSO.weaponName, weaponSO.weaponDescription);
                     text.Append($"{weaponSO.weaponName}");
                     break;
                 case GoodsType.Heal:
+                    _descriptionPanel.SetContent("F.I.X KIT", $"체력을 {shopGoods.healAmount} 회복합니다");
                     text.Append($"F.I.X KIT ( + {shopGoods.healAmount} )");
                     break;
             }
+            if (_defaultGoodsPreview != null)
+                _defaultGoodsPreview.gameObject.SetActive(false);
+            _goodsPreview = Instantiate(shopGoods.iconPrefab, iconTrm);
 
-            goodsSprite = Instantiate(shopGoods.iconPrefab, iconTrm);
             tmp.SetText(text.ToString());
         }
 
@@ -69,22 +81,26 @@ namespace Shop
             }
 
             onBuyGoods?.Invoke();
+            OnPurchaseEvent?.Invoke();
             isGoodsExist = false;
             textObject.gameObject.SetActive(false);
             CreditCollector.Instance.UseCredit(shopGoods.cost);
-            Destroy(goodsSprite);
+            _goodsPreview.SetSoldOut();
+            
         }
 
         public void OnEnter()
         {
             if (isGoodsExist == false || shopGoods == null) return;
             textObject.gameObject.SetActive(true);
+            _descriptionPanel.Open();
         }
 
         public void OnExit()
         {
             if (isGoodsExist == false || shopGoods == null) return;
             textObject.gameObject.SetActive(false);
+            _descriptionPanel.Close();
         }
     }
 }

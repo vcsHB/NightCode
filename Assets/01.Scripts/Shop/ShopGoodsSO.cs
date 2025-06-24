@@ -15,7 +15,7 @@ namespace Shop
 
         public int cost;
 
-        public GameObject iconPrefab;
+        public GoodsPreviewObject iconPrefab;
     }
 
     public enum GoodsType
