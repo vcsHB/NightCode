@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Unity.AppUI.UI;
 using UnityEngine;
 
@@ -29,6 +30,11 @@ namespace Core.DataControl
             }
             string json = File.ReadAllText(_path);
             return JsonUtility.FromJson<T>(json);
+        }
+
+        public void ResetData()
+        {
+            File.Delete(_path);
         }
     }
     

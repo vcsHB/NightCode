@@ -52,6 +52,7 @@ namespace UI.GameSelectScene
 
             _mainPanel.InitializeData(_weaponDataGroup);
             _agentSelectController.Initialize();
+
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
                 if (save.characterData[(int)character].isPlayerDead)

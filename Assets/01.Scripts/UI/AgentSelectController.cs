@@ -10,6 +10,18 @@ namespace UI.GameSelectScene.CharacterSetting
         private List<AgentSlot> _agentSlots;
         private Dictionary<CharacterEnum, AgentSlot> _agentSlotDictionary;
 
+        private void Start()
+        {
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                if (_agentSlotDictionary[character].isRetired == false)
+                {
+                    _agentSlotDictionary[character].SetSelection(true);
+                    break;
+                }
+            }
+        }
+
         public void Initialize()
         {
             _agentSlots = GetComponentsInChildren<AgentSlot>().ToList();
@@ -19,15 +31,6 @@ namespace UI.GameSelectScene.CharacterSetting
             {
                 _agentSlotDictionary.Add(_agentSlots[i].character, _agentSlots[i]);
                 _agentSlots[i].OnSelectCharacter += HandleSelectCharacter;
-            }
-
-            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
-            {
-                if (_agentSlotDictionary[character].isRetired == false)
-                {
-                    _agentSlotDictionary[character].SetSelection(true);
-                    break;
-                }
             }
         }
 

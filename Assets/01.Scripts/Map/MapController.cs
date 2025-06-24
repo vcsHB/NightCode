@@ -235,6 +235,11 @@ namespace Map
             _mapGraph.characterOriginPosition[character] = -Vector2Int.one;
             _mapGraph.characterCurrentPosition[character] = -Vector2Int.one;
         }
+
+        public void ResetData()
+        {
+            File.Delete(_path);
+        }
     }
 }
 

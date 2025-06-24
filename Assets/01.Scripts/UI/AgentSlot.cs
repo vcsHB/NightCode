@@ -23,13 +23,12 @@ namespace UI
 
         public bool isRetired => _isRetired;
 
-        private void Awake()
-        {
-            _canvasGroup = GetComponent<CanvasGroup>();
-        }
 
         public void SetRetired()
         {
+            if(_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
+
+            _isRetired = true;
             retirePanel.SetActive(_isRetired);
             if (_isRetired) _canvasGroup.alpha = 1;
         }

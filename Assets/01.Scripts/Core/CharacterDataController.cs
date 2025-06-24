@@ -85,13 +85,22 @@ namespace Map
             }
             if (_characterSave.failEnteredStage)
             {
+                int remainCharacter = _characterSave.characterData.Count;
                 for (int i = 0; i < _characterSave.characterData.Count; ++i)
                 {
                     if (_characterSave.characterData[i].characterPosition == _mapController.CurrentEnterPosition)
                     {
+                        remainCharacter--;
                         _characterSave.characterData[i].isPlayerDead = true;
                         _mapController.RetireCharacter((CharacterEnum)i);
                     }
+                }
+
+                if(remainCharacter <= 0)
+                {
+                    _mapController.ResetData();
+                    _loadHelper.ResetData();
+                    SceneManager.LoadScene(SceneName.CafeScene);
                 }
             }
         }
