@@ -21,7 +21,7 @@ namespace Chipset
             RectTrm.localPosition = localPosition; 
 
             _nameText.SetText(chipset.chipsetName);
-            _explainText.SetText(chipset.chipsetName);
+            _explainText.SetText(chipset.chipsetDescription);
             _iconImage.sprite = chipset.icon;
         }
 

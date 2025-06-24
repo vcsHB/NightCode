@@ -1,7 +1,6 @@
-using Agents;
 using DG.Tweening;
 using System;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,6 +14,7 @@ namespace Chipset
         public event Action onExit;
 
         [SerializeField] private Image _icon;
+        [SerializeField] private TextMeshProUGUI _nameText;
         private Chipset _assignedChipset;
         private ChipsetInventory _inventory;
         private float _scaleUpDuration = 0.3f;
@@ -28,6 +28,7 @@ namespace Chipset
             _assignedChipset = chipset;
             _assignedChipset.RectTrm.localScale = Vector3.zero;
             _icon.sprite = chipset.info.icon;
+            _nameText.SetText(chipset.info.chipsetName);
         }
 
         public void OnInsertChipset()
@@ -74,7 +75,7 @@ namespace Chipset
             _chipsetScaleTween = _assignedChipset.RectTrm.DOScale(1, _scaleUpDuration);
 
             _icon.gameObject.SetActive(false);
-            
+
             _inventory.onInsertChipset += OnInsertChipset;
             _inventory.onReturnChipset += OnReturnChipset;
         }
@@ -92,7 +93,7 @@ namespace Chipset
         public void SetActive(bool isActive)
         {
             gameObject.SetActive(isActive);
-            
+
             if (isActive == false) onExit?.Invoke();
             else _icon.gameObject.SetActive(true);
         }
