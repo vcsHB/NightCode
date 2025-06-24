@@ -14,6 +14,9 @@ namespace Core.DataControl
         public List<ushort> containChipsetList;
         public List<CharacterData> characterData;
 
+        public bool clearEnteredStage = false;
+        public bool failEnteredStage = false;
+
         public CharacterSave()
         {
             credit = 0;

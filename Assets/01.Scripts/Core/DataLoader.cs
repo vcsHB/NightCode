@@ -89,16 +89,18 @@ namespace Core.DataControl
 
         public void CompleteMap()
         {
-            _mapSave.isEnteredStageClear = true;
-            _mapSave.isFailStageClear = false;
+            _characterSave.clearEnteredStage = true;
+            _characterSave.failEnteredStage = false;
             Save();
+            SceneManager.LoadScene(SceneName.MapSelectScene);
         }
 
         public void FailMap()
         {
-            _mapSave.isEnteredStageClear = false;
-            _mapSave.isFailStageClear = true;
+            _characterSave.clearEnteredStage = false;
+            _characterSave.failEnteredStage = true;
             Save();
+            SceneManager.LoadScene(SceneName.MapSelectScene);
         }
 
         public void Load()
@@ -175,14 +177,6 @@ namespace Core.DataControl
             File.WriteAllText(_mapSavePath, mapJson);
             File.WriteAllText(_characterSavePath, characterJson);
             File.WriteAllText(_userDataSavePath, userJson);
-        }
-
-        public void AllPlayerDead()
-        {
-            File.Delete(_mapSavePath);
-            File.Delete(_characterSavePath);
-            File.Delete(_characterSavePath);
-            SceneManager.LoadScene(SceneName.CafeScene);
         }
 
         public void AddChipset(ushort id)

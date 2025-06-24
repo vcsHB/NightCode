@@ -1,7 +1,4 @@
-﻿using Chipset;
-using Core.DataControl;
-using System;
-using System.Collections.Generic;
+﻿using Core.DataControl;
 using System.IO;
 using UI.GameSelectScene;
 using UnityEngine;
@@ -25,12 +22,29 @@ namespace Map
         private void Awake()
         {
             Load();
-            _buildController.Initialize(_characterSave);
             _mapController.Initialize(_characterSave.characterData.ConvertAll(data => data.characterPosition));
+            _mapController.OnEnterStage += Save;
+            CheckClearFailCurrentNode();
+            _mapController.InitCharacterController();
+            _buildController.Initialize(_characterSave);
+
+            _characterSave.clearEnteredStage = false;
+            _characterSave.failEnteredStage = false;
+            _mapController.SetCompleteNode();
         }
 
         public void Save()
         {
+            for (int i = 0; i < _characterSave.characterData.Count; i++)
+            {
+                _characterSave.characterData[i].equipWeaponId =
+                    _buildController.GetCharacterWeapon((CharacterEnum)i);
+                _characterSave.characterData[i].chipsetInventoryData =
+                    _buildController.GetCharacterInventory((CharacterEnum)i);
+                _characterSave.characterData[i].characterPosition =
+                    _mapController.GetCharacterPosition((CharacterEnum)i);
+            }
+
             _loadHelper.Save(_characterSave);
         }
 
@@ -53,6 +67,25 @@ namespace Map
             {
                 _characterSave.characterData[i].playerHealth = _initializeData.characterDefaultHealth;
                 _characterSave.containWeaponList.Add(_characterSave.characterData[i].equipWeaponId);
+            }
+        }
+
+        private void CheckClearFailCurrentNode()
+        {
+            if (_characterSave.clearEnteredStage)
+            {
+                _mapController.ClearCurrentStage();
+            }
+            if (_characterSave.failEnteredStage)
+            {
+                for (int i = 0; i < _characterSave.characterData.Count; ++i)
+                {
+                    if (_characterSave.characterData[i].characterPosition == _mapController.CurrentEnterPosition)
+                    {
+                        _characterSave.characterData[i].isPlayerDead = true;
+                        _mapController.RetireCharacter((CharacterEnum)i);
+                    }
+                }
             }
         }
     }

@@ -48,5 +48,14 @@ namespace Chipset
 
         public Vector2Int center;
         public int rotate;
+
+        public CharacterChipsetData() {  }
+
+        public CharacterChipsetData(int chipsetIndex, Vector2Int center, int rotate)
+        {
+            this.chipsetIndex = chipsetIndex;
+            this.center = center;
+            this.rotate = rotate;
+        }
     }
 }

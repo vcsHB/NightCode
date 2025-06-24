@@ -2,13 +2,16 @@ using Core.DataControl;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace Map
 {
     public class MapController : MonoBehaviour
     {
         public event Action<MapNode> OnClickNodeEvent;
+        public event Action OnEnterStage;
         public MapGraphSO mapGraphSO;
         public MapNode nodePrefab;
 
@@ -27,6 +30,7 @@ namespace Map
         #region Property
 
         public MapGraph MapGraph => _mapGraph;
+        public Vector2Int CurrentEnterPosition => _save.enterStagePosition;
         public int CurrentChapter { get; private set; }
         public int CurrentDepth { get; private set; }
 
@@ -50,10 +54,11 @@ namespace Map
 
             //_mapGraph will be init in GenerateNode Func
             GenerateNode();
-            _characterController.Init(_mapGraph);
+        }
 
-            _save.completedNodes.ForEach(SetCompleteNode);
-            SetCompleteNode(Vector2Int.zero);
+        public void InitCharacterController()
+        {
+            _characterController.Init(_mapGraph);
         }
 
         public void InitializeData()
@@ -172,21 +177,16 @@ namespace Map
             _save = JsonUtility.FromJson<MapSave>(json);
 
             CurrentDepth = int.MaxValue;
-
-            if (_save.isEnteredStageClear)
-            {
-                _save.completedNodes.Add(_save.enterStagePosition);
-            }
-            _save.isEnteredStageClear = false;
-            _save.isFailStageClear = false;
             return true;
         }
+
 
         public void SaveEnterStage(MapNode node)
         {
             if (_save == null) _save = new MapSave();
             _save.enterStageId = node.NodeInfo.nodeId;      // 인게임에서 맵 불러오기 위한
             _save.enterStagePosition = node.Position;       // 맵 선택 씬에서 진행중인 씬 확을 위한
+            OnEnterStage?.Invoke();
             Save();
         }
 
@@ -213,7 +213,28 @@ namespace Map
             }
         }
 
+        public Vector2Int GetCharacterPosition(CharacterEnum character)
+            => _mapGraph.GetCharcterCurrentPosition(character);
+
         #endregion
+
+
+        public void ClearCurrentStage()
+        {
+            _save.completedNodes.Add(_save.enterStagePosition);
+        }
+
+        public void SetCompleteNode()
+        {
+            _save.completedNodes.ForEach(SetCompleteNode);
+            SetCompleteNode(Vector2Int.zero);
+        }
+
+        public void RetireCharacter(CharacterEnum character)
+        {
+            _mapGraph.characterOriginPosition[character] = -Vector2Int.one;
+            _mapGraph.characterCurrentPosition[character] = -Vector2Int.one;
+        }
     }
 }
 

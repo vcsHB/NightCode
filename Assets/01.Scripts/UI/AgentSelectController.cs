@@ -10,7 +10,7 @@ namespace UI.GameSelectScene.CharacterSetting
         private List<AgentSlot> _agentSlots;
         private Dictionary<CharacterEnum, AgentSlot> _agentSlotDictionary;
 
-        private void Start()
+        public void Initialize()
         {
             _agentSlots = GetComponentsInChildren<AgentSlot>().ToList();
             _agentSlotDictionary = new Dictionary<CharacterEnum, AgentSlot>();
@@ -29,6 +29,11 @@ namespace UI.GameSelectScene.CharacterSetting
                     break;
                 }
             }
+        }
+
+        public void RetireCharacter(CharacterEnum character)
+        {
+            _agentSlotDictionary[character].SetRetired();
         }
 
         private void HandleSelectCharacter(CharacterEnum character)

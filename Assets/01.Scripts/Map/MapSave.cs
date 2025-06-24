@@ -15,8 +15,8 @@ namespace Map
 
         public List<Vector2Int> completedNodes;
 
-        public bool isEnteredStageClear = false;
-        public bool isFailStageClear = false;
+        public bool isEnteredStageClear;
+        public bool isFailStageClear;
 
         public MapSave()
         {

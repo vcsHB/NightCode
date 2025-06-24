@@ -280,6 +280,18 @@ namespace Chipset
             _selectedChipsetIndex = -1;
         }
 
+        public List<CharacterChipsetData> GetChipsetData()
+        {
+            List<CharacterChipsetData> chipsetDatas = new List<CharacterChipsetData>();
+
+            _assignedChipsets.Keys.ToList().ForEach(index =>
+            {
+                chipsetDatas.Add(new CharacterChipsetData(index, _assignedChipsets[index].center, _assignedChipsets[index].rotate));
+            });
+
+            return chipsetDatas;
+        }
+
         #endregion
 
         #region PositionConvertRegion
