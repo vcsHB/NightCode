@@ -111,7 +111,7 @@ namespace Core.DataControl
             if (File.Exists(_mapSavePath) == false)
             {
                 _mapSave = new MapSave();
-
+                
                 string json = JsonUtility.ToJson(_mapSave);
                 File.WriteAllText(_mapSavePath, json);
             }
@@ -124,6 +124,10 @@ namespace Core.DataControl
             if (File.Exists(_characterSavePath) == false)
             {
                 _characterSave = new CharacterSave();
+
+                _characterSave.characterData[0].equipWeaponId = characterInitialize.anInitializeWeapon.id;
+                _characterSave.characterData[1].equipWeaponId = characterInitialize.jinInitializeWeapon.id;
+                _characterSave.characterData[2].equipWeaponId = characterInitialize.binaInitializeWeapon.id;
 
                 string json = JsonUtility.ToJson(_characterSave);
                 File.WriteAllText(_characterSavePath, json);
