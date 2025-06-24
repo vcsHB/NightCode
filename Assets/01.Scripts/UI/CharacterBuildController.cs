@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System;
 using UI.NodeViewScene.WeaponSelectionUIs;
 using UnityEngine;
-using TMPro.EditorUtilities;
 using UI.GameSelectScene.CharacterSetting;
 
 namespace UI.GameSelectScene
