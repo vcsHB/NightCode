@@ -71,7 +71,7 @@ namespace Chipset
 
                 _slots[i].SetPosition(info.chipsetSize[i]);
                 _slots[i].onPointerDown += OnPointerDown;
-                _slots[i].onPointerUp += OnPointerUp;
+                //_slots[i].onPointerUp += OnPointerUp;
                 _slots[i].onPointerEnter += HandleSetExplain;
                 _slots[i].onPointerExit += HandleUnSetExplain;
             }
@@ -184,8 +184,8 @@ namespace Chipset
             _selectedSlotOffset = position;
             _canvasGroup.blocksRaycasts = false;
             onSelectChipset?.Invoke(_index);
+            _isForcePointerDown = true;
             _isDraging = true;
-            Debug.Log("นึนึ?!!");
         }
 
         public void OnPointerUp(Vector2Int position)
@@ -193,7 +193,6 @@ namespace Chipset
             onPointerUpChipset?.Invoke();
             _canvasGroup.blocksRaycasts = true;
             _isDraging = false;
-            Debug.Log("นึ?!");
         }
 
         #endregion
