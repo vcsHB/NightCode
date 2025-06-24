@@ -13,10 +13,11 @@ namespace Agents.Enemies.BossManage
             _renderer = GetComponentInChildren<BurnOutBossRenderer>();
         }
 
-        private void Start()
-        {
-        }
         public void SetStartBoss()
+        {
+            Invoke(nameof(SetBossInit), 2f);
+        }
+        private void SetBossInit()
         {
             GetVariable<BurnOutStateChange>("StateChange").Value.SendEventMessage(BurnOutStateEnum.Idle);
         }

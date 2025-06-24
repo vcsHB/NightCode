@@ -1,16 +1,22 @@
 using Core.DataControl;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Shop
 {
     public class Merchant : MonoBehaviour
     {
+        [Header("Goods Setting")]
         public List<ShopGoodsSO> exsistGoods;
-        public Sprite happyFace;
+        [SerializeField] private ShopGoodsSO _healItemSO;
 
-        public int standCount = 3;
+        [Header("Stand Setting")]
+        [SerializeField] private DisplayStand _healItemStand;
         public List<DisplayStand> displayStands;
+
+        [Header("Seller Setting")]
+        public Sprite happyFace;
         public SpriteRenderer face;
 
         public void Awake()
@@ -24,10 +30,18 @@ namespace Shop
 
             for (int i = 0; i < displayStands.Count; i++)
             {
-                if (goods[i].goodsType == GoodsType.Weapon && DataLoader.Instance.IsWeaponExist(goods[i].id)) continue;
+                if (goods[i].goodsType == GoodsType.Weapon)
+                    if (DataLoader.Instance.IsWeaponExist(goods[i].weaponSO.id))
+                    {
+                        displayStands[i].SetEmptySlot();
+                        continue;
+                    }
+
                 displayStands[i].SetGoods(goods[i]);
                 displayStands[i].onBuyGoods += BuyHandler;
             }
+            _healItemStand.SetGoods(_healItemSO);
+            _healItemStand.onBuyGoods += BuyHandler;
         }
 
         private void BuyHandler()

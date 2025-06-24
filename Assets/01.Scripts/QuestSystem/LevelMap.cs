@@ -1,25 +1,22 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace QuestSystem.LevelSystem
 {
 
     public class LevelMap : MonoBehaviour
     {
-        public event Action OnArriveEndPoint;
+        public UnityEvent OnLevelLoadEvent;
         [SerializeField] private Transform _startPosTrm;
 
         public Vector2 StartPos => _startPosTrm.position;
 
-        private void HandleArriveEndPoint()
+        // Call In Awake Timeline
+        public void Initialize()
         {
-            OnArriveEndPoint?.Invoke();
+            OnLevelLoadEvent?.Invoke();
         }
 
-
-        public void Destroy()
-        {
-            Destroy(gameObject);
-        }
     }
 }
