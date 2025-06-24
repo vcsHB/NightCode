@@ -19,10 +19,10 @@ namespace Agents.Enemies
 
         protected override void Awake()
         {
+            _btAgent = GetComponent<BehaviorGraphAgent>();
             base.Awake();
             RigidCompo = GetComponent<Rigidbody2D>();
 
-            _btAgent = GetComponent<BehaviorGraphAgent>();
         }
 
         public virtual void Init(string name)
