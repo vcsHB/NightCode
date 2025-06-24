@@ -40,12 +40,6 @@ namespace TitleScene
                 {
                     File.Delete(file);
                 }
-
-                StageManager.Instance.Save();
-            }
-            else
-            {
-                Debug.Log("�ֵ�");
             }
         }
 
