@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Agents.Players.WeaponSystem;
 using Combat.SubWeaponSystem;
 using Newtonsoft.Json.Converters;
@@ -28,8 +29,8 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
             {
                 WeaponSelectionSlot slot = Instantiate(_slotPrefab, _contentTrm);
                 slot.Initialize(_weaponListSO.GetWeapon(dataGroup.GetWeaponData(i).id));
-                _slotList.Add(slot);
                 slot.OnWeaponSelectEvent += HandleSelectWeapon;
+                _slotList.Add(slot);
             }
         }
 

@@ -30,8 +30,6 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
         {
             _selectedCharacter = characterEnum;
             _weaponInfoPanel.SelectCharacter(_selectedCharacter);
-
-
         }
     }
 }

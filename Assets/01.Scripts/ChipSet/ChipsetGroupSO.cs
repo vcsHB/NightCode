@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Chipset
 {
     [CreateAssetMenu(fileName = "ChipsetGruopSO", menuName = "SO/Chipset/ChipsetGruopSO")]
-    public class ChipsetGruopSO : ScriptableObject
+    public class ChipsetGroupSO : ScriptableObject
     {
         public List<ChipsetSO> chipsetGroup;
 

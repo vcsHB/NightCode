@@ -18,15 +18,9 @@ namespace Chipset
         private Chipset _assignedChipset;
         private ChipsetInventory _inventory;
         private float _scaleUpDuration = 0.3f;
-        private Canvas _canvas;
         private Tween _chipsetScaleTween;
 
         public RectTransform RectTrm => transform as RectTransform;
-
-        private void Awake()
-        {
-            _canvas = GetComponentInParent<Canvas>();
-        }
 
         public void Init(ChipsetInventory inventory, Chipset chipset)
         {
@@ -41,7 +35,7 @@ namespace Chipset
             onInsertChipset?.Invoke(_assignedChipset);
             RemoveAction();
 
-            Destroy(gameObject);
+            SetActive(false);
         }
 
         public void OnReturnChipset()
@@ -64,11 +58,10 @@ namespace Chipset
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Camera uiCamera = _canvas.worldCamera;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 _assignedChipset.ParentRectTrm,
-                Input.mousePosition,
-                uiCamera,
+                eventData.position,
+                eventData.pressEventCamera,
                 out Vector2 localPoint
             );
 
@@ -81,7 +74,7 @@ namespace Chipset
             _chipsetScaleTween = _assignedChipset.RectTrm.DOScale(1, _scaleUpDuration);
 
             _icon.gameObject.SetActive(false);
-
+            
             _inventory.onInsertChipset += OnInsertChipset;
             _inventory.onReturnChipset += OnReturnChipset;
         }
@@ -94,6 +87,14 @@ namespace Chipset
         public void OnPointerEnter(PointerEventData eventData)
         {
             onEnter?.Invoke(_assignedChipset.info);
+        }
+
+        public void SetActive(bool isActive)
+        {
+            gameObject.SetActive(isActive);
+            
+            if (isActive == false) onExit?.Invoke();
+            else _icon.gameObject.SetActive(true);
         }
     }
 }

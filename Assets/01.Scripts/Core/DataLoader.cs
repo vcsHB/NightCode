@@ -17,15 +17,13 @@ namespace Core.DataControl
         public ChipsetInitializeSO chipsetInitialize;
 
         public MapGraphSO mapGraph;
-        public ChipsetGruopSO chipsetGroup;
+        public ChipsetGroupSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
-        private static string _chipsetSavePath = Path.Combine(Application.dataPath, "Save/Chipset.json");
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
         private static string _userDataSavePath = Path.Combine(Application.dataPath, "Save/UserData.json");
 
         private MapSave _mapSave;
-        private ChipsetInventorySave _chipsetSave;
         private CharacterSave _characterSave;
         private UserData _userData;
 
@@ -60,7 +58,7 @@ namespace Core.DataControl
 
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                if (_mapSave.characterPositions[(int)character] == _mapSave.enterStagePosition)
+                if (_characterSave.characterData[(int)character].characterPosition == _mapSave.enterStagePosition)
                 {
                     characters.Add(character);
                 }
@@ -70,7 +68,7 @@ namespace Core.DataControl
 
         public PlayerWeaponSO GetWeapon(CharacterEnum character)
         {
-            return weaponList.GetWeapon(_characterSave.charcterData[(int)character].weaponId);
+            return weaponList.GetWeapon(_characterSave.characterData[(int)character].equipWeaponId);
         }
 
         public UserData GetUserData()
@@ -80,27 +78,29 @@ namespace Core.DataControl
 
         public ChipsetSO[] GetChipset(CharacterEnum character)
         {
-            if (_chipsetSave == null) Load();
-            return _chipsetSave.GetChipsets(character).
+            if (_characterSave == null) Load();
+            return _characterSave.GetCharacterChipset(character).
                 ConvertAll(save =>
                 {
-                    ushort chipsetId = _chipsetSave.containChipsets[save.chipsetindex];
+                    ushort chipsetId = _characterSave.containChipsetList[save.chipsetIndex];
                     return chipsetGroup.GetChipset(chipsetId);
                 }).ToArray();
         }
 
         public void CompleteMap()
         {
-            _mapSave.isEnteredStageClear = true;
-            _mapSave.isFailStageClear = false;
+            _characterSave.clearEnteredStage = true;
+            _characterSave.failEnteredStage = false;
             Save();
+            SceneManager.LoadScene(SceneName.MapSelectScene);
         }
 
         public void FailMap()
         {
-            _mapSave.isEnteredStageClear = false;
-            _mapSave.isFailStageClear = true;
+            _characterSave.clearEnteredStage = false;
+            _characterSave.failEnteredStage = true;
             Save();
+            SceneManager.LoadScene(SceneName.MapSelectScene);
         }
 
         public void Load()
@@ -120,39 +120,9 @@ namespace Core.DataControl
                 _mapSave = JsonUtility.FromJson<MapSave>(mapJson);
             }
 
-            if (File.Exists(_chipsetSavePath) == false)
-            {
-                _chipsetSave = new ChipsetInventorySave();
-
-                _chipsetSave.openInventory = chipsetInitialize.openInventory;
-                _chipsetSave.containChipsets = chipsetInitialize.containChipsets.ConvertAll(Chipset => Chipset.id);
-
-                _chipsetSave.anChipset = new List<ChipsetSave>();
-                _chipsetSave.jinLayChipset = new List<ChipsetSave>();
-                _chipsetSave.binaChipset = new List<ChipsetSave>();
-
-                string json = JsonUtility.ToJson(_chipsetSave);
-                File.WriteAllText(_chipsetSavePath, json);
-            }
-            else
-            {
-                string chipsetJson = File.ReadAllText(_chipsetSavePath);
-                _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(chipsetJson);
-            }
-
             if (File.Exists(_characterSavePath) == false)
             {
                 _characterSave = new CharacterSave();
-
-                _characterSave.charcterData[(int)CharacterEnum.An].weaponId = characterInitialize.anInitializeWeapon.id;
-                _characterSave.charcterData[(int)CharacterEnum.JinLay].weaponId = characterInitialize.jinInitializeWeapon.id;
-                _characterSave.charcterData[(int)CharacterEnum.Bina].weaponId = characterInitialize.binaInitializeWeapon.id;
-
-                for (int i = 0; i < 3; i++)
-                {
-                    _characterSave.charcterData[i].health = 100;
-                    _characterSave.containWeaponId.Add(_characterSave.charcterData[i].weaponId);
-                }
 
                 string json = JsonUtility.ToJson(_characterSave);
                 File.WriteAllText(_characterSavePath, json);
@@ -201,40 +171,27 @@ namespace Core.DataControl
         public void Save()
         {
             string mapJson = JsonUtility.ToJson(_mapSave);
-            string chipsetJson = JsonUtility.ToJson(_chipsetSave);
             string characterJson = JsonUtility.ToJson(_characterSave);
             string userJson = JsonUtility.ToJson(_userData);
 
             File.WriteAllText(_mapSavePath, mapJson);
-            File.WriteAllText(_chipsetSavePath, chipsetJson);
             File.WriteAllText(_characterSavePath, characterJson);
             File.WriteAllText(_userDataSavePath, userJson);
         }
 
-        public void AllPlayerDead()
-        {
-            File.Delete(_mapSavePath);
-            File.Delete(_chipsetSavePath);
-            File.Delete(_characterSavePath);
-            File.Delete(_characterSavePath);
-            SceneManager.LoadScene(SceneName.CafeScene);
-        }
-
         public void AddChipset(ushort id)
         {
-            _chipsetSave.containChipsets.Add(id);
+            _characterSave.containChipsetList.Add(id);
             Save();
         }
 
         public void AddWeapon(int id)
         {
-            _characterSave.containWeaponId.Add(id);
+            _characterSave.containWeaponList.Add(id);
             Save();
         }
 
         public bool IsWeaponExist(int id)
-        {
-            return _characterSave.containWeaponId.Contains(id);
-        }
+            => _characterSave.containWeaponList.Contains(id);
     }
 }

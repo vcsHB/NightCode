@@ -15,7 +15,7 @@ namespace Shop
         public UnityEvent OnPurchaseEvent;
 
         public event Action onBuyGoods;
-        public ChipsetGruopSO chipsetGroup;
+        public ChipsetGroupSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
         [SerializeField] private DescriptionPanel _descriptionPanel;
 
