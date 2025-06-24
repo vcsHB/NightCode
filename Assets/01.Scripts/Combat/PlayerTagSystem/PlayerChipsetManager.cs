@@ -16,7 +16,7 @@ namespace Combat.PlayerTagSystem
     }
     public class PlayerChipsetManager : MonoBehaviour, IPlayerSubManager
     {
-        [SerializeField] private ChipsetGruopSO _chipsetGroupData;
+        [SerializeField] private ChipsetGroupSO _chipsetGroupData;
         private PlayerManager _playerManager;
         private List<PlayerChipsetController> _playerChipsetControllers = new();
         private List<Player> PlayerList => _playerManager.playerList;

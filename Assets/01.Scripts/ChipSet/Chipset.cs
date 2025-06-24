@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -36,6 +37,7 @@ namespace Chipset
 
         #region Property Field
 
+        public int Index => _index;
         public int Rotation => _rotation;
         public bool IsForcePointerDown => _isForcePointerDown;
         public RectTransform RectTrm => transform as RectTransform;
@@ -89,8 +91,12 @@ namespace Chipset
         {
             if (_isDraging)
             {
-                Vector2 offset = ClockWise(_slotPositionDic[_selectedSlotOffset] + _offset, _rotation);
-                RectTrm.anchoredPosition = (Vector2)Input.mousePosition - offset;
+                Vector2 offset = ClockWise(_offset, _rotation);
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(RectTrm.parent as RectTransform,
+                    Mouse.current.position.value, Camera.main, out Vector2 localPosition))
+                {
+                    RectTrm.localPosition = localPosition - offset;
+                }
 
                 if (info.isRotatable && Keyboard.current.rKey.wasPressedThisFrame)
                 {
@@ -98,6 +104,8 @@ namespace Chipset
                 }
             }
         }
+
+        #region RotateFunc
 
         private void Rotate()
         {
@@ -141,6 +149,8 @@ namespace Chipset
             return Vector2.zero;
         }
 
+        #endregion
+
         #region Events 
 
         public void ForceOnPointerDown(Vector2Int position, PointerEventData data)
@@ -160,20 +170,22 @@ namespace Chipset
 
         private void CheckForceMouseUp()
         {
-            if (_isForcePointerDown && Input.GetMouseButtonUp(0))
+            if (_isForcePointerDown && Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 OnPointerUp(Vector2Int.zero);
                 _isForcePointerDown = false;
             }
         }
 
-        public void OnPointerDown(Vector2Int position)
+        public void OnPointerDown(PointerEventData eventData, Vector2Int position)
         {
-            _offset = (Vector2)Input.mousePosition - (RectTrm.anchoredPosition + _slotPositionDic[position]);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(RectTrm, eventData.position, eventData.pressEventCamera, out _offset);
+
             _selectedSlotOffset = position;
             _canvasGroup.blocksRaycasts = false;
-            _isDraging = true;
             onSelectChipset?.Invoke(_index);
+            _isDraging = true;
+            Debug.Log("นึนึ?!!");
         }
 
         public void OnPointerUp(Vector2Int position)
@@ -181,12 +193,12 @@ namespace Chipset
             onPointerUpChipset?.Invoke();
             _canvasGroup.blocksRaycasts = true;
             _isDraging = false;
+            Debug.Log("นึ?!");
         }
 
         #endregion
 
         public Vector2Int GetSelectOffset() => ClockWise(_selectedSlotOffset, _rotation);
-
 
         public List<Vector2Int> GetOffsets()
         {
@@ -201,10 +213,8 @@ namespace Chipset
             return offsets;
         }
 
-        public void SetPosition(Vector2 anchoredPosition)
-        {
-            RectTrm.anchoredPosition = anchoredPosition + (ParentRectTrm.sizeDelta / 2);
-        }
+        public void SetPosition(Vector2 localPosition)
+            => RectTrm.localPosition = localPosition;
 
         public void SetPrevPosition(Vector2Int center, int rotate)
         {

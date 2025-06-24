@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 namespace Map
 {
@@ -13,11 +12,11 @@ namespace Map
         public MapGraphSO mapGraphSO;
         public MapNode nodePrefab;
 
+        [Header("Map Generate")]
         [SerializeField] private List<HeightInfo> _heights;
         [SerializeField] private float _xOffset;
         [SerializeField] private Transform _nodeParent;
         [SerializeField] private Transform _lineParent;
-        [SerializeField] private CharacterDataLoader _characterDataLoader;
 
         private string _path = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private MapSave _save;
@@ -34,27 +33,42 @@ namespace Map
         #endregion
 
 
-        private void Awake()
+        public void Initialize(List<Vector2Int> characterPosition)
         {
             _mapGraph = new MapGraph();
             _characterController = GetComponent<MapCharacterController>();
 
+            //Get Data Seed, CharacterPosition, Map Clear Fail information
             Load();
+
+            //This must happen after Load
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                _mapGraph.characterOriginPosition.Add(character, characterPosition[(int)character]);
+                _mapGraph.characterCurrentPosition.Add(character, characterPosition[(int)character]);
+            }
+
+            //_mapGraph will be init in GenerateNode Func
             GenerateNode();
             _characterController.Init(_mapGraph);
+
             _save.completedNodes.ForEach(SetCompleteNode);
             SetCompleteNode(Vector2Int.zero);
         }
 
-        public void Init()
+        public void InitializeData()
         {
+            if (_save == null) _save = new MapSave();
             CurrentDepth = 0;
+
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
                 _mapGraph.characterOriginPosition.Add(character, Vector2Int.zero);
                 _mapGraph.characterCurrentPosition.Add(character, Vector2Int.zero);
             }
-            SaveMapSeed(UnityEngine.Random.Range(0, 1000000));
+
+            _save.seed = UnityEngine.Random.Range(0, 1000000);
+            Save();
         }
 
         #region MapGenerate
@@ -137,10 +151,42 @@ namespace Map
 
         #region Save&Load
 
-        public void SaveMapSeed(int seed)
+        public void Save()
         {
             if (_save == null) _save = new MapSave();
-            _save.seed = seed;
+
+            string json = JsonUtility.ToJson(_save, true);
+            File.WriteAllText(_path, json);
+        }
+
+        public bool Load()
+        {
+            if (File.Exists(_path) == false)
+            {
+                InitializeData();
+                Save();
+                return false;
+            }
+
+            string json = File.ReadAllText(_path);
+            _save = JsonUtility.FromJson<MapSave>(json);
+
+            CurrentDepth = int.MaxValue;
+
+            if (_save.isEnteredStageClear)
+            {
+                _save.completedNodes.Add(_save.enterStagePosition);
+            }
+            _save.isEnteredStageClear = false;
+            _save.isFailStageClear = false;
+            return true;
+        }
+
+        public void SaveEnterStage(MapNode node)
+        {
+            if (_save == null) _save = new MapSave();
+            _save.enterStageId = node.NodeInfo.nodeId;      // 인게임에서 맵 불러오기 위한
+            _save.enterStagePosition = node.Position;       // 맵 선택 씬에서 진행중인 씬 확을 위한
             Save();
         }
 
@@ -167,120 +213,7 @@ namespace Map
             }
         }
 
-        public List<Vector2Int> GetCompleteNodes()
-        {
-            if (_save == null) Load();
-            return _save.completedNodes ?? new List<Vector2Int>();
-        }
-
-        public void Save()
-        {
-            if (_save == null) _save = new MapSave();
-
-            _save.characterPositions = new List<Vector2Int>();
-            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
-            {
-                _save.characterPositions.Add(_mapGraph.GetCharcterCurrentPosition(character));
-            }
-
-            string json = JsonUtility.ToJson(_save, true);
-            File.WriteAllText(_path, json);
-        }
-
-        public bool Load()
-        {
-            if (File.Exists(_path) == false)
-            {
-                Init();
-                Save();
-                return false;
-            }
-
-            string json = File.ReadAllText(_path);
-            _save = JsonUtility.FromJson<MapSave>(json);
-
-            CurrentDepth = int.MaxValue;
-            for (int i = 0; i < _save.characterPositions.Count; i++)
-            {
-                CurrentDepth = Mathf.Min(CurrentDepth, _save.characterPositions[i].x);
-                if (_save.isFailStageClear && _save.characterPositions[i] == _save.enterStagePosition)
-                {
-                    PlayerDead((CharacterEnum)i);
-                }
-                else if (_save.characterPositions[i] == -Vector2Int.one)
-                {
-                    PlayerDead((CharacterEnum)i);
-                }
-
-                _mapGraph.characterOriginPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
-                _mapGraph.characterCurrentPosition.Add((CharacterEnum)i, _save.characterPositions[i]);
-            }
-
-            if (_save.isEnteredStageClear)
-            {
-                _save.completedNodes.Add(_save.enterStagePosition);
-            }
-            _save.isEnteredStageClear = false;
-            _save.isFailStageClear = false;
-            _characterDataLoader.Init();
-            return true;
-        }
-
-        public void SaveEnterStage(MapNode node)
-        {
-            if (_save == null) _save = new MapSave();
-            _save.enterStageId = node.NodeInfo.nodeId;      // 인게임에서 맵 불러오기 위한
-            _save.enterStagePosition = node.Position;       // 맵 선택 씬에서 진행중인 씬 확을 위한
-            Save();
-        }
-
-        private void PlayerDead(CharacterEnum character)
-        {
-            _save.characterPositions[(int)character] = -Vector2Int.one;
-            _characterDataLoader.PlayerDead(character);
-
-            bool isAllPlayerDead = true;
-            for (int i = 0; i < 3; i++)
-            {
-                if (_save.characterPositions[i] != -Vector2Int.one)
-                {
-                    isAllPlayerDead = false;
-                    break;
-                }
-            }
-            if (isAllPlayerDead)
-            {
-                DataLoader.Instance.AllPlayerDead();
-            }
-        }
-
-
         #endregion
-    }
-
-    [Serializable]
-    public class MapSave
-    {
-        public int seed;
-
-        public int currentChapter;
-        public int enterStageId;
-        public Vector2Int enterStagePosition;
-        public bool isEnteredStageClear = false;
-        public bool isFailStageClear = false;
-
-        public List<Vector2Int> characterPositions;
-        public List<Vector2Int> completedNodes;
-
-
-        public MapSave()
-        {
-            seed = 0;
-            currentChapter = 0;
-            enterStageId = 0;
-            characterPositions = new List<Vector2Int>(3) { Vector2Int.zero, Vector2Int.zero, Vector2Int.zero };
-            completedNodes = new List<Vector2Int>();
-        }
     }
 }
 

@@ -10,7 +10,7 @@ namespace Chipset
         public event Action<Vector2Int> onPointerEnter;
         public event Action<Vector2Int> onPointerExit;
         public event Action<Vector2Int> onPointerUp;
-        public event Action<Vector2Int> onPointerDown;
+        public event Action<PointerEventData, Vector2Int> onPointerDown;
 
         protected Image _image;
         protected CanvasGroup _canvasGroup;
@@ -41,7 +41,7 @@ namespace Chipset
 
         public virtual void OnPointerDown(PointerEventData eventData)
         {
-            onPointerDown?.Invoke(_slotPosition);
+            onPointerDown?.Invoke(eventData, _slotPosition);
         }
 
         public virtual void OnPointerUp(PointerEventData eventData)

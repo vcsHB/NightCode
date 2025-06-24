@@ -12,7 +12,7 @@ namespace Shop
     public class DisplayStand : MonoBehaviour
     {
         public event Action onBuyGoods;
-        public ChipsetGruopSO chipsetGroup;
+        public ChipsetGroupSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
 
         public TextMeshPro tmp;
