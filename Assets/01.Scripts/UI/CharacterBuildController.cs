@@ -41,12 +41,6 @@ namespace UI.GameSelectScene
             List<CharacterChipsetData>[] chipsetIndex = new List<CharacterChipsetData>[3];
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                if (save.characterData[(int)character].isPlayerDead)
-                {
-                    _agentSelectController.RetireCharacter(character);
-                    chipsetIndex[(int)character] = new List<CharacterChipsetData>();
-                    continue;
-                }
                 List<CharacterChipsetData> chipsetList = save.GetCharacterChipset(character);
                 chipsetIndex[(int)character] = chipsetList;
             }
@@ -59,6 +53,15 @@ namespace UI.GameSelectScene
 
             _mainPanel.InitializeData(_weaponDataGroup);
             _agentSelectController.Initialize();
+            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
+            {
+                if (save.characterData[(int)character].isPlayerDead)
+                {
+                    _agentSelectController.RetireCharacter(character);
+                    chipsetIndex[(int)character] = new List<CharacterChipsetData>();
+                    continue;
+                }
+            }
         }
 
         public List<CharacterChipsetData> GetCharacterInventory(CharacterEnum i)
