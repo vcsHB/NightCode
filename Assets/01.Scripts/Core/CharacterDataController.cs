@@ -94,6 +94,8 @@ namespace Map
                         _characterSave.characterData[i].isPlayerDead = true;
                         _mapController.RetireCharacter((CharacterEnum)i);
                     }
+
+                    if(_characterSave.characterData[i].isPlayerDead) remainCharacter--;
                 }
 
                 if(remainCharacter <= 0)
