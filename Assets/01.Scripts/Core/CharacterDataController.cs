@@ -16,7 +16,7 @@ namespace Map
 
         [Space]
         [SerializeField] private MapController _mapController;
-        [SerializeField] private CharacterBuildController _buildController;
+        [SerializeField] private CharacterBuildController _characterBuildController;
 
         //이걸 넘기고 다른 스크립트에서 이걸 가지고 뭘 하게 하는 느낌일거임
         private CharacterSave _characterSave;
@@ -24,11 +24,13 @@ namespace Map
         private void Awake()
         {
             Load();
-            _mapController.Initialize(_characterSave.characterData.ConvertAll(data => data.characterPosition));
             _mapController.OnEnterStage += Save;
+            _mapController.Initialize(_characterSave.characterData.ConvertAll(data => data.characterPosition));
+
             CheckClearFailCurrentNode();
+
             _mapController.InitCharacterController();
-            _buildController.Initialize(_characterSave);
+            _characterBuildController.Initialize(_characterSave);
 
             _characterSave.clearEnteredStage = false;
             _characterSave.failEnteredStage = false;
@@ -40,9 +42,9 @@ namespace Map
             for (int i = 0; i < _characterSave.characterData.Count; i++)
             {
                 _characterSave.characterData[i].equipWeaponId =
-                    _buildController.GetCharacterWeapon((CharacterEnum)i);
+                    _characterBuildController.GetCharacterWeapon((CharacterEnum)i);
                 _characterSave.characterData[i].chipsetInventoryData =
-                    _buildController.GetCharacterInventory((CharacterEnum)i);
+                    _characterBuildController.GetCharacterInventory((CharacterEnum)i);
                 _characterSave.characterData[i].characterPosition =
                     _mapController.GetCharacterPosition((CharacterEnum)i);
             }

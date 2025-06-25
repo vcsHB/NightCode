@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,6 +52,8 @@ namespace Chipset
             _chipsetData = chipsetData;
             _chipsets = new Chipset[_inventorySize.x, _inventorySize.y];
             InitSlot(_openSlot);
+            SetInventoryData(chipsetData, openedInventory);
+            DisableInventory();
         }
 
         private void InitSlot(List<Vector2Int> opened)
@@ -243,8 +244,8 @@ namespace Chipset
             _selectedChipsetIndex = chipsetIndex;
             chipset.SetPosition(GetCenterPostion(selectPosition));
             _selectedChipsetIndex = -1;
+            _chipsetData.AddChipset(Character, new CharacterChipsetData(chipsetIndex, center, chipset.Rotation));
         }
-
 
         public void RemoveChipset(int chipsetindex)
         {
@@ -275,6 +276,8 @@ namespace Chipset
                 chipset.onSelectChipset += OnPointerDownChipset;
                 chipset.onPointerUpChipset -= OnPointerUpChipset;
                 chipset.onPointerUpChipset += OnPointerUpChipset;
+
+                _assignedChipsets.Add(data.chipsetIndex, (data.center, data.rotate));
             }
 
             _selectedChipsetIndex = -1;

@@ -31,8 +31,6 @@ namespace Chipset
             {
                 _inventory.Add((CharacterEnum)i, inventoryList[i]);
                 inventoryList[i].Initialize((CharacterEnum)i, chipsetData, _openInventory);
-                inventoryList[i].SetInventoryData(chipsetData, _openInventory);
-                inventoryList[i].DisableInventory();
             }
 
             RectTrm.sizeDelta = new Vector2(RectTrm.sizeDelta.x, _inventory[CharacterEnum.An].RectTrm.rect.height);

@@ -71,7 +71,8 @@ namespace Chipset
             List<int> chipsetIndex = _chipsetData.GetCharacterChipsetIndex(character);
             for (int i = 0; i < chipsetIndex.Count; i++)
             {
-                _chipsetInfos[_chipsetData.containChipsetInstance[i]].SetActive(false);
+                Debug.Log(_chipsetData.containChipsetInstance[chipsetIndex[i]].info.id);
+                _chipsetInfos[_chipsetData.containChipsetInstance[chipsetIndex[i]]].SetActive(false);
             }
         }
 

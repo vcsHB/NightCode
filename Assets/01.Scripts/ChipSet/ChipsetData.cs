@@ -32,6 +32,11 @@ namespace Chipset
         public List<int> GetCharacterChipsetIndex(CharacterEnum character)
             => characterChipsetInventory[(int)character].ConvertAll(data => data.chipsetIndex);
 
+        public void AddChipset(CharacterEnum character, CharacterChipsetData chipsetData)
+        {
+            characterChipsetInventory[(int)character].Add(chipsetData);
+        }
+
         public ChipsetData(ChipsetGroupSO chipsetGroup, List<ushort> containChipset, List<CharacterChipsetData>[] characterChipsetIndex)
         {
             this.chipsetGroup = chipsetGroup;

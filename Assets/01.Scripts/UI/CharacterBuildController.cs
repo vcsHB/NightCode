@@ -26,16 +26,7 @@ namespace UI.GameSelectScene
             _chipsetContainer = GetComponentInChildren<ChipsetContainer>();
             _agentSelectController = GetComponentInChildren<AgentSelectController>();
 
-            _weaponDataGroup = new WeaponDataGroup();
-            _weaponDataGroup.weaponDatas = new WeaponData[save.containWeaponList.Count];
-
-            for (int i = 0; i < save.containWeaponList.Count; i++)
-            {
-                var characterData = save.characterData.Find(data => data.equipWeaponId == save.containWeaponList[i] && !data.isPlayerDead);
-                int selected = save.characterData.IndexOf(characterData);
-                WeaponData weaponData = new WeaponData(save.containWeaponList[i], selected);
-                _weaponDataGroup.weaponDatas[i] = weaponData;
-            }
+            InitializeWeaponData(save);
 
             List<CharacterChipsetData>[] chipsetIndex = new List<CharacterChipsetData>[3];
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
@@ -45,8 +36,8 @@ namespace UI.GameSelectScene
             }
 
             ChipsetData chipsetData = new ChipsetData(_chipsetGroupSO, save.containChipsetList, chipsetIndex);
-            _chipsetTable.Initialize(save.openInventory, chipsetData);
             _chipsetContainer.Initialize(chipsetData);
+            _chipsetTable.Initialize(save.openInventory, chipsetData);
 
             _chipsetTable.onSelectInventory += _chipsetContainer.SetInventory;
 
@@ -61,6 +52,20 @@ namespace UI.GameSelectScene
                     chipsetIndex[(int)character] = new List<CharacterChipsetData>();
                     continue;
                 }
+            }
+        }
+
+        private void InitializeWeaponData(CharacterSave save)
+        {
+            _weaponDataGroup = new WeaponDataGroup();
+            _weaponDataGroup.weaponDatas = new WeaponData[save.containWeaponList.Count];
+
+            for (int i = 0; i < save.containWeaponList.Count; i++)
+            {
+                var characterData = save.characterData.Find(data => data.equipWeaponId == save.containWeaponList[i] && !data.isPlayerDead);
+                int selected = save.characterData.IndexOf(characterData);
+                WeaponData weaponData = new WeaponData(save.containWeaponList[i], selected);
+                _weaponDataGroup.weaponDatas[i] = weaponData;
             }
         }
 
