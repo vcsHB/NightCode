@@ -41,7 +41,7 @@ namespace ObjectManage
                 // The Bizarre Missing Reference Problem // DONT TOUCH
                 return;
             }
-
+            Debug.Log("asdasda00");
             Collider2D player = Physics2D.OverlapCircle(transform.position, _playerDetectRadius, _playerLayer);
             if (player == null)
             {
