@@ -93,6 +93,8 @@ namespace Core.DataControl
             _characterSave.clearEnteredStage = true;
             _characterSave.failEnteredStage = false;
             Save();
+
+            Time.timeScale = 1.0f;
             SceneManager.LoadScene(SceneName.MapSelectScene);
         }
 
@@ -101,6 +103,8 @@ namespace Core.DataControl
             _characterSave.clearEnteredStage = false;
             _characterSave.failEnteredStage = true;
             Save();
+
+            Time.timeScale = 1.0f;
             SceneManager.LoadScene(SceneName.MapSelectScene);
         }
 

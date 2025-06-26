@@ -19,6 +19,8 @@ namespace Agents.Players
         public event Action OnEnterEvent;
         public event Action OnExitEvent;
         private bool _startDisable;
+        private static int _deadbodyLayer;
+
         [field: SerializeField] public int ID { get; private set; }
         public void SetPersonalId(int id)
         {
@@ -28,6 +30,7 @@ namespace Agents.Players
         protected override void Awake()
         {
             base.Awake();
+            _deadbodyLayer = 10;
             RigidCompo = GetComponent<Rigidbody2D>();
             HealthCompo.OnHealthChangedEvent.AddListener(HandlePlayerHit);
 
@@ -83,7 +86,9 @@ namespace Agents.Players
         {
             base.HandleAgentDie();
 
-            _stateMachine.ChangeState("Dead");
+            gameObject.layer = _deadbodyLayer;
+            _stateMachine.CurrentState.Exit();
+            //_stateMachine.ChangeState("Dead");
         }
 
         protected void HandlePlayerHit()
