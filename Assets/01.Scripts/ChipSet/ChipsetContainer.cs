@@ -71,7 +71,6 @@ namespace Chipset
             List<int> chipsetIndex = _chipsetData.GetCharacterChipsetIndex(character);
             for (int i = 0; i < chipsetIndex.Count; i++)
             {
-                Debug.Log(_chipsetData.containChipsetInstance[chipsetIndex[i]].info.id);
                 _chipsetInfos[_chipsetData.containChipsetInstance[chipsetIndex[i]]].SetActive(false);
             }
         }
@@ -113,7 +112,7 @@ namespace Chipset
             if (currentInventory.SelectedChipsetIndex == -1) return;
 
             Chipset chipset = _chipsetData.containChipsetInstance[currentInventory.SelectedChipsetIndex];
-            if (chipset.IsForcePointerDown) return;
+            if (chipset.isPointerDown) return;
             chipset.SetActive(false);
 
             if (usedGlobalChipsetIndex.Contains(chipset.Index))

@@ -22,6 +22,7 @@ namespace Map
 
 
         private List<MapNodeSO>[] _nodeMap;
+        private List<int>[] branchMap;
 
         public MapNodeSO GetNodeSO(int nodeId)
         {
@@ -38,15 +39,8 @@ namespace Map
             return null;
         }
 
-        public MapNodeSO GetRandomNode(NodeType nodeType, Vector2Int difficultyRange)
+        public MapNodeSO GetRandomNode(NodeType nodeType, StageDifficultySO difficulty)
         {
-            if (difficultyRange.x > difficultyRange.y)
-            {
-                difficultyRange.x ^= difficultyRange.y;
-                difficultyRange.y ^= difficultyRange.x;
-                difficultyRange.x ^= difficultyRange.y;
-            }
-
             switch (nodeType)
             {
                 case NodeType.Start:
@@ -54,29 +48,20 @@ namespace Map
                 case NodeType.Boss:
                     return bossNode;
                 case NodeType.Combat:
-                    var combats = combatNodes.Where(node =>
-                    Mathf.Abs(node.difficulty.level - difficultyRange.x) >= 0
-                    && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
-                    return RandomUtility.GetRandomInList(combats).Instantiate();
+                    return GetRandomNodeByDifficulty(combatNodes.ConvertAll(node => node as MapNodeSO), difficulty);
                 case NodeType.Encounter:
-                    var encounters = encounterNodes.Where(node =>
-                    Mathf.Abs(node.difficulty.level - difficultyRange.x) >= 0
-                    && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
-                    return RandomUtility.GetRandomInList(encounters).Instantiate();
+                    return GetRandomNodeByDifficulty(encounterNodes.ConvertAll(node => node as MapNodeSO), difficulty);
                 case NodeType.Shop:
-                    var shops = shopNodes.Where(node =>
-                    Mathf.Abs(node.difficulty.level - difficultyRange.x) >= 0
-                    && Mathf.Abs(difficultyRange.y - node.difficulty.level) >= 0).ToList();
-                    return RandomUtility.GetRandomInList(shops).Instantiate();
+                    return GetRandomNodeByDifficulty(shopNodes.ConvertAll(node => node as MapNodeSO), difficulty);
             }
 
             return null;
         }
 
-        public MapNodeSO GetRandomNode(List<NodeInfo> nodeInfos, Vector2Int difficultyRange)
+        private MapNodeSO GetRandomNodeByDifficulty(List<MapNodeSO> nodes, StageDifficultySO difficulty)
         {
-            NodeType randomNode = (NodeType)Random.Range(1, 4);
-            return GetRandomNode(randomNode, difficultyRange);
+            var selectedNodeList = nodes.Where(node => node.difficulty == difficulty).ToList();
+            return RandomUtility.GetRandomInList(selectedNodeList).Instantiate();
         }
 
         public MapInfo GenerateMap()
@@ -84,16 +69,16 @@ namespace Map
             MapSO selectedMap = maps[Random.Range(0, maps.Count)];
             MapInfo mapInfo = new MapInfo();
 
-            List<int>[] linkedMap = GenerateNode(selectedMap);
+            GenerateNode(selectedMap);
             mapInfo.map = _nodeMap;
-            mapInfo.connections = ConnectNode(linkedMap);
+            mapInfo.connections = ConnectNode();
 
             return mapInfo;
         }
 
-        private List<int>[] GenerateNode(MapSO selectedMap)
+        private void GenerateNode(MapSO selectedMap)
         {
-            List<int>[] branchMap = new List<int>[selectedMap.depth];
+            branchMap = new List<int>[selectedMap.depth];
             _nodeMap = new List<MapNodeSO>[selectedMap.depth + 1];
 
             _nodeMap[0] = new List<MapNodeSO>(1) { startNode.Instantiate() };
@@ -101,6 +86,7 @@ namespace Map
             _nodeMap[0][0].nextNodes = new List<MapNodeSO>();
             _nodeMap[^1][0].nextNodes = new List<MapNodeSO>();
 
+            // generate each level
             for (int i = 0; i < selectedMap.depth; i++)
             {
                 LevelInfo currentLevel = selectedMap.levelInfo[i];
@@ -108,40 +94,40 @@ namespace Map
                 List<NodeInfo> nodeInfoList = new List<NodeInfo>();
                 List<int> linkedCount = new List<int>();
 
-                int currentNodeCount = _nodeMap[i].Count;
-                int nextNodeCount = currentNodeCount;
+                int nextNodeCount = _nodeMap[i].Count;
 
-                int totalRatio = 0;
-                currentLevel.nodeInfo.ForEach(info => totalRatio += info.ratio);
-                int repeat = currentNodeCount / totalRatio;
-
-                for (int j = 0; j < repeat; j++)
-                    currentLevel.nodeInfo.ForEach(info => nodeInfoList.Add(info));
-
-                List<NodeInfo> temp = currentLevel.nodeInfo.ToList();
-                RandomUtility.Shuffle(temp);
-
-                for (int j = 0; j < currentNodeCount % totalRatio; j++)
-                    nodeInfoList.Add(temp[j]);
-
+                //Make Node Connection by random
+                for (int j = 0; j < 10; j++)
+                    nodeInfoList.Add(currentLevel.nodeInfo[j % currentLevel.nodeInfo.Count]);
                 RandomUtility.Shuffle(nodeInfoList);
-                nodeInfoList.ForEach(info =>
+
+                for (int j = 0; j < _nodeMap[i].Count; j++)
                 {
-                    if (info.branchType == BranchType.Keep)
-                    {
-                        linkedCount.Add(1);
-                    }
-                    else if (info.branchType == BranchType.Divide)
-                    {
-                        linkedCount.Add(info.divideCount);
-                        nextNodeCount += (info.divideCount - 1);
-                    }
-                    else if (info.branchType == BranchType.Merge)
+                    NodeInfo info = nodeInfoList[j];
+                    if (selectedMap.levelInfo[i].limitNodeCount &&
+                        linkedCount.Count >= selectedMap.levelInfo[i].maxNodeCount)
                     {
                         linkedCount.Add(-1);
                         --nextNodeCount;
                     }
-                });
+                    else
+                    {
+                        if (info.branchType == BranchType.Keep)
+                        {
+                            linkedCount.Add(1);
+                        }
+                        else if (info.branchType == BranchType.Divide)
+                        {
+                            linkedCount.Add(info.divideCount);
+                            nextNodeCount += (info.divideCount - 1);
+                        }
+                        else if (info.branchType == BranchType.Merge)
+                        {
+                            linkedCount.Add(-1);
+                            --nextNodeCount;
+                        }
+                    }
+                }
 
                 branchMap[i] = linkedCount;
                 if (i == selectedMap.depth - 1) continue;
@@ -150,19 +136,17 @@ namespace Map
                 {
                     LevelInfo nextLevel = selectedMap.levelInfo[i + 1];
                     NodeType randomNode = RandomUtility.GetRandomInList(nextLevel.existNodeTypes);
-                    mapNodes.Add(GetRandomNode(randomNode, nextLevel.difficultyRange));
+                    mapNodes.Add(GetRandomNode(randomNode, nextLevel.difficulty));
                     mapNodes[^1].nextNodes = new List<MapNodeSO>();
                 }
 
                 _nodeMap[i + 1] = mapNodes;
             }
-
-            return branchMap;
         }
 
-        private List<List<Vector2Int>>[] ConnectNode(List<int>[] linkMap)
+        private List<List<Vector2Int>>[] ConnectNode()
         {
-            List<List<Vector2Int>>[] connections = new List<List<Vector2Int>>[linkMap.Length];
+            List<List<Vector2Int>>[] connections = new List<List<Vector2Int>>[branchMap.Length];
 
             for (int i = 1; i < _nodeMap.Length; i++)
             {
@@ -170,7 +154,7 @@ namespace Map
                 List<List<Vector2Int>> levelConnection = new List<List<Vector2Int>>();
                 for (int j = 0; j < _nodeMap[i - 1].Count; j++)
                 {
-                    int linkedCount = linkMap[i - 1][j];
+                    int linkedCount = branchMap[i - 1][j];
                     if (linkedCount == 1) // Keep
                     {
                         levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process) });
