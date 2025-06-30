@@ -19,7 +19,7 @@ namespace Chipset
         public CharacterEnum SelectedCharacter => _selectedCharacter;
         private RectTransform RectTrm => transform as RectTransform;
         
-        public void Initialize(List<Vector2Int> openInventory, ChipsetData chipsetData)
+        public void Initialize(List<Vector2Int> openInventory, InventorySave chipsetData)
         {
             _openInventory = openInventory;
 

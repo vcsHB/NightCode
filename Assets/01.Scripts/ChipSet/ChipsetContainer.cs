@@ -20,10 +20,11 @@ namespace Chipset
         [SerializeField] private RectTransform _chipsetInfoParent;
         [SerializeField] private CanvasGroup _dragPanel;
 
-        private ChipsetData _chipsetData;
+
+        private InventorySave _chipsetData;
         private Dictionary<Chipset, ChipsetInfo> _chipsetInfos;
 
-        public void Initialize(ChipsetData chipsetData)
+        public void Initialize(InventorySave chipsetData)
         {
             _chipsetData = chipsetData;
             _chipsetInfos = new Dictionary<Chipset, ChipsetInfo>();
@@ -112,7 +113,7 @@ namespace Chipset
             if (currentInventory.SelectedChipsetIndex == -1) return;
 
             Chipset chipset = _chipsetData.containChipsetInstance[currentInventory.SelectedChipsetIndex];
-            if (chipset.isPointerDown) return;
+            if (chipset.IsForceMouseDown) return;
             chipset.SetActive(false);
 
             if (usedGlobalChipsetIndex.Contains(chipset.Index))
@@ -124,4 +125,10 @@ namespace Chipset
         }
     }
 
+    public class ChipsetContainerData
+    {
+        public ChipsetGroupSO chipsetGroupSO;
+        public Dictionary<Chipset, ChipsetInfo> chipsetInfos;
+        public List<ushort> containChipset;
+    }
 }

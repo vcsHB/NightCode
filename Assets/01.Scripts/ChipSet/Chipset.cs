@@ -33,13 +33,14 @@ namespace Chipset
 
         private bool _isDraging = false;
         private bool _isPointerDown = false;
+        private bool _isForceMouseDown = false;
         private int _index;
 
         #region Property Field
 
         public int Index => _index;
         public int Rotation => _rotation;
-        public bool isPointerDown => _isPointerDown;
+        public bool IsForceMouseDown => _isForceMouseDown;
         public RectTransform RectTrm => transform as RectTransform;
         public RectTransform ParentRectTrm => transform.parent as RectTransform;
 
@@ -162,7 +163,9 @@ namespace Chipset
                     // Spread event to chipset slot
                     _slots[i].OnPointerDown(data);
                     _isPointerDown = true;
+                    _isForceMouseDown = true;
                     _selectedSlotOffset = Vector2Int.zero;
+
                 }
             }
         }
@@ -171,8 +174,9 @@ namespace Chipset
         {
             if (_isPointerDown && Mouse.current.leftButton.wasReleasedThisFrame)
             {
-                    OnPointerUp(_selectedSlotOffset);
+                OnPointerUp(_selectedSlotOffset);
                 _isPointerDown = false;
+                _isForceMouseDown = false;
             }
         }
 
