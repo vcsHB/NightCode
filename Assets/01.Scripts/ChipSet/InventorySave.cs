@@ -5,13 +5,13 @@ using UnityEngine;
 namespace Chipset
 {
     [Serializable]
-    public class ChipsetData
+    public class InventorySave
     {
         public ChipsetGroupSO chipsetGroup;
         public List<ushort> containChipset;
         public List<Chipset> containChipsetInstance;
 
-        public List<CharacterChipsetData>[] characterChipsetInventory;
+        public List<ChipsetData>[] characterChipsetInventory;
 
         public List<ushort> GetCharacterChipsetIdList(CharacterEnum character)
         {
@@ -23,7 +23,7 @@ namespace Chipset
             return chipsetIdList;
         }
 
-        public List<CharacterChipsetData> GetCharacterInventoryData(CharacterEnum character)
+        public List<ChipsetData> GetCharacterInventoryData(CharacterEnum character)
             => characterChipsetInventory[(int)character];
 
         public List<ChipsetSO> GetCharacterChipsetSOList(CharacterEnum character)
@@ -32,12 +32,12 @@ namespace Chipset
         public List<int> GetCharacterChipsetIndex(CharacterEnum character)
             => characterChipsetInventory[(int)character].ConvertAll(data => data.chipsetIndex);
 
-        public void AddChipset(CharacterEnum character, CharacterChipsetData chipsetData)
+        public void AddChipset(CharacterEnum character, ChipsetData chipsetData)
         {
             characterChipsetInventory[(int)character].Add(chipsetData);
         }
 
-        public ChipsetData(ChipsetGroupSO chipsetGroup, List<ushort> containChipset, List<CharacterChipsetData>[] characterChipsetIndex)
+        public InventorySave(ChipsetGroupSO chipsetGroup, List<ushort> containChipset, List<ChipsetData>[] characterChipsetIndex)
         {
             this.chipsetGroup = chipsetGroup;
             this.containChipset = containChipset;
@@ -47,16 +47,16 @@ namespace Chipset
     }
 
     [Serializable]
-    public class CharacterChipsetData
+    public class ChipsetData
     {
         public int chipsetIndex;
 
         public Vector2Int center;
         public int rotate;
 
-        public CharacterChipsetData() {  }
+        public ChipsetData() {  }
 
-        public CharacterChipsetData(int chipsetIndex, Vector2Int center, int rotate)
+        public ChipsetData(int chipsetIndex, Vector2Int center, int rotate)
         {
             this.chipsetIndex = chipsetIndex;
             this.center = center;
