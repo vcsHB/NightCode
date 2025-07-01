@@ -30,7 +30,7 @@ namespace Core.DataControl
             }
         }
 
-        public List<CharacterChipsetData> GetCharacterChipset(CharacterEnum character)
+        public List<ChipsetData> GetCharacterChipset(CharacterEnum character)
             => characterData[(int)character].chipsetInventoryData;
 
         public List<CharacterEnum> GetCurrentCharacter(Vector2Int currentPosition)
@@ -56,13 +56,13 @@ namespace Core.DataControl
         public Vector2Int characterPosition;
 
         public int equipWeaponId;
-        public List<CharacterChipsetData> chipsetInventoryData;
+        public List<ChipsetData> chipsetInventoryData;
 
         public CharacterData()
         {
             equipWeaponId = 0;
             isPlayerDead = false;
-            chipsetInventoryData = new List<CharacterChipsetData>();
+            chipsetInventoryData = new List<ChipsetData>();
             characterPosition = Vector2Int.zero;
         }
     }

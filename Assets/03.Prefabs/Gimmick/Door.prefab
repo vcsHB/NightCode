@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3970192083385369160}
   - component: {fileID: 5909574657700664437}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3684624979964092158}
   - component: {fileID: 4304256522282638429}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 1686425033128264572}
   - component: {fileID: 3309735003109333661}
   - component: {fileID: 3880978585820446866}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: VisualPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,8 +228,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a0be73c02b55e42aa26e86ba184cd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnCastSuccessEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _damage: 5
   _attackType: 0
+  _invalidityResistance: 0
 --- !u!114 &3309735003109333661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,7 +287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5563168369471170631}
   - component: {fileID: 6155320891432753323}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BARRER_TEXT_sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1963861477843250191}
   - component: {fileID: 820720657774951274}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,7 +460,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2413974442865053957}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

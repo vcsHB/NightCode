@@ -1,4 +1,5 @@
 using Agents.Enemies;
+using Combat.PlayerTagSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,6 +37,7 @@ namespace Agents.Enemies
                 if (enemyQueue.TryDequeue(out Enemy enemy))
                 {
                     enemy.gameObject.SetActive(true);
+                    PlayerManager.Instance.SpawnEnemy(enemy);
                     return enemy;
                 }
                 else

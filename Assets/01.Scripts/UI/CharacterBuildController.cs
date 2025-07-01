@@ -26,27 +26,18 @@ namespace UI.GameSelectScene
             _chipsetContainer = GetComponentInChildren<ChipsetContainer>();
             _agentSelectController = GetComponentInChildren<AgentSelectController>();
 
-            _weaponDataGroup = new WeaponDataGroup();
-            _weaponDataGroup.weaponDatas = new WeaponData[save.containWeaponList.Count];
+            InitializeWeaponData(save);
 
-            for (int i = 0; i < save.containWeaponList.Count; i++)
-            {
-                var characterData = save.characterData.Find(data => data.equipWeaponId == save.containWeaponList[i] && !data.isPlayerDead);
-                int selected = save.characterData.IndexOf(characterData);
-                WeaponData weaponData = new WeaponData(save.containWeaponList[i], selected);
-                _weaponDataGroup.weaponDatas[i] = weaponData;
-            }
-
-            List<CharacterChipsetData>[] chipsetIndex = new List<CharacterChipsetData>[3];
+            List<ChipsetData>[] chipsetIndex = new List<ChipsetData>[3];
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
-                List<CharacterChipsetData> chipsetList = save.GetCharacterChipset(character);
+                List<ChipsetData> chipsetList = save.GetCharacterChipset(character);
                 chipsetIndex[(int)character] = chipsetList;
             }
 
-            ChipsetData chipsetData = new ChipsetData(_chipsetGroupSO, save.containChipsetList, chipsetIndex);
-            _chipsetTable.Initialize(save.openInventory, chipsetData);
+            InventorySave chipsetData = new InventorySave(_chipsetGroupSO, save.containChipsetList, chipsetIndex);
             _chipsetContainer.Initialize(chipsetData);
+            _chipsetTable.Initialize(save.openInventory, chipsetData);
 
             _chipsetTable.onSelectInventory += _chipsetContainer.SetInventory;
 
@@ -58,13 +49,27 @@ namespace UI.GameSelectScene
                 if (save.characterData[(int)character].isPlayerDead)
                 {
                     _agentSelectController.RetireCharacter(character);
-                    chipsetIndex[(int)character] = new List<CharacterChipsetData>();
+                    chipsetIndex[(int)character] = new List<ChipsetData>();
                     continue;
                 }
             }
         }
 
-        public List<CharacterChipsetData> GetCharacterInventory(CharacterEnum i)
+        private void InitializeWeaponData(CharacterSave save)
+        {
+            _weaponDataGroup = new WeaponDataGroup();
+            _weaponDataGroup.weaponDatas = new WeaponData[save.containWeaponList.Count];
+
+            for (int i = 0; i < save.containWeaponList.Count; i++)
+            {
+                var characterData = save.characterData.Find(data => data.equipWeaponId == save.containWeaponList[i] && !data.isPlayerDead);
+                int selected = save.characterData.IndexOf(characterData);
+                WeaponData weaponData = new WeaponData(save.containWeaponList[i], selected);
+                _weaponDataGroup.weaponDatas[i] = weaponData;
+            }
+        }
+
+        public List<ChipsetData> GetCharacterInventory(CharacterEnum i)
         {
             ChipsetInventory inventory = _chipsetTable.GetInventory(i);
             return inventory.GetChipsetData();

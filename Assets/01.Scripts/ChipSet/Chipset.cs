@@ -32,14 +32,15 @@ namespace Chipset
         private Vector2 _offset;
 
         private bool _isDraging = false;
-        private bool _isForcePointerDown = false;
+        private bool _isPointerDown = false;
+        private bool _isForceMouseDown = false;
         private int _index;
 
         #region Property Field
 
         public int Index => _index;
         public int Rotation => _rotation;
-        public bool IsForcePointerDown => _isForcePointerDown;
+        public bool IsForceMouseDown => _isForceMouseDown;
         public RectTransform RectTrm => transform as RectTransform;
         public RectTransform ParentRectTrm => transform.parent as RectTransform;
 
@@ -56,7 +57,7 @@ namespace Chipset
         private void Update()
         {
             ChipsetDrag();
-            CheckForceMouseUp();
+            CheckMouseUp();
         }
 
         private void SlotInitialize()
@@ -160,20 +161,22 @@ namespace Chipset
                 if (_slots[i].SlotPosition == position)
                 {
                     // Spread event to chipset slot
-                    ExecuteEvents.Execute(_slots[i].gameObject,
-                        data, ExecuteEvents.pointerDownHandler);
+                    _slots[i].OnPointerDown(data);
+                    _isPointerDown = true;
+                    _isForceMouseDown = true;
+                    _selectedSlotOffset = Vector2Int.zero;
 
-                    _isForcePointerDown = true;
                 }
             }
         }
 
-        private void CheckForceMouseUp()
+        private void CheckMouseUp()
         {
-            if (_isForcePointerDown && Mouse.current.leftButton.wasReleasedThisFrame)
+            if (_isPointerDown && Mouse.current.leftButton.wasReleasedThisFrame)
             {
-                OnPointerUp(Vector2Int.zero);
-                _isForcePointerDown = false;
+                OnPointerUp(_selectedSlotOffset);
+                _isPointerDown = false;
+                _isForceMouseDown = false;
             }
         }
 
@@ -184,7 +187,7 @@ namespace Chipset
             _selectedSlotOffset = position;
             _canvasGroup.blocksRaycasts = false;
             onSelectChipset?.Invoke(_index);
-            _isForcePointerDown = true;
+            _isPointerDown = true;
             _isDraging = true;
         }
 
