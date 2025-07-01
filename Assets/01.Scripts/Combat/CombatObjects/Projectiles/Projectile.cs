@@ -75,15 +75,15 @@ namespace Combat.CombatObjects.ProjectileManage
 
         private void OnDestroy()
         {
-            foreach (IProjectileComponent compo in _projectileComponents)
-            {
-                OnGeneratedEvent -= compo.OnGenerated;
-                OnCastEvent -= compo.OnCasted;
-                OnShotEvent -= compo.OnShot;
-                OnCollisionEvent -= compo.OnCollision;
-                OnDamagedEvent -= compo.OnProjectileDamaged;
-                OnDestroyEvent -= compo.OnProjectileDestroy;
-            }
+            // foreach (IProjectileComponent compo in _projectileComponents)
+            // {
+            //     OnGeneratedEvent -= compo.OnGenerated;
+            //     OnCastEvent -= compo.OnCasted;
+            //     OnShotEvent -= compo.OnShot;
+            //     OnCollisionEvent -= compo.OnCollision;
+            //     OnDamagedEvent -= compo.OnProjectileDamaged;
+            //     OnDestroyEvent -= compo.OnProjectileDestroy;
+            // }
         }
 
         #endregion
