@@ -19,7 +19,7 @@ namespace Agents.Enemies.Highbinders
         }
         private void Update()
         {
-            if (_targetVariable.Value == null || !_isUpdateDirection) return;
+            if (_targetVariable == null || _targetVariable.Value == null || !_isUpdateDirection) return;
             Vector2 targetPosition = _targetVariable.Value.position;
             _attackDirection = targetPosition - (Vector2)_owner.transform.position;
             _attackDirection.Normalize();
