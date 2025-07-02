@@ -1,5 +1,6 @@
 using System;
 using Agents.Animate;
+using UnityEngine;
 using UnityEngine.Events;
 namespace Agents.Players
 {
@@ -13,6 +14,8 @@ namespace Agents.Players
         public UnityEvent OnRopeRemoveEvent;
         public UnityEvent OnGroundLandEvent;
         public UnityEvent OnWallHoldEvent;
+        [Header("Anim Events")]
+        public UnityEvent OnWalkStepEvent;
 
         public void HandleGroundPullStart()
         {
@@ -47,7 +50,12 @@ namespace Agents.Players
         {
             OnWallHoldEvent?.Invoke();
         }
-        
+
+        public void HandleWalkStep()
+        {
+            OnWalkStepEvent?.Invoke();
+        }
+
 
     }
 }
