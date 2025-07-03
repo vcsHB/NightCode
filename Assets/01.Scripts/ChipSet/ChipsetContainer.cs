@@ -35,8 +35,8 @@ namespace Chipset
 
                 Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
                 chipset.SetIndex(i);
-                chipset.SetExplain += HandleSetExplain;
-                chipset.UnSetExplain += HandleUnSetExplain;
+                chipset.onSetExplain += HandleSetExplain;
+                chipset.onUnSetExplain += HandleUnSetExplain;
                 _chipsetData.containChipsetInstance.Add(chipset);
 
                 ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
