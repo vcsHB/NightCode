@@ -9,6 +9,7 @@ namespace Chipset
 {
     public class ChipsetInfo : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
     {
+        public event Action<Chipset> onReturnChipset;
         public event Action<Chipset> onInsertChipset;
         public event Action<ChipsetSO> onEnter;
         public event Action onExit;
@@ -41,6 +42,7 @@ namespace Chipset
 
         public void OnReturnChipset()
         {
+            onReturnChipset?.Invoke(_assignedChipset);
             _inventory.OnPointerDownChipset(-1);
 
             if (_chipsetScaleTween != null) _chipsetScaleTween.Kill();

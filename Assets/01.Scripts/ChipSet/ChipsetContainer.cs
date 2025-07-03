@@ -35,12 +35,13 @@ namespace Chipset
 
                 Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
                 chipset.SetIndex(i);
-                chipset.SetExplain += HandleSetExplain;
-                chipset.UnSetExplain += HandleUnSetExplain;
+                chipset.onSetExplain += HandleSetExplain;
+                chipset.onUnSetExplain += HandleUnSetExplain;
                 _chipsetData.containChipsetInstance.Add(chipset);
 
                 ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
                 chipsetInfo.Init(currentInventory, chipset);
+                chipsetInfo.onReturnChipset += ReturnChipset;
                 chipsetInfo.onInsertChipset += OnInsertChipset;
                 chipsetInfo.onEnter += HandleSetExplain;
                 chipsetInfo.onExit += HandleUnSetExplain;
@@ -114,6 +115,19 @@ namespace Chipset
 
             Chipset chipset = _chipsetData.containChipsetInstance[currentInventory.SelectedChipsetIndex];
             if (chipset.IsForceMouseDown) return;
+            chipset.SetActive(false);
+
+            if (usedGlobalChipsetIndex.Contains(chipset.Index))
+                usedGlobalChipsetIndex.Remove(chipset.Index);
+
+            _chipsetInfos[chipset].SetActive(true);
+            currentInventory.OnPointerDownChipset(-1);
+            _dragPanel.alpha = 0;
+        }
+
+        private void ReturnChipset(Chipset chipset)
+        {
+            currentInventory.OnPointerDownChipset(-1);
             chipset.SetActive(false);
 
             if (usedGlobalChipsetIndex.Contains(chipset.Index))

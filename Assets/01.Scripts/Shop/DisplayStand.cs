@@ -28,16 +28,19 @@ namespace Shop
         private bool isGoodsExist;
         private GoodsPreviewObject _goodsPreview;
         [SerializeField] GoodsPreviewObject _defaultGoodsPreview;
+
         public void SetEmptySlot()
         {
             _defaultGoodsPreview.gameObject.SetActive(true);
         }
+
         public void SetGoods(ShopGoodsSO shopGoods)
         {
             this.shopGoods = shopGoods;
             isGoodsExist = true;
             StringBuilder text = new StringBuilder();
             text.Append($"{shopGoods.cost} <color=white>");
+
             switch (shopGoods.goodsType)
             {
                 case GoodsType.Chipset:
@@ -83,10 +86,10 @@ namespace Shop
             onBuyGoods?.Invoke();
             OnPurchaseEvent?.Invoke();
             isGoodsExist = false;
-            textObject.gameObject.SetActive(false);
             CreditCollector.Instance.UseCredit(shopGoods.cost);
             _goodsPreview.SetSoldOut();
-            
+            textObject.gameObject.SetActive(false);
+            _descriptionPanel.Close();
         }
 
         public void OnEnter()
