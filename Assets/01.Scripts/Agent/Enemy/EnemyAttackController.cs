@@ -17,6 +17,7 @@ namespace Agents.Enemies
 
         protected virtual void Start()
         {
+            _targetVariable = _owner.GetVariable<Transform>("Target");
         }
 
         public void SetEnable(bool value)
@@ -55,7 +56,7 @@ namespace Agents.Enemies
             _owner = agent as Enemy;
             _animTrigger = _owner.GetCompo<EnemyAnimationTrigger>();
             _animTrigger.OnTargetDetectEvent.AddListener(HandleDetectTarget);
-            _targetVariable = _owner.GetVariable<Transform>("Target");
+
         }
 
         public void AfterInit()
