@@ -16,22 +16,16 @@ namespace TitleScene
         [SerializeField] private LogController _logController;
         [SerializeField] private LogContent[] _initLogList;
         [SerializeField] private LogContent _denyStartGameLog;
-        [SerializeField] private UIPanel[] _initUIs;
-        [SerializeField] private float _uiEnableTerm = 0.2f;
 
         [Space(10f)]
         [Header("Essential Settings")]
 
-        [SerializeField] private StageSO _bossStage;
+        //[SerializeField] private StageSO _bossStage;
         [SerializeField] private string _startConnectSceneName = "CafeScene";
         [SerializeField] private string _tutorialSceneName = "TutorialScene";
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
         private bool _isReady;
-        private void Start()
-        {
-            SetEnableInitUIs();
-            SendInitLogs();
-        }
+       
         public void HandleStart()
         {
             if (!_isReady)
@@ -72,18 +66,7 @@ namespace TitleScene
             Application.Quit();
         }
 
-        private void SetEnableInitUIs()
-        {
-            Sequence sequence = DOTween.Sequence();
-
-            for (int i = 0; i < _initUIs.Length; i++)
-            {
-                sequence.AppendCallback(_initUIs[i].Open);
-                sequence.AppendInterval(_uiEnableTerm);
-            }
-        }
-
-        private void SendInitLogs()
+        public void SendInitLogs()
         {
 
             Sequence sequence = DOTween.Sequence();

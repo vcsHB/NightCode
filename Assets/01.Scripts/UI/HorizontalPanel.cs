@@ -6,7 +6,7 @@ namespace UI
     public class HorizontalPanel : UIPanel
     {
         [SerializeField] private float _height;
-        private RectTransform _rectTrm;
+        protected RectTransform _rectTrm;
         protected override void Awake()
         {
             base.Awake();
