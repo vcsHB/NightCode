@@ -36,10 +36,10 @@ namespace Chipset
         /// <returns></returns>
         public bool TrySetChipset(Chipset chipset, Vector2Int position)
         {
-            List<Vector2Int> positions = InventoryPositionConverter.GetChipsetOffset(inventorySize, position, chipset);
+            List<Vector2Int> positions = InventoryPositionConverter.GetChipsetOffsets(inventorySize, position, chipset);
 
             //Check Can Insert Chipset
-            if (CanChipsetInsert(chipset, positions) == false) return false;
+            if (CanChipsetInsert(positions) == false) return false;
 
             //Set Item
             for (int i = 0; i < positions.Count; i++)
@@ -49,7 +49,7 @@ namespace Chipset
             return true;
         }
 
-        public bool CanChipsetInsert(Chipset chipset, List<Vector2Int> positions)
+        public bool CanChipsetInsert(List<Vector2Int> positions)
         {
             for (int i = 0; i < positions.Count; i++)
                 if (chipsetArray[positions[i].x, positions[i].y] != null)
@@ -60,7 +60,7 @@ namespace Chipset
 
         public bool CanChipsetInsert(Chipset chipset, Vector2Int position)
         {
-            List<Vector2Int> positions = InventoryPositionConverter.GetChipsetOffset(inventorySize, position, chipset);
+            List<Vector2Int> positions = InventoryPositionConverter.GetChipsetOffsets(inventorySize, position, chipset);
 
             for (int i = 0; i < positions.Count; i++)
                 if (chipsetArray[positions[i].x, positions[i].y] != null)
@@ -80,6 +80,18 @@ namespace Chipset
 
             onActiveSlot?.Invoke(position);
             isSlotActivated[position.x, position.y] = true;
+        }
+
+        public void RemoveChipset(Chipset chipset)
+        {
+            for(int i = 0; i < chipsetArray.GetLength(0); i++)
+            {
+                for(int j = 0; j < chipsetArray.GetLength(1); j++)
+                {
+                    if(chipsetArray[i, j] == chipset) 
+                        chipsetArray[i, j] = null;
+                }
+            }
         }
     }
 }

@@ -8,9 +8,20 @@ namespace Chipset
     public static class InventoryPositionConverter
     {
         //To move selection what out of inventory
-        public static List<Vector2Int> GetChipsetOffset(Vector2Int inventorySize, Vector2Int originPosition, Chipset chipset )
+        public static List<Vector2Int> GetChipsetOffsets(Vector2Int inventorySize, Vector2Int originPosition, Chipset chipset )
         {
             List<Vector2Int> positions = chipset.GetOffsets().ConvertAll(offset => originPosition + offset);
+            Vector2Int offset = GetChipsetOffset(inventorySize, positions);
+
+            //Apply Offset
+            for(int i = 0; i < positions.Count; i++)
+                positions[i] -= offset;
+
+            return positions;
+        }
+
+        public static Vector2Int GetChipsetOffset(Vector2Int inventorySize, List<Vector2Int> positions)
+        {
             Vector2Int offset = Vector2Int.zero;
             bool isValid = true;
 
@@ -57,11 +68,7 @@ namespace Chipset
                 }
             }
 
-            //Apply Offset
-            for(int i = 0; i < positions.Count; i++)
-                positions[i] -= offset;
-
-            return positions;
+            return offset;
         }
     
         public static Vector2 GetALocalPositionAtBPosition(RectTransform ARectTransform, RectTransform BRectTransform)

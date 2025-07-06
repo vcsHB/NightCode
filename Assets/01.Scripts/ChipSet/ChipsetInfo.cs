@@ -7,25 +7,25 @@ using UnityEngine.UI;
 
 namespace Chipset
 {
-    public class ChipsetInfo : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+    public class ChipsetInfo : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, IPointerExitHandler
     {
-        public event Action<Chipset> onReturnChipset;
         public event Action<Chipset> onInsertChipset;
-        public event Action<ChipsetSO> onEnter;
-        public event Action onExit;
+        public event Action<Chipset> onReturnChipset;
+        public event Action<ChipsetInfo> onSelectInventory;
+        public event Action<ChipsetInfo> onUnSelectInventory;
+        public event Action<ChipsetSO> onSetExplain;
+        public event Action onRemoveExplain;
 
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _nameText;
         private Chipset _assignedChipset;
-        private ChipsetInventory _inventory;
         private float _scaleUpDuration = 0.3f;
         private Tween _chipsetScaleTween;
 
         public RectTransform RectTrm => transform as RectTransform;
 
-        public void Init(ChipsetInventory inventory, Chipset chipset)
+        public void Init(Chipset chipset)
         {
-            _inventory = inventory;
             _assignedChipset = chipset;
             _assignedChipset.RectTrm.localScale = Vector3.zero;
             _icon.sprite = chipset.info.icon;
@@ -35,30 +35,38 @@ namespace Chipset
         public void OnInsertChipset()
         {
             onInsertChipset?.Invoke(_assignedChipset);
-            RemoveAction();
-
+            onUnSelectInventory?.Invoke(this);
+            
             SetActive(false);
         }
 
         public void OnReturnChipset()
         {
             onReturnChipset?.Invoke(_assignedChipset);
-            _inventory.OnPointerDownChipset(-1);
-
+            
             if (_chipsetScaleTween != null) _chipsetScaleTween.Kill();
             _assignedChipset.RectTrm.localScale = Vector3.zero;
 
             _icon.gameObject.SetActive(true);
-            RemoveAction();
+            onUnSelectInventory?.Invoke(this);
         }
 
-        private void RemoveAction()
+        public void RemoveAction(ChipsetInventory inventory)
         {
-            _inventory.onInsertChipset -= OnInsertChipset;
-            _inventory.onReturnChipset -= OnReturnChipset;
+            Debug.Log("¤±¤¤¤·¤©");
+            inventory.onInsertChipset -= OnInsertChipset;
+            inventory.onReturnChipset -= OnReturnChipset;
+        }
+
+        public void AddAction(ChipsetInventory inventory)
+        {
+            Debug.Log("¤²¤¸¤§¤¡");
+            inventory.onInsertChipset += OnInsertChipset;
+            inventory.onReturnChipset += OnReturnChipset;
         }
 
 
+        #region EventRegion
         public void OnPointerDown(PointerEventData eventData)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -69,7 +77,6 @@ namespace Chipset
             );
 
             _assignedChipset.RectTrm.localPosition = localPoint;
-
             _assignedChipset.ForceOnPointerDown(Vector2Int.zero, eventData);
 
             if (_chipsetScaleTween != null && _chipsetScaleTween.active)
@@ -77,26 +84,26 @@ namespace Chipset
             _chipsetScaleTween = _assignedChipset.RectTrm.DOScale(1, _scaleUpDuration);
 
             _icon.gameObject.SetActive(false);
+            onSelectInventory?.Invoke(this);
+        }
 
-            _inventory.onInsertChipset += OnInsertChipset;
-            _inventory.onReturnChipset += OnReturnChipset;
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            onSetExplain?.Invoke(_assignedChipset.info);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            onExit?.Invoke();
+            onRemoveExplain?.Invoke();
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            onEnter?.Invoke(_assignedChipset.info);
-        }
+        #endregion
 
         public void SetActive(bool isActive)
         {
             gameObject.SetActive(isActive);
 
-            if (isActive == false) onExit?.Invoke();
+            if (isActive == false) onRemoveExplain?.Invoke();
             else _icon.gameObject.SetActive(true);
         }
     }
