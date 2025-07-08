@@ -20,7 +20,7 @@ namespace Chipset
 
         public CharacterEnum Character => _character;
 
-        public ChipsetInventoryInfo(CharacterEnum character,Vector2Int size)
+        public ChipsetInventoryInfo(CharacterEnum character, Vector2Int size)
         {
             inventorySize = size;
             _character = character;
@@ -63,8 +63,14 @@ namespace Chipset
             List<Vector2Int> positions = InventoryPositionConverter.GetChipsetOffsets(inventorySize, position, chipset);
 
             for (int i = 0; i < positions.Count; i++)
+            {
                 if (chipsetArray[positions[i].x, positions[i].y] != null)
+                {
+                    Debug.Log(positions[i] + " " + chipsetArray[positions[i].x, positions[i].y]);
                     return false;
+                }
+
+            }
 
             return true;
         }
@@ -84,11 +90,11 @@ namespace Chipset
 
         public void RemoveChipset(Chipset chipset)
         {
-            for(int i = 0; i < chipsetArray.GetLength(0); i++)
+            for (int i = 0; i < chipsetArray.GetLength(0); i++)
             {
-                for(int j = 0; j < chipsetArray.GetLength(1); j++)
+                for (int j = 0; j < chipsetArray.GetLength(1); j++)
                 {
-                    if(chipsetArray[i, j] == chipset) 
+                    if (chipsetArray[i, j] == chipset)
                         chipsetArray[i, j] = null;
                 }
             }

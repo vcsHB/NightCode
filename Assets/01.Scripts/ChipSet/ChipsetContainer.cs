@@ -131,14 +131,13 @@ namespace Chipset
 
         private void ReturnChipset(Chipset chipset)
         {
-            currentInventory.SelectChipset(-1);
             chipset.SetActive(false);
 
             if (usedGlobalChipsetIndex.Contains(chipset.Index))
                 usedGlobalChipsetIndex.Remove(chipset.Index);
 
             _chipsetInfos[chipset].SetActive(true);
-            currentInventory.OnPointerDownChipset(-1);
+            currentInventory.SelectChipset(-1);
             _dragPanel.alpha = 0;
         }
 

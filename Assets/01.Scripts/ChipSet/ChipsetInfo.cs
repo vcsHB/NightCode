@@ -53,14 +53,12 @@ namespace Chipset
 
         public void RemoveAction(ChipsetInventory inventory)
         {
-            Debug.Log("¤±¤¤¤·¤©");
             inventory.onInsertChipset -= OnInsertChipset;
             inventory.onReturnChipset -= OnReturnChipset;
         }
 
         public void AddAction(ChipsetInventory inventory)
         {
-            Debug.Log("¤²¤¸¤§¤¡");
             inventory.onInsertChipset += OnInsertChipset;
             inventory.onReturnChipset += OnReturnChipset;
         }

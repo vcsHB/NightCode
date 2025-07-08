@@ -90,9 +90,10 @@ namespace Chipset
             for (int i = 0; i < inventoryData.Count; i++)
             {
                 ChipsetData data = inventoryData[i];
-                Chipset chipset = _containChipset[data.chipsetIndex];
+                //Chipset chipset = _containChipset[data.chipsetIndex];
 
-                _inventoryInfo.TrySetChipset(chipset, data.center);
+                //_inventoryInfo.TrySetChipset(chipset, data.center);
+                InsertChipset(data.center, data.chipsetIndex);
             }
 
             _selectedChipsetIndex = -1;
@@ -141,6 +142,7 @@ namespace Chipset
 
         public void SelectChipset(int chipsetIndex)
         {
+            //Debug.Log(chipsetIndex);
             _selectedChipsetIndex = chipsetIndex;
         }
 
@@ -165,6 +167,7 @@ namespace Chipset
             }
             else
             {
+                SetChipsetSlotSelection(false);
                 if (_canInsertChipset)
                 {
                     InsertChipset(_selectedSlot.SlotPosition, _selectedChipsetIndex);
@@ -173,7 +176,6 @@ namespace Chipset
                 {
                     ReturnChipsetToPrevPosition();
                 }
-                SetChipsetSlotSelection(false);
             }
 
             SelectChipset(-1);
@@ -194,6 +196,7 @@ namespace Chipset
             {
                 _canInsertChipset = _inventoryInfo.CanChipsetInsert(_containChipset[_selectedChipsetIndex], _selectedSlot.SlotPosition);
                 SetChipsetSlotSelection(true);
+                Debug.Log(_canInsertChipset);
             }
         }
 

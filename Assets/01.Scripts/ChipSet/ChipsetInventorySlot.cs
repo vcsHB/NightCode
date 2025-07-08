@@ -14,6 +14,12 @@ namespace Chipset
 
         public bool IsEnableSlot => _isEnableSlot;
 
+        public override void SetPosition(Vector2Int position)
+        {
+            base.SetPosition(position);
+            DisableSlot();
+        }
+
         public void SetChipsetSlotState(bool isSelected, bool canInsert)
         {
             if (isSelected)
