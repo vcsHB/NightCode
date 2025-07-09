@@ -60,6 +60,7 @@ namespace Core.DataControl
 
         public CharacterData()
         {
+            playerHealth = 100f;
             equipWeaponId = 0;
             isPlayerDead = false;
             chipsetInventoryData = new List<ChipsetData>();
