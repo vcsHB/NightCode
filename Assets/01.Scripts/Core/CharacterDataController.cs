@@ -92,9 +92,7 @@ namespace Map
                 {
                     if (_characterSave.characterData[i].characterPosition == _mapController.CurrentEnterPosition)
                     {
-                        remainCharacter--;
                         _characterSave.characterData[i].isPlayerDead = true;
-                        
                         _mapController.RetireCharacter((CharacterEnum)i);
                     }
 

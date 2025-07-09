@@ -1,8 +1,4 @@
-using Agents.Enemies;
 using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 namespace Agents.Players
@@ -36,12 +32,6 @@ namespace Agents.Players
             {
                 //투명 처리
                 _sprite.color = new Color(0, 0, 0, 0);
-            }
-            else if (distance > _maxDistance)
-            {
-                //Action에서 삭제 해줄거임
-                OnRemoveIndicator?.Invoke();
-                OnRemoveIndicator = null;
             }
             else
             {
