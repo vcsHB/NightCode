@@ -9,8 +9,8 @@ namespace Chipset
 {
     public class Chipset : MonoBehaviour
     {
-        public event Action<ChipsetSO> SetExplain;
-        public event Action UnSetExplain;
+        public event Action<ChipsetSO> onSetExplain;
+        public event Action onUnSetExplain;
         public event Action<int> onSelectChipset;
         public event Action onPointerUpChipset;
         public event Action onRotate;
@@ -20,7 +20,6 @@ namespace Chipset
 
         private CanvasGroup _canvasGroup;
 
-        private Vector2Int _centerPosition;
         private int _rotation;
 
         private ChipsetSlot[] _slots;
@@ -31,10 +30,9 @@ namespace Chipset
         private Vector2Int _selectedSlotOffset;
         private Vector2 _offset;
 
-        private bool _isDraging = false;
-        private bool _isPointerDown = false;
-        private bool _isForceMouseDown = false;
         private int _index;
+        private bool _isDraging = false;
+        private bool _isForceMouseDown = false;
 
         #region Property Field
 
@@ -80,12 +78,12 @@ namespace Chipset
 
         private void HandleUnSetExplain(Vector2Int position)
         {
-            UnSetExplain?.Invoke();
+            onUnSetExplain?.Invoke();
         }
 
         private void HandleSetExplain(Vector2Int position)
         {
-            SetExplain?.Invoke(info);
+            onSetExplain?.Invoke(info);
         }
 
         private void ChipsetDrag()
@@ -162,21 +160,21 @@ namespace Chipset
                 {
                     // Spread event to chipset slot
                     _slots[i].OnPointerDown(data);
-                    _isPointerDown = true;
+                    _isDraging = true;
                     _isForceMouseDown = true;
                     _selectedSlotOffset = Vector2Int.zero;
-
                 }
             }
         }
 
         private void CheckMouseUp()
         {
-            if (_isPointerDown && Mouse.current.leftButton.wasReleasedThisFrame)
+            if (_isDraging && Mouse.current.leftButton.wasReleasedThisFrame)
             {
-                OnPointerUp(_selectedSlotOffset);
-                _isPointerDown = false;
+                onPointerUpChipset?.Invoke();
+                _isDraging = false;
                 _isForceMouseDown = false;
+                _canvasGroup.blocksRaycasts = true;
             }
         }
 
@@ -187,15 +185,7 @@ namespace Chipset
             _selectedSlotOffset = position;
             _canvasGroup.blocksRaycasts = false;
             onSelectChipset?.Invoke(_index);
-            _isPointerDown = true;
             _isDraging = true;
-        }
-
-        public void OnPointerUp(Vector2Int position)
-        {
-            onPointerUpChipset?.Invoke();
-            _canvasGroup.blocksRaycasts = true;
-            _isDraging = false;
         }
 
         #endregion

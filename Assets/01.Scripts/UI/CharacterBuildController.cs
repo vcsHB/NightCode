@@ -35,11 +35,9 @@ namespace UI.GameSelectScene
                 chipsetIndex[(int)character] = chipsetList;
             }
 
-            InventorySave chipsetData = new InventorySave(_chipsetGroupSO, save.containChipsetList, chipsetIndex);
-            _chipsetContainer.Initialize(chipsetData);
-            _chipsetTable.Initialize(save.openInventory, chipsetData);
-
-            _chipsetTable.onSelectInventory += _chipsetContainer.SetInventory;
+            _chipsetContainer.Initialize(_chipsetGroupSO, save.containChipsetList);
+            _chipsetTable.Initialize(save.openInventory, chipsetIndex, _chipsetContainer.container);
+            _chipsetTable.onSelectInventory += HandleSelectInventory;
 
             _mainPanel.InitializeData(_weaponDataGroup);
             _agentSelectController.Initialize();
@@ -69,9 +67,9 @@ namespace UI.GameSelectScene
             }
         }
 
-        public List<ChipsetData> GetCharacterInventory(CharacterEnum i)
+        public List<ChipsetData> GetCharacterInventory(CharacterEnum character)
         {
-            ChipsetInventory inventory = _chipsetTable.GetInventory(i);
+            ChipsetInventory inventory = _chipsetTable.GetInventory(character);
             return inventory.GetChipsetData();
         }
 
@@ -85,6 +83,11 @@ namespace UI.GameSelectScene
                 }
             }
             return -1;
+        }
+
+        private void HandleSelectInventory(ChipsetInventory inventory)
+        {
+            _chipsetContainer.SetInventory(inventory);
         }
     }
 }

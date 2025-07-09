@@ -154,27 +154,6 @@ namespace Core.DataControl
                 string userDataJson = File.ReadAllText(_userDataSavePath);
                 _userData = JsonUtility.FromJson<UserData>(userDataJson);
             }
-
-            //Dictionary<string, Action<string>> loadActions = new()
-            //{
-            //    { _mapSavePath,         json => _mapSave = JsonUtility.FromJson<MapSave>(json) ?? null },
-            //    { _chipsetSavePath,     json => _chipsetSave = JsonUtility.FromJson<ChipsetInventorySave>(json) ?? null },
-            //    { _characterSavePath,   json => _characterSave = JsonUtility.FromJson<CharacterSave>(json) ?? null },
-            //    { _userDataSavePath,    json => _userData = JsonUtility.FromJson<UserData>(json) ?? new UserData() },
-            //};
-
-            //foreach (var entry in loadActions)
-            //{
-            //    string path = entry.Key;
-
-            //    if (!File.Exists(path))
-            //    {
-            //        File.WriteAllText(path, "{}");
-            //    }
-
-            //    string json = File.ReadAllText(path);
-            //    entry.Value(json);
-            //}
         }
 
         public void Save()

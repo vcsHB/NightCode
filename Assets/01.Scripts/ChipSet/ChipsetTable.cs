@@ -19,10 +19,9 @@ namespace Chipset
         public CharacterEnum SelectedCharacter => _selectedCharacter;
         private RectTransform RectTrm => transform as RectTransform;
         
-        public void Initialize(List<Vector2Int> openInventory, InventorySave chipsetData)
+        public void Initialize(List<Vector2Int> openInventory, List<ChipsetData>[] chipsetDatas, List<Chipset> containChipset)
         {
             _openInventory = openInventory;
-
             _inventory = new Dictionary<CharacterEnum, ChipsetInventory>();
 
             var inventoryList = GetComponentsInChildren<ChipsetInventory>();
@@ -30,7 +29,7 @@ namespace Chipset
             for (int i = 0; i < inventoryList.Length; i++)
             {
                 _inventory.Add((CharacterEnum)i, inventoryList[i]);
-                inventoryList[i].Initialize((CharacterEnum)i, chipsetData, _openInventory);
+                inventoryList[i].Initialize((CharacterEnum)i, chipsetDatas[i], containChipset, _openInventory);
             }
 
             RectTrm.sizeDelta = new Vector2(RectTrm.sizeDelta.x, _inventory[CharacterEnum.An].RectTrm.rect.height);
