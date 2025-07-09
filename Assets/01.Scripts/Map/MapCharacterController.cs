@@ -15,11 +15,13 @@ namespace Map
         private MapNode _selectedNode;
         private MapNode _prevSelectedNode;
 
+        private ScrollRect _scrollRect;
         private MapGraph _mapGraph;
 
         public void Init(MapGraph mapGraph)
         {
             _mapGraph = mapGraph;
+            _scrollRect = GetComponentInChildren<ScrollRect>();
             SetCharacters();
         }
 
@@ -38,12 +40,13 @@ namespace Map
                 }
             }
 
-            
+            int minX = int.MaxValue;
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
                 if (_mapGraph.IsCharacterExsists(character) == false) continue;
 
                 Vector2Int position = _mapGraph.GetCharacterOriginPosition(character);
+                minX = Mathf.Min(minX, position.x);
                 MapNode node = _mapGraph.GetNode(position);
                 node.SetSelectObjectEnable(true);
 
@@ -56,6 +59,8 @@ namespace Map
                 node.characterIcons.Add(characterIcon);
                 _characterIcons.Add(character, characterIcon);
             }
+
+            _scrollRect.content.anchoredPosition = new Vector2(minX * -600f, 0f);
         }
 
         private void ReturnCharacterIconOriginPosition(MapCharacterIcon icon)
