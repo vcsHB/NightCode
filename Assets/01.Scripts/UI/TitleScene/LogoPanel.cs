@@ -9,12 +9,13 @@ namespace UI.TitleScane
         public UnityEvent OnMoveOverEvent;
         private float _moveDuration = 0.5f;
         [SerializeField] private float _sidePosition = 120f;
-        
+        [SerializeField] private RectTransform _canvasRectTrm;
+
 
         protected override void Awake()
         {
             base.Awake();
-            _rectTrm.anchoredPosition = new Vector2(Camera.main.pixelWidth / 2f, _rectTrm.anchoredPosition.y);
+            _rectTrm.anchoredPosition = new Vector2(_canvasRectTrm.rect.width * 0.5f, _rectTrm.anchoredPosition.y);
         }
 
         public void MoveToSide()
