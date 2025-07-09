@@ -7,7 +7,6 @@ namespace Base.Cafe
     {
         [SerializeField] private MSGTextBox _textBox;
         [SerializeField] private int _maxTextBoxNum;
-        [SerializeField] private CharacterIconSO icon;
 
         private MSGTextBox prevTextBox;
         private Stack<MSGTextBox> _textBoxPool;
@@ -36,7 +35,6 @@ namespace Base.Cafe
 
         public void PopMSGText(CharacterEnum character, string text, int rating)
         {
-            PopMSGText(icon.GetIcon(character), text, rating);
         }
 
         public void PopMSGText(Sprite icon, string text, int rating)

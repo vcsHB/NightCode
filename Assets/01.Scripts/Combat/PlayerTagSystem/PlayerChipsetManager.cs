@@ -26,7 +26,6 @@ namespace Combat.PlayerTagSystem
 
         public void AfterInit()
         {
-            Debug.Log("밍");
             // ChipsetController List Init
             foreach (var player in PlayerList)
             {

@@ -44,8 +44,10 @@ namespace Combat
         public void SetHealthData(float currentHealth)
         {
             _currentHealth = currentHealth;
-            HandleHealthChanged();
         }
+
+        public void UpdateHealthData()
+            => HandleHealthChanged();
 
         private void FillHealthMax()
         {

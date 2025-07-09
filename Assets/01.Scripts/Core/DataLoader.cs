@@ -136,7 +136,6 @@ namespace Core.DataControl
                 _characterSave.characterData[1].equipWeaponId = characterInitialize.jinInitializeWeapon.id;
                 _characterSave.characterData[2].equipWeaponId = characterInitialize.binaInitializeWeapon.id;
 
-
                 string json = JsonUtility.ToJson(_characterSave);
                 File.WriteAllText(_characterSavePath, json);
             }

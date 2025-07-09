@@ -83,6 +83,14 @@ namespace Map
         {
             if (_characterSave.clearEnteredStage)
             {
+                for (int i = 0; i < _characterSave.characterData.Count; ++i)
+                {
+                    if (_characterSave.characterData[i].playerHealth <= 0)
+                    {
+                        _characterSave.characterData[i].isPlayerDead = true;
+                        _mapController.RetireCharacter((CharacterEnum)i);
+                    }
+                }
                 _mapController.ClearCurrentStage();
             }
             if (_characterSave.failEnteredStage)

@@ -157,6 +157,7 @@ namespace Combat.PlayerTagSystem
             {
                 playerList[i].HealthCompo.SetHealthData(DataLoader.Instance.GetHealth(playerList[i].ID));
             }
+            CurrentPlayer.HealthCompo.UpdateHealthData();
         }
 
         public void Change(int index)
