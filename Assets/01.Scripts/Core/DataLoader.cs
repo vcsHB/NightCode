@@ -74,6 +74,7 @@ namespace Core.DataControl
 
         public UserData GetUserData()
         {
+            if (_userData == null) Load();
             return _userData;
         }
 
