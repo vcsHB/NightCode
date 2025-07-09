@@ -52,7 +52,7 @@ namespace Core.DataControl
     {
         public bool isPlayerDead;
 
-        public int playerHealth;
+        public float playerHealth;
         public Vector2Int characterPosition;
 
         public int equipWeaponId;

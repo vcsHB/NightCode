@@ -1,6 +1,7 @@
 using System;
 using Agents;
 using StatSystem;
+using Unity.Burst;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -38,6 +39,12 @@ namespace Combat
         private void HandleHealthChanged(StatSO stat, float currentValue, float prevValue)
         {
             _maxHealth = currentValue;
+        }
+
+        public void SetHealthData(float currentHealth)
+        {
+            _currentHealth = currentHealth;
+            HandleHealthChanged();
         }
 
         private void FillHealthMax()

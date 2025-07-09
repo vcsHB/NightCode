@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
 
 namespace Chipset
 {
@@ -64,9 +61,8 @@ namespace Chipset
 
             for (int i = 0; i < positions.Count; i++)
             {
-                if (chipsetArray[positions[i].x, positions[i].y] != null)
+                if (chipsetArray[positions[i].x, positions[i].y] != null || isSlotActivated[positions[i].x, positions[i].y] == false)
                 {
-                    Debug.Log(positions[i] + " " + chipsetArray[positions[i].x, positions[i].y]);
                     return false;
                 }
 

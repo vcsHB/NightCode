@@ -143,7 +143,6 @@ namespace Combat.PlayerTagSystem
                 {
                     playerList[i].transform.position = _mapLoader.CurrentLevel.StartPos;
                     //if (!useDebugMode)
-
                 }
             }
         }
@@ -152,6 +151,11 @@ namespace Combat.PlayerTagSystem
             foreach (var subManager in _subManagers)
             {
                 subManager.Value.AfterInit();
+            }
+
+            for(int i = 0; i < playerList.Count;i++)
+            {
+                playerList[i].HealthCompo.SetHealthData(DataLoader.Instance.GetHealth(playerList[i].ID));
             }
         }
 
