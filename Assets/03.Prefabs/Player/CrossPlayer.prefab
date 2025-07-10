@@ -14667,6 +14667,7 @@ GameObject:
   - component: {fileID: 5769628433854158081}
   - component: {fileID: 8298760683235742507}
   - component: {fileID: 3945718899926347627}
+  - component: {fileID: 3376533228388735016}
   m_Layer: 6
   m_Name: TurboFeedback
   m_TagString: Untagged
@@ -14748,6 +14749,19 @@ MonoBehaviour:
   _duration: 1
   _generateTerm: 0.005
   _shadowLifeTime: 0.1
+--- !u!114 &3376533228388735016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946043572367293836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f522abc9cdffc1747b4beadf12c36434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundData: {fileID: 11400000, guid: 1f15a36be69efcf4b9ab6271bc643149, type: 2}
 --- !u!1 &2252815048038035069
 GameObject:
   m_ObjectHideFlags: 0
@@ -15434,6 +15448,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnWallHoldEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWalkStepEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &5093164592791961379
