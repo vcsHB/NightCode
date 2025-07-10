@@ -20,7 +20,6 @@ namespace TitleScene
         [Space(10f)]
         [Header("Essential Settings")]
 
-        //[SerializeField] private StageSO _bossStage;
         [SerializeField] private string _startConnectSceneName = "CafeScene";
         [SerializeField] private string _tutorialSceneName = "TutorialScene";
         private string _folderPath = Path.Combine(Application.dataPath, "Save");

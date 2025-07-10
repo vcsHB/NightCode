@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Chipset
 {
@@ -28,6 +30,7 @@ namespace Chipset
 
         private bool _canInsertChipset;
         private GridLayoutGroup _layoutGroup;
+        private ScrollRect _scrollView;
 
 
         #region Property
@@ -44,6 +47,7 @@ namespace Chipset
 
         public void Initialize(CharacterEnum character, List<ChipsetData> chipsetData, List<Chipset> containChipset, List<Vector2Int> openedInventory)
         {
+            _scrollView = GetComponentInParent<ScrollRect>();
             _containChipset = containChipset;
             _slot = new ChipsetInventorySlot[_inventorySize.x, _inventorySize.y];
             _assignedChipsets = new Dictionary<int, (Vector2Int center, int rotate)>();
@@ -149,6 +153,8 @@ namespace Chipset
 
         public void OnPointerDownChipset(int chipsetIndex)
         {
+            _scrollView.horizontal = false;
+            _scrollView.vertical = false;
             SelectChipset(chipsetIndex);
             if (chipsetIndex == -1) return;
 
@@ -161,6 +167,8 @@ namespace Chipset
 
         public void OnPointerUpChipset()
         {
+            _scrollView.horizontal = true;
+            _scrollView.vertical = true;
             if (_selectedSlot == null)
             {
                 ReturnChipsetToPrevPosition();

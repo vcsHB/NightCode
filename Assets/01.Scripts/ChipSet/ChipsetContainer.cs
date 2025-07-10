@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Chipset
 {
@@ -24,10 +25,16 @@ namespace Chipset
         private List<ushort> _containChipset;
         private Dictionary<Chipset, ChipsetInfo> _chipsetInfos;
 
+        private ScrollRect _scrollRect;
+        private float _infoWidth = 230f;
+        private float _pedding = 20f;
+        private float _spacing = 5f;
+
         public void Initialize(ChipsetGroupSO chipsetGroupSO, List<ushort> containChipset)
         {
             _containChipset = containChipset;
             container = new List<Chipset>();
+            _scrollRect = GetComponentInChildren<ScrollRect>();
             _chipsetInfos = new Dictionary<Chipset, ChipsetInfo>();
 
             for (int i = 0; i < containChipset.Count; i++)
@@ -59,15 +66,23 @@ namespace Chipset
             for (int i = 0; i < container.Count; i++)
                 inventory.AssignChipsetToInventory(container[i]);
 
+            int infoCount = 0;
             foreach (var chipset in _chipsetInfos.Keys)
             {
                 _chipsetInfos[chipset].SetActive(true);
                 _chipsetInfos[chipset].Init(chipset);
+                ++infoCount;
             }
 
             List<ChipsetData> chipsetData = inventory.GetChipsetData();
             for (int i = 0; i < chipsetData.Count; i++)
+            {
                 _chipsetInfos[container[chipsetData[i].chipsetIndex]].SetActive(false);
+                --infoCount;
+            }
+
+            float width = _pedding + _infoWidth * infoCount + _spacing * (infoCount - 1);
+            _scrollRect.content.sizeDelta = new Vector2(width, _scrollRect.content.sizeDelta.y);
         }
 
 
@@ -97,17 +112,20 @@ namespace Chipset
             _chipsetInfos[chipset].SetActive(true);
             currentInventory.OnPointerDownChipset(-1);
             _dragPanel.alpha = 0;
+            _scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x + _infoWidth + _spacing, _scrollRect.content.sizeDelta.y);
         }
 
         #region EventHandler
 
         private void HandleSelectInventory(ChipsetInfo info)
         {
+            _scrollRect.horizontal = false;
             info.AddAction(currentInventory);
         }
 
         private void HandleUnSelectInventory(ChipsetInfo info)
         {
+            _scrollRect.horizontal = true;
             info.RemoveAction(currentInventory);
         }
 
@@ -127,6 +145,7 @@ namespace Chipset
                 usedGlobalChipsetIndex.Add(chipset.Index);
 
             _chipsetInfos[chipset].SetActive(false);
+            _scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x - _infoWidth - _spacing, _scrollRect.content.sizeDelta.y);
         }
 
         private void ReturnChipset(Chipset chipset)

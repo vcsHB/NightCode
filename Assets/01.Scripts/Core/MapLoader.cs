@@ -30,7 +30,6 @@ namespace Core.DataControl
 
         private void InitializeMap()
         {
-            Debug.Log(levelInstance.CameraConfiner);
             CameraManager.Instance.ChangeCameraConfiner(levelInstance.CameraConfiner);
         }
     }

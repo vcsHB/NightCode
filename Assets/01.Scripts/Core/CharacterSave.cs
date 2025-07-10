@@ -52,7 +52,7 @@ namespace Core.DataControl
     {
         public bool isPlayerDead;
 
-        public int playerHealth;
+        public float playerHealth;
         public Vector2Int characterPosition;
 
         public int equipWeaponId;
@@ -60,6 +60,7 @@ namespace Core.DataControl
 
         public CharacterData()
         {
+            playerHealth = 100f;
             equipWeaponId = 0;
             isPlayerDead = false;
             chipsetInventoryData = new List<ChipsetData>();

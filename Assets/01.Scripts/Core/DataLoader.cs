@@ -1,5 +1,7 @@
 using Agents.Players.WeaponSystem;
 using Chipset;
+using Combat;
+using Combat.PlayerTagSystem;
 using Map;
 using System;
 using System.Collections.Generic;
@@ -74,6 +76,7 @@ namespace Core.DataControl
 
         public UserData GetUserData()
         {
+            if (_userData == null) Load();
             return _userData;
         }
 
@@ -158,6 +161,13 @@ namespace Core.DataControl
 
         public void Save()
         {
+            var playerList = PlayerManager.Instance.playerList;
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                _characterSave.characterData[playerList[i].ID].playerHealth
+                    = (int)playerList[i].HealthCompo.CurrentHealth;
+            }
+
             string mapJson = JsonUtility.ToJson(_mapSave);
             string characterJson = JsonUtility.ToJson(_characterSave);
             string userJson = JsonUtility.ToJson(_userData);
@@ -181,5 +191,16 @@ namespace Core.DataControl
 
         public bool IsWeaponExist(int id)
             => _characterSave.containWeaponList.Contains(id);
+
+        public float GetHealth(int id)
+        {
+            return _characterSave.characterData[id].playerHealth;
+        }
+
+        public void ResetData()
+        {
+            File.Delete(_mapSavePath);
+            File.Delete(_characterSavePath);
+        }
     }
 }
