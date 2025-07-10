@@ -196,5 +196,11 @@ namespace Core.DataControl
         {
             return _characterSave.characterData[id].playerHealth;
         }
+
+        public void ResetData()
+        {
+            File.Delete(_mapSavePath);
+            File.Delete(_characterSavePath);
+        }
     }
 }
