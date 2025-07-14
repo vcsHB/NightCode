@@ -104,14 +104,14 @@ namespace Map
                         _mapController.RetireCharacter((CharacterEnum)i);
                     }
 
-                    if(_characterSave.characterData[i].isPlayerDead) remainCharacter--;
+                    if (_characterSave.characterData[i].isPlayerDead) remainCharacter--;
                 }
 
-                if(remainCharacter <= 0)
+                if (remainCharacter <= 0)
                 {
                     _mapController.ResetData();
                     _loadHelper.ResetData();
-                    SceneManager.LoadScene(SceneName.CafeScene);
+                    SceneManager.LoadScene(SceneName.TitleScene);
                 }
             }
         }
