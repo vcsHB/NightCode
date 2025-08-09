@@ -5,10 +5,16 @@ namespace QuestSystem.LevelSystem.SpeedRun
 
     public class SpeedRunTimecontroller : MonoBehaviour
     {
-        public event Action<float, float> OnTimeChangeEvent;
+        public event Action<float, float> OnTimeChangeEvent; // currentTime, LimitedTime
+        [SerializeField] private float _limitedTime;
         [SerializeField] private float _currentTime;
 
         private bool _isSpeedRunStarted;
+
+        private void Awake()
+        {
+
+        }
 
         public void StartSpeedRun()
         {
@@ -19,7 +25,7 @@ namespace QuestSystem.LevelSystem.SpeedRun
         public void StopSpeedRun()
         {
             _isSpeedRunStarted = false;
-            
+
         }
 
         private void Update()
@@ -27,6 +33,7 @@ namespace QuestSystem.LevelSystem.SpeedRun
             if (_isSpeedRunStarted)
             {
                 _currentTime += Time.deltaTime;
+                OnTimeChangeEvent?.Invoke(_currentTime, _limitedTime);
             }
         }
 

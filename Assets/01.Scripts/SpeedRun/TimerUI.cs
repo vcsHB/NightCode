@@ -1,11 +1,17 @@
 using TMPro;
+using UI;
 using UnityEngine;
 namespace SpeedRun
 {
 
-    public class TimerUI : MonoBehaviour
+    public class TimerUI : UIPanel
     {
         [SerializeField] private TextMeshProUGUI _timerText;
+
+        public void SetTimerColor(Color color)
+        {
+            _timerText.color = color;
+        }
 
         public void HandleRefreshTimer(float time)
         {
