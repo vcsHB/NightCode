@@ -20,7 +20,9 @@ namespace Map
 
         public MapSave()
         {
-            seed = 0;
+            System.Random random = new System.Random();
+
+            seed = random.Next() / 100000;
             currentChapter = 0;
             enterStageId = 0;
             completedNodes = new List<Vector2Int>();
