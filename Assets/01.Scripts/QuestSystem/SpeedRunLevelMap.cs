@@ -6,7 +6,7 @@ namespace QuestSystem.LevelSystem
 {
     public class SpeedRunLevelMap : LevelMap
     {
-        [SerializeField] private SpeedRunTimecontroller _timeController;
+        [SerializeField] private SpeedRunTimeController _timeController;
         [SerializeField] private TimerUI _timer;
 
         private void Awake()

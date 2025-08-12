@@ -3,11 +3,13 @@ using UnityEngine;
 namespace QuestSystem.LevelSystem.SpeedRun
 {
 
-    public class SpeedRunTimecontroller : MonoBehaviour
+    public class SpeedRunTimeController : MonoBehaviour
     {
         public event Action<float, float> OnTimeChangeEvent; // currentTime, LimitedTime
         [SerializeField] private float _limitedTime;
         [SerializeField] private float _currentTime;
+
+        public float CurrentTime => _currentTime;
 
         private bool _isSpeedRunStarted;
 
@@ -16,6 +18,10 @@ namespace QuestSystem.LevelSystem.SpeedRun
 
         }
 
+        public void ResetTimer()
+        {
+            _currentTime = 0f;
+        }
         public void StartSpeedRun()
         {
             _isSpeedRunStarted = true;
