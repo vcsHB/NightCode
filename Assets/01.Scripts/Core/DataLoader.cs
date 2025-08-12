@@ -30,7 +30,7 @@ namespace Core.DataControl
         private UserData _userData;
 
         public int Credit => _characterSave.credit;
-        
+
         public void GoToMenu()
         {
             SceneManager.LoadScene(SceneName.TitleScene);
@@ -93,6 +93,12 @@ namespace Core.DataControl
 
         public void CompleteMap()
         {
+            ChipsetSO chipset = RandomUtility.GetRandomInList(chipsetGroup.stageClearReward);
+            if (chipset != null)
+            {
+                _characterSave.containChipsetList.Add(chipset.id);
+            }
+
             _characterSave.clearEnteredStage = true;
             _characterSave.failEnteredStage = false;
             Save();
@@ -118,7 +124,7 @@ namespace Core.DataControl
             if (File.Exists(_mapSavePath) == false)
             {
                 _mapSave = new MapSave();
-                
+
                 string json = JsonUtility.ToJson(_mapSave);
                 File.WriteAllText(_mapSavePath, json);
             }
