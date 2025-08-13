@@ -7,6 +7,7 @@ namespace Chipset
     public class ChipsetGroupSO : ScriptableObject
     {
         public List<ChipsetSO> chipsetGroup;
+        public List<ChipsetSO> stageClearReward;
 
         public ChipsetSO GetChipset(ushort id)
         {

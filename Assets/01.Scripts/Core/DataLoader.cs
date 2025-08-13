@@ -1,11 +1,12 @@
 using Agents.Players.WeaponSystem;
 using Chipset;
-using Combat;
 using Combat.PlayerTagSystem;
 using Map;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,10 @@ namespace Core.DataControl
         public MapGraphSO mapGraph;
         public ChipsetGroupSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
+
+        [SerializeField] private RewardPanel _rewardPanel;
+        [SerializeField] private UIPanel _tutorialPanel;
+
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
         private static string _userDataSavePath = Path.Combine(Application.dataPath, "Save/UserData.json");
@@ -40,6 +45,18 @@ namespace Core.DataControl
         {
             base.Awake();
             Load();
+
+            if (_rewardPanel != null && _characterSave.rewardChipsets.Count > 0)
+            {
+                _rewardPanel.Open();
+                _rewardPanel.SetReward(_characterSave.rewardChipsets.ConvertAll(id => chipsetGroup.GetChipset(id)));
+                _characterSave.rewardChipsets.Clear();
+            }
+
+            if (_tutorialPanel != null && _characterSave.characterData.Find(character => character.characterPosition == Vector2.zero) != null)
+            {
+                _tutorialPanel.Open();
+            }
         }
 
         public void AddCredit(int amount)
@@ -93,6 +110,11 @@ namespace Core.DataControl
 
         public void CompleteMap()
         {
+            ChipsetSO chipset = RandomUtility.GetRandomInList(chipsetGroup.stageClearReward);
+            _characterSave.rewardChipsets.Clear();
+            if (chipset != null)
+                _characterSave.rewardChipsets.Add(chipset.id);
+
             _characterSave.clearEnteredStage = true;
             _characterSave.failEnteredStage = false;
             Save();
