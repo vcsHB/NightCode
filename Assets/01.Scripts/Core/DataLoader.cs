@@ -49,7 +49,18 @@ namespace Core.DataControl
             if (_rewardPanel != null && _characterSave.rewardChipsets.Count > 0)
             {
                 _rewardPanel.Open();
-                _rewardPanel.SetReward(_characterSave.rewardChipsets.ConvertAll(id => chipsetGroup.GetChipset(id)));
+
+                List<ChipsetSO> rewards = new();
+                for (int i = 0; i < _characterSave.rewardChipsets.Count; i++)
+                {
+                    ushort id = _characterSave.rewardChipsets[i];
+                    ChipsetSO chipset = chipsetGroup.GetChipset(id);
+                    rewards.Add(chipset);
+
+                    _characterSave.containChipsetList.Add(id);
+                }
+
+                _rewardPanel.SetReward(rewards);
                 _characterSave.rewardChipsets.Clear();
             }
 
