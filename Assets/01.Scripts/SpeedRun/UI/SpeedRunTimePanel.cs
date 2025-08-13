@@ -6,6 +6,7 @@ namespace UI.SpeedRun
     public class SpeedRunTimePanel : UIPanel
     {
         [SerializeField] private float _moveDuration;
+        [SerializeField] private Vector3 _disableScale;
         [SerializeField] private Vector2 _disablePosition;
         private RectTransform _rectTrm;
 
@@ -22,6 +23,15 @@ namespace UI.SpeedRun
             _rectTrm.DOAnchorMax(Vector2.zero, _moveDuration);
             _rectTrm.DOScale(1f, _moveDuration);
             _rectTrm.DOAnchorPos(_disablePosition, _moveDuration);
+        }
+
+        public void ResetCenterPosition()
+        {
+            _rectTrm.DOAnchorMin(new Vector2(0.5f, 0.5f), _moveDuration);
+            _rectTrm.DOAnchorMax(new Vector2(0.5f, 0.5f), _moveDuration);
+            _rectTrm.DOScale(_disableScale, _moveDuration);
+            _rectTrm.DOAnchorPos(Vector2.zero, _moveDuration);
+
         }
 
 

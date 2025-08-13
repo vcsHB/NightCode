@@ -24,6 +24,17 @@ namespace InputManage
             jump = true;
             change = true;
             turbo = true;
+            use = true;
+        }
+
+        public void SetDisableAll()
+        {
+            attack = false;
+            shoot = false;
+            move = false;
+            jump = false;
+            change = false;
+            turbo = false;
             use = false;
         }
     }
@@ -171,6 +182,10 @@ namespace InputManage
         public void SetEnabledAllStatus()
         {
             playerInputStatus.SetEnableAll();
+        }
+        public void SetDisableAllStatus()
+        {
+            playerInputStatus.SetDisableAll();
         }
 
         public void SetInputStatus(PlayerInputStatus inputStatus)

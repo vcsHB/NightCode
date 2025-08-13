@@ -10,17 +10,17 @@ namespace InteractSystem
         public UnityEvent OnInteractionEnterEvent;
         public UnityEvent OnInteractionExitEvent;
 
-        public void DetectEnter()
+        public virtual void DetectEnter()
         {
             OnInteractionEnterEvent?.Invoke();
         }
 
-        public void DetectExit()
+        public virtual void DetectExit()
         {
             OnInteractionExitEvent?.Invoke();
         }
 
-        public void Interact(InteractData data)
+        public virtual void Interact(InteractData data)
         {
             OnInteractionEvent?.Invoke();
         }

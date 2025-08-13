@@ -21,6 +21,7 @@ namespace QuestSystem.LevelSystem.SpeedRun
         public void ResetTimer()
         {
             _currentTime = 0f;
+            OnTimeChangeEvent?.Invoke(_currentTime, _limitedTime);
         }
         public void StartSpeedRun()
         {

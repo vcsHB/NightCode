@@ -19,7 +19,7 @@ namespace UI.SpeedRun
         {
             _rankingText.text = (rank + 1).ToString();
             _nameText.text = record.challengerName;
-            float time = record.time;
+            float time = record.playTime;
             float sec = time % 60;
             int m = (int)time / 60;
             _timeText.text = $"{m.ToString("00")}:{sec.ToString("00.00")}";
