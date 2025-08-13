@@ -69,6 +69,12 @@ namespace Combat.PlayerTagSystem
             OnAllPlayerDieEvent.AddListener(PlayerAllDieEvent);
         }
 
+        private void OnDestroy()
+        {
+            _playerInput.ResetAllSubscription();
+
+        }
+
         public T GetCompo<T>(bool isDerived = false) where T : class
         {
             if (_subManagers.TryGetValue(typeof(T), out IPlayerSubManager compo))
@@ -130,7 +136,7 @@ namespace Combat.PlayerTagSystem
                 playerCharacter.OnDieEvent += HandlePlayerDie;
             }
             Invoke(nameof(AfterInit), 2f);
-
+            _aimGroup.SetAimColor(CurrentPlayerData.personalColor);
             CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
             _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
             SetPlayer(CurrentPlayer);
@@ -153,7 +159,7 @@ namespace Combat.PlayerTagSystem
                 subManager.Value.AfterInit();
             }
 
-            for(int i = 0; i < playerList.Count;i++)
+            for (int i = 0; i < playerList.Count; i++)
             {
                 playerList[i].HealthCompo.SetHealthData(DataLoader.Instance.GetHealth(playerList[i].ID));
             }
