@@ -16181,7 +16181,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 700, y: 0}
+  m_AnchoredPosition: {x: 7, y: 0}
   m_SizeDelta: {x: 600, y: 680}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1531237954
@@ -16211,6 +16211,9 @@ MonoBehaviour:
   - {fileID: 1753199143}
   - {fileID: 1780160328}
   - {fileID: 1321980493}
+  _iconSO: {fileID: 11400000, guid: a16907b3551b4024a8459600add49540, type: 2}
+  _iconParent: {fileID: 1780160325}
+  _iconPrefab: {fileID: 2846085628079546975, guid: 9a28e6c3383a7bf449b3a15431f7da35, type: 3}
 --- !u!114 &1531237955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18467,6 +18470,7 @@ GameObject:
   - component: {fileID: 1780160327}
   - component: {fileID: 1780160326}
   - component: {fileID: 1780160328}
+  - component: {fileID: 1780160329}
   m_Layer: 5
   m_Name: Edge
   m_TagString: Untagged
@@ -18547,6 +18551,32 @@ MonoBehaviour:
   _useBlendColor: 0
   _blendColor: {r: 0, g: 0, b: 0, a: 0}
   _blendOpacity: 0.5
+--- !u!114 &1780160329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780160324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 20
+    m_Bottom: 20
+  m_ChildAlignment: 1
+  m_Spacing: 20
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1781860725
 GameObject:
   m_ObjectHideFlags: 0
