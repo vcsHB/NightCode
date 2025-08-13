@@ -30,7 +30,7 @@ namespace SpeedRun
         [SerializeField] private bool _isStarted;
         [SerializeField] private SpeedRunDataController _dataController;
 
-
+        
 
         private void Awake()
         {

@@ -30,7 +30,7 @@ namespace Core.DataControl
         private UserData _userData;
 
         public int Credit => _characterSave.credit;
-        
+
         public void GoToMenu()
         {
             SceneManager.LoadScene(SceneName.TitleScene);
@@ -115,10 +115,11 @@ namespace Core.DataControl
         {
             onLoad?.Invoke();
 
+          
             if (File.Exists(_mapSavePath) == false)
             {
                 _mapSave = new MapSave();
-                
+
                 string json = JsonUtility.ToJson(_mapSave);
                 File.WriteAllText(_mapSavePath, json);
             }

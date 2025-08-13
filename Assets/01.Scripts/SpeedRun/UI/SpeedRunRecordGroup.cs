@@ -5,7 +5,7 @@ namespace SpeedRun
     [System.Serializable]
     public class SpeedRunRecordGroup
     {
-        public List<SpeedRunRecord> records;
+        public List<SpeedRunRecord> records = new();
 
 
         public bool IsDuplicatedRecord(string name)
