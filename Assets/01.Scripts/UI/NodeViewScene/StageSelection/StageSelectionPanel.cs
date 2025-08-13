@@ -5,6 +5,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace UI.NodeViewScene.StageSelectionUIs
 {
@@ -24,6 +25,10 @@ namespace UI.NodeViewScene.StageSelectionUIs
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private DifficultyDisplayer _difficultyDisplayer;
         [SerializeField] private ColoringImage[] _colorImages;
+
+        [SerializeField] private CharacterIconSO _iconSO;
+        [SerializeField] private Transform _iconParent;
+        [SerializeField] private Image _iconPrefab;
 
         private MapNode _selectedNode;
         private RectTransform _rectTrm;
@@ -51,19 +56,30 @@ namespace UI.NodeViewScene.StageSelectionUIs
         {
             _currentTween?.Kill();
             _currentTween = _rectTrm.DOAnchorPosX(_enablePosition, _tweenDuration);
+
+
         }
 
         public void Close()
         {
             _currentTween?.Kill();
             _currentTween = _rectTrm.DOAnchorPosX(_disablePosition, _tweenDuration);
+
         }
 
         private void HandleSelectMapNode(MapNode data)
         {
-            
-            if (data.characterIcons.Count == 0 || data.IsComplete || 
+            if (data.characterIcons.Count == 0 || data.IsComplete ||
                 (data.characterIcons[0].IsMoved == false && data.characterIcons[0].IsCompleteCurerntLevel)) return;
+
+            for (int i = 0; i < _iconParent.childCount; i++)
+                Destroy(_iconParent.GetChild(i).gameObject);
+
+            for (int i = 0; i < data.characterIcons.Count; i++)
+            {
+                Image icon = Instantiate(_iconPrefab, _iconParent);
+                icon.sprite = _iconSO.GetIcon(data.characterIcons[i].Character);
+            }
 
             //if(data.)
             _selectedNode = data;
