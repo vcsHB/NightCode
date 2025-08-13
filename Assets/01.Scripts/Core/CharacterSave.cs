@@ -13,6 +13,7 @@ namespace Core.DataControl
         public List<int> containWeaponList;
         public List<ushort> containChipsetList;
         public List<CharacterData> characterData;
+        public List<ushort> rewardChipsets;
 
         public bool clearEnteredStage = false;
         public bool failEnteredStage = false;
