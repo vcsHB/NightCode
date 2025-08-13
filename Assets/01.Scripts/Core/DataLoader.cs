@@ -105,9 +105,7 @@ namespace Core.DataControl
             ChipsetSO chipset = RandomUtility.GetRandomInList(chipsetGroup.stageClearReward);
             _characterSave.rewardChipsets.Clear();
             if (chipset != null)
-            {
                 _characterSave.rewardChipsets.Add(chipset.id);
-            }
 
             _characterSave.clearEnteredStage = true;
             _characterSave.failEnteredStage = false;
