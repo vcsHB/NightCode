@@ -1,6 +1,3 @@
-using UnityEditor.PackageManager;
-using UnityEngine;
-
 namespace Core
 {
     public static class SceneName
