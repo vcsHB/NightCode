@@ -1,3 +1,4 @@
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace Core
@@ -10,5 +11,6 @@ namespace Core
         public static string CafeScene => "CafeScene";
         public static string OfficeScene => "OfficeScene";
         public static string TitleScene => "TitleScene";
+        public static string SpeedRunScene => "SpeedRunScene";
     }
 }

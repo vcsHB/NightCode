@@ -1,3 +1,4 @@
+using Core;
 using Core.DataControl;
 using Core.StageController;
 using DG.Tweening;
@@ -24,7 +25,7 @@ namespace TitleScene
         [SerializeField] private string _tutorialSceneName = "TutorialScene";
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
         private bool _isReady;
-       
+
         public void HandleStart()
         {
             if (!_isReady)
@@ -46,7 +47,10 @@ namespace TitleScene
             // StageManager.Instance.currentStage = _bossStage;
             // StageManager.Instance.LoadScene();
         }
-
+        public void HandleMoveSpeedRun()
+        {
+            SceneManager.LoadScene(SceneName.SpeedRunScene);
+        }
         public void ResetData()
         {
             if (Directory.Exists(_folderPath))
