@@ -148,6 +148,7 @@ namespace Core.DataControl
         {
             onLoad?.Invoke();
 
+          
             if (File.Exists(_mapSavePath) == false)
             {
                 _mapSave = new MapSave();
