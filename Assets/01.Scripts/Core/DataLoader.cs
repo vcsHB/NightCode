@@ -5,6 +5,8 @@ using Map;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -22,6 +24,7 @@ namespace Core.DataControl
         public PlayerWeaponListSO weaponList;
 
         [SerializeField] private RewardPanel _rewardPanel;
+        [SerializeField] private UIPanel _tutorialPanel;
 
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
@@ -48,6 +51,11 @@ namespace Core.DataControl
                 _rewardPanel.Open();
                 _rewardPanel.SetReward(_characterSave.rewardChipsets.ConvertAll(id => chipsetGroup.GetChipset(id)));
                 _characterSave.rewardChipsets.Clear();
+            }
+
+            if (_tutorialPanel != null && _characterSave.characterData.Find(character => character.characterPosition == Vector2.zero) != null)
+            {
+                _tutorialPanel.Open();
             }
         }
 
