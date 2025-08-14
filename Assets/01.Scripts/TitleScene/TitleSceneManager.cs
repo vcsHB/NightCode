@@ -34,12 +34,15 @@ namespace TitleScene
                 return;
             }
 
+            Debug.Log(DataLoader.Instance.GetUserData().isClearTutorial);
             if (DataLoader.Instance.GetUserData().isClearTutorial)
             {
                 SceneManager.LoadSceneAsync(_startConnectSceneName);
             }
             else
+            {
                 SceneManager.LoadSceneAsync(_tutorialSceneName);
+            }
         }
 
         public void HandleStartBoss()

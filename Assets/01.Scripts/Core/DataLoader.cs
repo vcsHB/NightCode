@@ -102,10 +102,13 @@ namespace Core.DataControl
 
         public void CompleteMap()
         {
-            ChipsetSO chipset = RandomUtility.GetRandomInList(chipsetGroup.stageClearReward);
-            _characterSave?.rewardChipsets?.Clear();
-            if (chipset != null)
-                _characterSave.rewardChipsets.Add(chipset.id);
+            if (mapGraph.GetNodeSO(_mapSave.enterStageId).nodeType == NodeType.Combat)
+            {
+                ChipsetSO chipset = RandomUtility.GetRandomInList(chipsetGroup.stageClearReward);
+                _characterSave?.rewardChipsets?.Clear();
+                if (chipset != null)
+                    _characterSave.rewardChipsets.Add(chipset.id);
+            }
 
             _characterSave.clearEnteredStage = true;
             _characterSave.failEnteredStage = false;
