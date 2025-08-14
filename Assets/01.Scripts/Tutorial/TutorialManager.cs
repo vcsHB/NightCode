@@ -1,5 +1,7 @@
+using Core;
 using Core.DataControl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Tutorial
 {
@@ -11,6 +13,12 @@ namespace Tutorial
         {
             DataLoader.Instance.GetUserData().isClearTutorial = true;
             DataLoader.Instance.Save();
+        }
+
+        public void HandleExitTutorial()
+        {
+            SceneManager.LoadScene(SceneName.TitleScene);
+            Time.timeScale = 1f;
         }
 
 

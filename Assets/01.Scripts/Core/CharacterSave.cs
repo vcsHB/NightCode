@@ -23,6 +23,7 @@ namespace Core.DataControl
             credit = 0;
             openInventory = new List<Vector2Int>();
             containWeaponList = new List<int>();
+            rewardChipsets = new();
             containChipsetList = new List<ushort>();
             characterData = new List<CharacterData>();
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
