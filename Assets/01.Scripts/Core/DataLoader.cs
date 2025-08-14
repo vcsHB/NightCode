@@ -23,7 +23,7 @@ namespace Core.DataControl
         public ChipsetGroupSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
 
-        [SerializeField] private UIPanel _tutorialPanel;
+        [SerializeField] private TipPanel _tutorialPanel;
 
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");

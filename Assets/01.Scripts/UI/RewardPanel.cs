@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class RewardPanel : MonoBehaviour
 {
     [SerializeField] private Transform _rewardIconParnet;
-    [SerializeField] private Image _rewardIconPrefab;
+    [SerializeField] private RewardIcon _rewardIconPrefab;
     [SerializeField] private Button _closeButton;
 
     private CanvasGroup _canvsGroup => GetComponent<CanvasGroup>();
@@ -22,8 +22,8 @@ public class RewardPanel : MonoBehaviour
     {
         chipsetSO.ForEach(chipset => 
         {
-            Image icon = Instantiate(_rewardIconPrefab, _rewardIconParnet);
-            icon.sprite = chipset.icon;
+            RewardIcon icon = Instantiate(_rewardIconPrefab, _rewardIconParnet);
+            icon.SetRewardChipset(chipset);
         });
     }
 
