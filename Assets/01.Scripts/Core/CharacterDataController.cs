@@ -59,7 +59,8 @@ namespace Map
         {
             _characterSave = _loadHelper.Load();
 
-            if (_characterSave.rewardChipsets.Count > 0)
+
+            if (_rewardPanel != null && _characterSave.rewardChipsets.Count > 0)
             {
                 _rewardPanel.Open();
 

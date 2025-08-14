@@ -49,7 +49,6 @@ namespace Agents.Enemies
 
                     if (_currentWave >= MaxWave)
                     {
-                        Debug.Log("³¡³­");
                         OnCompleteWave?.Invoke();
                         return;
                     }

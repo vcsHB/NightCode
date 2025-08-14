@@ -41,6 +41,7 @@ public class RewardPanel : MonoBehaviour
     }
     public void Close()
     {
+
         if (_openCloseTween != null && _openCloseTween.active)
             _openCloseTween.Kill();
 
