@@ -10,12 +10,11 @@ public class RewardPanel : MonoBehaviour
     [SerializeField] private Image _rewardIconPrefab;
     [SerializeField] private Button _closeButton;
 
-    private CanvasGroup _canvsGroup;
+    private CanvasGroup _canvsGroup => GetComponent<CanvasGroup>();
     private Tween _openCloseTween;
 
     private void Awake()
     {
-        _canvsGroup = GetComponent<CanvasGroup>();
         _closeButton.onClick.AddListener(Close);
     }
 
@@ -42,7 +41,6 @@ public class RewardPanel : MonoBehaviour
     }
     public void Close()
     {
-
         if (_openCloseTween != null && _openCloseTween.active)
             _openCloseTween.Kill();
 

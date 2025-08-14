@@ -1,5 +1,7 @@
-﻿using Core;
+﻿using Chipset;
+using Core;
 using Core.DataControl;
+using System.Collections.Generic;
 using System.IO;
 using UI.GameSelectScene;
 using UnityEngine;
@@ -15,6 +17,7 @@ namespace Map
         [SerializeField] private CharacterDataInitializeSO _initializeData;
 
         [Space]
+        [SerializeField] private RewardPanel _rewardPanel;
         [SerializeField] private MapController _mapController;
         [SerializeField] private CharacterBuildController _characterBuildController;
 
@@ -55,6 +58,25 @@ namespace Map
         public void Load()
         {
             _characterSave = _loadHelper.Load();
+
+            if (_characterSave.rewardChipsets.Count > 0)
+            {
+                _rewardPanel.Open();
+
+                List<ChipsetSO> rewards = new();
+                for (int i = 0; i < _characterSave.rewardChipsets.Count; i++)
+                {
+                    ushort id = _characterSave.rewardChipsets[i];
+                    ChipsetSO chipset = DataLoader.Instance.chipsetGroup.GetChipset(id);
+                    rewards.Add(chipset);
+
+                    _characterSave.containChipsetList.Add(id);
+                }
+
+                _rewardPanel.SetReward(rewards);
+                _characterSave.rewardChipsets.Clear();
+            }
+
             if (_characterSave.containWeaponList.Count <= 0) InitializeData();
         }
 
