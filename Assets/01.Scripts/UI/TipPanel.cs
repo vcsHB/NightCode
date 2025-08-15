@@ -31,12 +31,14 @@ public class TipPanel : MonoBehaviour
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = true;
         _canvasGroup.blocksRaycasts = true;
+        Time.timeScale = 0;
     }
     public void Close()
     {
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
+        Time.timeScale = 1;
     }
 
     public void Refresh()
@@ -51,7 +53,7 @@ public class TipPanel : MonoBehaviour
         if (_moveTween != null && _moveTween.active) return;
 
         _moveTween = _explainPanel.DOAnchorPosX(_positions[--_currentIndex], 0.3f)
-            .SetEase(Ease.OutCubic);
+            .SetEase(Ease.OutCubic).SetUpdate(true);
         CheckButton();
     }
 
@@ -61,7 +63,7 @@ public class TipPanel : MonoBehaviour
         if (_moveTween != null && _moveTween.active) return;
 
         _moveTween = _explainPanel.DOAnchorPosX(_positions[++_currentIndex], 0.3f)
-            .SetEase(Ease.OutCubic);
+            .SetEase(Ease.OutCubic).SetUpdate(true);
         CheckButton();
     }
 
