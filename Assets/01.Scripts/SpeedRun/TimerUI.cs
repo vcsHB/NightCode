@@ -16,8 +16,8 @@ namespace SpeedRun
         public void HandleRefreshTimer(float time)
         {
             int m = (int)time / 60;
-            time -= m;
-            _timerText.text = $"{m.ToString("00")}:{time.ToString("00.00")}";
+            float sec = time  % 60;
+            _timerText.text = $"{m.ToString("00")}:{sec.ToString("00.00")}";
         }
     }
 }

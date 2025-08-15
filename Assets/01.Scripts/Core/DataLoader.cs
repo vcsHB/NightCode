@@ -219,6 +219,7 @@ namespace Core.DataControl
         {
             File.Delete(_mapSavePath);
             File.Delete(_characterSavePath);
+            File.Delete(_userDataSavePath);
         }
     }
 }
