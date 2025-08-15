@@ -41,11 +41,13 @@ namespace Chipset
 
         public virtual void OnPointerDown(PointerEventData eventData)
         {
+            if (eventData.button != PointerEventData.InputButton.Left) return;
             onPointerDown?.Invoke(eventData, _slotPosition);
         }
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
+            if (eventData.button != PointerEventData.InputButton.Left) return;
             onPointerUp?.Invoke(_slotPosition);
         }
 
