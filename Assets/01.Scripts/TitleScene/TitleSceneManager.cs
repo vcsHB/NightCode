@@ -26,6 +26,10 @@ namespace TitleScene
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
         private bool _isReady;
 
+        private void Awake()
+        {
+            Time.timeScale = 1;
+        }
         public void HandleStart()
         {
             if (!_isReady)
