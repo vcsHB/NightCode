@@ -9,7 +9,6 @@ using UnityEngine.Events;
 
 namespace SpeedRun
 {
-
     public class SpeedRunManager : MonoBehaviour
     {
         public event Action<float> OnSpeedRunOverEvent;

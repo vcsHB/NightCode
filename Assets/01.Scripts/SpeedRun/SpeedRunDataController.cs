@@ -8,7 +8,7 @@ namespace SpeedRun
         [SerializeField] private SpeedRunRecordGroup _speedRunRecordGroup;
         public SpeedRunRecordGroup RecordData => _speedRunRecordGroup;
 
-        private static string _speedRunSavePath = Path.Combine(Application.dataPath, "Save/SpeedRunData.json");
+        private static string _speedRunSavePath = Path.Combine(Application.dataPath, "SpeedRunData.json");
 
         private SpeedRunRecord _newRecord;
 
