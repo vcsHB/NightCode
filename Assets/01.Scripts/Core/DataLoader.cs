@@ -23,8 +23,7 @@ namespace Core.DataControl
         public ChipsetGroupSO chipsetGroup;
         public PlayerWeaponListSO weaponList;
 
-        [SerializeField] private RewardPanel _rewardPanel;
-        [SerializeField] private UIPanel _tutorialPanel;
+        [SerializeField] private TipPanel _tutorialPanel;
 
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
@@ -45,24 +44,6 @@ namespace Core.DataControl
         {
             base.Awake();
             Load();
-
-            if (_rewardPanel != null && _characterSave.rewardChipsets.Count > 0)
-            {
-                _rewardPanel.Open();
-
-                List<ChipsetSO> rewards = new();
-                for (int i = 0; i < _characterSave.rewardChipsets.Count; i++)
-                {
-                    ushort id = _characterSave.rewardChipsets[i];
-                    ChipsetSO chipset = chipsetGroup.GetChipset(id);
-                    rewards.Add(chipset);
-
-                    _characterSave.containChipsetList.Add(id);
-                }
-
-                _rewardPanel.SetReward(rewards);
-                _characterSave.rewardChipsets.Clear();
-            }
 
             if (_tutorialPanel != null && _characterSave.characterData.Find(character => character.characterPosition == Vector2.zero) != null)
             {
@@ -121,10 +102,13 @@ namespace Core.DataControl
 
         public void CompleteMap()
         {
-            ChipsetSO chipset = RandomUtility.GetRandomInList(chipsetGroup.stageClearReward);
-            _characterSave?.rewardChipsets?.Clear();
-            if (chipset != null)
-                _characterSave.rewardChipsets.Add(chipset.id);
+            if (mapGraph.GetNodeSO(_mapSave.enterStageId).nodeType == NodeType.Combat)
+            {
+                ChipsetSO chipset = RandomUtility.GetRandomInList(chipsetGroup.stageClearReward);
+                _characterSave?.rewardChipsets?.Clear();
+                if (chipset != null)
+                    _characterSave.rewardChipsets.Add(chipset.id);
+            }
 
             _characterSave.clearEnteredStage = true;
             _characterSave.failEnteredStage = false;
