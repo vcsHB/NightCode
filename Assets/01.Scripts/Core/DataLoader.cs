@@ -86,6 +86,7 @@ namespace Core.DataControl
         public UserData GetUserData()
         {
             if (_userData == null) Load();
+            Debug.Log(_userData.isClearTutorial);
             return _userData;
         }
 
@@ -220,6 +221,7 @@ namespace Core.DataControl
             File.Delete(_mapSavePath);
             File.Delete(_characterSavePath);
             File.Delete(_userDataSavePath);
+            _userData.isClearTutorial = false;
         }
     }
 }
