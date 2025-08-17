@@ -29,6 +29,8 @@ namespace Core.DataControl
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
         private static string _userDataSavePath = Path.Combine(Application.dataPath, "Save/UserData.json");
 
+        public string MapPath => _mapSavePath;
+
         private MapSave _mapSave;
         private CharacterSave _characterSave;
         private UserData _userData;
@@ -101,6 +103,41 @@ namespace Core.DataControl
                 }).ToArray();
         }
 
+        public void ForceEnterStage(int id)
+        {
+            MapSave mapSave = new MapSave();
+            CharacterSave characterSave = new CharacterSave();
+            mapSave.enterStageId = id;
+            mapSave.enterStagePosition = Vector2Int.one;
+            for (int i = 0; i < 3; i++)
+            {
+                characterSave.characterData[i].isPlayerDead = false;
+                characterSave.characterData[i].playerHealth = 100;
+                characterSave.characterData[i].characterPosition = Vector2Int.one;
+
+                if (i == 0)
+                {
+                    characterSave.characterData[i].equipWeaponId = characterInitialize.anInitializeWeapon.id;
+                }
+                if (i == 1)
+                {
+                    characterSave.characterData[i].equipWeaponId = characterInitialize.jinInitializeWeapon.id;
+                }
+                if (i == 2)
+                {
+                    characterSave.characterData[i].equipWeaponId = characterInitialize.binaInitializeWeapon.id;
+                }
+            }
+
+            string mapJson = JsonUtility.ToJson(mapSave);
+            string characterJson = JsonUtility.ToJson(characterSave);
+
+            File.WriteAllText(_mapSavePath, mapJson);
+            File.WriteAllText(_characterSavePath, characterJson);
+
+            SceneManager.LoadScene(SceneName.InGameScene);
+        }
+
         public void CompleteMap()
         {
             if (mapGraph.GetNodeSO(_mapSave.enterStageId).nodeType == NodeType.Combat)
@@ -133,7 +170,7 @@ namespace Core.DataControl
         {
             onLoad?.Invoke();
 
-          
+
             if (File.Exists(_mapSavePath) == false)
             {
                 _mapSave = new MapSave();

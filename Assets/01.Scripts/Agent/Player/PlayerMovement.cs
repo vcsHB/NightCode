@@ -82,8 +82,7 @@ namespace Agents.Players
 
             Vector2 inputDirection = _player.PlayerInput.InputDirection;
             if (inputDirection.magnitude < 0.1f)
-                inputDirection = Velocity.normalized;
-            inputDirection.y = 0f;
+                inputDirection = new Vector2(Velocity.x, 0f).normalized;
 
             Vector2 result = rotatedDirection * Vector2.Dot(inputDirection, rotatedDirection);
             result.Normalize();
