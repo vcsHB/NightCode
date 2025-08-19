@@ -1,17 +1,17 @@
 using System;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Map
 {
-    public class MapCharacterIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IDragHandler
+    public class MapCharacterIcon : DragableUI, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         public event Action<MapCharacterIcon> onPointerUp;
         public event Action<MapCharacterIcon> onReturnOriginNode;
 
         public CharacterIconSO characterIcon;
-        private Vector2 _offset;
         private CanvasGroup _canvasGroup;
         private Image _image;
 
@@ -19,7 +19,6 @@ namespace Map
         private bool _isMoved = false;
         private bool _isCompleteCurerntLevel = true;
 
-        private RectTransform RectTrm => transform as RectTransform;
         public CharacterEnum Character => _character;
         public bool IsMoved => _isMoved;
         public bool IsCompleteCurerntLevel => _isCompleteCurerntLevel;
@@ -43,16 +42,16 @@ namespace Map
             transform.localScale = Vector3.one;
         }
 
-        public void OnDrag(PointerEventData eventData)
+        public override void OnDrag(PointerEventData eventData)
         {
             if (_isMoved || _isCompleteCurerntLevel == false) return;
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                RectTrm.anchoredPosition = eventData.position + _offset;
+                base.OnDrag(eventData);
             }
         }
 
-        public void OnPointerUp(PointerEventData eventData)
+        public override void OnPointerUp(PointerEventData eventData)
         {
             if (_isMoved || _isCompleteCurerntLevel == false) return;
             if (eventData.button == PointerEventData.InputButton.Left)
@@ -63,11 +62,11 @@ namespace Map
             }
         }
 
-        public void OnPointerDown(PointerEventData eventData)
+        public override void OnPointerDown(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left && _isMoved == false)
             {
-                _offset = RectTrm.anchoredPosition - eventData.position;
+                base.OnPointerDown(eventData);
                 _canvasGroup.interactable = false;
                 _canvasGroup.blocksRaycasts = false;
             }

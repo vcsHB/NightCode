@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Agents;
+using Agents.Players;
 using UnityEngine;
 using static StatSystem.StatSO;
 namespace StatSystem
@@ -16,15 +17,25 @@ namespace StatSystem
         {
             _owner = agent;
             InitializeStatDictionary();
+
+        }
+        public void AfterInit()
+        {
+            if (_owner is Player player)
+                player.OnPlayerGenerateEvent += InitializeStatUsables;
+
+        }
+
+        private void InitializeStatUsables()
+        {
             IStatUsable[] statUsables = _owner.transform.GetComponentsInChildren<IStatUsable>();
 
             for (int i = 0; i < statUsables.Length; i++)
             {
                 statUsables[i].Initialize(this);
             }
-
         }
-        public void AfterInit() { }
+
         public void Dispose() { }
 
         private void InitializeStatDictionary()

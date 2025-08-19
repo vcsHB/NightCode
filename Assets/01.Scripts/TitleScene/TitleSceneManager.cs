@@ -1,6 +1,9 @@
+using Core;
 using Core.DataControl;
 using Core.StageController;
+using DG.Tweening;
 using System.IO;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,19 +12,41 @@ namespace TitleScene
 
     public class TitleSceneManager : MonoBehaviour
     {
-        [SerializeField] private StageSO _bossStage;
+        [Header("Game Init Setting")]
+
+        [SerializeField] private LogController _logController;
+        [SerializeField] private LogContent[] _initLogList;
+        [SerializeField] private LogContent _denyStartGameLog;
+
+        [Space(10f)]
+        [Header("Essential Settings")]
+
         [SerializeField] private string _startConnectSceneName = "CafeScene";
         [SerializeField] private string _tutorialSceneName = "TutorialScene";
         private string _folderPath = Path.Combine(Application.dataPath, "Save");
+        private bool _isReady;
 
+        private void Awake()
+        {
+            Time.timeScale = 1f;
+        }
         public void HandleStart()
         {
+            if (!_isReady)
+            {
+                _logController.SendLog(_denyStartGameLog);
+                return;
+            }
+
+            Debug.Log(DataLoader.Instance.GetUserData().isClearTutorial);
             if (DataLoader.Instance.GetUserData().isClearTutorial)
             {
-                SceneManager.LoadScene(_startConnectSceneName);
+                SceneManager.LoadSceneAsync(_startConnectSceneName);
             }
             else
-                SceneManager.LoadScene(_tutorialSceneName);
+            {
+                SceneManager.LoadSceneAsync(_tutorialSceneName);
+            }
         }
 
         public void HandleStartBoss()
@@ -29,7 +54,10 @@ namespace TitleScene
             // StageManager.Instance.currentStage = _bossStage;
             // StageManager.Instance.LoadScene();
         }
-
+        public void HandleMoveSpeedRun()
+        {
+            SceneManager.LoadScene(SceneName.SpeedRunScene);
+        }
         public void ResetData()
         {
             if (Directory.Exists(_folderPath))
@@ -40,18 +68,26 @@ namespace TitleScene
                 {
                     File.Delete(file);
                 }
-
-                StageManager.Instance.Save();
-            }
-            else
-            {
-                Debug.Log("�ֵ�");
             }
         }
 
         public void HandleQuit()
         {
             Application.Quit();
+        }
+
+        public void SendInitLogs()
+        {
+
+            Sequence sequence = DOTween.Sequence();
+            for (int i = 0; i < _initLogList.Length; i++)
+            {
+                LogContent content = _initLogList[i];
+                sequence.AppendCallback(() => _logController.SendLog(content));
+                sequence.AppendInterval(content.term);
+            }
+            sequence.OnComplete(() => _isReady = true);
+
         }
     }
 

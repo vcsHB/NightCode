@@ -1,36 +1,38 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Chipset
 {
     public class ChipsetTable : MonoBehaviour
     {
-        public event Action<CharacterEnum> onSelectInventory;
+        public event Action<ChipsetInventory> onSelectInventory;
 
-        public ChipsetGruopSO chipsetGruopSO;
+        public ChipsetGroupSO chipsetGroupSO;
+
         private Dictionary<CharacterEnum, ChipsetInventory> _inventory;
         private CharacterEnum _selectedCharacter;
         private List<Vector2Int> _openInventory;
 
         public CharacterEnum SelectedCharacter => _selectedCharacter;
-
-        public void Init(ChipsetInventorySave inventoryDatas)
+        private RectTransform RectTrm => transform as RectTransform;
+        
+        public void Initialize(List<Vector2Int> openInventory, List<ChipsetData>[] chipsetDatas, List<Chipset> containChipset)
         {
-            _openInventory = inventoryDatas.openInventory;
+            _openInventory = openInventory;
             _inventory = new Dictionary<CharacterEnum, ChipsetInventory>();
+
             var inventoryList = GetComponentsInChildren<ChipsetInventory>();
 
             for (int i = 0; i < inventoryList.Length; i++)
             {
                 _inventory.Add((CharacterEnum)i, inventoryList[i]);
-                inventoryList[i].Init(_openInventory);
-                inventoryList[i].SetInventoryData(inventoryDatas.GetChipsets((CharacterEnum)i), _openInventory);
-                inventoryList[i].DisableInventory();
+                inventoryList[i].Initialize((CharacterEnum)i, chipsetDatas[i], containChipset, _openInventory);
             }
+
+            RectTrm.sizeDelta = new Vector2(RectTrm.sizeDelta.x, _inventory[CharacterEnum.An].RectTrm.rect.height);
             StartCoroutine(DelayInitializeInventory());
         }
 
@@ -43,7 +45,7 @@ namespace Chipset
 
         public void SelectInventory(CharacterEnum character)
         {
-            onSelectInventory?.Invoke(character);
+            onSelectInventory?.Invoke(_inventory[character]);
 
             ChipsetInventory prevInventory = GetInventory(_selectedCharacter);
 
@@ -51,11 +53,13 @@ namespace Chipset
                 prevInventory.DisableInventory();
 
             _selectedCharacter = character;
+
+            ChipsetInventory currentInventory = GetInventory(_selectedCharacter);
+            currentInventory.EnableInventory();
         }
 
         public List<Vector2Int> GetOpenedInventorySlots() => _openInventory;
 
-        public ChipsetInventory GetInventory(CharacterEnum character)
-            => _inventory[character];
+        public ChipsetInventory GetInventory(CharacterEnum character) => _inventory[character];
     }
 }

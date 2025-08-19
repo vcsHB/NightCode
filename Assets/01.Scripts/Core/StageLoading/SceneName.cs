@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Core
 {
     public static class SceneName
@@ -10,5 +8,6 @@ namespace Core
         public static string CafeScene => "CafeScene";
         public static string OfficeScene => "OfficeScene";
         public static string TitleScene => "TitleScene";
+        public static string SpeedRunScene => "SpeedRunScene";
     }
 }

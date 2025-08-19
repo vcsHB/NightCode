@@ -1,9 +1,5 @@
-using System.Collections;
-using Combat.PlayerTagSystem;
+using Core;
 using Core.DataControl;
-using Core.StageController;
-using QuestSystem.LevelSystem;
-using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +12,13 @@ namespace Tutorial
         public void ClearTutotial()
         {
             DataLoader.Instance.GetUserData().isClearTutorial = true;
+            DataLoader.Instance.Save();
+        }
+
+        public void HandleExitTutorial()
+        {
+            SceneManager.LoadScene(SceneName.TitleScene);
+            Time.timeScale = 1f;
         }
 
 

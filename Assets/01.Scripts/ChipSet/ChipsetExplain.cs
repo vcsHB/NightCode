@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Chipset
@@ -16,10 +17,11 @@ namespace Chipset
         public void SetChipsetExplain(ChipsetSO chipset)
         {
             _canvasGroup.alpha = 1;
-            RectTrm.anchoredPosition = Input.mousePosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((transform.parent as RectTransform), Mouse.current.position.value, Camera.main, out Vector2 localPosition);
+            RectTrm.localPosition = localPosition; 
 
             _nameText.SetText(chipset.chipsetName);
-            _explainText.SetText(chipset.chipsetName);
+            _explainText.SetText(chipset.chipsetDescription);
             _iconImage.sprite = chipset.icon;
         }
 

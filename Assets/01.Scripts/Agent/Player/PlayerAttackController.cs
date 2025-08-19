@@ -1,6 +1,7 @@
 using System;
 using Agents.Players.SkillSystem;
 using Agents.Players.WeaponSystem;
+using Core.DataControl;
 using UnityEngine;
 namespace Agents.Players
 {
@@ -19,7 +20,14 @@ namespace Agents.Players
         public void Initialize(Agent agent)
         {
             _player = agent as Player;
-            SetWeaponSO(_weaponSO); // Debug; => Connect SaveData
+            _player.OnPlayerGenerateEvent += InitPlayerWeapon;
+
+        }
+
+        private void InitPlayerWeapon()
+        {
+            PlayerWeaponSO weaponSO = DataLoader.Instance.GetWeapon((CharacterEnum)_player.ID);
+            SetWeaponSO(weaponSO);
         }
         public void AfterInit() { }
 

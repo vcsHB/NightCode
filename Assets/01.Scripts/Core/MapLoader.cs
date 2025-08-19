@@ -1,3 +1,4 @@
+using CameraControllers;
 using Map;
 using QuestSystem.LevelSystem;
 using UnityEngine;
@@ -23,6 +24,13 @@ namespace Core.DataControl
             }
 
             levelInstance = Instantiate(_currentMap.levelPrefab);
+            levelInstance.Initialize();
+            InitializeMap();
+        }
+
+        private void InitializeMap()
+        {
+            CameraManager.Instance.ChangeCameraConfiner(levelInstance.CameraConfiner);
         }
     }
 }

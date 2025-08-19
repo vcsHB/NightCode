@@ -50,10 +50,15 @@ namespace UI.InGame.GameUI.CharacterSelector
             HandleHealthChange(ownerHealth.CurrentHealth, ownerHealth.MaxHealth);
             _characterNameText.text = playerSO.characterName;
             _player.HealthCompo.OnDieEvent.AddListener(HandleRetire);
-            PlayerAttackController attackController =  _player.GetCompo<PlayerAttackController>();
+            Invoke(nameof(InitWeaponData), 1f);
+
+        }
+
+        private void InitWeaponData()
+        {
+            PlayerAttackController attackController = _player.GetCompo<PlayerAttackController>();
             _weaponInfoPanel.Initialize(attackController.WeaponData);
             attackController.OnSkillCooltimeUpdateEvent += _weaponInfoPanel.HandleRefreshCooltime;
-
         }
 
 

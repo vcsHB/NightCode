@@ -15,6 +15,7 @@ namespace UI.InGame.SystemUI
         [SerializeField] private float _bottomDefaultPos;
         [SerializeField] private float _bottomActivePos;
         [SerializeField] private float _edgePanelDuration;
+        [SerializeField] private float _goToSelectPanelDuration;
         [Header("Panel Layer Setting")]
         [SerializeField] private float _layer1Duration;
         [SerializeField] private float _layer2Duration;
@@ -24,6 +25,7 @@ namespace UI.InGame.SystemUI
         [SerializeField] private Image _bottomLayer1;
         [SerializeField] private Image _bottomLayer2;
         [SerializeField] private bool _useUnscaledTime;
+        [SerializeField] private CanvasGroup _goToSelectScenePanel;
         private CanvasGroup _canvasGroup;
 
         void Awake()
@@ -52,7 +54,14 @@ namespace UI.InGame.SystemUI
                 _topLayer2.DOFillAmount(0.73f, _layer2Duration);
                 _bottomLayer2.DOFillAmount(0.73f, _layer2Duration);
             });
-
+            seq.Append(_goToSelectScenePanel.DOFade(1, _goToSelectPanelDuration))
+                .AppendCallback(() =>
+                {
+                    _goToSelectScenePanel.blocksRaycasts = true;
+                    _goToSelectScenePanel.interactable = true;
+                    _canvasGroup.blocksRaycasts = true;
+                    _canvasGroup.interactable = true;
+                });
 
 
         }

@@ -1,4 +1,5 @@
 using Agents.Players.WeaponSystem;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 namespace UI.NodeViewScene.WeaponSelectionUIs
@@ -8,6 +9,7 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
     {
 
         [SerializeField] private CombatMethodDescriptionPanel _descriptionPanel;
+        [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private Image _tagIconImage;
 
@@ -20,6 +22,7 @@ namespace UI.NodeViewScene.WeaponSelectionUIs
         {
             _backgroundImage.color = combatMethodData.methodColor;
             _tagIconImage.sprite = combatMethodData.methodIconSprite;
+            _nameText.text = combatMethodData.methodName;
             _descriptionPanel.SetDescription(combatMethodData.methodDescription);
             _descriptionPanel.Close();
         }

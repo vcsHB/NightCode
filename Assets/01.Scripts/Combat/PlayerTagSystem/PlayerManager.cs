@@ -1,4 +1,5 @@
 using Agents;
+using Agents.Enemies;
 using Agents.Players;
 using Core.DataControl;
 using HUDSystem;
@@ -40,6 +41,7 @@ namespace Combat.PlayerTagSystem
 
         [Header("Loader Settings")]
         [SerializeField] private MapLoader _mapLoader;
+        [SerializeField] private EnemyIndicatorController _indicator;
 
         public Player CurrentPlayer => playerList[_currentPlayerIndex];
         public Transform CurrentPlayerTrm => CurrentPlayer.transform;
@@ -64,6 +66,13 @@ namespace Combat.PlayerTagSystem
             {
                 subManager.Initialize(this);
             }
+            OnAllPlayerDieEvent.AddListener(PlayerAllDieEvent);
+        }
+
+        private void OnDestroy()
+        {
+            _playerInput.ResetAllSubscription();
+
         }
 
         public T GetCompo<T>(bool isDerived = false) where T : class
@@ -95,10 +104,11 @@ namespace Combat.PlayerTagSystem
 
         }
 
-        private void OnDestroy()
+        private void PlayerAllDieEvent()
         {
             _playerInput.OnCharacterChangeEvent -= Change;
             _playerInput.ResetAllSubscription();
+            Time.timeScale = 0.1f;
         }
 
         private void Initialize()
@@ -126,7 +136,7 @@ namespace Combat.PlayerTagSystem
                 playerCharacter.OnDieEvent += HandlePlayerDie;
             }
             Invoke(nameof(AfterInit), 2f);
-
+            _aimGroup.SetAimColor(CurrentPlayerData.personalColor);
             CameraControllers.CameraManager.Instance.SetFollow(CurrentPlayer.transform);
             _aimGroup.SetAnchorOwner(CurrentPlayer.RigidCompo, CurrentPlayer.RopeHolder);
             SetPlayer(CurrentPlayer);
@@ -139,7 +149,6 @@ namespace Combat.PlayerTagSystem
                 {
                     playerList[i].transform.position = _mapLoader.CurrentLevel.StartPos;
                     //if (!useDebugMode)
-
                 }
             }
         }
@@ -149,6 +158,12 @@ namespace Combat.PlayerTagSystem
             {
                 subManager.Value.AfterInit();
             }
+
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                playerList[i].HealthCompo.SetHealthData(DataLoader.Instance.GetHealth(playerList[i].ID));
+            }
+            CurrentPlayer.HealthCompo.UpdateHealthData();
         }
 
         public void Change(int index)
@@ -241,6 +256,7 @@ namespace Combat.PlayerTagSystem
             HUDController.Instance.SetFollowTarget(newCharacter.transform);
             CameraControllers.CameraManager.Instance.SetFollow(newCharacter.transform);
             _aimGroup.SetAnchorOwner(newCharacter.RigidCompo, newCharacter.RopeHolder);
+            _indicator.transform.parent = newCharacter.transform;
         }
 
         private void HandlePlayerDie()
@@ -248,6 +264,9 @@ namespace Combat.PlayerTagSystem
             ChangeNextPlayer(true);
             OnPlayerDieEvent?.Invoke();
         }
+
+        public void SpawnEnemy(Enemy enemy)
+            => _indicator.AddEnemy(enemy);
 
         public void SetCurrentPlayerPosition(Vector2 position)
         {
@@ -284,8 +303,6 @@ namespace Combat.PlayerTagSystem
             playerCharacter.SetStartDisable(false);
             playerCharacter.OnDieEvent += HandlePlayerDie;
         }
-
-
     }
 
 }

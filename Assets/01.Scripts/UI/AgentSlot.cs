@@ -12,8 +12,6 @@ namespace UI
         public UnityEvent<CharacterEnum> SelectCharacterEvent;
         public event Action<CharacterEnum> OnSelectCharacter;
 
-        public MapController characterController;
-        public ChipsetTable chipsetTable;
         public CharacterEnum character;
         public GameObject retirePanel;
 
@@ -25,10 +23,12 @@ namespace UI
 
         public bool isRetired => _isRetired;
 
-        private void Awake()
+
+        public void SetRetired()
         {
-            _canvasGroup = GetComponent<CanvasGroup>();
-            _isRetired = !characterController.MapGraph.IsCharacterExsists(character);
+            if(_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
+
+            _isRetired = true;
             retirePanel.SetActive(_isRetired);
             if (_isRetired) _canvasGroup.alpha = 1;
         }
@@ -41,7 +41,6 @@ namespace UI
 
             if (isSelected)
             {
-                chipsetTable.SelectInventory(character);
                 OnSelectCharacter?.Invoke(character);
                 SelectCharacterEvent?.Invoke(character);
             }

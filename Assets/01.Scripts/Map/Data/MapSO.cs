@@ -29,9 +29,11 @@ namespace Map
     {
         public List<NodeInfo> nodeInfo;
         public List<NodeType> existNodeTypes;
-        public Vector2Int difficultyRange;
+        public StageDifficultySO difficulty;
         public bool isFixedNode;
+        public bool limitNodeCount;
         [Condition(nameof(isFixedNode), true)] public MapNodeSO fixedNode;
+        [Condition(nameof(limitNodeCount), true)] public int maxNodeCount;
     }
 
     [Serializable]
@@ -39,7 +41,8 @@ namespace Map
     {
         public BranchType branchType;
         public int ratio;
-        [Condition("branchType", BranchType.Divide)]public int divideCount;
+        [Space]
+        [Condition(nameof(branchType), BranchType.Divide)]public int divideCount;
     }
 
     public enum BranchType

@@ -33,5 +33,10 @@ namespace Agents.Enemies.BossManage
             else
                 _laser.StopFire();
         }
+
+        public override void Initialize(Agent agent)
+        {
+            
+        }
     }
 }

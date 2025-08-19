@@ -4,6 +4,11 @@ namespace Core
 
     public class UserData
     {
-        public bool isClearTutorial;
+        public bool isClearTutorial = false;
+
+        public UserData()
+        {
+            isClearTutorial = false;
+        }
     }
 }

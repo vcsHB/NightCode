@@ -87,7 +87,11 @@ namespace CameraControllers
             
         }
 
-
+        public void ChangeCameraConfiner(Collider2D collider)
+        {
+            if(_confinerCompo == null) _confinerCompo = _confinerCompo = _camera.GetComponent<CinemachineConfiner2D>();
+            _confinerCompo.BoundingShape2D = collider;
+        }
 
 
     }

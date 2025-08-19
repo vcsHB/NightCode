@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -8,8 +9,8 @@ namespace Chipset
 {
     public class Chipset : MonoBehaviour
     {
-        public event Action<ChipsetSO> SetExplain;
-        public event Action UnSetExplain;
+        public event Action<ChipsetSO> onSetExplain;
+        public event Action onUnSetExplain;
         public event Action<int> onSelectChipset;
         public event Action onPointerUpChipset;
         public event Action onRotate;
@@ -19,7 +20,6 @@ namespace Chipset
 
         private CanvasGroup _canvasGroup;
 
-        private Vector2Int _centerPosition;
         private int _rotation;
 
         private ChipsetSlot[] _slots;
@@ -30,14 +30,15 @@ namespace Chipset
         private Vector2Int _selectedSlotOffset;
         private Vector2 _offset;
 
-        private bool _isDraging = false;
-        private bool _isForcePointerDown = false;
         private int _index;
+        private bool _isDraging = false;
+        private bool _isForceMouseDown = false;
 
         #region Property Field
 
+        public int Index => _index;
         public int Rotation => _rotation;
-        public bool IsForcePointerDown => _isForcePointerDown;
+        public bool IsForceMouseDown => _isForceMouseDown;
         public RectTransform RectTrm => transform as RectTransform;
         public RectTransform ParentRectTrm => transform.parent as RectTransform;
 
@@ -54,7 +55,7 @@ namespace Chipset
         private void Update()
         {
             ChipsetDrag();
-            CheckForceMouseUp();
+            CheckMouseUp();
         }
 
         private void SlotInitialize()
@@ -69,7 +70,7 @@ namespace Chipset
 
                 _slots[i].SetPosition(info.chipsetSize[i]);
                 _slots[i].onPointerDown += OnPointerDown;
-                _slots[i].onPointerUp += OnPointerUp;
+                //_slots[i].onPointerUp += OnPointerUp;
                 _slots[i].onPointerEnter += HandleSetExplain;
                 _slots[i].onPointerExit += HandleUnSetExplain;
             }
@@ -77,20 +78,24 @@ namespace Chipset
 
         private void HandleUnSetExplain(Vector2Int position)
         {
-            UnSetExplain?.Invoke();
+            onUnSetExplain?.Invoke();
         }
 
         private void HandleSetExplain(Vector2Int position)
         {
-            SetExplain?.Invoke(info);
+            onSetExplain?.Invoke(info);
         }
 
         private void ChipsetDrag()
         {
             if (_isDraging)
             {
-                Vector2 offset = ClockWise(_slotPositionDic[_selectedSlotOffset] + _offset, _rotation);
-                RectTrm.anchoredPosition = (Vector2)Input.mousePosition - offset;
+                Vector2 offset = ClockWise(_offset, _rotation);
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(RectTrm.parent as RectTransform,
+                    Mouse.current.position.value, Camera.main, out Vector2 localPosition))
+                {
+                    RectTrm.localPosition = localPosition - offset;
+                }
 
                 if (info.isRotatable && Keyboard.current.rKey.wasPressedThisFrame)
                 {
@@ -98,6 +103,8 @@ namespace Chipset
                 }
             }
         }
+
+        #region RotateFunc
 
         private void Rotate()
         {
@@ -141,6 +148,8 @@ namespace Chipset
             return Vector2.zero;
         }
 
+        #endregion
+
         #region Events 
 
         public void ForceOnPointerDown(Vector2Int position, PointerEventData data)
@@ -150,43 +159,38 @@ namespace Chipset
                 if (_slots[i].SlotPosition == position)
                 {
                     // Spread event to chipset slot
-                    ExecuteEvents.Execute(_slots[i].gameObject,
-                        data, ExecuteEvents.pointerDownHandler);
-
-                    _isForcePointerDown = true;
+                    _slots[i].OnPointerDown(data);
+                    _isDraging = true;
+                    _isForceMouseDown = true;
+                    _selectedSlotOffset = Vector2Int.zero;
                 }
             }
         }
 
-        private void CheckForceMouseUp()
+        private void CheckMouseUp()
         {
-            if (_isForcePointerDown && Input.GetMouseButtonUp(0))
+            if (_isDraging && Mouse.current.leftButton.wasReleasedThisFrame)
             {
-                OnPointerUp(Vector2Int.zero);
-                _isForcePointerDown = false;
+                onPointerUpChipset?.Invoke();
+                _isDraging = false;
+                _isForceMouseDown = false;
+                _canvasGroup.blocksRaycasts = true;
             }
         }
 
-        public void OnPointerDown(Vector2Int position)
+        public void OnPointerDown(PointerEventData eventData, Vector2Int position)
         {
-            _offset = (Vector2)Input.mousePosition - (RectTrm.anchoredPosition + _slotPositionDic[position]);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(RectTrm, eventData.position, eventData.pressEventCamera, out _offset);
+
             _selectedSlotOffset = position;
             _canvasGroup.blocksRaycasts = false;
-            _isDraging = true;
             onSelectChipset?.Invoke(_index);
-        }
-
-        public void OnPointerUp(Vector2Int position)
-        {
-            onPointerUpChipset?.Invoke();
-            _canvasGroup.blocksRaycasts = true;
-            _isDraging = false;
+            _isDraging = true;
         }
 
         #endregion
 
         public Vector2Int GetSelectOffset() => ClockWise(_selectedSlotOffset, _rotation);
-
 
         public List<Vector2Int> GetOffsets()
         {
@@ -201,10 +205,8 @@ namespace Chipset
             return offsets;
         }
 
-        public void SetPosition(Vector2 anchoredPosition)
-        {
-            RectTrm.anchoredPosition = anchoredPosition + (ParentRectTrm.sizeDelta / 2);
-        }
+        public void SetPosition(Vector2 localPosition)
+            => RectTrm.localPosition = localPosition;
 
         public void SetPrevPosition(Vector2Int center, int rotate)
         {
