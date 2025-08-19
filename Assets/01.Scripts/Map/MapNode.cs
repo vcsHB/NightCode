@@ -128,7 +128,7 @@ namespace Map
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            //onPointerEnter?.Invoke(null);
+            onPointerEnter?.Invoke(null);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

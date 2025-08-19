@@ -28,7 +28,7 @@ namespace TitleScene
 
         private void Awake()
         {
-            Time.timeScale = 1;
+            Time.timeScale = 1f;
         }
         public void HandleStart()
         {

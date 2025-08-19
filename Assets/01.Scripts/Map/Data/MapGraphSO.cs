@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Core;
+using Core.DataControl;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace Map
@@ -148,60 +152,69 @@ namespace Map
         {
             List<List<Vector2Int>>[] connections = new List<List<Vector2Int>>[branchMap.Length];
 
-            for (int i = 1; i < _nodeMap.Length; i++)
+            try
             {
-                int process = 0;
-                List<List<Vector2Int>> levelConnection = new List<List<Vector2Int>>();
-                for (int j = 0; j < _nodeMap[i - 1].Count; j++)
+                for (int i = 1; i < _nodeMap.Length; i++)
                 {
-                    int linkedCount = branchMap[i - 1][j];
-                    if (linkedCount == 1) // Keep
+                    int process = 0;
+                    List<List<Vector2Int>> levelConnection = new List<List<Vector2Int>>();
+                    for (int j = 0; j < _nodeMap[i - 1].Count; j++)
                     {
-                        levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process) });
-                        _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
-                        _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process++]);
-                        process = Mathf.Clamp(process, 0, _nodeMap[i].Count - 1);
-                    }
-                    else if (linkedCount > 1) // Divide
-                    {
-                        List<Vector2Int> connection = new List<Vector2Int>();
-                        for (int k = 0; k < linkedCount; k++)
+                        int linkedCount = branchMap[i - 1][j];
+                        if (linkedCount == 1) // Keep
                         {
-                            connection.Add(new Vector2Int(i, process));
+                            levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process) });
                             _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
                             _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process++]);
                             process = Mathf.Clamp(process, 0, _nodeMap[i].Count - 1);
                         }
-                        levelConnection.Add(connection);
-                    }
-                    else if (linkedCount < 0) // Merge
-                    {
-                        if (process == 0)
+                        else if (linkedCount > 1) // Divide
                         {
-                            levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process) });
-                            _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
-                            _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process]);
+                            List<Vector2Int> connection = new List<Vector2Int>();
+                            for (int k = 0; k < linkedCount; k++)
+                            {
+                                connection.Add(new Vector2Int(i, process));
+                                _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
+                                _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process]);
+                                process = Mathf.Clamp(process + 1, 0, _nodeMap[i].Count - 1);
+                            }
+                            levelConnection.Add(connection);
                         }
-                        else if (process >= _nodeMap[i].Count)
+                        else if (linkedCount < 0) // Merge
                         {
-                            levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process - 1) });
-                            _nodeMap[i][process - 1].prevNodes.Add(_nodeMap[i - 1][j]);
-                            _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process - 1]);
+                            if (process == 0)
+                            {
+                                levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process) });
+                                _nodeMap[i][process].prevNodes.Add(_nodeMap[i - 1][j]);
+                                _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process]);
+                            }
+                            else if (process >= _nodeMap[i].Count)
+                            {
+                                levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, process - 1) });
+                                _nodeMap[i][process - 1].prevNodes.Add(_nodeMap[i - 1][j]);
+                                _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][process - 1]);
+                            }
+                            else
+                            {
+                                int isLinkedUp = Random.Range(0, 2);
+                                int idx = isLinkedUp == 0 ? process : process - 1;
+                                idx = Mathf.Clamp(idx, 0, _nodeMap[i - 1].Count);
+                                levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, idx) });
+                                _nodeMap[i][idx].prevNodes.Add(_nodeMap[i - 1][j]);
+                                _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][idx]);
+                            }
                         }
-                        else
-                        {
-                            int isLinkedUp = Random.Range(0, 2);
-                            int idx = isLinkedUp == 0 ? process : process - 1;
-                            idx = Mathf.Clamp(idx, 0, _nodeMap[i - 1].Count);
-                            levelConnection.Add(new List<Vector2Int>(1) { new Vector2Int(i, idx) });
-                            _nodeMap[i][idx].prevNodes.Add(_nodeMap[i - 1][j]);
-                            _nodeMap[i - 1][j].nextNodes.Add(_nodeMap[i][idx]);
-                        }
-                    }
 
-                    connections[i - 1] = levelConnection;
+                        connections[i - 1] = levelConnection;
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                File.Delete(DataLoader.Instance.MapPath);
+                SceneManager.LoadScene(SceneName.MapSelectScene);
+            }
+
 
             return connections;
         }

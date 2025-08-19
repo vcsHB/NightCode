@@ -44,6 +44,7 @@ namespace Combat
         public void SetHealthData(float currentHealth)
         {
             _currentHealth = currentHealth;
+            UpdateHealthData();
         }
 
         public void UpdateHealthData()

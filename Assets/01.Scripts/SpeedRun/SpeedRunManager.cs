@@ -29,12 +29,23 @@ namespace SpeedRun
         [SerializeField] private bool _isStarted;
         [SerializeField] private SpeedRunDataController _dataController;
 
-        
+
 
         private void Awake()
         {
             _timeController.OnTimeChangeEvent += HandleTimeChanged;
             _playerInput.SetDisableAllStatus();
+        }
+
+        private void Start()
+        {
+            Invoke(nameof(ResetPlayerHealth), 2f);
+        }
+
+        private void ResetPlayerHealth()
+        {
+
+            _playerManager.CurrentPlayer.HealthCompo.Restore(100f);
         }
 
         private void OnDestroy()
@@ -48,10 +59,6 @@ namespace SpeedRun
             _playerInput.SetEnabledAllStatus();
         }
 
-        private void Start()
-        {
-
-        }
         public void ResetPlayerPosition()
         {
             _playerManager.CurrentPlayerTrm.position = _resetPoint.position;

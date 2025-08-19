@@ -4,22 +4,30 @@ using UnityEngine.Events;
 
 namespace UI.GameSelectScene
 {
-    public class GameSelectPanel : MonoBehaviour, IWindowPanel
+    public class GameSelectPanel : MonoBehaviour, IWindowPanel, IWindowTogglable
     {
         public UnityEvent onClose;
+        public UnityEvent OnOpenEvent;
 
         private CanvasGroup _canvasGroup;
         private Tween _openTween;
+        private bool _isActive;
 
         private float _duration = 0.3f;
 
+        private void Awake()
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+        }
+
+
         public void Close()
         {
-            if(_openTween != null && _openTween.active) _openTween.Kill();
-            _openTween = _canvasGroup.DOFade(0f, _duration);
+            if (_openTween != null && _openTween.active) _openTween.Kill();
+            _openTween = _canvasGroup.DOFade(0f, _duration).OnComplete(() => onClose?.Invoke());
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
-            onClose?.Invoke();
+            _isActive = false;
         }
 
         public void Open()
@@ -31,11 +39,17 @@ namespace UI.GameSelectScene
                     _canvasGroup.interactable = true;
                     _canvasGroup.blocksRaycasts = true;
                 });
+            _isActive = true;
+            OnOpenEvent?.Invoke();
         }
 
-        private void Awake()
+        public void Toggle()
         {
-            _canvasGroup = GetComponent<CanvasGroup>();
+            if (_isActive)
+                Close();
+            else
+                Open();
         }
+
     }
 }
