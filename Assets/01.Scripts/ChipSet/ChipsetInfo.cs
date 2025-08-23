@@ -1,4 +1,6 @@
+using Combat.PlayerTagSystem;
 using DG.Tweening;
+using Map;
 using System;
 using TMPro;
 using UnityEngine;
@@ -13,8 +15,6 @@ namespace Chipset
         public event Action<Chipset> onReturnChipset;
         public event Action<ChipsetInfo> onSelectInventory;
         public event Action<ChipsetInfo> onUnSelectInventory;
-        public event Action<ChipsetSO> onSetExplain;
-        public event Action onRemoveExplain;
 
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _nameText;
@@ -87,12 +87,12 @@ namespace Chipset
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            onSetExplain?.Invoke(_assignedChipset.info);
+            CharacterDataController.Instance.ChipsetExplain.SetChipsetExplain(_assignedChipset.info);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            onRemoveExplain?.Invoke();
+            CharacterDataController.Instance.ChipsetExplain.Disable();
         }
 
         #endregion
@@ -101,7 +101,7 @@ namespace Chipset
         {
             gameObject.SetActive(isActive);
 
-            if (isActive == false) onRemoveExplain?.Invoke();
+            if (isActive == false) CharacterDataController.Instance.ChipsetExplain.Disable();
             else _icon.gameObject.SetActive(true);
         }
     }

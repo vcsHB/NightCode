@@ -11,7 +11,10 @@ namespace Chipset
 
         public Vector2Int inventorySize;
         public bool[,] isSlotActivated;
-        public Chipset[,] chipsetArray;
+
+        //Use by chipset class is more safe than using index
+        public int[,] chipsetArray;
+        public List<int> containChipsetIndex;
 
         private CharacterEnum _character;
 
@@ -21,8 +24,17 @@ namespace Chipset
         {
             inventorySize = size;
             _character = character;
-            chipsetArray = new Chipset[size.x, size.y];
+            chipsetArray = new int[size.x, size.y];
             isSlotActivated = new bool[size.x, size.y];
+            containChipsetIndex = new List<int>();
+
+            for (int i = 0; i < size.x; i++)
+            {
+                for (int j = 0; j < size.y; j++)
+                {
+                    chipsetArray[i, j] = -1;
+                }
+            }
         }
 
         /// <summary>
@@ -31,8 +43,9 @@ namespace Chipset
         /// <param name="chipset"></param>
         /// <param name="position"></param>
         /// <returns></returns>
-        public bool TrySetChipset(Chipset chipset, Vector2Int position)
+        public bool TrySetChipset(int chipsetIndex, Vector2Int position)
         {
+            Chipset chipset = ChipsetManager.Instance.GetChipset(chipsetIndex);
             List<Vector2Int> positions = InventoryPositionConverter.GetChipsetOffsets(inventorySize, position, chipset);
 
             //Check Can Insert Chipset
@@ -40,8 +53,9 @@ namespace Chipset
 
             //Set Item
             for (int i = 0; i < positions.Count; i++)
-                chipsetArray[positions[i].x, positions[i].y] = chipset;
+                chipsetArray[positions[i].x, positions[i].y] = chipsetIndex;
 
+            containChipsetIndex.Add(chipsetIndex);
             onInsertChipset?.Invoke();
             return true;
         }
@@ -49,7 +63,7 @@ namespace Chipset
         public bool CanChipsetInsert(List<Vector2Int> positions)
         {
             for (int i = 0; i < positions.Count; i++)
-                if (chipsetArray[positions[i].x, positions[i].y] != null)
+                if (chipsetArray[positions[i].x, positions[i].y] != -1)
                     return false;
 
             return true;
@@ -61,7 +75,7 @@ namespace Chipset
 
             for (int i = 0; i < positions.Count; i++)
             {
-                if (chipsetArray[positions[i].x, positions[i].y] != null || isSlotActivated[positions[i].x, positions[i].y] == false)
+                if (chipsetArray[positions[i].x, positions[i].y] != -1 || isSlotActivated[positions[i].x, positions[i].y] == false)
                 {
                     return false;
                 }
@@ -73,7 +87,7 @@ namespace Chipset
 
         public void RemoveChipset(Vector2Int position)
         {
-            chipsetArray[position.x, position.y] = null;
+            chipsetArray[position.x, position.y] = -1;
         }
 
         public void ActiveInventorySlot(Vector2Int position)
@@ -84,16 +98,17 @@ namespace Chipset
             isSlotActivated[position.x, position.y] = true;
         }
 
-        public void RemoveChipset(Chipset chipset)
+        public void RemoveChipset(int chipsetIndex)
         {
             for (int i = 0; i < chipsetArray.GetLength(0); i++)
             {
                 for (int j = 0; j < chipsetArray.GetLength(1); j++)
                 {
-                    if (chipsetArray[i, j] == chipset)
-                        chipsetArray[i, j] = null;
+                    if (chipsetArray[i, j] == chipsetIndex)
+                        chipsetArray[i, j] = -1;
                 }
             }
+            containChipsetIndex.Remove(chipsetIndex);
         }
     }
 }

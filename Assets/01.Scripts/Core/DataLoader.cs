@@ -28,9 +28,12 @@ namespace Core.DataControl
         private static string _mapSavePath = Path.Combine(Application.dataPath, "Save/MapSave.json");
         private static string _characterSavePath = Path.Combine(Application.dataPath, "Save/CharacterData.json");
         private static string _userDataSavePath = Path.Combine(Application.dataPath, "Save/UserData.json");
+        private JsonLoadHelper<ChipsetSave> _chipsetLoadHelper =
+            new JsonLoadHelper<ChipsetSave>(Path.Combine(Application.dataPath, "Save/Chipset.json"));
 
         private MapSave _mapSave;
         private CharacterSave _characterSave;
+        private ChipsetSave _chipsetSave;
         private UserData _userData;
 
         public int Credit => _characterSave.credit;
@@ -91,13 +94,11 @@ namespace Core.DataControl
 
         public ChipsetSO[] GetChipset(CharacterEnum character)
         {
-            if (_characterSave == null) Load();
-            return _characterSave.GetCharacterChipset(character).
-                ConvertAll(save =>
-                {
-                    ushort chipsetId = _characterSave.containChipsetList[save.chipsetIndex];
-                    return chipsetGroup.GetChipset(chipsetId);
-                }).ToArray();
+            _chipsetSave = _chipsetLoadHelper.Load();
+            return _chipsetSave.inventorySave[(int)character].chipsetList.ConvertAll(data => 
+            {
+                return chipsetGroup.GetChipset(_chipsetSave.containChipset[data.chipsetIndex]);
+            }).ToArray();
         }
 
         public void CompleteMap()
@@ -105,9 +106,11 @@ namespace Core.DataControl
             if (mapGraph.GetNodeSO(_mapSave.enterStageId).nodeType == NodeType.Combat)
             {
                 ChipsetSO chipset = RandomUtility.GetRandomInList(chipsetGroup.stageClearReward);
-                _characterSave?.rewardChipsets?.Clear();
-                if (chipset != null)
-                    _characterSave.rewardChipsets.Add(chipset.id);
+
+                //보상 설정을 해주는 곳이었는데...
+                //_characterSave?.rewardChipsets?.Clear();
+                //if (chipset != null)
+                //    _characterSave.rewardChipsets.Add(chipset.id);
             }
 
             _characterSave.clearEnteredStage = true;
@@ -132,7 +135,8 @@ namespace Core.DataControl
         {
             onLoad?.Invoke();
 
-          
+            _chipsetSave = _chipsetLoadHelper.Load();
+
             if (File.Exists(_mapSavePath) == false)
             {
                 _mapSave = new MapSave();
@@ -177,6 +181,7 @@ namespace Core.DataControl
             }
         }
 
+        //얜 Save용 아님 다 따로 Save 만들어서 관리해줘야함
         public void Save()
         {
             var playerList = PlayerManager.Instance.playerList;
@@ -197,7 +202,7 @@ namespace Core.DataControl
 
         public void AddChipset(ushort id)
         {
-            _characterSave.containChipsetList.Add(id);
+
             Save();
         }
 
