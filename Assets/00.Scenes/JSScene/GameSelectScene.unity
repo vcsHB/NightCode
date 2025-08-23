@@ -1258,6 +1258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 75884940}
   - component: {fileID: 75884941}
+  - component: {fileID: 75884942}
   m_Layer: 0
   m_Name: ChipsetManager
   m_TagString: Untagged
@@ -1293,6 +1294,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chipsetGroupData: {fileID: 11400000, guid: 9a4cb1a9698daae40bccb2d5ea9ed52e, type: 2}
+--- !u!114 &75884942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75884939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216b21fe144efef4c85e02cc258b6f99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initializeSO: {fileID: 11400000, guid: e02d779a5e7bc9646ba939590583914e, type: 2}
+  _chipsetGroupSO: {fileID: 11400000, guid: 9a4cb1a9698daae40bccb2d5ea9ed52e, type: 2}
+  _chipetTable: {fileID: 1245746417}
+  _chipsetContainer: {fileID: 1336359987}
 --- !u!1 &104514867
 GameObject:
   m_ObjectHideFlags: 0
@@ -4244,6 +4261,7 @@ MonoBehaviour:
   _rewardPanel: {fileID: 1428819583}
   _mapController: {fileID: 105599446}
   _characterBuildController: {fileID: 1016289777}
+  _chipsetExplain: {fileID: 768342397}
 --- !u!1 &381236577
 GameObject:
   m_ObjectHideFlags: 0
@@ -10847,7 +10865,6 @@ GameObject:
   - component: {fileID: 1016289771}
   - component: {fileID: 1016289776}
   - component: {fileID: 1016289777}
-  - component: {fileID: 1016289778}
   m_Layer: 5
   m_Name: CharacterBuildPanel
   m_TagString: Untagged
@@ -10907,7 +10924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0.9411765}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -10967,34 +10984,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onClose:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1337358901}
-        m_TargetAssemblyTypeName: UI.Common.KeyBindPanelController, Assembly-CSharp
-        m_MethodName: SetControl
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  OnOpenEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1337358901}
-        m_TargetAssemblyTypeName: UI.Common.KeyBindPanelController, Assembly-CSharp
-        m_MethodName: SetControl
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1016289777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11008,20 +10998,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chipsetGroupSO: {fileID: 11400000, guid: 9a4cb1a9698daae40bccb2d5ea9ed52e, type: 2}
---- !u!114 &1016289778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1016289770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec786b1d20b5d4c4cb59679e245f6f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _uiInput: {fileID: 11400000, guid: 660a7b1a6cf7b7d46baac631130c6610, type: 2}
-  _canControl: 1
 --- !u!1 &1045490883
 GameObject:
   m_ObjectHideFlags: 0
@@ -14418,39 +14394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef72d476b4939144a650c560ebf03bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SetExplain:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 768342397}
-        m_TargetAssemblyTypeName: Chipset.ChipsetExplain, Assembly-CSharp
-        m_MethodName: SetChipsetExplain
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  UnSetExplain:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 768342397}
-        m_TargetAssemblyTypeName: Chipset.ChipsetExplain, Assembly-CSharp
-        m_MethodName: Disable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  usedGlobalChipsetIndex: 
   currentInventory: {fileID: 0}
-  container: []
   _chipsetInfoPrefab: {fileID: 2722241358690329493, guid: 2d6437fa64301ca499d4853fcfd7120f, type: 3}
   _chipsetParent: {fileID: 1245746416}
   _chipsetInfoParent: {fileID: 413362952}
@@ -14893,8 +14837,8 @@ RectTransform:
   - {fileID: 105599442}
   - {fileID: 1337358899}
   - {fileID: 1569350011}
-  - {fileID: 852342649}
   - {fileID: 1016289775}
+  - {fileID: 852342649}
   - {fileID: 768342396}
   - {fileID: 422413678}
   - {fileID: 1428819578}
@@ -16850,7 +16794,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 661, y: 0}
+  m_AnchoredPosition: {x: 698.9999, y: 0}
   m_SizeDelta: {x: 600, y: 680}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1531237954

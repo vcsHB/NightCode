@@ -13,8 +13,8 @@ namespace Combat.PlayerTagSystem
         public Action OnCharacterAmountChangedEvent;
         public int charatcerAmount;
         public int currentAliveCharacterAmount;
-
     }
+
     public class PlayerChipsetManager : MonoBehaviour, IPlayerSubManager
     {
         [SerializeField] private ChipsetGroupSO _chipsetGroupData;
@@ -23,6 +23,7 @@ namespace Combat.PlayerTagSystem
         private List<Player> PlayerList => _playerManager.playerList;
         private EnvironmentData _environmentData;
         private int _currentLeftPlayerAmount;
+
 
         public void AfterInit()
         {

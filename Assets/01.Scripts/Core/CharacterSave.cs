@@ -9,11 +9,8 @@ namespace Core.DataControl
     public class CharacterSave
     {
         public int credit;
-        public List<Vector2Int> openInventory;
         public List<int> containWeaponList;
-        public List<ushort> containChipsetList;
         public List<CharacterData> characterData;
-        public List<ushort> rewardChipsets;
 
         public bool clearEnteredStage = false;
         public bool failEnteredStage = false;
@@ -21,19 +18,13 @@ namespace Core.DataControl
         public CharacterSave()
         {
             credit = 0;
-            openInventory = new List<Vector2Int>();
             containWeaponList = new List<int>();
-            rewardChipsets = new();
-            containChipsetList = new List<ushort>();
             characterData = new List<CharacterData>();
             foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
             {
                 characterData.Add(new CharacterData());
             }
         }
-
-        public List<ChipsetData> GetCharacterChipset(CharacterEnum character)
-            => characterData[(int)character].chipsetInventoryData;
 
         public List<CharacterEnum> GetCurrentCharacter(Vector2Int currentPosition)
         {
@@ -54,18 +45,15 @@ namespace Core.DataControl
     {
         public bool isPlayerDead;
 
+        public int equipWeaponId;
         public float playerHealth;
         public Vector2Int characterPosition;
-
-        public int equipWeaponId;
-        public List<ChipsetData> chipsetInventoryData;
 
         public CharacterData()
         {
             playerHealth = 100f;
             equipWeaponId = 0;
             isPlayerDead = false;
-            chipsetInventoryData = new List<ChipsetData>();
             characterPosition = Vector2Int.zero;
         }
     }

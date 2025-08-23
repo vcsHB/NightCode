@@ -13,8 +13,6 @@ namespace UI.GameSelectScene
     {
         [SerializeField] private ChipsetGroupSO _chipsetGroupSO;
         private WeaponMainPanel _mainPanel;
-        private ChipsetTable _chipsetTable;
-        private ChipsetContainer _chipsetContainer;
         private AgentSelectController _agentSelectController;
 
         private WeaponDataGroup _weaponDataGroup;
@@ -22,23 +20,9 @@ namespace UI.GameSelectScene
         public void Initialize(CharacterSave save)
         {
             _mainPanel = GetComponentInChildren<WeaponMainPanel>();
-            _chipsetTable = GetComponentInChildren<ChipsetTable>();
-            _chipsetContainer = GetComponentInChildren<ChipsetContainer>();
             _agentSelectController = GetComponentInChildren<AgentSelectController>();
 
             InitializeWeaponData(save);
-
-            List<ChipsetData>[] chipsetIndex = new List<ChipsetData>[3];
-            foreach (CharacterEnum character in Enum.GetValues(typeof(CharacterEnum)))
-            {
-                List<ChipsetData> chipsetList = save.GetCharacterChipset(character);
-                chipsetIndex[(int)character] = chipsetList;
-            }
-
-            _chipsetContainer.Initialize(_chipsetGroupSO, save.containChipsetList);
-            _chipsetTable.Initialize(save.openInventory, chipsetIndex, _chipsetContainer.container);
-            _chipsetTable.onSelectInventory += HandleSelectInventory;
-
             _mainPanel.InitializeData(_weaponDataGroup);
             _agentSelectController.Initialize();
 
@@ -47,7 +31,6 @@ namespace UI.GameSelectScene
                 if (save.characterData[(int)character].isPlayerDead)
                 {
                     _agentSelectController.RetireCharacter(character);
-                    chipsetIndex[(int)character] = new List<ChipsetData>();
                     continue;
                 }
             }
@@ -67,12 +50,6 @@ namespace UI.GameSelectScene
             }
         }
 
-        public List<ChipsetData> GetCharacterInventory(CharacterEnum character)
-        {
-            ChipsetInventory inventory = _chipsetTable.GetInventory(character);
-            return inventory.GetChipsetData();
-        }
-
         public int GetCharacterWeapon(CharacterEnum character)
         {
             for (int i = 0; i < _weaponDataGroup.weaponDatas.Length; i++)
@@ -83,11 +60,6 @@ namespace UI.GameSelectScene
                 }
             }
             return -1;
-        }
-
-        private void HandleSelectInventory(ChipsetInventory inventory)
-        {
-            _chipsetContainer.SetInventory(inventory);
         }
     }
 }

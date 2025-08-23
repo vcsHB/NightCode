@@ -24,7 +24,6 @@ namespace Chipset
         [Header("Function Setting")]
         public ChipsetType chipsetType;
         public ChipsetFunction chipsetFunctionPrefab;
-        public bool isGlobalChipset;
         public Sprite icon;
 
         [Space]

@@ -1,20 +1,18 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
 namespace Chipset
 {
     public class ChipsetContainer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public UnityEvent<ChipsetSO> SetExplain;
-        public UnityEvent UnSetExplain;
-
         [Space]
-        public List<int> usedGlobalChipsetIndex;
         public ChipsetInventory currentInventory;
-        public List<Chipset> container;
 
         [SerializeField] private ChipsetInfo _chipsetInfoPrefab;
         [Space]
@@ -22,7 +20,8 @@ namespace Chipset
         [SerializeField] private RectTransform _chipsetInfoParent;
         [SerializeField] private CanvasGroup _dragPanel;
 
-        private List<ushort> _containChipset;
+        private List<Chipset> _container;
+        private List<Chipset> _chipsetList;
         private Dictionary<Chipset, ChipsetInfo> _chipsetInfos;
 
         private ScrollRect _scrollRect;
@@ -30,10 +29,20 @@ namespace Chipset
         private float _pedding = 20f;
         private float _spacing = 5f;
 
-        public void Initialize(ChipsetGroupSO chipsetGroupSO, List<ushort> containChipset)
+        public void Initialize(ChipsetGroupSO chipsetGroupSO, List<ushort> containChipset, List<InventorySave> inventoryInfo)
         {
-            _containChipset = containChipset;
-            container = new List<Chipset>();
+            List<int> excludeIndex = new();
+
+            for(int i =0; i< inventoryInfo.Count; i++)
+            {
+                for(int j = 0; j < inventoryInfo[i].chipsetList.Count; j++)
+                {
+                    excludeIndex.Add(inventoryInfo[i].chipsetList[j].chipsetIndex);
+                }
+            }
+
+            _container = new List<Chipset>();
+            _chipsetList = new List<Chipset>();
             _scrollRect = GetComponentInChildren<ScrollRect>();
             _chipsetInfos = new Dictionary<Chipset, ChipsetInfo>();
 
@@ -43,9 +52,7 @@ namespace Chipset
 
                 Chipset chipset = Instantiate(chipsetSO.chipsetPrefab, _chipsetParent);
                 chipset.SetIndex(i);
-                chipset.onSetExplain += HandleSetExplain;
-                chipset.onUnSetExplain += HandleUnSetExplain;
-                container.Add(chipset);
+                _chipsetList.Add(chipset);
 
                 ChipsetInfo chipsetInfo = Instantiate(_chipsetInfoPrefab, _chipsetInfoParent);
                 chipsetInfo.Init(chipset);
@@ -53,42 +60,49 @@ namespace Chipset
                 chipsetInfo.onUnSelectInventory += HandleUnSelectInventory;
                 chipsetInfo.onReturnChipset += ReturnChipset;
                 chipsetInfo.onInsertChipset += OnInsertChipset;
-                chipsetInfo.onSetExplain += HandleSetExplain;
-                chipsetInfo.onRemoveExplain += HandleUnSetExplain;
                 _chipsetInfos.Add(chipset, chipsetInfo);
+
+                if(excludeIndex.Contains(i))  chipsetInfo.SetActive(false);
+                else _container.Add(chipset);
             }
         }
 
         public void SetInventory(ChipsetInventory inventory)
         {
+            // assign chipset at the inventory
+            for (int i = 0; i < _chipsetList.Count; i++)
+            {
+                currentInventory?.UnAssignChipsetToInventory(_chipsetList[i]);
+                inventory?.AssignChipsetToInventory(_chipsetList[i]);
+            }
+
+            currentInventory?.InventoryInfo.containChipsetIndex.ForEach(chipset => _chipsetList[chipset].SetActive(false));
+            inventory.InventoryInfo.containChipsetIndex.ForEach(chipset => _chipsetList[chipset].SetActive(true));
             this.currentInventory = inventory;
 
-            for (int i = 0; i < container.Count; i++)
-                inventory.AssignChipsetToInventory(container[i]);
+            //int infoCount = 0;
+            //foreach (var chipset in _chipsetInfos.Keys)
+            //{
+            //    _chipsetInfos[chipset].SetActive(true);
+            //    _chipsetInfos[chipset].Init(chipset);
+            //    ++infoCount;
+            //}
 
-            int infoCount = 0;
-            foreach (var chipset in _chipsetInfos.Keys)
-            {
-                _chipsetInfos[chipset].SetActive(true);
-                _chipsetInfos[chipset].Init(chipset);
-                ++infoCount;
-            }
+            //List<ChipsetData> chipsetData = inventory.GetChipsetData();
+            //for (int i = 0; i < chipsetData.Count; i++)
+            //{
+            //    _chipsetInfos[_container[chipsetData[i].chipsetIndex]].SetActive(false);
+            //    --infoCount;
+            //}
 
-            List<ChipsetData> chipsetData = inventory.GetChipsetData();
-            for (int i = 0; i < chipsetData.Count; i++)
-            {
-                _chipsetInfos[container[chipsetData[i].chipsetIndex]].SetActive(false);
-                --infoCount;
-            }
-
-            float width = _pedding + _infoWidth * infoCount + _spacing * (infoCount - 1);
-            _scrollRect.content.sizeDelta = new Vector2(width, _scrollRect.content.sizeDelta.y);
+            //float width = _pedding + _infoWidth * infoCount + _spacing * (infoCount - 1);
+            //_scrollRect.content.sizeDelta = new Vector2(width, _scrollRect.content.sizeDelta.y);
         }
 
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (currentInventory.SelectedChipsetIndex != -1) _dragPanel.alpha = 1;
+            if (currentInventory.SelectedChipset != null) _dragPanel.alpha = 1;
             currentInventory.onReturnChipset += SetChipsetToContainer;
         }
 
@@ -100,14 +114,12 @@ namespace Chipset
 
         private void SetChipsetToContainer()
         {
-            if (currentInventory.SelectedChipsetIndex == -1) return;
+            if (currentInventory.SelectedChipset == null) return;
 
-            Chipset chipset = container[currentInventory.SelectedChipsetIndex];
+            Chipset chipset = currentInventory.SelectedChipset;
             if (chipset.IsForceMouseDown) return;
             chipset.SetActive(false);
-
-            if (usedGlobalChipsetIndex.Contains(chipset.Index))
-                usedGlobalChipsetIndex.Remove(chipset.Index);
+            _container.Add(chipset);
 
             _chipsetInfos[chipset].SetActive(true);
             currentInventory.OnPointerDownChipset(-1);
@@ -115,10 +127,23 @@ namespace Chipset
             _scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x + _infoWidth + _spacing, _scrollRect.content.sizeDelta.y);
         }
 
+        public List<ushort> GetContainChipsetIdList()
+        {
+            return _chipsetList.ConvertAll(chipset => chipset.info.id);
+        }
+
         #region EventHandler
 
         private void HandleSelectInventory(ChipsetInfo info)
         {
+            _chipsetInfos.Keys.ToList().ForEach(chipset =>
+            {
+                if (_chipsetInfos[chipset] == info)
+                {
+                    chipset.SetActive(true);
+                }
+            });
+
             _scrollRect.horizontal = false;
             info.AddAction(currentInventory);
         }
@@ -129,21 +154,9 @@ namespace Chipset
             info.RemoveAction(currentInventory);
         }
 
-        private void HandleSetExplain(ChipsetSO chipset)
-        {
-            SetExplain?.Invoke(chipset);
-        }
-
-        private void HandleUnSetExplain()
-        {
-            UnSetExplain?.Invoke();
-        }
-
         private void OnInsertChipset(Chipset chipset)
         {
-            if (chipset.info.isGlobalChipset)
-                usedGlobalChipsetIndex.Add(chipset.Index);
-
+            _container.Remove(chipset);
             _chipsetInfos[chipset].SetActive(false);
             _scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x - _infoWidth - _spacing, _scrollRect.content.sizeDelta.y);
         }
@@ -151,13 +164,17 @@ namespace Chipset
         private void ReturnChipset(Chipset chipset)
         {
             chipset.SetActive(false);
-
-            if (usedGlobalChipsetIndex.Contains(chipset.Index))
-                usedGlobalChipsetIndex.Remove(chipset.Index);
-
             _chipsetInfos[chipset].SetActive(true);
+
             currentInventory.SelectChipset(-1);
+            currentInventory.RemoveChipset(chipset.Index);
             _dragPanel.alpha = 0;
+        }
+
+        public Chipset GetChipset(int chipsetIndex)
+        {
+            if (chipsetIndex == -1) return null;
+            return _chipsetList[chipsetIndex];
         }
 
         #endregion

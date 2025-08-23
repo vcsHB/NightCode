@@ -1,3 +1,4 @@
+using Chipset;
 using Core;
 using DG.Tweening;
 using Map;
@@ -47,6 +48,7 @@ namespace UI.NodeViewScene.StageSelectionUIs
         private void SelectMap()
         {
             //_mapController.SetCompleteNode(_selectedNode.Position);  //이건 나중에 씬 로딩할 때 받아서 해야함
+            ChipsetManager.Instance.Save();
             _mapController.SaveEnterStage(_selectedNode);
             SceneManager.LoadScene(SceneName.InGameScene);
             //씬 로딩

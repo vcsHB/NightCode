@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace Map
 {
-    public class CharacterDataController : MonoBehaviour
+    public class CharacterDataController : MonoSingleton<CharacterDataController>
     {
         private JsonLoadHelper<CharacterSave> _loadHelper =
             new JsonLoadHelper<CharacterSave>(Path.Combine(Application.dataPath, "Save/CharacterData.json"));
@@ -20,12 +20,15 @@ namespace Map
         [SerializeField] private RewardPanel _rewardPanel;
         [SerializeField] private MapController _mapController;
         [SerializeField] private CharacterBuildController _characterBuildController;
+        [SerializeField] private ChipsetExplain _chipsetExplain;
 
+        public ChipsetExplain ChipsetExplain => _chipsetExplain;
         //이걸 넘기고 다른 스크립트에서 이걸 가지고 뭘 하게 하는 느낌일거임
         private CharacterSave _characterSave;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             Load();
             _mapController.OnEnterStage += Save;
             _mapController.Initialize(_characterSave.characterData.ConvertAll(data => data.characterPosition));
@@ -46,8 +49,6 @@ namespace Map
             {
                 _characterSave.characterData[i].equipWeaponId =
                     _characterBuildController.GetCharacterWeapon((CharacterEnum)i);
-                _characterSave.characterData[i].chipsetInventoryData =
-                    _characterBuildController.GetCharacterInventory((CharacterEnum)i);
                 _characterSave.characterData[i].characterPosition =
                     _mapController.GetCharacterPosition((CharacterEnum)i);
             }
@@ -58,26 +59,6 @@ namespace Map
         public void Load()
         {
             _characterSave = _loadHelper.Load();
-
-
-            if (_rewardPanel != null && _characterSave.rewardChipsets.Count > 0)
-            {
-                _rewardPanel.Open();
-
-                List<ChipsetSO> rewards = new();
-                for (int i = 0; i < _characterSave.rewardChipsets.Count; i++)
-                {
-                    ushort id = _characterSave.rewardChipsets[i];
-                    ChipsetSO chipset = DataLoader.Instance.chipsetGroup.GetChipset(id);
-                    rewards.Add(chipset);
-
-                    _characterSave.containChipsetList.Add(id);
-                }
-
-                _rewardPanel.SetReward(rewards);
-                _characterSave.rewardChipsets.Clear();
-            }
-
             if (_characterSave.containWeaponList.Count <= 0) InitializeData();
         }
 
@@ -88,9 +69,6 @@ namespace Map
 
         private void InitializeData()
         {
-            _characterSave.openInventory = _initializeData.openInventory;
-            _initializeData.containChipsets.ForEach(chipset => _characterSave.containChipsetList.Add(chipset.id));
-
             _characterSave.characterData[(int)CharacterEnum.An].equipWeaponId = _initializeData.anInitializeWeapon.id;
             _characterSave.characterData[(int)CharacterEnum.JinLay].equipWeaponId = _initializeData.jinInitializeWeapon.id;
             _characterSave.characterData[(int)CharacterEnum.Bina].equipWeaponId = _initializeData.binaInitializeWeapon.id;

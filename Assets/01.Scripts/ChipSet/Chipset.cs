@@ -1,6 +1,6 @@
+using Map;
 using System;
 using System.Collections.Generic;
-using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -9,8 +9,6 @@ namespace Chipset
 {
     public class Chipset : MonoBehaviour
     {
-        public event Action<ChipsetSO> onSetExplain;
-        public event Action onUnSetExplain;
         public event Action<int> onSelectChipset;
         public event Action onPointerUpChipset;
         public event Action onRotate;
@@ -58,6 +56,8 @@ namespace Chipset
             CheckMouseUp();
         }
 
+        public void SetIndex(int index) => _index = index;
+
         private void SlotInitialize()
         {
             _slots = new ChipsetSlot[info.chipsetSize.Count];
@@ -78,12 +78,12 @@ namespace Chipset
 
         private void HandleUnSetExplain(Vector2Int position)
         {
-            onUnSetExplain?.Invoke();
+            CharacterDataController.Instance.ChipsetExplain.Disable();
         }
 
         private void HandleSetExplain(Vector2Int position)
         {
-            onSetExplain?.Invoke(info);
+            CharacterDataController.Instance.ChipsetExplain.SetChipsetExplain(info);
         }
 
         private void ChipsetDrag()
@@ -233,11 +233,6 @@ namespace Chipset
         {
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * rotation));
             _rotation = rotation;
-        }
-
-        public void SetIndex(int index)
-        {
-            _index = index;
         }
     }
 }
